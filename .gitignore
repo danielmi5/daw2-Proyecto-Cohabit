@@ -1,0 +1,35 @@
+# DEPENDECIAS Y BUILD
+# Backend
+/backend/target/
+backend/build/
+backend/*.jar
+backend/*.war
+/backend/mvnw*
+/backend/.mvn/wrapper/
+
+# Frontend
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.angular/
+/frontend/.next/
+
+# Ides
+.idea/
+.vscode/
+
+# Env y configuraciones
+*.env
+*.env.local
+/backend/src/main/resources/application-local.*
+/backend/src/main/resources/application-dev.*
+docker-compose.override.yml
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker volumes
+docker/volumes/

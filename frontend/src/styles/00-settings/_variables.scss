@@ -1,4 +1,4 @@
-// COLORES
+// COLORES PREDETERMINADOS
 // Colores primarios
 $color-primario: hsl(336, 69%, 30%);
 $color-primario-claro: hsl(336, 68%, 36%);
@@ -28,7 +28,55 @@ $color-error: hsl(0, 100%, 40%);
 $color-warning: hsl(36, 100%, 50%);
 $color-info: hsl(210, 100%, 40%);
 
-// TIPOGRAFÍ: FAMILIA, TAMAÑOS, PESOS y ALTURAS DE LÍNEA
+//COLORES POR USO
+
+// Botones
+$btn-primario: $color-primario-claro; // Botón primario
+$btn-primario-hover: $color-primario; // Hover primario
+$btn-primario-active: $color-primario-oscuro; // Click primario
+
+$btn-secundario: $blanco; // Botón secundario
+$btn-secundario-hover: $gris1; // Hover secundario
+$btn-secundario-active: $color-complementario1; // Click secundario
+
+// Inputs y bordes
+$fondo-input: $blanco; // Fondo input
+$fondo-input-hover: hsl(0, 0%, 92%); // Fondo input:hover (#EDEDED)
+$fondo-input-focus: hsl(0, 0%, 88%); // Fondo input:focus (#E1E1E1)
+
+// Bordes
+$borde: $negro; // Borde general
+$borde-input: hsl(0, 0%, 87%); // Borde input (#DEDEDE)
+$borde-cards: $color-apoyo; // borde Cards
+
+// Fondos
+$fondo: $blanco; // Fondo general
+$fondo-cards: $color-complementario3; // color cards
+$fondo-dashboard: $color-complementario1; // Fondo Dashboard
+$fondo-barra-lateral: $color-complementario3; // barra lateral
+
+
+// Textos
+$titulos: $color-primario; // color títulos secciones
+$texto-oscuro: $negro; // texto general sobre fondo oscuro
+$texto-claro: $blanco; // texto general sobre fondo claro
+$etiqueta-cards: $gris7; // texto etiquetas en Cards
+$importante-cards: $color-primario-oscuro; // texto importante en Cards
+
+
+
+// Usos DEMASIADOS específicos
+
+$links-titulo: $color-apoyo; // links títulos Dashboard
+$hover-ui: $color-apoyo; // hover
+
+//Tabla Reservas (Los colores de la fila se van cambiando para poder diferenciarse entre sí)
+$fila: $blanco; // Fila1
+$fila2: hsl(210, 20%, 98%); // fila2 (#F9FAFB)
+$header-tabla: $color-complementario3; // header de la tabla
+
+
+// TIPOGRAFÍA: FAMILIA, TAMAÑOS, PESOS y ALTURAS DE LÍNEA
 
 //Familia
 $font-primary: "Lexend"; //Texto normal
@@ -57,7 +105,10 @@ $line-tight: 1.1;
 $line-normal: 1.5;
 $line-relaxed: 1.75;
 
-// Mapeo de elementos tipográficos (usar estas variables en los estilos)
+$line-button: 1; //específico para botones
+
+
+// Mapeo para la escala tipográfica
 $escala-h1: $text-5xl;
 $peso-h1: $font-weight-medium;
 $altura-linea-h1: $line-tight;

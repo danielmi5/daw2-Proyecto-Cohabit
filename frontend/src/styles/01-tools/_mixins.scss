@@ -1,0 +1,74 @@
+@import '../00-settings/_variables.scss';
+
+// Mixin de tipografía 
+@mixin tipografia($type, $color: $negro) {
+  @if $type == button {
+    font-size: $text-sm;
+    font-weight: $font-weight-medium;
+    line-height: $line-button;
+    letter-spacing: 0.089em;
+    text-transform: uppercase;
+    color: $color;
+  }
+
+  @else if $type == enlace {
+    font-size: $text-md;
+    font-weight: $font-weight-regular;
+    line-height: $line-normal;
+    text-decoration: none;
+    &:hover { 
+        text-decoration: underline; 
+    }
+    color: $color;
+  }
+
+  @else if $type == h1 {
+    font-size: $escala-h1;
+    font-weight: $peso-h1;
+    line-height: $altura-linea-h1;
+    color: $color;
+  }
+
+  @else if $type == h2 {
+    font-size: $escala-h2;
+    font-weight: $peso-h2;
+    line-height: $altura-linea-h2;
+    color: $color;
+  }
+
+  @else if $type == h3 {
+    font-size: $escala-h3;
+    font-weight: $peso-h3;
+    line-height: $altura-linea-h3;
+    color: $color;
+  }
+
+  @else if $type == h4 {
+    font-size: $escala-h4;
+    font-weight: $peso-h4;
+    line-height: $altura-linea-h4;
+    color: $color;
+  }
+
+  @else if $type == parrafo {
+    font-size: $escala-parrafo;
+    font-weight: $peso-parrafo;
+    line-height: $altura-linea-parrafo;
+    color: $color;
+  }
+
+  @else if $type == texto-mini {
+    font-size: $escala-texto-mini;
+    font-weight: $peso-texto-mini;
+    line-height: $altura-linea-texto-mini;
+    color: $color;
+  }
+
+  @else if $type == texto-pequeno {
+    font-size: $escala-texto-pequeno;
+    font-weight: $peso-texto-pequeno;
+    line-height: $altura-linea-texto-pequeno;
+    color: $color;
+  }
+}
+

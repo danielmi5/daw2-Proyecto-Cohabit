@@ -1,0 +1,178 @@
+
+/*
+	Archivo para definir estilos predeterminandos para las etiquetas HTML
+*/
+
+/* Body predeterminado */
+body {
+	font-family: $font-primary;
+	font-size: $text-md;
+	line-height: $line-normal;
+	color: $texto-oscuro;
+	background-color: $fondo;
+}
+
+/* Encabezados */
+h1 {
+	font-size: $escala-h1;
+	font-weight: $peso-h1;
+	line-height: $altura-linea-h1;
+	color: $titulos;
+	margin: $espaciado-m 0;
+}
+
+h2 {
+	font-size: $escala-h2;
+	font-weight: $peso-h2;
+	line-height: $altura-linea-h2;
+	color: $titulos;
+	margin: ($espaciado-m / 1.5) 0;
+}
+
+h3 {
+	font-size: $escala-h3;
+	font-weight: $peso-h3;
+	line-height: $altura-linea-h3;
+	color: $titulos;
+	margin: ($espaciado-s) 0;
+}
+
+h4 {
+	font-size: $escala-h4;
+	font-weight: $peso-h4;
+	line-height: $altura-linea-h4;
+	color: $titulos;
+	margin: ($espaciado-s) 0;
+}
+
+h5,
+h6 {
+	color: $titulos;
+	margin: ($espaciado-xs) 0;
+}
+
+/* Párrafos y texto */
+p {
+	margin: 0 0 $espaciado-m;
+}
+
+small {
+	font-size: $text-xs;
+}
+
+/* Enlaces */
+a {
+	color: $links-titulo;
+	text-decoration: none;
+	transition: color $transicion-rapida ease-in-out;
+
+	&:hover {
+		color: $hover-ui;
+		text-decoration: underline;
+	}
+
+	&:focus {
+		outline: 2px solid $color-primario-claro;
+		outline-offset: 2px;
+	}
+}
+
+/* Multimedia */
+img,
+picture,
+video,
+canvas,
+svg {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+/* Listas */
+ul,
+ol {
+	margin: 0 0 $espaciado-m 0;
+	padding-left: 1.25rem;
+}
+
+li {
+	margin-bottom: $espaciado-xs;
+}
+
+/* Formularios: inputs, selects y textarea */
+input,
+textarea,
+select {
+	background: $fondo-input;
+	border: 1px solid $borde-input;
+	color: $texto-oscuro;
+	padding: $espaciado-s;
+	border-radius: $radio-campo;
+	font: inherit;
+	transition: box-shadow $transicion-rapida ease-in-out, border-color $transicion-rapida ease-in-out;
+
+	&:focus {
+		outline: none;
+		box-shadow: 0 0 0 3px $color-primario-claro;
+		border-color: $color-primario;
+	}
+}
+
+label {
+	display: inline-block;
+	margin-bottom: $espaciado-xs;
+	color: $texto-oscuro;
+}
+
+/* Botones */
+button {
+	display: inline-block;
+	padding: $espaciado-s $espaciado-m;
+	border-radius: $radio-boton;
+	border: none;
+	font-weight: $font-weight-medium;
+	cursor: pointer;
+	background-color: $btn-primario;
+	color: $texto-claro;
+	transition: background-color $transicion-rapida ease-in-out, transform $transicion-rapida ease-in-out;
+
+	&:hover {
+		background-color: $btn-primario-hover;
+	}
+
+	&:active {
+		background-color: $btn-primario-active;
+		transform: translateY(1px);
+	}
+}
+
+/* Tablas */
+table {
+	width: 100%;
+	border-collapse: collapse;
+
+	th,
+	td {
+		padding: $espaciado-s;
+		text-align: left;
+		border-bottom: 1px solid $borde;
+	}
+
+	th {
+		background-color: $header-tabla;
+		color: $texto-claro;
+		font-weight: $font-weight-medium;
+	}
+
+	tbody tr:nth-child(even) {
+		background-color: $fila-2;
+	}
+}
+
+/* Enfoque accesible general */
+:focus {
+	outline: 2px solid $color-primario-claro;
+	outline-offset: 2px;
+}
+
+

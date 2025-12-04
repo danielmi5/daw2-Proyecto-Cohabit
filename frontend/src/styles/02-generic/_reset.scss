@@ -1,0 +1,89 @@
+ /*
+    Reset realizado a partir de la versión original de Andy Bell (Modern CSS reset).
+
+    Se usa un reset ligero y moderno que corrige comportamientos inconsistentes del navegador sin eliminar todas las reglas por defecto.
+    Se usa para mantener accesibilidad y comportamiento esperado.
+  */
+/* Evitar el aumento automático del tamaño de fuente en algunos navegadores */
+html {
+
+  /* Se aplica border-box y, se elimina margin y padding por defecto */
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Se evita el aumento automático del tamaño de fuente en algunos navegadores */
+  html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
+  /* Se elimina el margen por defecto en elementos que suelen llevarlo,
+     para tener control desde el CSS */
+  body, h1, h2, h3, h4, p,
+  figure, blockquote, dl, dd {
+    margin-block-end: 0;
+  }
+
+  /* Se quitan estilos de listas únicamente en las listas que tengan role="list"
+     (para controlar el estilo desde el CSS) */
+  ul[role='list'],
+  ol[role='list'] {
+    list-style: none;
+  }
+
+  /* Se establecen valores básicos para el body */
+  body {
+    min-height: 100vh; /* se asegura al menos la altura de la ventana */
+    line-height: 1.5;  /* para lectura cómoda */
+  }
+
+  /* Se aplica line-height ligeramente menor en encabezados y elementos interactivos */
+  h1, h2, h3, h4,
+  button, input, label {
+    line-height: 1.1; /* títulos más compactos */
+  }
+
+  /* Se equilibra el salto de línea en headings en navegadores que lo soportan */
+  h1, h2,
+  h3, h4 {
+    text-wrap: balance;
+  }
+
+  /* En enlaces sin clase se mantiene un estilo por defecto */
+  a:not([class]) {
+    text-decoration-skip-ink: auto; /* se evitan cortes bruscos en subrayado */
+    color: currentColor; /* se hereda el color actual */
+  }
+
+  /* Se hace que las imágenes y picture sean más fáciles de manejar (responsivas) */
+  img,
+  picture {
+    max-width: 100%;
+    display: block;
+  }
+
+  /* Se heredan tipografías en controles de formulario para consistencia */
+  input, button,
+  textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  /* Se evita que textareas sin rows queden muy pequeños */
+  textarea:not([rows]) {
+    min-height: 10em;
+  }
+
+  /* Cuando un elemento es objetivo de un ancla, se da algo de margen para el scroll */
+  :target {
+    scroll-margin-block: 5ex;
+  }
+
+
+}

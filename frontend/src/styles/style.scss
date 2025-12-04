@@ -1,0 +1,14 @@
+// Imports orden ITCSS
+// 1) Settings (variables)
+@import "00-settings/variables";
+// 2) Tools (mixins)
+@import "01-tools/mixins";
+// 3) Generic (reset)
+@import "02-generic/reset";
+// 4) Elements (elementos HTML)
+@import "03-elements/elements";
+// 5) Layout (estructuras)
+@import "04-layout/layout";
+
+
+

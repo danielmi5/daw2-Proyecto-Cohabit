@@ -1,0 +1,67 @@
+/*
+	Utilidades Flex:
+	- fila horizontal sin wrap
+	- fila horizontal con wrap
+	- columna
+
+	Se usan variables para gap y alineación.
+*/
+
+.fila-flex {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	gap: $espaciado-s;
+	align-items: center;
+}
+
+.fila-flex-wrap {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: $espaciado-s;
+	align-items: center;
+}
+
+.columna-flex {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: nowrap;
+	gap: $espaciado-s;
+	align-items: stretch;
+}
+
+/*
+	Utilidades Grid
+	- fila horizontal con columnas automáticas (una sola fila)
+	- adapta columnas con auto-fit
+	- columna vertical usando grid (una sola columna)
+
+	Se usan variables para gap y ancho mínimo de columna.
+*/
+
+.fila-grid {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: minmax(0, auto);
+	gap: $espaciado-s;
+	align-items: center;
+}
+
+.auto-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: $espaciado-s;
+	align-items: start;
+}
+
+.columna-grid {
+	display: grid;
+	grid-auto-rows: minmax(0, auto);
+	gap: $espaciado-s;
+	align-items: start;
+}
+
+
+
+

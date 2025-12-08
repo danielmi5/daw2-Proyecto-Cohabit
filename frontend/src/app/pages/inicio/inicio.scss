@@ -1,0 +1,101 @@
+@use '../../../styles/00-settings/variables' as *;
+
+.inicio {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $fondo;
+  padding: $espaciado-xxl $espaciado-m;
+
+  &__contenedor {
+    max-width: 800px;
+    text-align: center;
+  }
+
+  &__titulo {
+    font-family: $font-secondary;
+    font-size: $escala-h1;
+    font-weight: $peso-h1;
+    line-height: $altura-linea-h1;
+    color: $titulos;
+    margin-bottom: $espaciado-l;
+  }
+
+  &__descripcion {
+    font-size: $escala-h3;
+    font-weight: $peso-parrafo;
+    line-height: $altura-linea-parrafo;
+    color: $texto-oscuro;
+    margin-bottom: $espaciado-xl;
+  }
+
+  &__acciones {
+    display: flex;
+    gap: $espaciado-m;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  &__boton {
+    padding: $espaciado-m $espaciado-xl;
+    font-size: $text-lg;
+    font-weight: $font-weight-medium;
+    border-radius: $radio-boton;
+    text-decoration: none;
+    transition: all $transicion-base $transicion-suave;
+    cursor: pointer;
+    display: inline-block;
+
+    &--primario {
+      background-color: $btn-primario;
+      color: $texto-claro;
+      border: none;
+
+      &:hover {
+        background-color: $btn-primario-hover;
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
+      }
+
+      &:active {
+        background-color: $btn-primario-active;
+        transform: translateY(0);
+      }
+    }
+
+    &--secundario {
+      background-color: $btn-secundario;
+      color: $texto-oscuro;
+      border: $borde-medium solid $color-primario;
+
+      &:hover {
+        background-color: $btn-secundario-hover;
+        transform: translateY(-2px);
+        box-shadow: $shadow-md;
+      }
+
+      &:active {
+        background-color: $btn-secundario-active;
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: $espaciado-xl $espaciado-m;
+
+    &__titulo {
+      font-size: $escala-h2;
+    }
+
+    &__descripcion {
+      font-size: $escala-h4;
+    }
+
+    &__boton {
+      font-size: $text-md;
+      padding: $espaciado-s $espaciado-l;
+    }
+  }
+}

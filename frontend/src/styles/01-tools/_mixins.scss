@@ -1,4 +1,4 @@
-@import '../00-settings/_variables.scss';
+@use '../00-settings/variables' as *;
 
 // Mixin de tipografía 
 @mixin tipografia($type, $color: $negro) {

@@ -1,0 +1,23 @@
+@use '../styles/00-settings/variables' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-primary, sans-serif;
+  font-size: $escala-parrafo;
+  font-weight: $peso-parrafo;
+  line-height: $altura-linea-parrafo;
+  color: $texto-oscuro;
+  background-color: $fondo;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:host {
+  display: block;
+  min-height: 100vh;
+}

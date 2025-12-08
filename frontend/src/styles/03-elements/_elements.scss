@@ -1,3 +1,4 @@
+@use '../00-settings/variables' as *;
 
 /*
 	Archivo para definir estilos predeterminandos para las etiquetas HTML
@@ -165,7 +166,7 @@ table {
 	}
 
 	tbody tr:nth-child(even) {
-		background-color: $fila-2;
+		background-color: $fila2;
 	}
 }
 

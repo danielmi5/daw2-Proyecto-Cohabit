@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -31,15 +32,33 @@ public class Reserva {
     @Column(length = 1000)
     private String notas;
 
+    private Integer numPersonas;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EstadoReserva estado;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "miembro_grupo_id", nullable = false)
+    private MiembroGrupo miembroGrupo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recurso_id", nullable = false)
     private Recurso recurso;
+
+    @Column(nullable = false)
+    private LocalDateTime fechaCreacion;
+
+    private LocalDateTime fechaActualizacion;
+
+    @PrePersist
+    protected void onCreate() {
+        fechaCreacion = LocalDateTime.now();
+        fechaActualizacion = fechaCreacion;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        fechaActualizacion = LocalDateTime.now();
+    }
 }

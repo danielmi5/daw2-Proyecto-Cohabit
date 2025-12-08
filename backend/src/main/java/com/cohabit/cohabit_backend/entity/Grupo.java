@@ -36,6 +36,9 @@ public class Grupo {
     @Column(nullable = false)
     private LocalDateTime fechaCreacion;
 
+    @Column(nullable = false)
+    private LocalDateTime fechaActualizacion;
+
     @OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<MiembroGrupo> miembros = new ArrayList<>();
@@ -47,5 +50,11 @@ public class Grupo {
     @PrePersist
     private void onCreate() {
         fechaCreacion = LocalDateTime.now();
+        fechaActualizacion = fechaCreacion;
+    }
+
+    @PreUpdate
+    private void onUpdate() {
+        fechaActualizacion = LocalDateTime.now();
     }
 }

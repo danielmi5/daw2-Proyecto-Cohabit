@@ -1,0 +1,81 @@
+package com.cohabit.cohabit_backend.service;
+
+import com.cohabit.cohabit_backend.dto.RecursoRequestDTO;
+import com.cohabit.cohabit_backend.dto.RecursoResponseDTO;
+import com.cohabit.cohabit_backend.entity.MiembroGrupo;
+import com.cohabit.cohabit_backend.entity.Grupo;
+import com.cohabit.cohabit_backend.entity.Recurso;
+import com.cohabit.cohabit_backend.mapper.RecursoMapper;
+import com.cohabit.cohabit_backend.repository.MiembroGrupoRepository;
+import com.cohabit.cohabit_backend.repository.RecursoRepository;
+import com.cohabit.cohabit_backend.repository.GrupoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+
+@Service
+public class RecursoService {
+
+    private final RecursoRepository recursoRepo;
+    private final GrupoRepository grupoRepo;
+    private final MiembroGrupoRepository miembroRepo;
+
+    public RecursoService(RecursoRepository recursoRepo, GrupoRepository grupoRepo, MiembroGrupoRepository miembroRepo) {
+        this.recursoRepo = recursoRepo;
+        this.grupoRepo = grupoRepo;
+        this.miembroRepo = miembroRepo;
+    }
+
+    public RecursoResponseDTO obtenerPorId(Long id) {
+        Recurso recurso = recursoRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Recurso no encontrado: " + id));
+        return RecursoMapper.recursoEntidadARecursoDto(recurso);
+    }
+
+    public Page<RecursoResponseDTO> obtenerTodos(Pageable pageable) {
+        var paginaRecursos = recursoRepo.findAll(pageable);
+        List<RecursoResponseDTO> dtos = paginaRecursos.getContent().stream().map(recursoEntidad -> RecursoMapper.recursoEntidadARecursoDto(recursoEntidad)).toList();
+        return new PageImpl<>(dtos, pageable, paginaRecursos.getTotalElements());
+    }
+
+    @Transactional
+    public RecursoResponseDTO crear(RecursoRequestDTO dto) {
+        if (dto == null) throw new IllegalArgumentException("RecursoRequestDTO es null");
+        Grupo grupo = grupoRepo.findById(dto.getGrupoId()).orElseThrow(() -> new NoSuchElementException("Grupo no encontrado: " + dto.getGrupoId()));
+        MiembroGrupo creador = null;
+        if (dto.getCreadorId() != null) {
+            creador = miembroRepo.findById(dto.getCreadorId()).orElseThrow(() -> new NoSuchElementException("Miembro creador no encontrado: " + dto.getCreadorId()));
+        }
+
+        if (dto.getCapacidad() != null && dto.getCapacidad() < 1) {
+            throw new IllegalArgumentException("La capacidad debe ser al menos 1");
+        }
+
+        Recurso entidad = RecursoMapper.recursoRequestARecursoEntidad(dto, grupo, creador);
+        Recurso recursoGuardado = recursoRepo.save(entidad);
+        return RecursoMapper.recursoEntidadARecursoDto(recursoGuardado);
+    }
+
+    @Transactional
+    public RecursoResponseDTO actualizar(Long id, RecursoRequestDTO dto) {
+        Recurso recursoExistente = recursoRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Recurso no encontrado: " + id));
+
+        if (dto.getNombre() != null) recursoExistente.setNombre(dto.getNombre());
+        if (dto.getDescripcion() != null) recursoExistente.setDescripcion(dto.getDescripcion());
+        if (dto.getCapacidad() != null) recursoExistente.setCapacidad(dto.getCapacidad());
+        if (dto.getUbicacion() != null) recursoExistente.setUbicacion(dto.getUbicacion());
+
+        Recurso recursoGuardado = recursoRepo.save(recursoExistente);
+        return RecursoMapper.recursoEntidadARecursoDto(recursoGuardado);
+    }
+
+    @Transactional
+    public void eliminar(Long id) {
+        if (!recursoRepo.existsById(id)) throw new NoSuchElementException("Recurso no encontrado: " + id);
+        recursoRepo.deleteById(id);
+    }
+}

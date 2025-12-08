@@ -1,22 +1,23 @@
 package com.cohabit.cohabit_backend.dto;
 
 import com.cohabit.cohabit_backend.entity.RolGrupo;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MiembroGrupoDTO {
-    private Long id;
+public class MiembroGrupoRequestDTO {
+    
+    @NotNull(message = "El ID del usuario es obligatorio")
     private Long usuarioId;
+    
+    @NotNull(message = "El ID del grupo es obligatorio")
     private Long grupoId;
+    
+    @NotNull(message = "El rol es obligatorio")
     private RolGrupo rol;
-    private LocalDateTime fechaUnion;
-    private List<Long> recursosIds;
-    private List<Long> reservasIds;
+    
     private boolean activo;
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RecursoDTO {
+public class RecursoResponseDTO {
     private Long id;
     private String nombre;
     private String descripcion;

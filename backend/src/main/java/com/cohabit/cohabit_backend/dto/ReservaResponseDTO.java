@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReservaDTO {
+public class ReservaResponseDTO {
     private Long id;
     private LocalDate fecha;
     private LocalTime horaInicio;

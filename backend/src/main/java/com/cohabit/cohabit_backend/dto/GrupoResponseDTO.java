@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GrupoDTO {
+public class GrupoResponseDTO {
     private Long id;
     private String nombre;
     private String direccion;

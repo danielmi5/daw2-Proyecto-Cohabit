@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReglaRecursoDTO {
+public class ReglaRecursoResponseDTO {
     private Long id;
     private TipoRegla tipoRegla;
     private String valor;

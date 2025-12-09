@@ -1,0 +1,86 @@
+@use '../../../../styles/00-settings/variables' as *;
+
+.pie-pagina{
+    width: 100%;
+    height: fit-content;
+    padding: $espaciado-l;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    background-color: $color-primario;
+
+    &__superior{
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__seccion{
+        display: flex;
+        flex-direction: column;
+        gap: $espaciado-s;
+    }
+
+    &__titulo{
+        width: 100%;
+        color: $importante-fondo-primario;
+    }
+
+    &__lista{
+        display: flex;
+        flex-direction: column;
+        gap: $espaciado-s;
+
+        &__elemento{
+            width: 100%;
+            color: $texto-fondo-primario;
+        }
+    }
+
+    &__enlace{
+        width: 100%;
+        color: $texto-fondo-primario;
+    }
+
+
+
+    &__inferior{
+        width: 100%;
+        height: 100px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__copyright{
+        width: 60%;
+        color: $texto-fondo-primario;
+    }
+
+    &__redes-sociales{
+        width: 20%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        gap: $espaciado-m;
+    }
+
+    &__redes-titulo{
+        width: 100%;
+        color: $importante-fondo-primario;
+    }
+
+    &__redes-lista{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        color: $importante-fondo-primario;
+    }
+
+    &__redes-elemento{
+        width: 24px;
+        height: 24px;
+    }
+}
+

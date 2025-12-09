@@ -1,159 +1,48 @@
 @use '../../../../styles/00-settings/variables' as *;
 
-.cabecera {
-  background-color: $color-primario;
-  color: $texto-claro;
-  padding: $espaciado-m $espaciado-xl;
+.cabecera{
+  width: 100%;
+  height: 10vh;
+  padding: $espaciado-m;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  box-shadow: $shadow-md;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  align-items: center;
+  background-color: $color-primario;
 
-  &__logo {
-    margin: 0;
-    font-size: $text-xl;
-    font-weight: $font-weight-medium;
-  }
-
-  &__logo-enlace {
-    display: flex;
-    align-items: center;
-    gap: $espaciado-s;
+  &__logo{
+    width: 20%;
+    height: 100%;
     text-decoration: none;
-    color: $texto-claro;
-    transition: opacity $transicion-base $transicion-suave;
+    display: inline-block;
+    
 
-    &:hover {
-      opacity: 0.9;
+    &-icono{
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
     }
   }
 
-  &__logo-icono {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
+  &__navegacion{
+    width: 40%;
   }
-
-  &__logo-texto {
-    font-family: $font-secondary;
-    font-size: $text-2xl;
-    font-weight: $font-weight-semibold;
-    letter-spacing: 0.05em;
-  }
-
-  &__navegacion {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-  }
-
-  &__menu {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: $espaciado-xl;
-  }
-
-  &__menu-item {
-    margin: 0;
-  }
-
-  &__menu-enlace {
-    color: $texto-claro;
-    text-decoration: none;
-    font-size: $text-md;
-    font-weight: $font-weight-medium;
-    padding: $espaciado-s $espaciado-m;
-    border-radius: $radio-sm;
-    transition: background-color $transicion-base $transicion-suave;
-    display: block;
-
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    &:active {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-  }
-
-  &__utilidades {
+  
+  &__menu{
+    width: 100%;
     display: flex;
     align-items: center;
-    gap: $espaciado-m;
-  }
+    justify-content: space-between;
 
-  &__boton-tema,
-  &__boton-perfil {
-    background: transparent;
-    border: $borde-thin solid rgba(255, 255, 255, 0.3);
-    border-radius: $radio-circulo;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all $transicion-base $transicion-suave;
-    padding: 0;
+    &-enlace {
+      color: $importante-fondo-primario;
+      text-decoration: none;
+      transition: color $transicion-rapida ease-in-out;
 
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.5);
-    }
-
-    &:active {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-  }
-
-  &__icono-luna,
-  &__icono-sol,
-  &__icono-perfil {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-  }
-
-  // Responsive
-  @media (max-width: $breakpoint-tablet) {
-    padding: $espaciado-s $espaciado-m;
-
-    &__logo-texto {
-      font-size: $text-lg;
-    }
-
-    &__menu {
-      gap: $espaciado-m;
-    }
-
-    &__menu-enlace {
-      font-size: $text-sm;
-      padding: $espaciado-xs $espaciado-s;
-    }
-
-    &__utilidades {
-      gap: $espaciado-s;
-    }
-  }
-
-  @media (max-width: $breakpoint-movil-grande) {
-    flex-wrap: wrap;
-
-    &__navegacion {
-      order: 3;
-      width: 100%;
-      margin-top: $espaciado-s;
-    }
-
-    &__menu {
-      width: 100%;
-      justify-content: center;
-      gap: $espaciado-s;
+      &:hover {
+        color: $hover-ui;
+      }
     }
   }
 }

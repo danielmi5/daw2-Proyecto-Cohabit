@@ -1,18 +1,19 @@
 <header class="cabecera">
-  <h1 class="cabecera__logo">
-    <a routerLink="/" class="cabecera__logo-enlace">
-      <img src="" alt="Cohabit" class="cabecera__logo-icono">
-      <span class="cabecera__logo-texto">COHABIT</span>
-    </a>
-  </h1>
+  <a routerLink="/" class="cabecera__logo">
+    <img src="" alt="Cohabit" class="cabecera__logo-icono">
+  </a>
+
   
   <nav class="cabecera__navegacion">
     <ul class="cabecera__menu">
-      <li class="cabecera__menu-item">
+      <li class="cabecera__menu-opcion">
         <a routerLink="/inicio" class="cabecera__menu-enlace">INICIO</a>
       </li>
-      <li class="cabecera__menu-item">
+      <li class="cabecera__menu-opcion">
         <a routerLink="/dashboard" class="cabecera__menu-enlace">DASHBOARD</a>
+      </li>
+      <li class="cabecera__menu-opcion">
+        <a routerLink="/dashboard" class="cabecera__menu-enlace">MI GRUPO</a>
       </li>
     </ul>
   </nav>
@@ -20,7 +21,6 @@
   <section class="cabecera__utilidades">
     <button class="cabecera__boton-tema" aria-label="Cambiar tema">
       <img src="" alt="Modo oscuro" class="cabecera__icono-luna">
-      <img src="" alt="Modo claro" class="cabecera__icono-sol">
     </button>
     <button class="cabecera__boton-perfil" aria-label="Perfil de usuario">
       <img src="" alt="Perfil" class="cabecera__icono-perfil">

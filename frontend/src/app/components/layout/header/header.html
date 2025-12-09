@@ -1,6 +1,8 @@
 <header class="cabecera">
   <a routerLink="/" class="cabecera__logo">
-    <img src="" alt="Cohabit" class="cabecera__logo-icono">
+    <picture class="cabecera__logo-icono">
+      <img src="" alt="Cohabit" class="cabecera__logo-icono">
+    </picture>
   </a>
 
   
@@ -19,11 +21,15 @@
   </nav>
   
   <section class="cabecera__utilidades">
-    <button class="cabecera__boton-tema" aria-label="Cambiar tema">
-      <img src="" alt="Modo oscuro" class="cabecera__icono-luna">
+    <button class="cabecera__boton" aria-label="Cambiar tema">
+      <picture class="cabecera__icono">
+        <img src="/header/modo-oscuro.svg" alt="Modo oscuro" class="cabecera__icono">
+      </picture>
     </button>
-    <button class="cabecera__boton-perfil" aria-label="Perfil de usuario">
-      <img src="" alt="Perfil" class="cabecera__icono-perfil">
+    <button class="cabecera__boton" aria-label="Perfil de usuario">
+      <picture class="cabecera__icono">
+        <img src="/header/perfil.svg" alt="Perfil" class="cabecera__icono">
+      </picture>
     </button>
   </section>
 </header>

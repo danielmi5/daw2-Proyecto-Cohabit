@@ -6,6 +6,8 @@ import com.cohabit.cohabit_backend.entity.EstadoReserva;
 import com.cohabit.cohabit_backend.entity.MiembroGrupo;
 import com.cohabit.cohabit_backend.entity.Recurso;
 import com.cohabit.cohabit_backend.entity.Reserva;
+import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
+import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.mapper.ReservaMapper;
 import com.cohabit.cohabit_backend.repository.MiembroGrupoRepository;
 import com.cohabit.cohabit_backend.repository.ReservaRepository;
@@ -19,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalTime;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class ReservaService {
@@ -38,7 +39,7 @@ public class ReservaService {
     }
 
     public ReservaResponseDTO obtenerPorId(Long id) {
-        Reserva reserva = reservaRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Reserva no encontrada: " + id));
+        Reserva reserva = reservaRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Reserva no encontrada: " + id));
         return ReservaMapper.reservaEntidadAReservaDto(reserva);
     }
 
@@ -50,9 +51,9 @@ public class ReservaService {
 
     @Transactional
     public ReservaResponseDTO crear(ReservaRequestDTO dto) {
-        if (dto == null) throw new IllegalArgumentException("ReservaRequestDTO es null");
-        MiembroGrupo miembro = miembroRepo.findById(dto.getMiembroGrupoId()).orElseThrow(() -> new NoSuchElementException("Miembro no encontrado: " + dto.getMiembroGrupoId()));
-        Recurso recurso = recursoRepo.findById(dto.getRecursoId()).orElseThrow(() -> new NoSuchElementException("Recurso no encontrado: " + dto.getRecursoId()));
+        if (dto == null) throw new ParametroNuloException("ReservaRequestDTO es null");
+        MiembroGrupo miembro = miembroRepo.findById(dto.getMiembroGrupoId()).orElseThrow(() -> new EntidadNoEncontradaException("Miembro no encontrado: " + dto.getMiembroGrupoId()));
+        Recurso recurso = recursoRepo.findById(dto.getRecursoId()).orElseThrow(() -> new EntidadNoEncontradaException("Recurso no encontrado: " + dto.getRecursoId()));
 
         if (!miembro.isActivo()) {
             throw new IllegalStateException("Miembro no activo no puede crear reservas");
@@ -71,7 +72,7 @@ public class ReservaService {
 
     @Transactional
     public ReservaResponseDTO actualizar(Long id, ReservaRequestDTO dto) {
-        Reserva reservaExistente = reservaRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Reserva no encontrada: " + id));
+        Reserva reservaExistente = reservaRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Reserva no encontrada: " + id));
         
         // Valores a validar (si no vienen en DTO, usar existentes)
         LocalDate fechaReservaValidar = dto.getFecha() != null ? dto.getFecha() : reservaExistente.getFecha();
@@ -90,7 +91,7 @@ public class ReservaService {
         if (dto.getNumPersonas() != null) reservaExistente.setNumPersonas(dto.getNumPersonas());
         if (dto.getEstado() != null) reservaExistente.setEstado(dto.getEstado());
         if (dto.getRecursoId() != null && !dto.getRecursoId().equals(idRecursoExistente)) {
-            Recurso nuevoRecurso = recursoRepo.findById(idRecursoValidar).orElseThrow(() -> new NoSuchElementException("Recurso no encontrado: " + idRecursoValidar));
+            Recurso nuevoRecurso = recursoRepo.findById(idRecursoValidar).orElseThrow(() -> new EntidadNoEncontradaException("Recurso no encontrado: " + idRecursoValidar));
             reservaExistente.setRecurso(nuevoRecurso);
         }
         Reserva reservaGuardada = reservaRepo.save(reservaExistente);
@@ -99,7 +100,7 @@ public class ReservaService {
 
     @Transactional
     public void eliminar(Long id) {
-        if (!reservaRepo.existsById(id)) throw new NoSuchElementException("Reserva no encontrada: " + id);
+        if (!reservaRepo.existsById(id)) throw new EntidadNoEncontradaException("Reserva no encontrada: " + id);
         reservaRepo.deleteById(id);
     }
 
@@ -116,14 +117,14 @@ public class ReservaService {
      */
     private void validarHorarioReserva(LocalDate fechaReserva, LocalTime horaInicio, LocalTime horaFin, Long idRecurso, Long idReservaExcluir) {
         if (fechaReserva == null || horaInicio == null || horaFin == null) {
-            throw new IllegalArgumentException("Fecha y horario son obligatorios");
+            throw new ParametroNuloException("Fecha y horario son obligatorios");
         }
         if (!horaInicio.isBefore(horaFin)) {
-            throw new IllegalArgumentException("La hora de inicio debe ser anterior a la hora de fin");
+            throw new ParametroNuloException("La hora de inicio debe ser anterior a la hora de fin");
         }
 
         if (idRecurso == null) {
-            throw new IllegalArgumentException("El recurso asociado a la reserva es obligatorio");
+            throw new ParametroNuloException("El recurso asociado a la reserva es obligatorio");
         }
 
         // Se obtienen reservas activas (estado distinto de CANCELADA) para el mismo recurso y fecha

@@ -5,6 +5,9 @@ import com.cohabit.cohabit_backend.dto.MiembroGrupoResponseDTO;
 import com.cohabit.cohabit_backend.entity.Grupo;
 import com.cohabit.cohabit_backend.entity.MiembroGrupo;
 import com.cohabit.cohabit_backend.entity.Usuario;
+import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
+import com.cohabit.cohabit_backend.exception.EntidadYaExisteException;
+import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.mapper.MiembroGrupoMapper;
 import com.cohabit.cohabit_backend.repository.GrupoRepository;
 import com.cohabit.cohabit_backend.repository.MiembroGrupoRepository;
@@ -16,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class MiembroGrupoService {
@@ -32,7 +34,7 @@ public class MiembroGrupoService {
     }
 
     public MiembroGrupoResponseDTO obtenerPorId(Long id) {
-        MiembroGrupo miembro = miembroRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Miembro no encontrado: " + id));
+        MiembroGrupo miembro = miembroRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Miembro no encontrado: " + id));
         return MiembroGrupoMapper.miembroGrupoEntidadAMiembroGrupoDto(miembro);
     }
 
@@ -44,13 +46,13 @@ public class MiembroGrupoService {
 
     @Transactional
     public MiembroGrupoResponseDTO crear(MiembroGrupoRequestDTO dto) {
-        if (dto == null) throw new IllegalArgumentException("MiembroGrupoRequestDTO es null");
+        if (dto == null) throw new ParametroNuloException("MiembroGrupoRequestDTO es null");
 
-        Grupo grupo = grupoRepo.findById(dto.getGrupoId()).orElseThrow(() -> new NoSuchElementException("Grupo no encontrado: " + dto.getGrupoId()));
-        Usuario usuario = usuarioRepo.findById(dto.getUsuarioId()).orElseThrow(() -> new NoSuchElementException("Usuario no encontrado: " + dto.getUsuarioId()));
+        Grupo grupo = grupoRepo.findById(dto.getGrupoId()).orElseThrow(() -> new EntidadNoEncontradaException("Grupo no encontrado: " + dto.getGrupoId()));
+        Usuario usuario = usuarioRepo.findById(dto.getUsuarioId()).orElseThrow(() -> new EntidadNoEncontradaException("Usuario no encontrado: " + dto.getUsuarioId()));
 
         if (miembroRepo.existsByUsuarioIdAndGrupoId(usuario.getId(), grupo.getId())) {
-            throw new IllegalArgumentException("El usuario ya es miembro de este grupo");
+            throw new EntidadYaExisteException("El usuario ya es miembro de este grupo");
         }
 
         MiembroGrupo entidad = MiembroGrupoMapper.miembroGrupoRequestAMiembroGrupoEntidad(dto, usuario, grupo);
@@ -60,7 +62,7 @@ public class MiembroGrupoService {
 
     @Transactional
     public MiembroGrupoResponseDTO actualizar(Long id, MiembroGrupoRequestDTO dto) {
-        MiembroGrupo miembroExistente = miembroRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Miembro no encontrado: " + id));
+        MiembroGrupo miembroExistente = miembroRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Miembro no encontrado: " + id));
 
         if (dto.getRol() != null) miembroExistente.setRol(dto.getRol());
         miembroExistente.setActivo(dto.isActivo());
@@ -71,7 +73,7 @@ public class MiembroGrupoService {
 
     @Transactional
     public void eliminar(Long id) {
-        if (!miembroRepo.existsById(id)) throw new NoSuchElementException("Miembro no encontrado: " + id);
+        if (!miembroRepo.existsById(id)) throw new EntidadNoEncontradaException("Miembro no encontrado: " + id);
         miembroRepo.deleteById(id);
     }
 }

@@ -4,6 +4,8 @@ import com.cohabit.cohabit_backend.dto.ReglaRecursoRequestDTO;
 import com.cohabit.cohabit_backend.dto.ReglaRecursoResponseDTO;
 import com.cohabit.cohabit_backend.entity.Recurso;
 import com.cohabit.cohabit_backend.entity.ReglaRecurso;
+import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
+import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.mapper.ReglaRecursoMapper;
 import com.cohabit.cohabit_backend.repository.RecursoRepository;
 import com.cohabit.cohabit_backend.repository.ReglaRecursoRepository;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class ReglaRecursoService {
@@ -28,7 +29,7 @@ public class ReglaRecursoService {
     }
 
     public ReglaRecursoResponseDTO obtenerPorId(Long id) {
-        ReglaRecurso reglaRecurso = reglaRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Regla no encontrada: " + id));
+        ReglaRecurso reglaRecurso = reglaRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Regla no encontrada: " + id));
         return ReglaRecursoMapper.reglaRecursoEntidadAReglaRecursoDto(reglaRecurso);
     }
 
@@ -40,8 +41,8 @@ public class ReglaRecursoService {
 
     @Transactional
     public ReglaRecursoResponseDTO crear(ReglaRecursoRequestDTO dto) {
-        if (dto == null) throw new IllegalArgumentException("ReglaRecursoRequestDTO es null");
-        Recurso recurso = recursoRepo.findById(dto.getRecursoId()).orElseThrow(() -> new NoSuchElementException("Recurso no encontrado: " + dto.getRecursoId()));
+        if (dto == null) throw new ParametroNuloException("ReglaRecursoRequestDTO es null");
+        Recurso recurso = recursoRepo.findById(dto.getRecursoId()).orElseThrow(() -> new EntidadNoEncontradaException("Recurso no encontrado: " + dto.getRecursoId()));
         ReglaRecurso entidad = ReglaRecursoMapper.reglaRecursoRequestAReglaRecursoEntidad(dto, recurso);
         ReglaRecurso reglaGuardada = reglaRepo.save(entidad);
         return ReglaRecursoMapper.reglaRecursoEntidadAReglaRecursoDto(reglaGuardada);
@@ -49,7 +50,7 @@ public class ReglaRecursoService {
 
     @Transactional
     public ReglaRecursoResponseDTO actualizar(Long id, ReglaRecursoRequestDTO dto) {
-        ReglaRecurso reglaExistente = reglaRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Regla no encontrada: " + id));
+        ReglaRecurso reglaExistente = reglaRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Regla no encontrada: " + id));
         if (dto.getTipoRegla() != null) reglaExistente.setTipoRegla(dto.getTipoRegla());
         if (dto.getValor() != null) reglaExistente.setValor(dto.getValor());
         if (dto.getDescripcion() != null) reglaExistente.setDescripcion(dto.getDescripcion());
@@ -59,7 +60,7 @@ public class ReglaRecursoService {
 
     @Transactional
     public void eliminar(Long id) {
-        if (!reglaRepo.existsById(id)) throw new NoSuchElementException("Regla no encontrada: " + id);
+        if (!reglaRepo.existsById(id)) throw new EntidadNoEncontradaException("Regla no encontrada: " + id);
         reglaRepo.deleteById(id);
     }
 }

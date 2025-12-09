@@ -3,6 +3,9 @@ package com.cohabit.cohabit_backend.service;
 import com.cohabit.cohabit_backend.dto.UsuarioRequestDTO;
 import com.cohabit.cohabit_backend.dto.UsuarioResponseDTO;
 import com.cohabit.cohabit_backend.entity.Usuario;
+import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
+import com.cohabit.cohabit_backend.exception.EntidadYaExisteException;
+import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.mapper.UsuarioMapper;
 import com.cohabit.cohabit_backend.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
@@ -12,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class UsuarioService {
@@ -24,7 +26,7 @@ public class UsuarioService {
     }
 
     public UsuarioResponseDTO obtenerPorId(Long id) {
-        Usuario usuario = usuarioRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Usuario no encontrado: " + id));
+        Usuario usuario = usuarioRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Usuario no encontrado: " + id));
         return UsuarioMapper.usuarioEntidadAUsuarioDto(usuario);
     }
 
@@ -36,9 +38,9 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponseDTO crear(UsuarioRequestDTO dto) {
-        if (dto == null) throw new IllegalArgumentException("UsuarioRequestDTO es null");
+        if (dto == null) throw new ParametroNuloException("UsuarioRequestDTO es null");
         if (dto.getEmail() != null && usuarioRepo.existsByEmail(dto.getEmail())) {
-            throw new IllegalArgumentException("Email ya registrado");
+            throw new EntidadYaExisteException("Email ya registrado");
         }
         Usuario entidad = UsuarioMapper.usuarioRequestAUsuarioEntidad(dto);
         Usuario saved = usuarioRepo.save(entidad);
@@ -47,7 +49,7 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponseDTO actualizar(Long id, UsuarioRequestDTO dto) {
-        Usuario usuarioExistente = usuarioRepo.findById(id).orElseThrow(() -> new NoSuchElementException("Usuario no encontrado: " + id));
+        Usuario usuarioExistente = usuarioRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Usuario no encontrado: " + id));
         if (dto.getNombre() != null) usuarioExistente.setNombre(dto.getNombre());
         if (dto.getApellidos() != null) usuarioExistente.setApellidos(dto.getApellidos());
         if (dto.getEmail() != null) usuarioExistente.setEmail(dto.getEmail());
@@ -58,7 +60,7 @@ public class UsuarioService {
 
     @Transactional
     public void eliminar(Long id) {
-        if (!usuarioRepo.existsById(id)) throw new NoSuchElementException("Usuario no encontrado: " + id);
+        if (!usuarioRepo.existsById(id)) throw new EntidadNoEncontradaException("Usuario no encontrado: " + id);
         usuarioRepo.deleteById(id);
     }
 }

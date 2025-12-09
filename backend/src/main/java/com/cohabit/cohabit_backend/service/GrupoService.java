@@ -3,6 +3,8 @@ package com.cohabit.cohabit_backend.service;
 import com.cohabit.cohabit_backend.dto.GrupoRequestDTO;
 import com.cohabit.cohabit_backend.dto.GrupoResponseDTO;
 import com.cohabit.cohabit_backend.entity.Grupo;
+import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
+import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.mapper.GrupoMapper;
 import com.cohabit.cohabit_backend.repository.GrupoRepository;
 import org.springframework.data.domain.Page;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -26,7 +27,7 @@ public class GrupoService {
 
     public GrupoResponseDTO obtenerPorId(Long id) {
         Grupo grupo = grupoRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Grupo no encontrado: " + id));
+                .orElseThrow(() -> new EntidadNoEncontradaException("Grupo no encontrado: " + id));
         return GrupoMapper.grupoEntidadAGrupoDto(grupo);
     }
 
@@ -38,7 +39,7 @@ public class GrupoService {
 
     @Transactional
     public GrupoResponseDTO crear(GrupoRequestDTO dto) {
-        if (dto == null) throw new IllegalArgumentException("GrupoRequestDTO es null");
+        if (dto == null) throw new ParametroNuloException("GrupoRequestDTO es null");
 
         Grupo entidad = GrupoMapper.grupoRequestAGrupoEntidad(dto);
         // Genera el código
@@ -53,7 +54,7 @@ public class GrupoService {
     @Transactional
     public GrupoResponseDTO actualizar(Long id, GrupoRequestDTO dto) {
         Grupo grupoExistente = grupoRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Grupo no encontrado: " + id));
+                .orElseThrow(() -> new EntidadNoEncontradaException("Grupo no encontrado: " + id));
 
 
         if (dto.getNombre() != null) grupoExistente.setNombre(dto.getNombre());
@@ -68,7 +69,7 @@ public class GrupoService {
     @Transactional
     public void eliminar(Long id) {
         if (!grupoRepository.existsById(id)) {
-            throw new NoSuchElementException("Grupo no encontrado: " + id);
+            throw new EntidadNoEncontradaException("Grupo no encontrado: " + id);
         }
         grupoRepository.deleteById(id);
     }

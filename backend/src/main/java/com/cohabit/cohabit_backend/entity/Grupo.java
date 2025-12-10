@@ -6,6 +6,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import jakarta.persistence.FetchType;
+import com.cohabit.cohabit_backend.entity.Usuario;
 
 @Entity
 @Table(name = "grupos")
@@ -46,6 +48,10 @@ public class Grupo {
     @OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Recurso> recursos = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creador_id", nullable = false, unique = true)
+    private Usuario creador;
 
     @PrePersist
     private void onCreate() {

@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -21,4 +22,7 @@ public class GrupoRequestDTO {
     private String descripcion;
     
     private String fotoGrupo;
+
+    @NotNull(message = "El ID del creador es obligatorio")
+    private Long creadorId;
 }

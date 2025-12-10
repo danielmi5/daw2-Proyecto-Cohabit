@@ -6,7 +6,11 @@ import com.cohabit.cohabit_backend.entity.Grupo;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
 import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.mapper.GrupoMapper;
+import com.cohabit.cohabit_backend.entity.RolGrupo;
+import com.cohabit.cohabit_backend.entity.Usuario;
 import com.cohabit.cohabit_backend.repository.GrupoRepository;
+import com.cohabit.cohabit_backend.repository.UsuarioRepository;
+import com.cohabit.cohabit_backend.dto.MiembroGrupoRequestDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +24,13 @@ import java.util.UUID;
 public class GrupoService {
 
     private final GrupoRepository grupoRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final MiembroGrupoService miembroGrupoService;
 
-    public GrupoService(GrupoRepository grupoRepository) {
+    public GrupoService(GrupoRepository grupoRepository, UsuarioRepository usuarioRepository,MiembroGrupoService miembroGrupoService) {
         this.grupoRepository = grupoRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.miembroGrupoService = miembroGrupoService;
     }
 
     public GrupoResponseDTO obtenerPorId(Long id) {
@@ -41,13 +49,32 @@ public class GrupoService {
     public GrupoResponseDTO crear(GrupoRequestDTO dto) {
         if (dto == null) throw new ParametroNuloException("GrupoRequestDTO es null");
 
+        // Validar existencia del usuario creador
+        Usuario creador = usuarioRepository.findById(dto.getCreadorId())
+                .orElseThrow(() -> new EntidadNoEncontradaException("Usuario no encontrado: " + dto.getCreadorId()));
+
         Grupo entidad = GrupoMapper.grupoRequestAGrupoEntidad(dto);
+        // Asignar creador directo en Grupo
+        entidad.setCreador(creador);
         // Genera el código
         if (entidad.getCodigoInvitacion() == null || entidad.getCodigoInvitacion().isBlank()) {
             String codigoGenerado = generarCodigoInvitacionUnico(8);
             entidad.setCodigoInvitacion(codigoGenerado);
         }
+
+        // Persistir grupo
         Grupo grupoGuardado = grupoRepository.save(entidad);
+
+        // Crear miembro del grupo para el creador con rol ADMIN usando el servicio
+        MiembroGrupoRequestDTO miembroDto = MiembroGrupoRequestDTO.builder()
+            .usuarioId(creador.getId())
+            .grupoId(grupoGuardado.getId())
+            .rol(RolGrupo.CREADOR)
+            .activo(true)
+            .build();
+
+        miembroGrupoService.crear(miembroDto);
+
         return GrupoMapper.grupoEntidadAGrupoDto(grupoGuardado);
     }
 

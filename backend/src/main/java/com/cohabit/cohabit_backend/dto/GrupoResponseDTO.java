@@ -20,4 +20,5 @@ public class GrupoResponseDTO {
     private LocalDateTime fechaActualizacion;
     private List<Long> miembrosIds;
     private List<Long> recursosIds;
+    private Long creadorId;
 }

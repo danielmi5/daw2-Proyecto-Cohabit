@@ -38,5 +38,6 @@ public class RecursoRequestDTO {
     @NotNull(message = "El ID del grupo es obligatorio")
     private Long grupoId;
     
+    @NotNull(message = "El ID del creador es obligatorio")
     private Long creadorId;
 }

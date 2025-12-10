@@ -28,6 +28,7 @@ public final class GrupoMapper {
                 .fechaActualizacion(grupo.getFechaActualizacion())
                 .miembrosIds(grupo.getMiembros() != null ? grupo.getMiembros().stream().map(MiembroGrupo::getId).toList() : List.of())
                 .recursosIds(grupo.getRecursos() != null ? grupo.getRecursos().stream().map(Recurso::getId).toList() : List.of())
+                .creadorId(grupo.getCreador() != null ? grupo.getCreador().getId() : null)
                 .build();
     }
 

@@ -113,7 +113,36 @@ Diagrama E/R:
 
 ![Diagrama E/R](./img/diagramaER.svg)
 
+Relaciones entre tablas (formato: EntidadIzq (min,max)  .....  relación  .....  (min,max) EntidadDer):
+
+- MiembroGrupo (1,1)  .....  1:1  .....  (1,1) Usuario
+
+- MiembroGrupo (1,N)  .....  N:1  .....  (1,1) Grupo
+
+- Recurso (1,N)  .....  N:1  .....  (1,1) Grupo
+
+- Recurso (1,N)  .....  N:1  .....  (0,1) MiembroGrupo (creador opcional)
+
+- Reserva (1,N)  .....  N:1  .....  (1,1) MiembroGrupo
+
+- Reserva (1,N)  .....  N:1  .....  (1,1) Recurso
+
+- ReglaRecurso (1,N)  .....  N:1  .....  (1,1) Recurso
+
+- Grupo (1,1)  .....  1:1  .....  (1,1) Usuario (creador)
+
 Estas son las entidades principales de la API
+
+Descripción de las cardinalidades:
+
+- Para cada `Usuario` hay como mínimo 1 `MiembroGrupo` y como máximo 1 `MiembroGrupo` (relación 1:1). Para cada `MiembroGrupo` hay exactamente 1 `Usuario`.
+- Para cada `Grupo` hay como mínimo 1 `MiembroGrupo` y como máximo varios (`N`) `MiembroGrupo` (un grupo tiene uno o varios miembros). Para cada `MiembroGrupo` existe exactamente 1 `Grupo`.
+- Un `Grupo` puede tener uno o varios `Recurso` (mínimo 1, máximo N); cada `Recurso` pertenece a exactamente 1 `Grupo`.
+- Un `MiembroGrupo` puede crear cero o varios `Recurso`; un `Recurso` puede haber sido creado por 0 o 1 `MiembroGrupo` (creador opcional).
+- Un `MiembroGrupo` puede realizar cero o varias `Reserva`; cada `Reserva` pertenece a exactamente 1 `MiembroGrupo`.
+- Un `Recurso` puede tener cero o varias `Reserva`; cada `Reserva` pertenece a exactamente 1 `Recurso`.
+- Un `Recurso` puede tener cero o varias `ReglaRecurso`; cada `ReglaRecurso` pertenece a exactamente 1 `Recurso`.
+- Cada `Grupo` tiene exactamente 1 `Usuario` creador, cada `Usuario` es creador de exactamente 1 `Grupo`.
 
 ### Usuario
 

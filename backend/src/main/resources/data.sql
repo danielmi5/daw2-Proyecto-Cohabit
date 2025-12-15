@@ -23,10 +23,11 @@ INSERT INTO usuarios (nombre, apellidos, email, password, foto_perfil, pais, ciu
 ('Carmen', 'Romero Gil', 'carmen.romero@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/10.jpg', 'España', 'Murcia', '+34600012345', NOW() - INTERVAL '5 days');
 
 -- Inserta grupos de prueba
-INSERT INTO grupos (nombre, direccion, descripcion, foto_grupo, codigo_invitacion, fecha_creacion, fecha_actualizacion) VALUES
-('Piso Chamberí', 'Calle Alonso Cano 42, Madrid', 'Grupo de convivencia de estudiantes en el barrio de Chamberí. Se comparten habitaciones, cocina y zonas comunes. Ambiente tranquilo y respetuoso.', 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267', 'CHAMB123', NOW() - INTERVAL '120 days', NOW()),
-('Casa Barcelona Centro', 'Carrer de Balmes 156, Barcelona', 'Vivienda compartida en pleno Eixample. Perfecto para profesionales jóvenes. Cocina completamente equipada y terrazas amplias.', 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688', 'BCN456', NOW() - INTERVAL '90 days', NOW()),
-('Residencia Valencia', 'Avenida Blasco Ibáñez 28, Valencia', 'Residencia universitaria cerca del campus. Normas de convivencia establecidas. Zonas de estudio compartidas.', 'https://images.unsplash.com/photo-1513694203232-719a280e022f', 'VAL789', NOW() - INTERVAL '75 days', NOW());
+
+INSERT INTO grupos (nombre, direccion, descripcion, foto_grupo, codigo_invitacion, creador_id, fecha_creacion, fecha_actualizacion) VALUES
+('Piso Chamberí', 'Calle Alonso Cano 42, Madrid', 'Grupo de convivencia de estudiantes en el barrio de Chamberí. Se comparten habitaciones, cocina y zonas comunes. Ambiente tranquilo y respetuoso.', 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267', 'CHAMB123', 1, NOW() - INTERVAL '120 days', NOW()),
+('Casa Barcelona Centro', 'Carrer de Balmes 156, Barcelona', 'Vivienda compartida en pleno Eixample. Perfecto para profesionales jóvenes. Cocina completamente equipada y terrazas amplias.', 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688', 'BCN456', 4, NOW() - INTERVAL '90 days', NOW()),
+('Residencia Valencia', 'Avenida Blasco Ibáñez 28, Valencia', 'Residencia universitaria cerca del campus. Normas de convivencia establecidas. Zonas de estudio compartidas.', 'https://images.unsplash.com/photo-1513694203232-719a280e022f', 'VAL789', 7, NOW() - INTERVAL '75 days', NOW());
 
 -- Inserta miembros del grupo con sus roles
 INSERT INTO miembros_grupo (usuario_id, grupo_id, rol, fecha_union, activo) VALUES

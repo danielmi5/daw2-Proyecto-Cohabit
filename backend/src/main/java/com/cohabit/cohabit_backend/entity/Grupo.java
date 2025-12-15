@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.FetchType;
-import com.cohabit.cohabit_backend.entity.Usuario;
 
 @Entity
 @Table(name = "grupos")

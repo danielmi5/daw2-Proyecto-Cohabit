@@ -29,6 +29,7 @@ public final class RecursoMapper {
                 .tipo(recurso.getTipo())
                 .estadoActual(recurso.getEstadoActual())
                 .grupoId(recurso.getGrupo() != null ? recurso.getGrupo().getId() : null)
+                .numero(recurso.getNumero())
                 .creadorId(recurso.getCreador() != null ? recurso.getCreador().getId() : null)
                 .reservasIds(recurso.getReservas() != null ? recurso.getReservas().stream().map(Reserva::getId).toList() : List.of())
                 .reglasIds(recurso.getReglas() != null ? recurso.getReglas().stream().map(ReglaRecurso::getId).toList() : List.of())

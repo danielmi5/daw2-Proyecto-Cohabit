@@ -86,7 +86,8 @@ class RecursoControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.nombre").value("nombre"))
                 .andExpect(jsonPath("$.descripcion").value("descripcion"))
-                .andExpect(jsonPath("$.capacidad").value(1));
+                .andExpect(jsonPath("$.capacidad").value(1))
+                        .andExpect(jsonPath("$.numero").value(1));
     }
 
         @Test
@@ -102,7 +103,8 @@ class RecursoControllerTest {
         mockMvc.perform(get("/api/recursos/" + creado.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(creado.getId()))
-                .andExpect(jsonPath("$.nombre").value("nombre"));
+                .andExpect(jsonPath("$.nombre").value("nombre"))
+                        .andExpect(jsonPath("$.numero").value(creado.getNumero()));
     }
 
         @Test
@@ -131,7 +133,8 @@ class RecursoControllerTest {
                         .content(objectMapper.writeValueAsString(actualizacion)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nombre").value("nombre2"))
-                .andExpect(jsonPath("$.descripcion").value("descripcion2"));
+                .andExpect(jsonPath("$.descripcion").value("descripcion2"))
+                        .andExpect(jsonPath("$.numero").value(creado.getNumero()));
     }
 
         @Test
@@ -161,7 +164,8 @@ class RecursoControllerTest {
         mockMvc.perform(get("/api/recursos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
-                .andExpect(jsonPath("$.content[0].nombre").value("nombre"));
+                .andExpect(jsonPath("$.content[0].nombre").value("nombre"))
+                        .andExpect(jsonPath("$.content[0].numero").value(1));
     }
 
             @Test
@@ -177,6 +181,7 @@ class RecursoControllerTest {
                 mockMvc.perform(get("/api/recursos/buscar?grupoId=" + creado.getGrupoId()))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.content").isArray())
-                        .andExpect(jsonPath("$.content[0].id").value(creado.getId()));
+                        .andExpect(jsonPath("$.content[0].id").value(creado.getId()))
+                                .andExpect(jsonPath("$.content[0].numero").value(creado.getNumero()));
             }
 }

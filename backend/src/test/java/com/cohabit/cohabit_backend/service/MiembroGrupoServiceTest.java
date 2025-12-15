@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.service;
 
 import com.cohabit.cohabit_backend.dto.MiembroGrupoRequestDTO;
+import com.cohabit.cohabit_backend.dto.MiembroGrupoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.MiembroGrupoResponseDTO;
 import com.cohabit.cohabit_backend.entity.Grupo;
 import com.cohabit.cohabit_backend.entity.MiembroGrupo;
@@ -139,7 +140,7 @@ class MiembroGrupoServiceTest {
 
     @Test
     void actualizar() {
-        MiembroGrupoRequestDTO actualizacion = MiembroGrupoRequestDTO.builder()
+        MiembroGrupoUpdateDTO actualizacion = MiembroGrupoUpdateDTO.builder()
                 .rol(RolGrupo.ADMIN)
                 .activo(false)
                 .build();
@@ -156,7 +157,8 @@ class MiembroGrupoServiceTest {
     void actualizarNoEncontrado() {
         when(miembroRepo.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(EntidadNoEncontradaException.class, () -> miembroGrupoService.actualizar(1L, miembroGrupoRequestDTO));
+        MiembroGrupoUpdateDTO dto = MiembroGrupoUpdateDTO.builder().activo(true).build();
+        assertThrows(EntidadNoEncontradaException.class, () -> miembroGrupoService.actualizar(1L, dto));
         verify(miembroRepo, never()).save(any(MiembroGrupo.class));
     }
 

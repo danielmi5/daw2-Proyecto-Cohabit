@@ -78,7 +78,7 @@ class MiembroGrupoControllerTest {
         mockMvc.perform(get("/api/miembros/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.rol").value("CREADOR"));
+                                .andExpect(jsonPath("$.rol").value("MIEMBRO"));
     }
 
         @Test
@@ -116,15 +116,33 @@ class MiembroGrupoControllerTest {
 
         @Test
         void testValidarRolRequerido_DeberiaRetornarBadRequest() throws Exception {
-        MiembroGrupoRequestDTO invalido = MiembroGrupoRequestDTO.builder()
-                .usuarioId(usuarioId)
-                .grupoId(grupoId)
-                .activo(true)
-                .build();
+                // Create a second user to test member creation without providing a role
+                UsuarioRequestDTO segundoUsuario = UsuarioRequestDTO.builder()
+                        .nombre("otro")
+                        .apellidos("apellidos")
+                        .email("otro@email.com")
+                        .password("password")
+                        .build();
 
-        mockMvc.perform(post("/api/miembros")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalido)))
-                .andExpect(status().isBadRequest());
+                MvcResult segundo = mockMvc.perform(post("/api/usuarios")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(segundoUsuario)))
+                        .andExpect(status().isCreated())
+                        .andReturn();
+
+                UsuarioResponseDTO usuario2 = objectMapper.readValue(segundo.getResponse().getContentAsString(), UsuarioResponseDTO.class);
+
+                MiembroGrupoRequestDTO invalido = MiembroGrupoRequestDTO.builder()
+                        .usuarioId(usuario2.getId())
+                        .grupoId(grupoId)
+                        .activo(true)
+                        .build();
+
+                // Missing rol should be ignored and default to MIEMBRO
+                mockMvc.perform(post("/api/miembros")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(invalido)))
+                        .andExpect(status().isCreated())
+                        .andExpect(jsonPath("$.rol").value("MIEMBRO"));
     }
 }

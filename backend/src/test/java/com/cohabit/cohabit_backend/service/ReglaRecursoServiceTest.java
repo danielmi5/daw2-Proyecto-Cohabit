@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.service;
 
 import com.cohabit.cohabit_backend.dto.ReglaRecursoRequestDTO;
+import com.cohabit.cohabit_backend.dto.ReglaRecursoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.ReglaRecursoResponseDTO;
 import com.cohabit.cohabit_backend.entity.Recurso;
 import com.cohabit.cohabit_backend.entity.ReglaRecurso;
@@ -8,6 +9,8 @@ import com.cohabit.cohabit_backend.entity.TipoRegla;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
 import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.repository.RecursoRepository;
+import com.cohabit.cohabit_backend.repository.MiembroGrupoRepository;
+import com.cohabit.cohabit_backend.entity.MiembroGrupo;
 import com.cohabit.cohabit_backend.repository.ReglaRecursoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,18 +39,32 @@ class ReglaRecursoServiceTest {
     @Mock
     private RecursoRepository recursoRepo;
 
+    @Mock
+    private MiembroGrupoRepository miembroRepo;
+
     @InjectMocks
     private ReglaRecursoService reglaRecursoService;
 
     private ReglaRecurso reglaRecurso;
     private Recurso recurso;
+    private MiembroGrupo miembro;
     private ReglaRecursoRequestDTO reglaRecursoRequestDTO;
+    private com.cohabit.cohabit_backend.entity.Grupo grupo;
 
     @BeforeEach
     void inicializar() {
         recurso = new Recurso();
         recurso.setId(1L);
         recurso.setNombre("nombre");
+
+        grupo = new com.cohabit.cohabit_backend.entity.Grupo();
+        grupo.setId(1L);
+        grupo.setNombre("grupo");
+        recurso.setGrupo(grupo);
+
+        miembro = new MiembroGrupo();
+        miembro.setId(1L);
+        miembro.setGrupo(grupo);
 
         reglaRecurso = new ReglaRecurso();
         reglaRecurso.setId(1L);
@@ -61,6 +78,7 @@ class ReglaRecursoServiceTest {
                 .valor("valor")
                 .descripcion("descripcion")
                 .recursoId(1L)
+            .miembroId(1L)
                 .build();
     }
 
@@ -98,7 +116,9 @@ class ReglaRecursoServiceTest {
 
     @Test
     void crear() {
-        when(recursoRepo.findById(1L)).thenReturn(Optional.of(recurso));
+        when(recursoRepo.findByIdWithLock(1L)).thenReturn(Optional.of(recurso));
+        when(miembroRepo.findById(1L)).thenReturn(Optional.of(miembro));
+        when(reglaRepo.findMaxNumeroByRecursoId(1L)).thenReturn(0);
         when(reglaRepo.save(any(ReglaRecurso.class))).thenReturn(reglaRecurso);
 
         ReglaRecursoResponseDTO resultado = reglaRecursoService.crear(reglaRecursoRequestDTO);
@@ -116,7 +136,7 @@ class ReglaRecursoServiceTest {
 
     @Test
     void crearConRecursoNoEncontrado() {
-        when(recursoRepo.findById(1L)).thenReturn(Optional.empty());
+        when(recursoRepo.findByIdWithLock(1L)).thenReturn(Optional.empty());
 
         assertThrows(EntidadNoEncontradaException.class, () -> reglaRecursoService.crear(reglaRecursoRequestDTO));
         verify(reglaRepo, never()).save(any(ReglaRecurso.class));
@@ -124,7 +144,7 @@ class ReglaRecursoServiceTest {
 
     @Test
     void actualizar() {
-        ReglaRecursoRequestDTO actualizacion = ReglaRecursoRequestDTO.builder()
+        ReglaRecursoUpdateDTO actualizacion = ReglaRecursoUpdateDTO.builder()
                 .tipoRegla(TipoRegla.HORARIO_APERTURA)
                 .valor("valor2")
                 .build();
@@ -141,7 +161,8 @@ class ReglaRecursoServiceTest {
     void actualizarNoEncontrado() {
         when(reglaRepo.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(EntidadNoEncontradaException.class, () -> reglaRecursoService.actualizar(1L, reglaRecursoRequestDTO));
+        ReglaRecursoUpdateDTO dto = ReglaRecursoUpdateDTO.builder().valor("x").build();
+        assertThrows(EntidadNoEncontradaException.class, () -> reglaRecursoService.actualizar(1L, dto));
         verify(reglaRepo, never()).save(any(ReglaRecurso.class));
     }
 

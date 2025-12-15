@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "reservas")
+@Table(name = "reservas", uniqueConstraints = @UniqueConstraint(columnNames = {"recurso_id", "numero"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -45,6 +45,9 @@ public class Reserva {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recurso_id", nullable = false)
     private Recurso recurso;
+
+    @Column(nullable = false)
+    private Integer numero;
 
     @Column(nullable = false)
     private LocalDateTime fechaCreacion;

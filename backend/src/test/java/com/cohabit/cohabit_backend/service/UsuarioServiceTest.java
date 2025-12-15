@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.service;
 
 import com.cohabit.cohabit_backend.dto.UsuarioRequestDTO;
+import com.cohabit.cohabit_backend.dto.UsuarioUpdateDTO;
 import com.cohabit.cohabit_backend.dto.UsuarioResponseDTO;
 import com.cohabit.cohabit_backend.entity.Usuario;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
@@ -114,7 +115,7 @@ class UsuarioServiceTest {
 
     @Test
     void actualizar() {
-        UsuarioRequestDTO actualizacion = UsuarioRequestDTO.builder()
+        UsuarioUpdateDTO actualizacion = UsuarioUpdateDTO.builder()
                 .nombre("nombre2")
                 .apellidos("apellidos2")
                 .build();
@@ -131,7 +132,8 @@ class UsuarioServiceTest {
     void actualizarNoEncontrado() {
         when(usuarioRepo.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(EntidadNoEncontradaException.class, () -> usuarioService.actualizar(1L, usuarioRequestDTO));
+        UsuarioUpdateDTO dto = UsuarioUpdateDTO.builder().nombre("x").build();
+        assertThrows(EntidadNoEncontradaException.class, () -> usuarioService.actualizar(1L, dto));
         verify(usuarioRepo, never()).save(any(Usuario.class));
     }
 

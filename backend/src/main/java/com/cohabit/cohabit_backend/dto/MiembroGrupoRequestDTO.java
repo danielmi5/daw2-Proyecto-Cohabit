@@ -16,7 +16,6 @@ public class MiembroGrupoRequestDTO {
     @NotNull(message = "El ID del grupo es obligatorio")
     private Long grupoId;
     
-    @NotNull(message = "El rol es obligatorio")
     private RolGrupo rol;
     
     private boolean activo;

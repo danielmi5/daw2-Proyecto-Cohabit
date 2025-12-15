@@ -28,4 +28,7 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
             AND (:estado IS NULL OR r.estado = :estado)
             """)
     Page<Reserva> findByFilters(@Param("recursoId") Long recursoId, @Param("usuarioId") Long usuarioId, @Param("fecha") LocalDate fecha, @Param("estado") EstadoReserva estado, Pageable pageable);
+
+    @Query("SELECT COALESCE(MAX(r.numero), 0) FROM Reserva r WHERE r.recurso.id = :recursoId")
+    Integer findMaxNumeroByRecursoId(@Param("recursoId") Long recursoId);
 }

@@ -110,7 +110,8 @@ class ReservaControllerTest {
                 .andExpect(jsonPath("$.fecha").value("2025-12-15"))
                 .andExpect(jsonPath("$.horaInicio").value("10:00:00"))
                 .andExpect(jsonPath("$.horaFin").value("11:00:00"))
-                .andExpect(jsonPath("$.estado").value("CONFIRMADA"));
+                .andExpect(jsonPath("$.estado").value("CONFIRMADA"))
+                .andExpect(jsonPath("$.numero").value(1));
     }
 
         @Test
@@ -127,6 +128,10 @@ class ReservaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(creada.getId()))
                 .andExpect(jsonPath("$.estado").value("CONFIRMADA"));
+        
+        mockMvc.perform(get("/api/reservas/" + creada.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.numero").value(creada.getNumero()));
     }
 
         @Test
@@ -156,6 +161,10 @@ class ReservaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.notas").value("notas2"))
                 .andExpect(jsonPath("$.estado").value("CANCELADA"));
+        
+        mockMvc.perform(get("/api/reservas/" + creada.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.numero").value(creada.getNumero()));
     }
 
         @Test
@@ -186,6 +195,10 @@ class ReservaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content[0].estado").value("CONFIRMADA"));
+        
+        mockMvc.perform(get("/api/reservas"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].numero").value(1));
     }
 
             @Test
@@ -202,5 +215,9 @@ class ReservaControllerTest {
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.content").isArray())
                         .andExpect(jsonPath("$.content[0].id").value(creada.getId()));
+                
+                        mockMvc.perform(get("/api/reservas/buscar?recursoId=" + creada.getRecursoId() + "&fecha=2025-12-15"))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.content[0].numero").value(creada.getNumero()));
             }
 }

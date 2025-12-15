@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.controller;
 
 import com.cohabit.cohabit_backend.dto.GrupoRequestDTO;
+import com.cohabit.cohabit_backend.dto.GrupoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.GrupoResponseDTO;
 import com.cohabit.cohabit_backend.service.GrupoService;
 import org.springframework.data.domain.Page;
@@ -38,7 +39,7 @@ public class GrupoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GrupoResponseDTO> update(@PathVariable Long id, @Valid @RequestBody GrupoRequestDTO dto) {
+    public ResponseEntity<GrupoResponseDTO> update(@PathVariable Long id, @Valid @RequestBody GrupoUpdateDTO dto) {
         return ResponseEntity.ok(grupoService.actualizar(id, dto));
     }
 

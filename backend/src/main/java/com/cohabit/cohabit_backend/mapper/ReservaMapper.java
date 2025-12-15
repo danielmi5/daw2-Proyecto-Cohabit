@@ -25,6 +25,7 @@ public final class ReservaMapper {
                 .estado(reserva.getEstado())
                 .miembroGrupoId(reserva.getMiembroGrupo() != null ? reserva.getMiembroGrupo().getId() : null)
                 .recursoId(reserva.getRecurso() != null ? reserva.getRecurso().getId() : null)
+                .numero(reserva.getNumero())
                 .fechaCreacion(reserva.getFechaCreacion())
                 .fechaActualizacion(reserva.getFechaActualizacion())
                 .build();

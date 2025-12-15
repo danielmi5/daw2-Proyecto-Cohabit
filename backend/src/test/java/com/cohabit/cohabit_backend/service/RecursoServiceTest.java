@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.service;
 
 import com.cohabit.cohabit_backend.dto.RecursoRequestDTO;
+import com.cohabit.cohabit_backend.dto.RecursoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.RecursoResponseDTO;
 import com.cohabit.cohabit_backend.entity.Grupo;
 import com.cohabit.cohabit_backend.entity.MiembroGrupo;
@@ -57,6 +58,7 @@ class RecursoServiceTest {
 
         miembro = new MiembroGrupo();
         miembro.setId(1L);
+        miembro.setGrupo(grupo);
 
         recurso = new Recurso();
         recurso.setId(1L);
@@ -111,8 +113,9 @@ class RecursoServiceTest {
 
     @Test
     void crear() {
-        when(grupoRepo.findById(1L)).thenReturn(Optional.of(grupo));
+        when(grupoRepo.findByIdWithLock(1L)).thenReturn(Optional.of(grupo));
         when(miembroRepo.findById(1L)).thenReturn(Optional.of(miembro));
+        when(recursoRepo.findMaxNumeroByGrupoId(1L)).thenReturn(0);
         when(recursoRepo.save(any(Recurso.class))).thenReturn(recurso);
 
         RecursoResponseDTO resultado = recursoService.crear(recursoRequestDTO);
@@ -131,7 +134,7 @@ class RecursoServiceTest {
     @Test
     void crearConCapacidadInvalida() {
         recursoRequestDTO.setCapacidad(0);
-        when(grupoRepo.findById(1L)).thenReturn(Optional.of(grupo));
+        when(grupoRepo.findByIdWithLock(1L)).thenReturn(Optional.of(grupo));
         when(miembroRepo.findById(1L)).thenReturn(Optional.of(miembro));
 
         assertThrows(ParametroNuloException.class, () -> recursoService.crear(recursoRequestDTO));
@@ -140,7 +143,7 @@ class RecursoServiceTest {
 
     @Test
     void actualizar() {
-        RecursoRequestDTO actualizacion = RecursoRequestDTO.builder()
+        RecursoUpdateDTO actualizacion = RecursoUpdateDTO.builder()
                 .nombre("nombre2")
                 .descripcion("descripcion2")
                 .build();
@@ -157,7 +160,8 @@ class RecursoServiceTest {
     void actualizarNoEncontrado() {
         when(recursoRepo.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(EntidadNoEncontradaException.class, () -> recursoService.actualizar(1L, recursoRequestDTO));
+        RecursoUpdateDTO dto = RecursoUpdateDTO.builder().nombre("x").build();
+        assertThrows(EntidadNoEncontradaException.class, () -> recursoService.actualizar(1L, dto));
         verify(recursoRepo, never()).save(any(Recurso.class));
     }
 

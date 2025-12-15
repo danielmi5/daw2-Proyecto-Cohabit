@@ -90,6 +90,16 @@ class ReglaRecursoControllerTest {
                 .descripcion("descripcion")
                 .recursoId(recursoId)
                 .build();
+
+        // obtain the miembroGrupo id created with the group and use it as regla creator
+        MvcResult grupoRead = mockMvc.perform(get("/api/grupos/" + grupo.getId()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        GrupoResponseDTO grupoFull = objectMapper.readValue(grupoRead.getResponse().getContentAsString(), GrupoResponseDTO.class);
+        if (grupoFull.getMiembrosIds() != null && !grupoFull.getMiembrosIds().isEmpty()) {
+            reglaRecursoRequestDTO.setMiembroId(grupoFull.getMiembrosIds().get(0));
+        }
     }
 
         @Test
@@ -98,9 +108,11 @@ class ReglaRecursoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(reglaRecursoRequestDTO)))
                 .andExpect(status().isCreated())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.tipoRegla").value("DURACION_MAX"))
                 .andExpect(jsonPath("$.valor").value("valor"))
-                .andExpect(jsonPath("$.descripcion").value("descripcion"));
+                .andExpect(jsonPath("$.descripcion").value("descripcion"))
+                .andExpect(jsonPath("$.numero").value(1));
     }
 
         @Test
@@ -117,7 +129,12 @@ class ReglaRecursoControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(creada.getId()))
                 .andExpect(jsonPath("$.tipoRegla").value("DURACION_MAX"));
-    }
+                
+                                // comprobar número
+                                mockMvc.perform(get("/api/reglas/" + creada.getId()))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.numero").value(creada.getNumero()));
+        }
 
         @Test
         void testActualizarRegla_DeberiaDevolverReglaActualizada() throws Exception {
@@ -135,13 +152,16 @@ class ReglaRecursoControllerTest {
                 .descripcion("descripcion2")
                 .recursoId(recursoId)
                 .build();
+        // keep miembroId for update as well
+        actualizacion.setMiembroId(reglaRecursoRequestDTO.getMiembroId());
 
         mockMvc.perform(put("/api/reglas/" + creada.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(actualizacion)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.tipoRegla").value("HORARIO_APERTURA"))
-                .andExpect(jsonPath("$.valor").value("valor2"));
+                .andExpect(jsonPath("$.valor").value("valor2"))
+                .andExpect(jsonPath("$.numero").value(creada.getNumero()));
     }
 
         @Test
@@ -171,6 +191,7 @@ class ReglaRecursoControllerTest {
         mockMvc.perform(get("/api/reglas"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
-                .andExpect(jsonPath("$.content[0].tipoRegla").value("DURACION_MAX"));
+                .andExpect(jsonPath("$.content[0].tipoRegla").value("DURACION_MAX"))
+                .andExpect(jsonPath("$.content[0].numero").value(1));
     }
 }

@@ -2,6 +2,7 @@ package com.cohabit.cohabit_backend.service;
 
 import com.cohabit.cohabit_backend.dto.ReservaRequestDTO;
 import com.cohabit.cohabit_backend.dto.ReservaResponseDTO;
+import com.cohabit.cohabit_backend.dto.ReservaUpdateDTO;
 import com.cohabit.cohabit_backend.entity.EstadoReserva;
 import com.cohabit.cohabit_backend.entity.MiembroGrupo;
 import com.cohabit.cohabit_backend.entity.Recurso;
@@ -59,10 +60,21 @@ public class ReservaService {
     public ReservaResponseDTO crear(ReservaRequestDTO dto) {
         if (dto == null) throw new ParametroNuloException("ReservaRequestDTO es null");
         MiembroGrupo miembro = miembroRepo.findById(dto.getMiembroGrupoId()).orElseThrow(() -> new EntidadNoEncontradaException("Miembro no encontrado: " + dto.getMiembroGrupoId()));
-        Recurso recurso = recursoRepo.findById(dto.getRecursoId()).orElseThrow(() -> new EntidadNoEncontradaException("Recurso no encontrado: " + dto.getRecursoId()));
+        // Bloquea el Recurso para asignar un número local a la reserva y evitar duplicados en concurrencia.
+        Recurso recurso = recursoRepo.findByIdWithLock(dto.getRecursoId()).orElseThrow(() -> new EntidadNoEncontradaException("Recurso no encontrado: " + dto.getRecursoId()));
 
         if (!miembro.isActivo()) {
             throw new IllegalStateException("Miembro no activo no puede crear reservas");
+        }
+
+        // Validar que el miembro pertenece al grupo del recurso
+        if (miembro.getGrupo() == null || !miembro.getGrupo().getId().equals(recurso.getGrupo().getId())) {
+            throw new EntidadNoEncontradaException("El miembro especificado no pertenece al grupo del recurso: " + recurso.getId());
+        }
+
+        // Validar capacidad si se proporcionó numPersonas
+        if (dto.getNumPersonas() != null && recurso.getCapacidad() != null && dto.getNumPersonas() > recurso.getCapacidad()) {
+            throw new ParametroNuloException("El número de personas excede la capacidad del recurso");
         }
 
         LocalDate fechaReserva = dto.getFecha();
@@ -72,23 +84,28 @@ public class ReservaService {
         validarHorarioReserva(fechaReserva, horaInicio, horaFin, recurso.getId(), null);
 
         Reserva entidad = ReservaMapper.reservaRequestAReservaEntidad(dto, miembro, recurso);
+
+        // Asigna número local para la reserva dentro del recurso
+        Integer maxNumero = reservaRepo.findMaxNumeroByRecursoId(recurso.getId());
+        entidad.setNumero(maxNumero + 1);
+
         Reserva reservaGuardada = reservaRepo.save(entidad);
         return ReservaMapper.reservaEntidadAReservaDto(reservaGuardada);
     }
 
     @Transactional
-    public ReservaResponseDTO actualizar(Long id, ReservaRequestDTO dto) {
+    public ReservaResponseDTO actualizar(Long id, ReservaUpdateDTO dto) {
+        if (dto == null) throw new ParametroNuloException("ReservaUpdateDTO es nulo");
         Reserva reservaExistente = reservaRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Reserva no encontrada: " + id));
-        
+
         // Valores a validar (si no vienen en DTO, usar existentes)
         LocalDate fechaReservaValidar = dto.getFecha() != null ? dto.getFecha() : reservaExistente.getFecha();
         LocalTime horaInicioValidar = dto.getHoraInicio() != null ? dto.getHoraInicio() : reservaExistente.getHoraInicio();
         LocalTime horaFinValidar = dto.getHoraFin() != null ? dto.getHoraFin() : reservaExistente.getHoraFin();
         Long idRecursoExistente = reservaExistente.getRecurso() != null ? reservaExistente.getRecurso().getId() : null;
-        Long idRecursoValidar = dto.getRecursoId() != null ? dto.getRecursoId() : idRecursoExistente;
 
         // valida el horario excluyendo la propia reserva existente, usando id del recurso
-        validarHorarioReserva(fechaReservaValidar, horaInicioValidar, horaFinValidar, idRecursoValidar, reservaExistente.getId());
+        validarHorarioReserva(fechaReservaValidar, horaInicioValidar, horaFinValidar, idRecursoExistente, reservaExistente.getId());
 
         if (dto.getFecha() != null) reservaExistente.setFecha(dto.getFecha());
         if (dto.getHoraInicio() != null) reservaExistente.setHoraInicio(dto.getHoraInicio());
@@ -96,10 +113,7 @@ public class ReservaService {
         if (dto.getNotas() != null) reservaExistente.setNotas(dto.getNotas());
         if (dto.getNumPersonas() != null) reservaExistente.setNumPersonas(dto.getNumPersonas());
         if (dto.getEstado() != null) reservaExistente.setEstado(dto.getEstado());
-        if (dto.getRecursoId() != null && !dto.getRecursoId().equals(idRecursoExistente)) {
-            Recurso nuevoRecurso = recursoRepo.findById(idRecursoValidar).orElseThrow(() -> new EntidadNoEncontradaException("Recurso no encontrado: " + idRecursoValidar));
-            reservaExistente.setRecurso(nuevoRecurso);
-        }
+
         Reserva reservaGuardada = reservaRepo.save(reservaExistente);
         return ReservaMapper.reservaEntidadAReservaDto(reservaGuardada);
     }

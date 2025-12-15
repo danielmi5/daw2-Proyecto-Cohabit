@@ -8,7 +8,9 @@ import com.cohabit.cohabit_backend.entity.Usuario;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
 import com.cohabit.cohabit_backend.exception.EntidadYaExisteException;
 import com.cohabit.cohabit_backend.exception.ParametroNuloException;
+import com.cohabit.cohabit_backend.exception.UsuarioYaPerteneceAUnGrupoException;
 import com.cohabit.cohabit_backend.mapper.MiembroGrupoMapper;
+import com.cohabit.cohabit_backend.entity.RolGrupo;
 import com.cohabit.cohabit_backend.repository.GrupoRepository;
 import com.cohabit.cohabit_backend.repository.MiembroGrupoRepository;
 import com.cohabit.cohabit_backend.repository.UsuarioRepository;
@@ -51,22 +53,30 @@ public class MiembroGrupoService {
         Grupo grupo = grupoRepo.findById(dto.getGrupoId()).orElseThrow(() -> new EntidadNoEncontradaException("Grupo no encontrado: " + dto.getGrupoId()));
         Usuario usuario = usuarioRepo.findById(dto.getUsuarioId()).orElseThrow(() -> new EntidadNoEncontradaException("Usuario no encontrado: " + dto.getUsuarioId()));
 
+        // valida que no pertenezca ya a otro grupo
+        if (miembroRepo.existsByUsuarioId(usuario.getId())) {
+            throw new UsuarioYaPerteneceAUnGrupoException("El usuario ya pertenece a un grupo");
+        }
+
         if (miembroRepo.existsByUsuarioIdAndGrupoId(usuario.getId(), grupo.getId())) {
             throw new EntidadYaExisteException("El usuario ya es miembro de este grupo");
         }
 
         MiembroGrupo entidad = MiembroGrupoMapper.miembroGrupoRequestAMiembroGrupoEntidad(dto, usuario, grupo);
+        entidad.setRol(RolGrupo.MIEMBRO);
+        entidad.setActivo(true);
         MiembroGrupo miembroGuardado = miembroRepo.save(entidad);
         return MiembroGrupoMapper.miembroGrupoEntidadAMiembroGrupoDto(miembroGuardado);
     }
 
     @Transactional
-    public MiembroGrupoResponseDTO actualizar(Long id, MiembroGrupoRequestDTO dto) {
+    public MiembroGrupoResponseDTO actualizar(Long id, com.cohabit.cohabit_backend.dto.MiembroGrupoUpdateDTO dto) {
+        if (dto == null) throw new ParametroNuloException("MiembroGrupoUpdateDTO es nulo");
         MiembroGrupo miembroExistente = miembroRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Miembro no encontrado: " + id));
 
         if (dto.getRol() != null) miembroExistente.setRol(dto.getRol());
-        miembroExistente.setActivo(dto.isActivo());
-        
+        if (dto.getActivo() != null) miembroExistente.setActivo(dto.getActivo());
+
         MiembroGrupo miembroGuardado = miembroRepo.save(miembroExistente);
         return MiembroGrupoMapper.miembroGrupoEntidadAMiembroGrupoDto(miembroGuardado);
     }

@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.controller;
 
 import com.cohabit.cohabit_backend.dto.ReglaRecursoRequestDTO;
+import com.cohabit.cohabit_backend.dto.ReglaRecursoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.ReglaRecursoResponseDTO;
 import com.cohabit.cohabit_backend.service.ReglaRecursoService;
 import org.springframework.data.domain.Page;
@@ -38,7 +39,7 @@ public class ReglaRecursoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReglaRecursoResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ReglaRecursoRequestDTO dto) {
+    public ResponseEntity<ReglaRecursoResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ReglaRecursoUpdateDTO dto) {
         return ResponseEntity.ok(reglaService.actualizar(id, dto));
     }
 

@@ -3,9 +3,10 @@ package com.cohabit.cohabit_backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import com.cohabit.cohabit_backend.entity.MiembroGrupo;
 
 @Entity
-@Table(name = "reglas_recurso")
+@Table(name = "reglas_recurso", uniqueConstraints = @UniqueConstraint(columnNames = {"recurso_id", "numero"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,6 +31,13 @@ public class ReglaRecurso {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recurso_id", nullable = false)
     private Recurso recurso;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "miembro_grupo_id", nullable = false)
+    private MiembroGrupo creador;
+
+    @Column(nullable = false)
+    private Integer numero;
 
     @Column(nullable = false)
     private LocalDateTime fechaCreacion;

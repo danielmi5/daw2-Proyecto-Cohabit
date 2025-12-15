@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.service;
 
 import com.cohabit.cohabit_backend.dto.ReservaRequestDTO;
+import com.cohabit.cohabit_backend.dto.ReservaUpdateDTO;
 import com.cohabit.cohabit_backend.dto.ReservaResponseDTO;
 import com.cohabit.cohabit_backend.entity.*;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
@@ -46,6 +47,7 @@ class ReservaServiceTest {
     private Reserva reserva;
     private Recurso recurso;
     private MiembroGrupo miembro;
+    private Grupo grupo;
     private ReservaRequestDTO reservaRequestDTO;
 
     @BeforeEach
@@ -54,9 +56,16 @@ class ReservaServiceTest {
         recurso.setId(1L);
         recurso.setNombre("nombre");
 
+        grupo = new Grupo();
+        grupo.setId(1L);
+        grupo.setNombre("grupo");
+
+        recurso.setGrupo(grupo);
+
         miembro = new MiembroGrupo();
         miembro.setId(1L);
         miembro.setActivo(true);
+        miembro.setGrupo(grupo);
 
         reserva = new Reserva();
         reserva.setId(1L);
@@ -116,8 +125,9 @@ class ReservaServiceTest {
     @Test
     void crear() {
         when(miembroRepo.findById(1L)).thenReturn(Optional.of(miembro));
-        when(recursoRepo.findById(1L)).thenReturn(Optional.of(recurso));
+        when(recursoRepo.findByIdWithLock(1L)).thenReturn(Optional.of(recurso));
         when(reservaRepo.findByRecursoIdAndFechaAndEstadoNot(1L, LocalDate.of(2025, 12, 15), EstadoReserva.CANCELADA)).thenReturn(List.of());
+        when(reservaRepo.findMaxNumeroByRecursoId(1L)).thenReturn(0);
         when(reservaRepo.save(any(Reserva.class))).thenReturn(reserva);
 
         ReservaResponseDTO resultado = reservaService.crear(reservaRequestDTO);
@@ -137,7 +147,7 @@ class ReservaServiceTest {
     void crearConMiembroInactivo() {
         miembro.setActivo(false);
         when(miembroRepo.findById(1L)).thenReturn(Optional.of(miembro));
-        when(recursoRepo.findById(1L)).thenReturn(Optional.of(recurso));
+        when(recursoRepo.findByIdWithLock(1L)).thenReturn(Optional.of(recurso));
 
         assertThrows(IllegalStateException.class, () -> reservaService.crear(reservaRequestDTO));
         verify(reservaRepo, never()).save(any(Reserva.class));
@@ -152,7 +162,7 @@ class ReservaServiceTest {
         reservaExistente.setHoraFin(LocalTime.of(11, 0));
 
         when(miembroRepo.findById(1L)).thenReturn(Optional.of(miembro));
-        when(recursoRepo.findById(1L)).thenReturn(Optional.of(recurso));
+        when(recursoRepo.findByIdWithLock(1L)).thenReturn(Optional.of(recurso));
         when(reservaRepo.findByRecursoIdAndFechaAndEstadoNot(1L, LocalDate.of(2025, 12, 15), EstadoReserva.CANCELADA)).thenReturn(List.of(reservaExistente));
 
         assertThrows(IllegalStateException.class, () -> reservaService.crear(reservaRequestDTO));
@@ -161,7 +171,7 @@ class ReservaServiceTest {
 
     @Test
     void actualizar() {
-        ReservaRequestDTO actualizacion = ReservaRequestDTO.builder()
+        ReservaUpdateDTO actualizacion = ReservaUpdateDTO.builder()
                 .fecha(LocalDate.of(2025, 12, 16))
                 .horaInicio(LocalTime.of(12, 0))
                 .horaFin(LocalTime.of(13, 0))
@@ -180,7 +190,8 @@ class ReservaServiceTest {
     void actualizarNoEncontrado() {
         when(reservaRepo.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(EntidadNoEncontradaException.class, () -> reservaService.actualizar(1L, reservaRequestDTO));
+        ReservaUpdateDTO dto = ReservaUpdateDTO.builder().fecha(LocalDate.of(2025,12,16)).build();
+        assertThrows(EntidadNoEncontradaException.class, () -> reservaService.actualizar(1L, dto));
         verify(reservaRepo, never()).save(any(Reserva.class));
     }
 

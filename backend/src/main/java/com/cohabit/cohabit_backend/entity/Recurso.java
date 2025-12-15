@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "recursos")
+@Table(name = "recursos", uniqueConstraints = @UniqueConstraint(columnNames = {"grupo_id", "numero"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -47,6 +47,9 @@ public class Recurso {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "miembro_grupo_id", nullable = true)
     private MiembroGrupo creador;
+
+    @Column(nullable = false)
+    private Integer numero;
 
     @OneToMany(mappedBy = "recurso", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

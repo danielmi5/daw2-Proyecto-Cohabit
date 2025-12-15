@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.controller;
 
 import com.cohabit.cohabit_backend.dto.UsuarioRequestDTO;
+import com.cohabit.cohabit_backend.dto.UsuarioUpdateDTO;
 import com.cohabit.cohabit_backend.dto.UsuarioResponseDTO;
 import com.cohabit.cohabit_backend.service.UsuarioService;
 import org.springframework.data.domain.Page;
@@ -38,7 +39,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDTO dto) {
+    public ResponseEntity<UsuarioResponseDTO> update(@PathVariable Long id, @Valid @RequestBody UsuarioUpdateDTO dto) {
         return ResponseEntity.ok(usuarioService.actualizar(id, dto));
     }
 

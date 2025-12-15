@@ -15,6 +15,8 @@ public class ReglaRecursoResponseDTO {
     private String valor;
     private String descripcion;
     private Long recursoId;
+    private Long miembroCreadorId;
+    private Integer numero;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaActualizacion;
 }

@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.service;
 
 import com.cohabit.cohabit_backend.dto.RecursoRequestDTO;
+import com.cohabit.cohabit_backend.dto.RecursoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.RecursoResponseDTO;
 import com.cohabit.cohabit_backend.entity.MiembroGrupo;
 import com.cohabit.cohabit_backend.entity.Grupo;
@@ -51,10 +52,15 @@ public class RecursoService {
     @Transactional
     public RecursoResponseDTO crear(RecursoRequestDTO dto) {
         if (dto == null) throw new ParametroNuloException("RecursoRequestDTO es null");
-        Grupo grupo = grupoRepo.findById(dto.getGrupoId()).orElseThrow(() -> new EntidadNoEncontradaException("Grupo no encontrado: " + dto.getGrupoId()));
+        // Obtiene y bloquea la fila del Grupo para evitar concurrencia durante la asignación del número local (SELECT MAX + PESSIMISTIC_WRITE).
+        Grupo grupo = grupoRepo.findByIdWithLock(dto.getGrupoId()).orElseThrow(() -> new EntidadNoEncontradaException("Grupo no encontrado: " + dto.getGrupoId()));
         MiembroGrupo creador = null;
         if (dto.getCreadorId() != null) {
             creador = miembroRepo.findById(dto.getCreadorId()).orElseThrow(() -> new EntidadNoEncontradaException("Miembro creador no encontrado: " + dto.getCreadorId()));
+            // Valida que el miembro creador pertenece al grupo indicado
+            if (creador.getGrupo() == null || !creador.getGrupo().getId().equals(grupo.getId())) {
+                throw new EntidadNoEncontradaException("El miembro especificado no pertenece al grupo: " + dto.getGrupoId());
+            }
         }
 
         if (dto.getCapacidad() != null && dto.getCapacidad() < 1) {
@@ -62,18 +68,30 @@ public class RecursoService {
         }
 
         Recurso entidad = RecursoMapper.recursoRequestARecursoEntidad(dto, grupo, creador);
+
+        // Asigna número local para la regla dentro del recurso: MAX(numero) + 1
+        Integer maxNumero = recursoRepo.findMaxNumeroByGrupoId(grupo.getId());
+        entidad.setNumero(maxNumero + 1);
+
         Recurso recursoGuardado = recursoRepo.save(entidad);
         return RecursoMapper.recursoEntidadARecursoDto(recursoGuardado);
     }
 
     @Transactional
-    public RecursoResponseDTO actualizar(Long id, RecursoRequestDTO dto) {
+    public RecursoResponseDTO actualizar(Long id, RecursoUpdateDTO dto) {
+        if (dto == null) throw new ParametroNuloException("RecursoUpdateDTO es nulo");
         Recurso recursoExistente = recursoRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Recurso no encontrado: " + id));
 
         if (dto.getNombre() != null) recursoExistente.setNombre(dto.getNombre());
         if (dto.getDescripcion() != null) recursoExistente.setDescripcion(dto.getDescripcion());
-        if (dto.getCapacidad() != null) recursoExistente.setCapacidad(dto.getCapacidad());
+        if (dto.getFotoRecurso() != null) recursoExistente.setFotoRecurso(dto.getFotoRecurso());
+        if (dto.getCapacidad() != null) {
+            if (dto.getCapacidad() < 1) throw new ParametroNuloException("La capacidad debe ser al menos 1");
+            recursoExistente.setCapacidad(dto.getCapacidad());
+        }
         if (dto.getUbicacion() != null) recursoExistente.setUbicacion(dto.getUbicacion());
+        if (dto.getTipo() != null) recursoExistente.setTipo(dto.getTipo());
+        if (dto.getEstadoActual() != null) recursoExistente.setEstadoActual(dto.getEstadoActual());
 
         Recurso recursoGuardado = recursoRepo.save(recursoExistente);
         return RecursoMapper.recursoEntidadARecursoDto(recursoGuardado);

@@ -6,13 +6,16 @@ import com.cohabit.cohabit_backend.entity.TipoRecurso;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.repository.query.Param;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RecursoRepository extends JpaRepository<Recurso, Long> {
@@ -44,4 +47,11 @@ public interface RecursoRepository extends JpaRepository<Recurso, Long> {
                                 @Param("horaInicio") LocalTime horaInicio,
                                 @Param("horaFin") LocalTime horaFin,
                                 Pageable pageable);
+
+    @Query("SELECT COALESCE(MAX(r.numero), 0) FROM Recurso r WHERE r.grupo.id = :grupoId")
+    Integer findMaxNumeroByGrupoId(@Param("grupoId") Long grupoId);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT r FROM Recurso r WHERE r.id = :id")
+    Optional<Recurso> findByIdWithLock(@Param("id") Long id);
 }

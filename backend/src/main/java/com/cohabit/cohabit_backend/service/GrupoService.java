@@ -1,10 +1,12 @@
 package com.cohabit.cohabit_backend.service;
 
 import com.cohabit.cohabit_backend.dto.GrupoRequestDTO;
+import com.cohabit.cohabit_backend.dto.GrupoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.GrupoResponseDTO;
 import com.cohabit.cohabit_backend.entity.Grupo;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
 import com.cohabit.cohabit_backend.exception.ParametroNuloException;
+import com.cohabit.cohabit_backend.exception.UsuarioYaPerteneceAUnGrupoException;
 import com.cohabit.cohabit_backend.mapper.GrupoMapper;
 import com.cohabit.cohabit_backend.entity.RolGrupo;
 import com.cohabit.cohabit_backend.entity.Usuario;
@@ -57,7 +59,12 @@ public class GrupoService {
 
         // Validar existencia del usuario creador
         Usuario creador = usuarioRepository.findById(dto.getCreadorId())
-                .orElseThrow(() -> new EntidadNoEncontradaException("Usuario no encontrado: " + dto.getCreadorId()));
+            .orElseThrow(() -> new EntidadNoEncontradaException("Usuario no encontrado: " + dto.getCreadorId()));
+
+        // Evitar crear un grupo si el usuario ya pertenece a otro
+        if (creador.getMiembroGrupo() != null) {
+            throw new UsuarioYaPerteneceAUnGrupoException("El usuario ya pertenece a un grupo");
+        }
 
         Grupo entidad = GrupoMapper.grupoRequestAGrupoEntidad(dto);
         // Asignar creador directo en Grupo
@@ -71,7 +78,7 @@ public class GrupoService {
         // Persistir grupo
         Grupo grupoGuardado = grupoRepository.save(entidad);
 
-        // Crear miembro del grupo para el creador con rol ADMIN usando el servicio
+        // Crea miembro del grupo para el creador con rol CREADOR usando el servicio
         MiembroGrupoRequestDTO miembroDto = MiembroGrupoRequestDTO.builder()
             .usuarioId(creador.getId())
             .grupoId(grupoGuardado.getId())
@@ -85,10 +92,10 @@ public class GrupoService {
     }
 
     @Transactional
-    public GrupoResponseDTO actualizar(Long id, GrupoRequestDTO dto) {
+    public GrupoResponseDTO actualizar(Long id, GrupoUpdateDTO dto) {
+        if (dto == null) throw new ParametroNuloException("GrupoUpdateDTO es null");
         Grupo grupoExistente = grupoRepository.findById(id)
                 .orElseThrow(() -> new EntidadNoEncontradaException("Grupo no encontrado: " + id));
-
 
         if (dto.getNombre() != null) grupoExistente.setNombre(dto.getNombre());
         if (dto.getDireccion() != null) grupoExistente.setDireccion(dto.getDireccion());

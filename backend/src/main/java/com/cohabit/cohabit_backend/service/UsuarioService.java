@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.service;
 
 import com.cohabit.cohabit_backend.dto.UsuarioRequestDTO;
+import com.cohabit.cohabit_backend.dto.UsuarioUpdateDTO;
 import com.cohabit.cohabit_backend.dto.UsuarioResponseDTO;
 import com.cohabit.cohabit_backend.entity.Usuario;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
@@ -48,12 +49,34 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponseDTO actualizar(Long id, UsuarioRequestDTO dto) {
+    public UsuarioResponseDTO actualizar(Long id, UsuarioUpdateDTO dto) {
+        if (dto == null) throw new ParametroNuloException("UsuarioUpdateDTO es nulo");
         Usuario usuarioExistente = usuarioRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Usuario no encontrado: " + id));
+
         if (dto.getNombre() != null) usuarioExistente.setNombre(dto.getNombre());
         if (dto.getApellidos() != null) usuarioExistente.setApellidos(dto.getApellidos());
-        if (dto.getEmail() != null) usuarioExistente.setEmail(dto.getEmail());
+
+        if (dto.getEmail() != null) {
+            String nuevoEmail = dto.getEmail();
+            if (!nuevoEmail.equals(usuarioExistente.getEmail()) && usuarioRepo.existsByEmail(nuevoEmail)) {
+                throw new EntidadYaExisteException("Email ya registrado");
+            }
+            usuarioExistente.setEmail(nuevoEmail);
+        }
+
+        if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
+            if (dto.getPassword().length() < 6) {
+                throw new ParametroNuloException("La contraseña debe tener al menos 6 caracteres");
+            }
+            // si usas PasswordEncoder, aquí deberías codificar la contraseña
+            usuarioExistente.setPassword(dto.getPassword());
+        }
+
         if (dto.getFotoPerfil() != null) usuarioExistente.setFotoPerfil(dto.getFotoPerfil());
+        if (dto.getPais() != null) usuarioExistente.setPais(dto.getPais());
+        if (dto.getCiudad() != null) usuarioExistente.setCiudad(dto.getCiudad());
+        if (dto.getTelefono() != null) usuarioExistente.setTelefono(dto.getTelefono());
+
         Usuario saved = usuarioRepo.save(usuarioExistente);
         return UsuarioMapper.usuarioEntidadAUsuarioDto(saved);
     }

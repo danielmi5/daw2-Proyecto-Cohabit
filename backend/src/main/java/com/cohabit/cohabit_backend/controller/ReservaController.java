@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.controller;
 
 import com.cohabit.cohabit_backend.dto.ReservaRequestDTO;
+import com.cohabit.cohabit_backend.dto.ReservaUpdateDTO;
 import com.cohabit.cohabit_backend.dto.ReservaResponseDTO;
 import com.cohabit.cohabit_backend.service.ReservaService;
 import org.springframework.data.domain.Page;
@@ -40,7 +41,7 @@ public class ReservaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReservaResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ReservaRequestDTO dto) {
+    public ResponseEntity<ReservaResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ReservaUpdateDTO dto) {
         return ResponseEntity.ok(reservaService.actualizar(id, dto));
     }
 

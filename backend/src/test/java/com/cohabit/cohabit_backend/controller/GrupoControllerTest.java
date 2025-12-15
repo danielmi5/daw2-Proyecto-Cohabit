@@ -139,4 +139,20 @@ class GrupoControllerTest {
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content[0].nombre").value("nombre"));
     }
+
+            @Test
+            void testBuscarGrupos_PorNombre_DeberiaDevolverResultados() throws Exception {
+                MvcResult result = mockMvc.perform(post("/api/grupos")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(grupoRequestDTO)))
+                        .andExpect(status().isCreated())
+                        .andReturn();
+
+                GrupoResponseDTO creado = objectMapper.readValue(result.getResponse().getContentAsString(), GrupoResponseDTO.class);
+
+                mockMvc.perform(get("/api/grupos/buscar?nombre=nombre"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.content").isArray())
+                        .andExpect(jsonPath("$.content[0].id").value(creado.getId()));
+            }
 }

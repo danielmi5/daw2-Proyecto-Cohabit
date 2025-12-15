@@ -47,4 +47,9 @@ public class GrupoController {
         grupoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<Page<GrupoResponseDTO>> buscarPorFiltros(@RequestParam(name = "nombre", required = false) String nombre, @RequestParam(name = "descripcion", required = false) String descripcion, @RequestParam(name = "creadorId", required = false) Long creadorId, Pageable pageable) {
+        return ResponseEntity.ok(grupoService.buscarPorFiltros(nombre, descripcion, creadorId, pageable));
+    }
 }

@@ -45,6 +45,12 @@ public class GrupoService {
         return new PageImpl<>(dtos, pageable, paginaGrupos.getTotalElements());
     }
 
+    public Page<GrupoResponseDTO> buscarPorFiltros(String nombre, String descripcion, Long creadorId, Pageable pageable) {
+        var pagina = grupoRepository.findByFilters(nombre, descripcion, creadorId, pageable);
+        List<GrupoResponseDTO> dtos = pagina.getContent().stream().map(GrupoMapper::grupoEntidadAGrupoDto).toList();
+        return new PageImpl<>(dtos, pageable, pagina.getTotalElements());
+    }
+
     @Transactional
     public GrupoResponseDTO crear(GrupoRequestDTO dto) {
         if (dto == null) throw new ParametroNuloException("GrupoRequestDTO es null");

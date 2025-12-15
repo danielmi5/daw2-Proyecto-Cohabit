@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import com.cohabit.cohabit_backend.entity.TipoRecurso;
+import com.cohabit.cohabit_backend.entity.EstadoRecurso;
 
 @RestController
 @RequestMapping("/api/recursos")
@@ -46,5 +50,10 @@ public class RecursoController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         recursoService.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<Page<RecursoResponseDTO>> buscarPorFiltros(@RequestParam(name = "grupoId", required = false) Long grupoId, @RequestParam(name = "tipo", required = false) TipoRecurso tipo, @RequestParam(name = "estado", required = false) EstadoRecurso estado, @RequestParam(name = "fecha", required = false) LocalDate fecha, @RequestParam(name = "horaInicio", required = false) LocalTime horaInicio, @RequestParam(name = "horaFin", required = false) LocalTime horaFin, Pageable pageable) {
+        return ResponseEntity.ok(recursoService.buscarPorFiltros(grupoId, tipo, estado, fecha, horaInicio, horaFin, pageable));
     }
 }

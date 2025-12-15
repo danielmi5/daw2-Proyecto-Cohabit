@@ -187,4 +187,20 @@ class ReservaControllerTest {
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content[0].estado").value("CONFIRMADA"));
     }
+
+            @Test
+            void testBuscarReservas_PorRecursoYFecha_DeberiaDevolverResultados() throws Exception {
+                MvcResult result = mockMvc.perform(post("/api/reservas")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(reservaRequestDTO)))
+                        .andExpect(status().isCreated())
+                        .andReturn();
+
+                ReservaResponseDTO creada = objectMapper.readValue(result.getResponse().getContentAsString(), ReservaResponseDTO.class);
+
+                mockMvc.perform(get("/api/reservas/buscar?recursoId=" + creada.getRecursoId() + "&fecha=2025-12-15"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.content").isArray())
+                        .andExpect(jsonPath("$.content[0].id").value(creada.getId()));
+            }
 }

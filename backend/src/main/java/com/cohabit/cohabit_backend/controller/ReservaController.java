@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
+import com.cohabit.cohabit_backend.entity.EstadoReserva;
 
 @RestController
 @RequestMapping("/api/reservas")
@@ -46,5 +48,10 @@ public class ReservaController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         reservaService.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<Page<ReservaResponseDTO>> buscarPorFiltros(@RequestParam(name = "recursoId", required = false) Long recursoId, @RequestParam(name = "usuarioId", required = false) Long usuarioId, @RequestParam(name = "fecha", required = false) LocalDate fecha, @RequestParam(name = "estado", required = false) EstadoReserva estado, Pageable pageable) {
+        return ResponseEntity.ok(reservaService.buscarPorFiltros(recursoId, usuarioId, fecha, estado, pageable));
     }
 }

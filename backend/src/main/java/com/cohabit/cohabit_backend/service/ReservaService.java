@@ -38,6 +38,12 @@ public class ReservaService {
         this.miembroRepo = miembroRepo;
     }
 
+    public Page<ReservaResponseDTO> buscarPorFiltros(Long recursoId, Long usuarioId, LocalDate fecha, EstadoReserva estado, Pageable pageable) {
+        var pagina = reservaRepo.findByFilters(recursoId, usuarioId, fecha, estado, pageable);
+        List<ReservaResponseDTO> dtos = pagina.getContent().stream().map(ReservaMapper::reservaEntidadAReservaDto).toList();
+        return new PageImpl<>(dtos, pageable, pagina.getTotalElements());
+    }
+
     public ReservaResponseDTO obtenerPorId(Long id) {
         Reserva reserva = reservaRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Reserva no encontrada: " + id));
         return ReservaMapper.reservaEntidadAReservaDto(reserva);

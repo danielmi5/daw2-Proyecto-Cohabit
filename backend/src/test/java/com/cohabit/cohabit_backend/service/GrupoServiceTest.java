@@ -169,4 +169,17 @@ class GrupoServiceTest {
         assertThrows(EntidadNoEncontradaException.class, () -> grupoService.eliminar(1L));
         verify(grupoRepository, never()).deleteById(1L);
     }
+
+    @Test
+    void buscarPorFiltros() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Grupo> page = new PageImpl<>(List.of(grupo));
+        when(grupoRepository.findByFilters("nombre", "descripcion", 1L, pageable)).thenReturn(page);
+
+        Page<GrupoResponseDTO> resultado = grupoService.buscarPorFiltros("nombre", "descripcion", 1L, pageable);
+
+        assertNotNull(resultado);
+        assertEquals(1, resultado.getTotalElements());
+        verify(grupoRepository, times(1)).findByFilters("nombre", "descripcion", 1L, pageable);
+    }
 }

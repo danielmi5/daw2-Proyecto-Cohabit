@@ -163,4 +163,20 @@ class RecursoControllerTest {
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content[0].nombre").value("nombre"));
     }
+
+            @Test
+            void testBuscarRecursos_PorGrupo_DeberiaDevolverResultados() throws Exception {
+                MvcResult result = mockMvc.perform(post("/api/recursos")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(recursoRequestDTO)))
+                        .andExpect(status().isCreated())
+                        .andReturn();
+
+                RecursoResponseDTO creado = objectMapper.readValue(result.getResponse().getContentAsString(), RecursoResponseDTO.class);
+
+                mockMvc.perform(get("/api/recursos/buscar?grupoId=" + creado.getGrupoId()))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.content").isArray())
+                        .andExpect(jsonPath("$.content[0].id").value(creado.getId()));
+            }
 }

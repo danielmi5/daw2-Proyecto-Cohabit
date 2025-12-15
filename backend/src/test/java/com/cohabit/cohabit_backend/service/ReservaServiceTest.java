@@ -201,4 +201,17 @@ class ReservaServiceTest {
         assertThrows(EntidadNoEncontradaException.class, () -> reservaService.eliminar(1L));
         verify(reservaRepo, never()).deleteById(1L);
     }
+
+    @Test
+    void buscarPorFiltros() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Reserva> page = new PageImpl<>(List.of(reserva));
+        when(reservaRepo.findByFilters(1L, 1L, LocalDate.of(2025, 12, 15), EstadoReserva.CONFIRMADA, pageable)).thenReturn(page);
+
+        Page<ReservaResponseDTO> resultado = reservaService.buscarPorFiltros(1L, 1L, LocalDate.of(2025, 12, 15), EstadoReserva.CONFIRMADA, pageable);
+
+        assertNotNull(resultado);
+        assertEquals(1, resultado.getTotalElements());
+        verify(reservaRepo, times(1)).findByFilters(1L, 1L, LocalDate.of(2025, 12, 15), EstadoReserva.CONFIRMADA, pageable);
+    }
 }

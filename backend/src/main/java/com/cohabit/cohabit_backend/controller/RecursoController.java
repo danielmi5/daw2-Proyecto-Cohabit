@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -32,22 +33,26 @@ public class RecursoController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esRecursoEnGrupoMiembro(#id)")
     public ResponseEntity<RecursoResponseDTO> get(@PathVariable Long id) {
         return ResponseEntity.ok(recursoService.obtenerPorId(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdmin(#dto.grupoId) or @grupoSecurity.esMiembroIdActual(#dto.creadorId)")
     public ResponseEntity<RecursoResponseDTO> create(@Valid @RequestBody RecursoRequestDTO dto) {
         RecursoResponseDTO recursoCreado = recursoService.crear(dto);
         return ResponseEntity.created(URI.create("/api/recursos/" + recursoCreado.getId())).body(recursoCreado);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdminRecurso(#id) or @grupoSecurity.esCreadorDelRecurso(#id)")
     public ResponseEntity<RecursoResponseDTO> update(@PathVariable Long id, @Valid @RequestBody RecursoUpdateDTO dto) {
         return ResponseEntity.ok(recursoService.actualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdminRecurso(#id) or @grupoSecurity.esCreadorDelRecurso(#id)")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         recursoService.eliminar(id);
         return ResponseEntity.noContent().build();

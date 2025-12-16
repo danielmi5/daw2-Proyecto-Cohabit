@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -30,22 +31,26 @@ public class ReservaController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esPropietarioReserva(#id) or @grupoSecurity.esReservaEnGrupoMiembro(#id)")
     public ResponseEntity<ReservaResponseDTO> get(@PathVariable Long id) {
         return ResponseEntity.ok(reservaService.obtenerPorId(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembroIdActual(#dto.miembroGrupoId)")
     public ResponseEntity<ReservaResponseDTO> create(@Valid @RequestBody ReservaRequestDTO dto) {
         ReservaResponseDTO reservaCreada = reservaService.crear(dto);
         return ResponseEntity.created(URI.create("/api/reservas/" + reservaCreada.getId())).body(reservaCreada);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esPropietarioReserva(#id)")
     public ResponseEntity<ReservaResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ReservaUpdateDTO dto) {
         return ResponseEntity.ok(reservaService.actualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esPropietarioReserva(#id)")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         reservaService.eliminar(id);
         return ResponseEntity.noContent().build();

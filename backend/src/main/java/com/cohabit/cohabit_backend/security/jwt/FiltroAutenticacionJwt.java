@@ -1,5 +1,7 @@
-package com.cohabit.cohabit_backend.security;
+package com.cohabit.cohabit_backend.security.jwt;
 
+import com.cohabit.cohabit_backend.security.auth.service.DetallesUsuarioService;
+import com.cohabit.cohabit_backend.security.jwt.TokenInvalidadoService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

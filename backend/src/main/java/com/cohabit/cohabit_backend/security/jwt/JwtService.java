@@ -1,4 +1,4 @@
-package com.cohabit.cohabit_backend.security;
+package com.cohabit.cohabit_backend.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

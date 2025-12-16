@@ -14,4 +14,5 @@ public interface MiembroGrupoRepository extends JpaRepository<MiembroGrupo, Long
     boolean existsByUsuarioIdAndGrupoId(Long usuarioId, Long grupoId);
     boolean existsByUsuarioId(Long usuarioId);
     Optional<MiembroGrupo> findByUsuarioId(Long usuarioId);
+    Optional<MiembroGrupo> findByUsuarioIdAndGrupoId(Long usuarioId, Long grupoId);
 }

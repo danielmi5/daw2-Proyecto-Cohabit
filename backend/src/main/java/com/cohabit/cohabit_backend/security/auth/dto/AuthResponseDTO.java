@@ -1,4 +1,4 @@
-package com.cohabit.cohabit_backend.dto;
+package com.cohabit.cohabit_backend.security.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

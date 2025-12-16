@@ -28,7 +28,7 @@ La carpeta `src/main/java/com/cohabit/cohabit_backend/entity` contiene las clase
 
 #### Usuario
 
-La entidad `Usuario` representa a una persona registrada en la aplicación. Campos principales: `id`, `nombre`, `apellidos`, `email` (único), `password`, `fotoPerfil`, `pais`, `ciudad`, `telefono` y `fechaRegistro` (inicializado con `@PrePersist`). Además mantiene una relación 1:1 con `MiembroGrupo` cuando el usuario se asocia a un grupo.
+La entidad `Usuario` representa a una persona registrada en la aplicación. Campos principales: `id`, `nombre`, `apellidos`, `email` (único), `password`, `rol` (por ejemplo `ADMIN` o `USUARIO`), `fotoPerfil`, `pais`, `ciudad`, `telefono` y `fechaRegistro` (inicializado con `@PrePersist`). Además mantiene una relación 1:1 con `MiembroGrupo` cuando el usuario se asocia a un grupo.
 
 #### Grupo
 
@@ -85,7 +85,7 @@ La capa de servicio (paquete `service`) implementa la lógica de negocio: valida
 - `MiembroGrupoService`: gestión de roles y acciones del usuario en el grupo.
 - `RecursoService`: CRUD recursos y validaciones.
 - `ReglaRecursoService`: CRUD reglas y validaciones.
-- `ReservaController`: Crud reservas y validaciones
+- `ReservaService`: Crud reservas y validaciones
 
 ### Controller
 
@@ -157,6 +157,7 @@ Estas son las entidades principales de la API
 | apellidos | String |  | @Column(nullable=false) | Apellidos |
 | email | String |  | @Column(nullable=false, unique=true) | Correo electrónico (único) |
 | password | String |  | @Column(nullable=false) | Contraseña (hash en aplicación) |
+| rol | RolUsuario (enum) |  | @Enumerated(EnumType.STRING), @Column(nullable=false) | Rol del usuario (ADMIN` o `USUARIO`) |
 | fotoPerfil | String |  |  | URL o referencia a foto de perfil |
 | pais | String |  |  | País del usuario |
 | ciudad | String |  |  | Ciudad del usuario |
@@ -192,7 +193,7 @@ Relaciones:
 | id | Long | PK | @Id, @GeneratedValue | Identificador del miembro |
 | usuario_id | Long | FK -> Usuario (único) | @OneToOne, @JoinColumn(nullable=false, unique=true) | Usuario asociado al miembro |
 | grupo_id | Long | FK -> Grupo | @ManyToOne, @JoinColumn(nullable=false) | Grupo al que pertenece |
-| rol | RolGrupo (enum) |  | @Enumerated(EnumType.STRING), @Column(nullable=false) | Rol del miembro en el grupo |
+| rol | RolGrupo (enum) |  | @Enumerated(EnumType.STRING), @Column(nullable=false) | Rol del miembro en el grupo (MIEMBRO, ADMIN o CREADOR) |
 | fechaUnion | LocalDateTime |  | @Column(nullable=false), @PrePersist | Fecha de unión al grupo |
 | activo | boolean |  | @Column(nullable=false), default true | Indica si la membresía está activa |
 

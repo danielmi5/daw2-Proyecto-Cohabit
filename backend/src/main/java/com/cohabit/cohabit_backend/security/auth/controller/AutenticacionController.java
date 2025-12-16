@@ -1,9 +1,11 @@
-package com.cohabit.cohabit_backend.controller;
+package com.cohabit.cohabit_backend.security.auth.controller;
 
-import com.cohabit.cohabit_backend.dto.AuthRequestDTO;
-import com.cohabit.cohabit_backend.dto.AuthResponseDTO;
-import com.cohabit.cohabit_backend.dto.RegisterRequestDTO;
-import com.cohabit.cohabit_backend.service.AutenticacionService;
+import com.cohabit.cohabit_backend.security.auth.dto.AuthRequestDTO;
+import com.cohabit.cohabit_backend.security.auth.dto.AuthResponseDTO;
+import com.cohabit.cohabit_backend.security.auth.dto.RegisterRequestDTO;
+import com.cohabit.cohabit_backend.security.auth.service.AutenticacionService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
@@ -21,15 +23,15 @@ public class AutenticacionController {
     private final AutenticacionService autenticacionService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> iniciarSesion(@RequestBody AuthRequestDTO peticion) {
+    public ResponseEntity<AuthResponseDTO> iniciarSesion(@Valid @RequestBody AuthRequestDTO peticion) {
         AuthResponseDTO response = autenticacionService.iniciarSesion(peticion);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registrar(@RequestBody RegisterRequestDTO peticion) {
-        autenticacionService.registrar(peticion);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<AuthResponseDTO> registrar(@Valid @RequestBody RegisterRequestDTO peticion) {
+        AuthResponseDTO response = autenticacionService.registrar(peticion);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/logout")

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -28,6 +29,7 @@ public class GrupoController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembro(#id)")
     public ResponseEntity<GrupoResponseDTO> get(@PathVariable Long id) {
         return ResponseEntity.ok(grupoService.obtenerPorId(id));
     }
@@ -39,11 +41,13 @@ public class GrupoController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdmin(#id)")
     public ResponseEntity<GrupoResponseDTO> update(@PathVariable Long id, @Valid @RequestBody GrupoUpdateDTO dto) {
         return ResponseEntity.ok(grupoService.actualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdmin(#id)")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         grupoService.eliminar(id);
         return ResponseEntity.noContent().build();

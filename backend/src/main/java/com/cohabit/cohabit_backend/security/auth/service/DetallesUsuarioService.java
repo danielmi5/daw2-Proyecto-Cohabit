@@ -1,4 +1,4 @@
-package com.cohabit.cohabit_backend.security;
+package com.cohabit.cohabit_backend.security.auth.service;
 
 import com.cohabit.cohabit_backend.entity.Usuario;
 import com.cohabit.cohabit_backend.repository.UsuarioRepository;
@@ -44,7 +44,7 @@ public class DetallesUsuarioService implements UserDetailsService {
      */
     private Collection<? extends GrantedAuthority> obtenerAutoridades(Usuario usuario) {
         return Collections.singletonList(
-                new SimpleGrantedAuthority("ROLE_" + usuario.getRole().name())
+                new SimpleGrantedAuthority("ROLE_" + usuario.getRol().name())
         );
     }
 }

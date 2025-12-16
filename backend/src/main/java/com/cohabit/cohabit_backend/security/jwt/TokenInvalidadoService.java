@@ -1,4 +1,4 @@
-package com.cohabit.cohabit_backend.security;
+package com.cohabit.cohabit_backend.security.jwt;
 
 import org.springframework.stereotype.Service;
 

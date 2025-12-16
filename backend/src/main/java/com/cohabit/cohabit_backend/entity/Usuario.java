@@ -41,6 +41,11 @@ public class Usuario {
     @Column(nullable = false)
     private LocalDateTime fechaRegistro;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private RolUsuario rol = RolUsuario.USUARIO;
+
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private MiembroGrupo miembroGrupo;
 

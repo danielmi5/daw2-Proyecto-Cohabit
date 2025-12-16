@@ -9,18 +9,18 @@ TRUNCATE TABLE miembros_grupo RESTART IDENTITY CASCADE;
 TRUNCATE TABLE grupos RESTART IDENTITY CASCADE;
 TRUNCATE TABLE usuarios RESTART IDENTITY CASCADE;
 
--- Inserta usuarios de prueba
-INSERT INTO usuarios (nombre, apellidos, email, password, foto_perfil, pais, ciudad, telefono, fecha_registro) VALUES
-('Carlos', 'García López', 'carlos.garcia@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/1.jpg', 'España', 'Madrid', '+34600123456', NOW() - INTERVAL '120 days'),
-('María', 'Fernández Ruiz', 'maria.fernandez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/2.jpg', 'España', 'Barcelona', '+34600234567', NOW() - INTERVAL '90 days'),
-('José', 'Martínez Sánchez', 'jose.martinez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/3.jpg', 'España', 'Valencia', '+34600345678', NOW() - INTERVAL '75 days'),
-('Ana', 'López Torres', 'ana.lopez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/4.jpg', 'España', 'Madrid', '+34600456789', NOW() - INTERVAL '60 days'),
-('David', 'González Díaz', 'david.gonzalez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/5.jpg', 'España', 'Sevilla', '+34600567890', NOW() - INTERVAL '45 days'),
-('Laura', 'Pérez Moreno', 'laura.perez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/6.jpg', 'España', 'Bilbao', '+34600678901', NOW() - INTERVAL '30 days'),
-('Miguel', 'Rodríguez Vargas', 'miguel.rodriguez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/7.jpg', 'España', 'Granada', '+34600789012', NOW() - INTERVAL '20 days'),
-('Elena', 'Sánchez Herrera', 'elena.sanchez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/8.jpg', 'España', 'Málaga', '+34600890123', NOW() - INTERVAL '15 days'),
-('Pablo', 'Jiménez Castro', 'pablo.jimenez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/9.jpg', 'España', 'Zaragoza', '+34600901234', NOW() - INTERVAL '10 days'),
-('Carmen', 'Romero Gil', 'carmen.romero@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/10.jpg', 'España', 'Murcia', '+34600012345', NOW() - INTERVAL '5 days');
+-- Inserta usuarios de prueba (añadida columna `role`)
+INSERT INTO usuarios (nombre, apellidos, email, password, foto_perfil, pais, ciudad, telefono, fecha_registro, role) VALUES
+('admin', 'admin', 'admin@admin.com', '$2a$12$jMLw5JBR6WyIuBwN27clN.hp5bka3t0tBtN0ZetBB7Xc.uhgfdybW', 'https://randomuser.me/api/portraits/men/1.jpg', 'España', 'Madrid', '+34600123456', NOW() - INTERVAL '120 days', 'ADMIN'),
+('María', 'Fernández Ruiz', 'maria.fernandez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/2.jpg', 'España', 'Barcelona', '+34600234567', NOW() - INTERVAL '90 days', 'USUARIO'),
+('José', 'Martínez Sánchez', 'jose.martinez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/3.jpg', 'España', 'Valencia', '+34600345678', NOW() - INTERVAL '75 days', 'USUARIO'),
+('Ana', 'López Torres', 'ana.lopez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/4.jpg', 'España', 'Madrid', '+34600456789', NOW() - INTERVAL '60 days', 'USUARIO'),
+('David', 'González Díaz', 'david.gonzalez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/5.jpg', 'España', 'Sevilla', '+34600567890', NOW() - INTERVAL '45 days', 'USUARIO'),
+('Laura', 'Pérez Moreno', 'laura.perez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/6.jpg', 'España', 'Bilbao', '+34600678901', NOW() - INTERVAL '30 days', 'USUARIO'),
+('Miguel', 'Rodríguez Vargas', 'miguel.rodriguez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/7.jpg', 'España', 'Granada', '+34600789012', NOW() - INTERVAL '20 days', 'USUARIO'),
+('Elena', 'Sánchez Herrera', 'elena.sanchez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/8.jpg', 'España', 'Málaga', '+34600890123', NOW() - INTERVAL '15 days', 'USUARIO'),
+('Pablo', 'Jiménez Castro', 'pablo.jimenez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/9.jpg', 'España', 'Zaragoza', '+34600901234', NOW() - INTERVAL '10 days', 'USUARIO'),
+('Carmen', 'Romero Gil', 'carmen.romero@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/10.jpg', 'España', 'Murcia', '+34600012345', NOW() - INTERVAL '5 days', 'USUARIO');
 
 -- Inserta grupos de prueba
 

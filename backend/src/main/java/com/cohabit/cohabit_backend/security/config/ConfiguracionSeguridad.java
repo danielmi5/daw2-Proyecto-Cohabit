@@ -1,5 +1,7 @@
-package com.cohabit.cohabit_backend.security;
+package com.cohabit.cohabit_backend.security.config;
 
+import com.cohabit.cohabit_backend.security.auth.service.DetallesUsuarioService;
+import com.cohabit.cohabit_backend.security.jwt.FiltroAutenticacionJwt;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -44,9 +46,13 @@ public class ConfiguracionSeguridad {
                                 "/auth/login",
                                 "/auth/register"
                         ).permitAll()
+
+                        // Gestión de usuarios sólo para administradores
+                        .requestMatchers(HttpMethod.POST, "/api/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("ADMIN")
                         
-                        // Consultas GET accesibles a usuarios autenticados (cualquier rol)
-                        .requestMatchers(HttpMethod.GET, "/api/**").authenticated()
+                        // Todas las rutas /api/** requieren autenticación
+                        .requestMatchers("/api/**").authenticated()
                         
                         // Todos los demás endpoints requieren autenticación
                         .anyRequest().authenticated()
@@ -58,12 +64,32 @@ public class ConfiguracionSeguridad {
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType("application/json");
-                            response.getWriter().write("{\"error\":\"No autorizado\",\"mensaje\":\"" + authException.getMessage() + "\"}");
+
+                            String mensaje = authException != null && authException.getMessage() != null
+                                    ? authException.getMessage()
+                                    : "Se requiere autenticación";
+
+                            if (mensaje.contains("Full authentication is required")) {
+                                mensaje = "Es necesario autenticarse para acceder a este recurso";
+                            } else if (mensaje.toLowerCase().contains("bad credentials")) {
+                                mensaje = "Credenciales incorrectas";
+                            }
+
+                            response.getWriter().write("{\"error\":\"No autorizado\",\"mensaje\":\"" + mensaje + "\"}");
                         })
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                             response.setContentType("application/json");
-                            response.getWriter().write("{\"error\":\"Acceso denegado\",\"mensaje\":\"" + accessDeniedException.getMessage() + "\"}");
+
+                            String mensaje = accessDeniedException != null && accessDeniedException.getMessage() != null
+                                    ? accessDeniedException.getMessage()
+                                    : "Acceso denegado";
+
+                            if (mensaje.contains("Access is denied") || mensaje.contains("Denied")) {
+                                mensaje = "No tienes permisos para acceder a este recurso";
+                            }
+
+                            response.getWriter().write("{\"error\":\"Acceso denegado\",\"mensaje\":\"" + mensaje + "\"}");
                         })
                 )
                 .authenticationProvider(proveedorDeAutenticacion())

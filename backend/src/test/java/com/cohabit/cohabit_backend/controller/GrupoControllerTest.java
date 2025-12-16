@@ -1,5 +1,6 @@
 package com.cohabit.cohabit_backend.controller;
 
+import com.cohabit.cohabit_backend.config.AutenticadorTests;
 import com.cohabit.cohabit_backend.dto.GrupoRequestDTO;
 import com.cohabit.cohabit_backend.dto.GrupoResponseDTO;
 import com.cohabit.cohabit_backend.dto.UsuarioRequestDTO;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,9 +33,12 @@ class GrupoControllerTest {
 
     private GrupoRequestDTO grupoRequestDTO;
     private Long creadorId;
+    private String tokenAdmin;
 
     @BeforeEach
     void inicializar() throws Exception {
+        tokenAdmin = AutenticadorTests.obtenerTokenAdmin(mockMvc, objectMapper);
+
         UsuarioRequestDTO usuarioDTO = UsuarioRequestDTO.builder()
                 .nombre("nombre")
                 .apellidos("apellidos")
@@ -42,6 +47,7 @@ class GrupoControllerTest {
                 .build();
 
         MvcResult result = mockMvc.perform(post("/api/usuarios")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(usuarioDTO)))
                 .andExpect(status().isCreated())
@@ -61,6 +67,7 @@ class GrupoControllerTest {
         @Test
         void testCrearGrupo_DeberiaDevolverGrupoCreado() throws Exception {
         mockMvc.perform(post("/api/grupos")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(grupoRequestDTO)))
                 .andExpect(status().isCreated())
@@ -72,6 +79,7 @@ class GrupoControllerTest {
         @Test
         void testObtenerGrupoPorId_DeberiaDevolverGrupo() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/grupos")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(grupoRequestDTO)))
                 .andExpect(status().isCreated())
@@ -79,7 +87,8 @@ class GrupoControllerTest {
 
         GrupoResponseDTO creado = objectMapper.readValue(result.getResponse().getContentAsString(), GrupoResponseDTO.class);
 
-        mockMvc.perform(get("/api/grupos/" + creado.getId()))
+        mockMvc.perform(get("/api/grupos/" + creado.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(creado.getId()))
                 .andExpect(jsonPath("$.nombre").value("nombre"));
@@ -88,6 +97,7 @@ class GrupoControllerTest {
         @Test
         void testActualizarGrupo_DeberiaDevolverGrupoActualizado() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/grupos")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(grupoRequestDTO)))
                 .andExpect(status().isCreated())
@@ -103,6 +113,7 @@ class GrupoControllerTest {
                 .build();
 
         mockMvc.perform(put("/api/grupos/" + creado.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(actualizacion)))
                 .andExpect(status().isOk())
@@ -113,6 +124,7 @@ class GrupoControllerTest {
         @Test
         void testEliminarGrupo_DeberiaEliminarGrupoYNoEncontrarlo() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/grupos")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(grupoRequestDTO)))
                 .andExpect(status().isCreated())
@@ -120,21 +132,25 @@ class GrupoControllerTest {
 
         GrupoResponseDTO creado = objectMapper.readValue(result.getResponse().getContentAsString(), GrupoResponseDTO.class);
 
-        mockMvc.perform(delete("/api/grupos/" + creado.getId()))
+        mockMvc.perform(delete("/api/grupos/" + creado.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isNoContent());
 
-        mockMvc.perform(get("/api/grupos/" + creado.getId()))
+        mockMvc.perform(get("/api/grupos/" + creado.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isNotFound());
     }
 
         @Test
         void testObtenerTodosLosGrupos_DeberiaDevolverListaDeGrupos() throws Exception {
         mockMvc.perform(post("/api/grupos")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(grupoRequestDTO)))
                 .andExpect(status().isCreated());
 
-        mockMvc.perform(get("/api/grupos"))
+        mockMvc.perform(get("/api/grupos")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content[0].nombre").value("nombre"));
@@ -143,6 +159,7 @@ class GrupoControllerTest {
             @Test
             void testBuscarGrupos_PorNombre_DeberiaDevolverResultados() throws Exception {
                 MvcResult result = mockMvc.perform(post("/api/grupos")
+                                .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(grupoRequestDTO)))
                         .andExpect(status().isCreated())
@@ -150,7 +167,8 @@ class GrupoControllerTest {
 
                 GrupoResponseDTO creado = objectMapper.readValue(result.getResponse().getContentAsString(), GrupoResponseDTO.class);
 
-                mockMvc.perform(get("/api/grupos/buscar?nombre=nombre"))
+                mockMvc.perform(get("/api/grupos/buscar?nombre=nombre")
+                                .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.content").isArray())
                         .andExpect(jsonPath("$.content[0].id").value(creado.getId()));

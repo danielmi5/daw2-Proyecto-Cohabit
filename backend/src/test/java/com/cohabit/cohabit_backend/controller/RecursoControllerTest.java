@@ -1,5 +1,6 @@
 package com.cohabit.cohabit_backend.controller;
 
+import com.cohabit.cohabit_backend.config.AutenticadorTests;
 import com.cohabit.cohabit_backend.dto.*;
 import com.cohabit.cohabit_backend.entity.EstadoRecurso;
 import com.cohabit.cohabit_backend.entity.TipoRecurso;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,12 +30,15 @@ class RecursoControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private String tokenAdmin;
     private RecursoRequestDTO recursoRequestDTO;
     private Long grupoId;
     private Long creadorId;
 
     @BeforeEach
     void inicializar() throws Exception {
+        tokenAdmin = AutenticadorTests.obtenerTokenAdmin(mockMvc, objectMapper);
+
         UsuarioRequestDTO usuarioDTO = UsuarioRequestDTO.builder()
                 .nombre("nombre")
                 .apellidos("apellidos")
@@ -43,7 +48,8 @@ class RecursoControllerTest {
 
         MvcResult userResult = mockMvc.perform(post("/api/usuarios")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(usuarioDTO)))
+                        .content(objectMapper.writeValueAsString(usuarioDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -58,7 +64,8 @@ class RecursoControllerTest {
 
         MvcResult grupoResult = mockMvc.perform(post("/api/grupos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(grupoDTO)))
+                        .content(objectMapper.writeValueAsString(grupoDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -82,7 +89,8 @@ class RecursoControllerTest {
         void testCrearRecurso_DeberiaDevolverRecursoCreado() throws Exception {
         mockMvc.perform(post("/api/recursos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(recursoRequestDTO)))
+                        .content(objectMapper.writeValueAsString(recursoRequestDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.nombre").value("nombre"))
                 .andExpect(jsonPath("$.descripcion").value("descripcion"))
@@ -94,13 +102,15 @@ class RecursoControllerTest {
         void testObtenerRecursoPorId_DeberiaDevolverRecurso() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/recursos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(recursoRequestDTO)))
+                        .content(objectMapper.writeValueAsString(recursoRequestDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         RecursoResponseDTO creado = objectMapper.readValue(result.getResponse().getContentAsString(), RecursoResponseDTO.class);
 
-        mockMvc.perform(get("/api/recursos/" + creado.getId()))
+        mockMvc.perform(get("/api/recursos/" + creado.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(creado.getId()))
                 .andExpect(jsonPath("$.nombre").value("nombre"))
@@ -111,7 +121,8 @@ class RecursoControllerTest {
         void testActualizarRecurso_DeberiaDevolverRecursoActualizado() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/recursos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(recursoRequestDTO)))
+                        .content(objectMapper.writeValueAsString(recursoRequestDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -130,7 +141,8 @@ class RecursoControllerTest {
 
         mockMvc.perform(put("/api/recursos/" + creado.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(actualizacion)))
+                        .content(objectMapper.writeValueAsString(actualizacion))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nombre").value("nombre2"))
                 .andExpect(jsonPath("$.descripcion").value("descripcion2"))
@@ -141,16 +153,19 @@ class RecursoControllerTest {
         void testEliminarRecurso_DeberiaEliminarRecursoYNoEncontrarlo() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/recursos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(recursoRequestDTO)))
+                        .content(objectMapper.writeValueAsString(recursoRequestDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         RecursoResponseDTO creado = objectMapper.readValue(result.getResponse().getContentAsString(), RecursoResponseDTO.class);
 
-        mockMvc.perform(delete("/api/recursos/" + creado.getId()))
+        mockMvc.perform(delete("/api/recursos/" + creado.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isNoContent());
 
-        mockMvc.perform(get("/api/recursos/" + creado.getId()))
+        mockMvc.perform(get("/api/recursos/" + creado.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isNotFound());
     }
 
@@ -158,10 +173,12 @@ class RecursoControllerTest {
         void testObtenerTodosLosRecursos_DeberiaDevolverListaDeRecursos() throws Exception {
         mockMvc.perform(post("/api/recursos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(recursoRequestDTO)))
+                        .content(objectMapper.writeValueAsString(recursoRequestDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated());
 
-        mockMvc.perform(get("/api/recursos"))
+        mockMvc.perform(get("/api/recursos")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content[0].nombre").value("nombre"))
@@ -172,13 +189,15 @@ class RecursoControllerTest {
             void testBuscarRecursos_PorGrupo_DeberiaDevolverResultados() throws Exception {
                 MvcResult result = mockMvc.perform(post("/api/recursos")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(recursoRequestDTO)))
+                                .content(objectMapper.writeValueAsString(recursoRequestDTO))
+                                .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                         .andExpect(status().isCreated())
                         .andReturn();
 
                 RecursoResponseDTO creado = objectMapper.readValue(result.getResponse().getContentAsString(), RecursoResponseDTO.class);
 
-                mockMvc.perform(get("/api/recursos/buscar?grupoId=" + creado.getGrupoId()))
+                mockMvc.perform(get("/api/recursos/buscar?grupoId=" + creado.getGrupoId())
+                                .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.content").isArray())
                         .andExpect(jsonPath("$.content[0].id").value(creado.getId()))

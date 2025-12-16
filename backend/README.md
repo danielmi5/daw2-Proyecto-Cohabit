@@ -268,3 +268,7 @@ Relaciones:
 - `ReglaRecurso` N:1 `MiembroGrupo` (FK `miembro_grupo_id` NOT NULL) — un `MiembroGrupo` puede crear cero o varias reglas
 
 
+## Seguridad
+La seguridad del backend está basada en JWT: los endpoints usan un filtro que valida el header `Authorization: Bearer {token}`, los roles (`ADMIN`, `USUARIO`) controlan accesos y existen utilidades de autorización de dominio (`GrupoSecurityService`) usadas desde `@PreAuthorize`. Se aplica un enfoque stateless con `SessionCreationPolicy.STATELESS`, las contraseñas se hashean con `BCryptPasswordEncoder` y hay soporte para invalidación de tokens (lista negra in-memory para logout). Los tests incluyen pruebas unitarias sobre los servicios y pruebas de integración sobre los controladores que usan autenticación (los helpers de test registran usuarios y obtienen tokens para `MockMvc`).
+
+Documentación detallada de seguridad: [Seguridad.md](backend/docs/Seguridad.md)

@@ -1,5 +1,6 @@
 package com.cohabit.cohabit_backend.controller;
 
+import com.cohabit.cohabit_backend.config.AutenticadorTests;
 import com.cohabit.cohabit_backend.dto.*;
 import com.cohabit.cohabit_backend.entity.EstadoRecurso;
 import com.cohabit.cohabit_backend.entity.EstadoReserva;
@@ -10,8 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -32,12 +35,15 @@ class ReservaControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private String tokenAdmin;
     private ReservaRequestDTO reservaRequestDTO;
     private Long recursoId;
     private Long miembroGrupoId;
 
     @BeforeEach
     void inicializar() throws Exception {
+        tokenAdmin = AutenticadorTests.obtenerTokenAdmin(mockMvc, objectMapper);
+
         UsuarioRequestDTO usuarioDTO = UsuarioRequestDTO.builder()
                 .nombre("nombre")
                 .apellidos("apellidos")
@@ -47,7 +53,8 @@ class ReservaControllerTest {
 
         MvcResult userResult = mockMvc.perform(post("/api/usuarios")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(usuarioDTO)))
+                        .content(objectMapper.writeValueAsString(usuarioDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -62,7 +69,8 @@ class ReservaControllerTest {
 
         MvcResult grupoResult = mockMvc.perform(post("/api/grupos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(grupoDTO)))
+                        .content(objectMapper.writeValueAsString(grupoDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -82,7 +90,8 @@ class ReservaControllerTest {
 
         MvcResult recursoResult = mockMvc.perform(post("/api/recursos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(recursoDTO)))
+                        .content(objectMapper.writeValueAsString(recursoDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -105,7 +114,8 @@ class ReservaControllerTest {
         void testCrearReserva_DeberiaDevolverReservaCreada() throws Exception {
         mockMvc.perform(post("/api/reservas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reservaRequestDTO)))
+                        .content(objectMapper.writeValueAsString(reservaRequestDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.fecha").value("2025-12-15"))
                 .andExpect(jsonPath("$.horaInicio").value("10:00:00"))
@@ -118,18 +128,21 @@ class ReservaControllerTest {
         void testObtenerReservaPorId_DeberiaDevolverReserva() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/reservas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reservaRequestDTO)))
+                        .content(objectMapper.writeValueAsString(reservaRequestDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         ReservaResponseDTO creada = objectMapper.readValue(result.getResponse().getContentAsString(), ReservaResponseDTO.class);
 
-        mockMvc.perform(get("/api/reservas/" + creada.getId()))
+        mockMvc.perform(get("/api/reservas/" + creada.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(creada.getId()))
                 .andExpect(jsonPath("$.estado").value("CONFIRMADA"));
         
-        mockMvc.perform(get("/api/reservas/" + creada.getId()))
+        mockMvc.perform(get("/api/reservas/" + creada.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.numero").value(creada.getNumero()));
     }
@@ -138,7 +151,8 @@ class ReservaControllerTest {
         void testActualizarReserva_DeberiaDevolverReservaActualizada() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/reservas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reservaRequestDTO)))
+                        .content(objectMapper.writeValueAsString(reservaRequestDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -157,12 +171,14 @@ class ReservaControllerTest {
 
         mockMvc.perform(put("/api/reservas/" + creada.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(actualizacion)))
+                        .content(objectMapper.writeValueAsString(actualizacion))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.notas").value("notas2"))
                 .andExpect(jsonPath("$.estado").value("CANCELADA"));
         
-        mockMvc.perform(get("/api/reservas/" + creada.getId()))
+        mockMvc.perform(get("/api/reservas/" + creada.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.numero").value(creada.getNumero()));
     }
@@ -171,16 +187,19 @@ class ReservaControllerTest {
         void testEliminarReserva_DeberiaEliminarReservaYNoEncontrarla() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/reservas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reservaRequestDTO)))
+                        .content(objectMapper.writeValueAsString(reservaRequestDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         ReservaResponseDTO creada = objectMapper.readValue(result.getResponse().getContentAsString(), ReservaResponseDTO.class);
 
-        mockMvc.perform(delete("/api/reservas/" + creada.getId()))
+        mockMvc.perform(delete("/api/reservas/" + creada.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isNoContent());
 
-        mockMvc.perform(get("/api/reservas/" + creada.getId()))
+        mockMvc.perform(get("/api/reservas/" + creada.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isNotFound());
     }
 
@@ -188,15 +207,18 @@ class ReservaControllerTest {
         void testObtenerTodasLasReservas_DeberiaDevolverListaDeReservas() throws Exception {
         mockMvc.perform(post("/api/reservas")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(reservaRequestDTO)))
+                        .content(objectMapper.writeValueAsString(reservaRequestDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated());
 
-        mockMvc.perform(get("/api/reservas"))
+        mockMvc.perform(get("/api/reservas")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
                 .andExpect(jsonPath("$.content[0].estado").value("CONFIRMADA"));
         
-        mockMvc.perform(get("/api/reservas"))
+        mockMvc.perform(get("/api/reservas")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].numero").value(1));
     }
@@ -205,18 +227,21 @@ class ReservaControllerTest {
             void testBuscarReservas_PorRecursoYFecha_DeberiaDevolverResultados() throws Exception {
                 MvcResult result = mockMvc.perform(post("/api/reservas")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(reservaRequestDTO)))
+                                .content(objectMapper.writeValueAsString(reservaRequestDTO))
+                                .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                         .andExpect(status().isCreated())
                         .andReturn();
 
                 ReservaResponseDTO creada = objectMapper.readValue(result.getResponse().getContentAsString(), ReservaResponseDTO.class);
 
-                mockMvc.perform(get("/api/reservas/buscar?recursoId=" + creada.getRecursoId() + "&fecha=2025-12-15"))
+                mockMvc.perform(get("/api/reservas/buscar?recursoId=" + creada.getRecursoId() + "&fecha=2025-12-15")
+                                .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.content").isArray())
                         .andExpect(jsonPath("$.content[0].id").value(creada.getId()));
                 
-                        mockMvc.perform(get("/api/reservas/buscar?recursoId=" + creada.getRecursoId() + "&fecha=2025-12-15"))
+                        mockMvc.perform(get("/api/reservas/buscar?recursoId=" + creada.getRecursoId() + "&fecha=2025-12-15")
+                                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.content[0].numero").value(creada.getNumero()));
             }

@@ -1,5 +1,6 @@
 package com.cohabit.cohabit_backend.controller;
 
+import com.cohabit.cohabit_backend.config.AutenticadorTests;
 import com.cohabit.cohabit_backend.dto.*;
 import com.cohabit.cohabit_backend.entity.RolGrupo;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,12 +29,15 @@ class MiembroGrupoControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private String tokenAdmin;
     private MiembroGrupoRequestDTO miembroGrupoRequestDTO;
     private Long usuarioId;
     private Long grupoId;
 
     @BeforeEach
     void inicializar() throws Exception {
+        tokenAdmin = AutenticadorTests.obtenerTokenAdmin(mockMvc, objectMapper);
+
         UsuarioRequestDTO usuarioDTO = UsuarioRequestDTO.builder()
                 .nombre("nombre")
                 .apellidos("apellidos")
@@ -42,7 +47,8 @@ class MiembroGrupoControllerTest {
 
         MvcResult userResult = mockMvc.perform(post("/api/usuarios")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(usuarioDTO)))
+                        .content(objectMapper.writeValueAsString(usuarioDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -58,7 +64,8 @@ class MiembroGrupoControllerTest {
 
         MvcResult grupoResult = mockMvc.perform(post("/api/grupos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(grupoDTO)))
+                        .content(objectMapper.writeValueAsString(grupoDTO))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -75,7 +82,8 @@ class MiembroGrupoControllerTest {
 
         @Test
         void testObtenerMiembroPorId_DeberiaDevolverMiembro() throws Exception {
-        mockMvc.perform(get("/api/miembros/1"))
+        mockMvc.perform(get("/api/miembros/1")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                                 .andExpect(jsonPath("$.rol").value("MIEMBRO"));
@@ -92,7 +100,8 @@ class MiembroGrupoControllerTest {
 
         mockMvc.perform(put("/api/miembros/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(actualizacion)))
+                        .content(objectMapper.writeValueAsString(actualizacion))
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.rol").value("ADMIN"))
                 .andExpect(jsonPath("$.activo").value(false));
@@ -100,16 +109,19 @@ class MiembroGrupoControllerTest {
 
         @Test
         void testEliminarMiembro_DeberiaEliminarMiembroYNoEncontrarlo() throws Exception {
-        mockMvc.perform(delete("/api/miembros/1"))
+        mockMvc.perform(delete("/api/miembros/1")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isNoContent());
 
-        mockMvc.perform(get("/api/miembros/1"))
+        mockMvc.perform(get("/api/miembros/1")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isNotFound());
     }
 
         @Test
         void testObtenerTodosLosMiembros_DeberiaDevolverListaDeMiembros() throws Exception {
-        mockMvc.perform(get("/api/miembros"))
+        mockMvc.perform(get("/api/miembros")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray());
     }
@@ -126,7 +138,8 @@ class MiembroGrupoControllerTest {
 
                 MvcResult segundo = mockMvc.perform(post("/api/usuarios")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(segundoUsuario)))
+                                .content(objectMapper.writeValueAsString(segundoUsuario))
+                                .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                         .andExpect(status().isCreated())
                         .andReturn();
 
@@ -141,7 +154,8 @@ class MiembroGrupoControllerTest {
                 // Missing rol should be ignored and default to MIEMBRO
                 mockMvc.perform(post("/api/miembros")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(invalido)))
+                                .content(objectMapper.writeValueAsString(invalido))
+                                .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                         .andExpect(status().isCreated())
                         .andExpect(jsonPath("$.rol").value("MIEMBRO"));
     }

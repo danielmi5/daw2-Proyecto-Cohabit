@@ -1,5 +1,6 @@
 package com.cohabit.cohabit_backend.controller;
 
+import com.cohabit.cohabit_backend.config.AutenticadorTests;
 import com.cohabit.cohabit_backend.dto.UsuarioRequestDTO;
 import com.cohabit.cohabit_backend.dto.UsuarioResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,9 +30,11 @@ class UsuarioControllerTest {
     private ObjectMapper objectMapper;
 
     private UsuarioRequestDTO usuarioRequestDTO;
+    private String tokenAdmin;
 
     @BeforeEach
-    void inicializar() {
+    void inicializar() throws Exception {
+        tokenAdmin = AutenticadorTests.obtenerTokenAdmin(mockMvc, objectMapper);
         usuarioRequestDTO = UsuarioRequestDTO.builder()
                 .nombre("nombre")
                 .apellidos("apellidos")
@@ -43,6 +47,7 @@ class UsuarioControllerTest {
         @Test
         void testCrearUsuario_DeberiaDevolverUsuarioCreado() throws Exception {
         mockMvc.perform(post("/api/usuarios")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(usuarioRequestDTO)))
                 .andExpect(status().isCreated())
@@ -54,6 +59,7 @@ class UsuarioControllerTest {
         @Test
         void testObtenerUsuarioPorId_DeberiaDevolverUsuario() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/usuarios")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(usuarioRequestDTO)))
                 .andExpect(status().isCreated())
@@ -61,7 +67,8 @@ class UsuarioControllerTest {
 
         UsuarioResponseDTO creado = objectMapper.readValue(result.getResponse().getContentAsString(), UsuarioResponseDTO.class);
 
-        mockMvc.perform(get("/api/usuarios/" + creado.getId()))
+        mockMvc.perform(get("/api/usuarios/" + creado.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(creado.getId()))
                 .andExpect(jsonPath("$.nombre").value("nombre"));
@@ -70,6 +77,7 @@ class UsuarioControllerTest {
         @Test
         void testActualizarUsuario_DeberiaDevolverUsuarioActualizado() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/usuarios")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(usuarioRequestDTO)))
                 .andExpect(status().isCreated())
@@ -85,6 +93,7 @@ class UsuarioControllerTest {
                 .build();
 
         mockMvc.perform(put("/api/usuarios/" + creado.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(actualizacion)))
                 .andExpect(status().isOk())
@@ -95,6 +104,7 @@ class UsuarioControllerTest {
         @Test
         void testEliminarUsuario_DeberiaEliminarUsuarioYNoEncontrarlo() throws Exception {
         MvcResult result = mockMvc.perform(post("/api/usuarios")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(usuarioRequestDTO)))
                 .andExpect(status().isCreated())
@@ -102,23 +112,27 @@ class UsuarioControllerTest {
 
         UsuarioResponseDTO creado = objectMapper.readValue(result.getResponse().getContentAsString(), UsuarioResponseDTO.class);
 
-        mockMvc.perform(delete("/api/usuarios/" + creado.getId()))
+        mockMvc.perform(delete("/api/usuarios/" + creado.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isNoContent());
 
-        mockMvc.perform(get("/api/usuarios/" + creado.getId()))
+        mockMvc.perform(get("/api/usuarios/" + creado.getId())
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isNotFound());
     }
 
         @Test
         void testObtenerTodosLosUsuarios_DeberiaDevolverListaDeUsuarios() throws Exception {
         mockMvc.perform(post("/api/usuarios")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(usuarioRequestDTO)))
                 .andExpect(status().isCreated());
 
-        mockMvc.perform(get("/api/usuarios"))
+        mockMvc.perform(get("/api/usuarios")
+                        .header(HttpHeaders.AUTHORIZATION, AutenticadorTests.construirHeaderAutorizacion(tokenAdmin)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").isArray())
-                .andExpect(jsonPath("$.content[0].nombre").value("nombre"));
+                .andExpect(jsonPath("$.content[1].nombre").value("nombre"));
     }
 }

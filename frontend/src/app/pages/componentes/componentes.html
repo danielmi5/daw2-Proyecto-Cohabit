@@ -3,15 +3,20 @@
 
   <section class="componentes__contenido">
     <!-- Ejemplo de uso de app-form-input con estructura de label envolviendo input/ayuda -->
-        <app-form-input 
-          id="input"
-          name="nombre"
-          etiqueta="Nombre" 
-          placeholder="Ingresa tu nombre"
-        ></app-form-input>
-
-        <app-sidebar
-        [mostrarOpcionesPerfil]="true">
-        </app-sidebar>
+    <article class="componentes__seccion">
+      <h2 class="componentes__titulos">Input</h2>
+      <app-form-input 
+        id="input"
+        name="nombre"
+        etiqueta="Nombre" 
+        placeholder="Ingresa tu nombre"
+      ></app-form-input>
+    </article>
+    <article class="componentes__seccion">
+      <h2 class="componentes__titulos">Sidebar</h2>
+      <app-sidebar
+      [mostrarOpcionesPerfil]="true">
+      </app-sidebar>
+    </article>
   </section>
 </section>

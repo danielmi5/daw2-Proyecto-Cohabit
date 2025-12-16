@@ -1,11 +1,10 @@
 <header class="cabecera">
-  <a routerLink="/" class="cabecera__logo">
+  <a routerLink="/" class="cabecera__logo" title="Ir a Inicio">
     <picture class="cabecera__logo-icono">
-      <img src="" alt="Cohabit" class="cabecera__logo-icono">
+      <img src="header/logo.svg" alt="Cohabit" title="Ir a Inicio" class="cabecera__logo-icono">
     </picture>
   </a>
 
-  
   <nav class="cabecera__navegacion">
     <ul class="cabecera__menu">
       <li class="cabecera__menu-opcion">
@@ -24,14 +23,14 @@
   </nav>
   
   <section class="cabecera__utilidades">
-    <button class="cabecera__boton" aria-label="Cambiar tema">
+    <button class="cabecera__boton" aria-label="Cambiar tema" (click)="alternarTema()">
       <picture class="cabecera__icono">
-        <img src="/header/modo-oscuro.svg" alt="Modo oscuro" class="cabecera__icono">
+        <img [src]="icono" alt="Cambiar tema" [title]="modoTitle" class="cabecera__icono">
       </picture>
     </button>
     <button class="cabecera__boton" aria-label="Perfil de usuario">
       <picture class="cabecera__icono">
-        <img src="/header/perfil.svg" alt="Perfil" class="cabecera__icono">
+        <img src="/header/perfil.svg" alt="Perfil" title="Perfil" class="cabecera__icono">
       </picture>
     </button>
   </section>

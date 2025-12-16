@@ -73,6 +73,11 @@ a {
 	}
 
 	&:focus {
+		outline: none;
+		box-shadow: none;
+	}
+
+	&:focus-visible {
 		outline: 2px solid $color-primario-claro;
 		outline-offset: 2px;
 	}
@@ -110,19 +115,27 @@ select {
 	color: $texto-oscuro;
 	padding: $espaciado-s;
 	border-radius: $radio-campo;
+	font-size: $text-sm;
+    font-weight: $font-weight-regular;
+    letter-spacing: -0.4px;
+    line-height: $line-tight;
 	font: inherit;
-	transition: box-shadow $transicion-rapida ease-in-out, border-color $transicion-rapida ease-in-out;
+	
 
+	/*
 	&:focus {
 		outline: none;
 		box-shadow: 0 0 0 3px $color-primario-claro;
-		border-color: $color-primario;
-	}
+		border-color: $color-info;
+	}*/
 }
 
 label {
 	display: inline-block;
 	margin: 0;
+	font-weight: $font-weight-regular;
+    font-size: $text-sm;
+    letter-spacing: -0.4px;
 	color: $texto-oscuro;
 }
 
@@ -171,8 +184,14 @@ table {
 	}
 }
 
-/* Enfoque accesible general */
-:focus {
+/* Enfoque accesible: ocultar el outline para interacciones con ratón
+   y mostrar indicador sólo para navegación por teclado (:focus-visible) */
+:focus:not(:focus-visible) {
+	outline: none;
+	box-shadow: none;
+}
+
+:focus-visible {
 	outline: 2px solid $color-primario-claro;
 	outline-offset: 2px;
 }

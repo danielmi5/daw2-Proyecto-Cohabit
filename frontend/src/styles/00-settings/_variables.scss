@@ -10,8 +10,10 @@ $color-complementario2: hsl(356, 81%, 83%);
 $color-complementario3: hsl(353, 96%, 82%);
 $color-complementario4: hsl(355, 89%, 71%);
 $color-apoyo: hsl(350, 89%, 60%);
+$color-apoyo2: hsl(330, 81%, 60%); //color añadido para trazo botones
 
 //Escala de grises  (NEUTROS)
+$blanco-puro: hsl(0, 0%, 100%);
 $blanco: hsl(0, 0%, 98%);
 $gris1: hsl(0, 0%, 89%);
 $gris2: hsl(0, 0%, 75%);
@@ -26,7 +28,13 @@ $negro: hsl(0, 0%, 18%);
 $color-success: hsl(122, 100%, 30%);
 $color-error: hsl(0, 100%, 40%);
 $color-warning: hsl(36, 100%, 50%);
-$color-info: hsl(210, 100%, 40%);
+$color-info: hsl(210, 100%, 40%); 
+//Semántico modo oscuro
+$color-success2: hsl(122, 97%, 36%);
+$color-error2: hsl(0, 100%, 50%);
+$color-warning2: hsl(36, 100%, 50%);
+$color-info2: hsl(210, 100%, 46%);
+
 
 //COLORES POR USO
 
@@ -48,6 +56,8 @@ $fondo-input-focus: hsl(0, 0%, 88%); // Fondo input:focus (#E1E1E1)
 $borde: $negro; // Borde general
 $borde-input: hsl(0, 0%, 87%); // Borde input (#DEDEDE)
 $borde-cards: $color-apoyo; // borde Cards
+
+$trazo-boton2: $color-apoyo2;
 
 // Fondos
 $fondo: $blanco; // Fondo general
@@ -180,6 +190,7 @@ $radio-boton: 0.375rem;
 $radio-campo: 0.625rem;
 $radio-form: 1.875rem;
 $radio-circulo: 9999px;
+$radio-card: 1rem;
 
 // TRANSICIONES
 $transicion-rapida: 150ms;

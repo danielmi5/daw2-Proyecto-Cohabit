@@ -1,10 +1,11 @@
 <aside class="barra-lateral">
   <header class="barra-lateral__encabezado">
     <h2 class="barra-lateral__titulo">{{ nombreUsuario }}</h2>
-    <figure class="barra-lateral__perfil">
+      <figure class="barra-lateral__perfil">
       <img 
         [src]="imagenPerfil" 
         [alt]="nombreUsuario"
+        title="Imagen de perfil de {{nombreUsuario}}"
         class="barra-lateral__perfil-imagen"
       />
     </figure>

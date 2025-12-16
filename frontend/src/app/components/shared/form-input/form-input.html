@@ -6,14 +6,14 @@
     }
   </label>
 
-  <div class="form-input__contenedor">
+  <div class="form-input__contenedor-input" (click)="inputRef.focus()">
     @if (iconoIzquierda) {
       <span class="form-input__icono form-input__icono--izquierda" aria-hidden="true">
         <i [class]="iconoIzquierda"></i>
       </span>
     }
 
-    <input
+    <input #inputRef
       class="form-input__campo"
       [class.form-input__campo--con-icono-izquierda]="iconoIzquierda"
       [class.form-input__campo--con-icono-derecha]="iconoDerecha"

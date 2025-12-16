@@ -10,6 +10,6 @@ import { RouterLink } from '@angular/router';
 })
 export class Sidebar {
   @Input() nombreUsuario: string = 'COHABIT';
-  @Input() imagenPerfil: string = '';
+  @Input() imagenPerfil: string = 'img/icono-perfil.svg';
   @Input() mostrarOpcionesPerfil: boolean = false;
 }

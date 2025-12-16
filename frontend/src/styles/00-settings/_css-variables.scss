@@ -1,17 +1,78 @@
+@use "./variables" as *;
 /*
-  Variables CSS (Custom Properties) derivadas de las variables SCSS.
-  Estas propiedades irán en :root y se usan para temas dinámicos en tiempo de ejecución.
+  Variables CSS derivadas de las variables SCSS.
+  Estas propiedades irán en :root y se usan para temas dinámicos en tiempo de ejecución (modo claro y oscuro).
 */
 
 :root {
   /* Fondos */
-  --bg-primary: #{ $fondo };
-  --bg-secondary: #{ $fondo-secciones };
+  --bg-primario: #{ $fondo }; //Fondo general de la página
+  --bg-secundario: #{ $color-complementario1 }; // Fondo secciones (dashboard, inicio)
+  --bg-header-footer: #{ $color-primario }; //Fondo header y footer
+  --bg-cards: #{ $color-complementario3 }; //Fondo de elementos dentro de la página (Cards) 
+  --bg-sidebar: #{ $color-complementario3 }; //Fondo del Sidebar
+  --bg-ocasional: #{$color-complementario4}; //Fondo poco utilizado
+  --hover: #{ $color-apoyo };
+  --hover-enlaces-sidebar: #{ $color-complementario4 };
+  
+  //tabla
+  --bg-tabla-th: #{ $color-complementario3 }; //Fondo tabla encabezado
+  --bg-fila1: #{ $blanco-puro }; //Fondo fila impar
+  --bg-fila2: #{ $fila2 }; //Fondo tabla par
+
+  
 
   /* Textos */
-  --text-primary: #{ $texto-oscuro };
-  --text-secondary: #{ $texto-claro };
+  --texto-primario: #{ $negro }; //texto sobre fondo claro
+  --texto-secundario: #{ $blanco }; //texto sobre fondo claro
+  --titulos: #{ $color-primario}; //Headings en secciones
+  --etiquetas-cards: #{ $gris7 }; //etiquetas cards
+  --importante-cards: #{ $color-primario-oscuro } ; // Texto importante y hay que dar énfasis en la card sobre lo demás (h4 principalmente)
+  --links-titulo: #{ $color-apoyo };
+
 
   /* Bordes */
-  --border-color: #{ $borde };
+  --borde-btn-2: #{ $color-apoyo2 }; //Trazos del botón secundario
+  --borde: #{ $negro }; //Borde general
+  --borde-cards: #{ $color-apoyo }; //Borde de las cards
+  
+  /*Feedback*/
+  --success: #{ $color-success };
+  --error: #{ $color-error };
+  --warning: #{ $color-warning };
+  --info: #{ $color-info }; 
+}
+
+
+/* Clase para forzar modo oscuro desde TS */
+.dark, html.dark {
+  --bg-primario: #{ $negro };
+  --bg-secundario: #{ $negro };
+  --bg-header-footer: #{ $gris7 };
+  --bg-cards: #{ $gris6 };
+  --bg-sidebar: #{ $gris6 };
+  --bg-ocasional: #{$gris7}; //Fondo poco utilizado
+  --hover: #{ $gris4 };
+  --hover-enlaces-sidebar: #{ $gris5 };
+
+
+  --bg-tabla-th: #{ $gris2 };
+  --bg-fila1: #{ $gris7 };
+  --bg-fila2: #{ $gris6 };
+
+  --texto-primario: #{ $blanco };
+  --texto-secundario: #{ $negro };
+  --titulos: #{ $blanco-puro };
+  --etiquetas-cards: #{ $gris1 };
+  --importante-cards: #{ $blanco };
+  --links-titulo: #{ $gris3 };
+
+  --borde-btn-2: #{ $color-apoyo2 };
+  --borde: #{ $blanco };
+  --borde-cards: #{ $blanco };
+
+  --success: #{ $color-success2 };
+  --error: #{ $color-error2 };
+  --warning: #{ $color-warning2 };
+  --info: #{ $color-info2 };
 }

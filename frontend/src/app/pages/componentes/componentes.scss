@@ -1,12 +1,41 @@
+@use '../../../styles/00-settings/variables' as *;
+
 .componentes {
-  padding: 1.25rem;
+  padding: $espaciado-m;
+
+
+  &__titulo {
+
+    color: var(--titulos);
+    text-align: center;
+    margin: $espaciado-m 0;
+  }
+
+  &__contenido {
+    width: 100%;
+    height: fit-content;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: $espaciado-l;
+    align-items: center; 
+  }
+
+  &__seccion{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $espaciado-l;
+    padding: $espaciado-xxl;
+    background-color: var(--bg-ocasional);
+    border: 1px solid var(--borde-cards);
+    border-radius: $radio-card;
+  }
+
+  &__titulos{
+    color: var(--titulos);
+  }
+
 }
 
-.componentes__titulo {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-}
-
-.componentes__contenido {
-  max-width: 640px;
-}

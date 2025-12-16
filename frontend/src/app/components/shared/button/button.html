@@ -1,0 +1,18 @@
+<button 
+  class="boton boton--{{ variante }} boton--{{ tamanio }}"
+  [class.boton--deshabilitado]="deshabilitado"
+  [attr.disabled]="deshabilitado ? true : null"
+  [attr.type]="tipo"
+  [attr.aria-label]="ariaLabel"
+  [attr.aria-disabled]="deshabilitado">
+  <div class="boton__contenedor">
+    @if (tieneIcono) {
+      <span class="boton__icono">
+        X
+      </span>
+    }
+    <p class="boton__texto">
+      <ng-content></ng-content>
+    </p>
+  </div>
+</button>

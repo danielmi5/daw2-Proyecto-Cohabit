@@ -1,0 +1,33 @@
+<label class="form-checkbox" [class.form-checkbox--desactivado]="desactivado" [attr.for]="id">
+	<input
+		type="checkbox"
+		class="form-checkbox__campo"
+		[id]="id"
+		[name]="name"
+		#checkboxInput
+		[checked]="checked"
+		[disabled]="desactivado"
+		(change)="onNativeChange($event)"
+		[attr.aria-disabled]="desactivado ? 'true' : null"
+		[attr.aria-required]="requerido ? 'true' : null"
+		[attr.aria-checked]="checked ? 'true' : 'false'"
+	/>
+
+	<span class="form-checkbox__visual" aria-hidden="true" (click)="onVisualClick($event)">
+		<!-- checkbox sin interactuar-->
+		<svg class="form-checkbox__icon form-checkbox__icon--box" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M10 2H4C2.89543 2 2 2.89543 2 4V10C2 11.1046 2.89543 12 4 12H10C11.1046 12 12 11.1046 12 10V4C12 2.89543 11.1046 2 10 2ZM4 0C1.79086 0 0 1.79086 0 4V10C0 12.2091 1.79086 14 4 14H10C12.2091 14 14 12.2091 14 10V4C14 1.79086 12.2091 0 10 0H4Z" fill="currentColor"/>
+		</svg>
+
+		<!-- checkbox interactuado-->
+		<svg class="form-checkbox__icon form-checkbox__icon--checked" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M10.7071 5.70711C11.0976 5.31658 11.0976 4.68342 10.7071 4.29289C10.3166 3.90237 9.68342 3.90237 9.29289 4.29289L6.5 7.08579L5.20711 5.79289C4.81658 5.40237 4.18342 5.40237 3.79289 5.79289C3.40237 6.18342 3.40237 6.81658 3.79289 7.20711L5.79289 9.20711C6.18342 9.59763 6.81658 9.59763 7.20711 9.20711L10.7071 5.70711Z" fill="currentColor"/>
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M0 4C0 1.79086 1.79086 0 4 0H10C12.2091 0 14 1.79086 14 4V10C14 12.2091 12.2091 14 10 14H4C1.79086 14 0 12.2091 0 10V4ZM4 2H10C11.1046 2 12 2.89543 12 4V10C12 11.1046 11.1046 12 10 12H4C2.89543 12 2 11.1046 2 10V4C2 2.89543 2.89543 2 4 2Z" fill="currentColor"/>
+		</svg>
+	</span>
+
+	<span class="form-checkbox__label-texto">{{ etiqueta }}</span>
+	@if (requerido) {
+		<span class="form-checkbox__label-requerido" aria-hidden="true">*</span>
+	}
+</label>

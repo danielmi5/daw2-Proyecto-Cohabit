@@ -1,0 +1,124 @@
+@use '../../../../styles/00-settings/variables' as *;
+
+.form-select {
+	width: 100%;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	gap: $espaciado-s;
+
+	&__label {
+		display: inline-flex;
+		align-items: center;
+		column-gap: $espaciado-xs;
+
+		&-texto {
+			line-height: $line-tight;
+			color: var(--etiquetas-cards);
+		}
+
+		&-requerido {
+			color: var(--warning);
+			font-weight: $font-weight-bold;
+		}
+	}
+
+	&__contenedor {
+		position: relative;
+		width: 100%;
+		min-width: 0;
+		height: 48px;
+		display: flex;
+		align-items: center;
+		background: $fondo-input;
+		border: $borde-thin solid $borde-input;
+		border-radius: $radio-campo;
+		padding: 0 $espaciado-m;
+		gap: $espaciado-s;
+		box-sizing: border-box;
+		z-index: 0;
+		transition: box-shadow $transicion-rapida ease-in-out, border-color $transicion-rapida ease-in-out;
+
+		&:has(.form-select__campo[aria-invalid="true"])::before {
+			border-color: var(--error);
+			color: var(--error);
+		}
+
+		&:hover {
+			cursor: pointer;
+			background-color: $fondo-input-hover;
+		}
+
+		&:focus-within {
+			border: 1.8px solid var(--info);
+			background-color: $fondo-input-focus;
+			color: $negro;
+		}
+	}
+
+	&__campo {
+		width: 100%;
+		height: 100%;
+		border: none;
+		background: transparent;
+		padding-right: $espaciado-l;
+		font-size: $text-md;
+		color: $negro;
+		appearance: none;
+	}
+
+	&__icono {
+		width: 18px;
+		height: 18px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		right: $espaciado-m;
+		top: 50%;
+		transform: translateY(-50%);
+		pointer-events: none;
+		color: $gris5;
+	}
+
+	&__mensaje {
+		display: block;
+		margin-block-start: 0;
+		font-size: $text-sm;
+		color: var(--etiquetas-cards);
+	}
+
+	&__mensaje--error {
+		color: var(--error);
+	}
+
+	/* Variante requerido */
+	&--requerido {
+		.form-select__contenedor {
+			border-color: var(--warning);
+		}
+
+		.form-select__label-texto {
+			color: var(--warning);
+		}
+
+		.form-select__mensaje {
+			color: var(--warning);
+		}
+	}
+
+	/* Variante desactivado */
+	&--desactivado {
+		opacity: 0.7;
+		pointer-events: none;
+
+		.form-select__label-texto {
+			color: $gris4;
+		}
+
+		.form-select__mensaje {
+			color: $gris4;
+		}
+	}
+}
+

@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-form-input',
+  selector: 'app-form-textarea',
   imports: [],
-  templateUrl: './form-input.html',
-  styleUrl: './form-input.scss',
+  templateUrl: './form-textarea.html',
+  styleUrl: './form-textarea.scss',
 })
-export class FormInput {
+export class FormTextarea {
   @Input() tipo: string = 'text';
   @Input() name: string = '';
   @Input() id: string = '';
@@ -15,8 +15,8 @@ export class FormInput {
   @Input() requerido: boolean = false;
   @Input() textoAyuda?: string;
   @Input() mensajeError?: string;
-  @Input() mensajeExito?: string;
   @Input() hayError: boolean = false;
+  @Input() mensajeExito?: string;
   @Input() exito: boolean = false;
   @Input() desactivado: boolean = false;
   @Input() iconoIzquierda?: string;

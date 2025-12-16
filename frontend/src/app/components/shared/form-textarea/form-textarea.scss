@@ -1,0 +1,215 @@
+@use '../../../../styles/00-settings/variables' as *;
+
+.form-textarea {
+	width: 100%;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	gap: $espaciado-s;
+
+	&__label {
+		display: inline-flex;
+		align-items: center;
+		column-gap: $espaciado-xs;;
+
+		&-texto {
+			line-height: $line-tight;
+			color: var(--etiquetas-cards);
+		}
+
+		&-requerido {
+			color: var(--warning);
+			font-weight: $font-weight-bold;
+		}
+	}
+
+	&__contenedor-input {
+		position: relative;
+		width: 100%;
+		min-width: 0;
+		min-height: 96px;
+		display: flex;
+		align-items: flex-start;
+		background: $fondo-input;
+		border: $borde-thin solid $borde-input;
+		border-radius: $radio-campo;
+		padding: $espaciado-s $espaciado-m;
+		gap: $espaciado-s;
+		box-sizing: border-box;
+		z-index: 0;
+		transition: box-shadow $transicion-rapida ease-in-out, border-color $transicion-rapida ease-in-out;
+
+		&:has(.form-textarea__campo[aria-invalid="true"])::before {
+			border-color: var(--error);
+			color: var(--error);
+		}
+
+		&:hover {
+			cursor: text;
+			background-color: $fondo-input-hover;
+		}
+
+		&:focus-within {
+			border: 1.8px solid var(--info);
+			background-color: $fondo-input-focus;
+			color: $negro;
+		}
+	}
+
+	&__icono {
+		width: 14px;
+		height: 14px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: $gris5;
+		flex-shrink: 0;
+		z-index: 2;
+		pointer-events: none;
+
+		&--derecha {
+			margin-left: auto;
+		}
+	}
+
+	&__contenedor:has(.form-textarea__campo[aria-invalid="true"]) .form-textarea__icono {
+		color: var(--error);
+	}
+
+	&__campo {
+		width: 100%;
+		height: auto;
+		min-height: 64px;
+		line-height: 1.4;
+		vertical-align: top;
+		border: none;
+		outline: none;
+		box-shadow: none;
+		background: transparent;
+		padding: 0;
+		resize: vertical;
+		padding: $espaciado-xs 0;
+
+		overflow: auto;
+
+		&:focus,
+		&:focus-visible {
+			outline: none;
+			box-shadow: none;
+		}
+
+		&::placeholder {
+			color: $gris5;
+			user-select: none;
+		}
+
+		&[aria-invalid="true"]::placeholder {
+			color: var(--error);
+		}
+	}
+
+	&__mensaje {
+		margin-block-start: 0;
+		font-size: $text-sm;
+		color: var(--etiquetas-cards);
+		letter-spacing: -0.4px;
+
+		&--error {
+			color: var(--error);
+		}
+	}
+
+	/* Variante exito */
+	&--exito {
+		.form-textarea__contenedor-input {
+			border-color: var(--success);
+		}
+
+		.form-textarea__label-texto {
+			color: var(--success);
+		}
+
+		.form-textarea__campo::placeholder {
+			color: var(--success);
+		}
+
+		.form-textarea__mensaje {
+			color: var(--success);
+		}
+	}
+
+	/* Variante erro (error) */
+	&--erro {
+		.form-textarea__contenedor-input {
+			border-color: var(--error);
+		}
+
+		.form-textarea__label-texto {
+			color: var(--error);
+		}
+
+		.form-textarea__campo::placeholder {
+			color: var(--error);
+		}
+
+		.form-textarea__mensaje {
+			color: var(--error);
+		}
+	}
+
+	/* Variante desactivado */
+	&--desactivado {
+		opacity: 0.7;
+		pointer-events: none;
+
+		.form-textarea__contenedor-input {
+			background: $fondo-input;
+			border-color: $borde-input;
+		}
+
+		.form-textarea__label-texto {
+			color: $gris4;
+		}
+
+		.form-textarea__campo::placeholder {
+			color: $gris4;
+		}
+	}
+
+	/* Variante requerido: cuando el campo es obligatorio todo toma el color del asterisco */
+	&--requerido {
+		.form-textarea__contenedor-input {
+			border-color: var(--warning);
+		}
+
+		.form-textarea__label-texto {
+			color: var(--warning);
+		}
+
+		.form-textarea__campo::placeholder {
+			color: var(--warning);
+		}
+
+		.form-textarea__mensaje {
+			color: var(--warning);
+		}
+
+		.form-textarea__icono {
+			color: var(--warning);
+		}
+	}
+
+	@media (max-width: 400px) {
+		&__contenedor {
+			padding-left: $espaciado-s;
+			padding-right: $espaciado-s;
+		}
+
+		&__campo,
+		&__mensaje,
+		&__label {
+			font-size: $text-sm;
+		}
+	}
+}
+

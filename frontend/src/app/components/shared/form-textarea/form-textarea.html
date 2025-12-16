@@ -1,0 +1,64 @@
+<div class="form-textarea" [class.form-textarea--exito]="exito" [class.form-textarea--erro]="hayError" [class.form-textarea--desactivado]="desactivado" [class.form-textarea--requerido]="requerido">
+	<label class="form-textarea__label" [for]="id">
+		<span class="form-textarea__label-texto">{{ etiqueta }}</span>
+		@if (requerido) {
+			<span class="form-textarea__label-requerido" aria-hidden="true">*</span>
+		}
+	</label>
+
+	<div class="form-textarea__contenedor-input" (click)="textareaRef.focus()">
+		@if (iconoIzquierda) {
+			<span class="form-textarea__icono form-textarea__icono--izquierda" aria-hidden="true">
+				<i [class]="iconoIzquierda"></i>
+			</span>
+		}
+
+		<textarea #textareaRef
+			class="form-textarea__campo"
+			[class.form-textarea__campo--con-icono-izquierda]="iconoIzquierda"
+			[class.form-textarea__campo--con-icono-derecha]="iconoDerecha"
+			[id]="id"
+			[name]="name"
+			[placeholder]="placeholder"
+			[disabled]="desactivado"
+			[attr.aria-disabled]="desactivado ? 'true' : null"
+			[attr.aria-required]="requerido ? 'true' : null"
+			[required]="requerido"
+			[attr.aria-invalid]="hayError ? 'true' : 'false'"
+			[attr.aria-describedby]="
+				`${(textoAyuda || mensajeExito) ? id + '-ayuda' : ''} ${mensajeError && hayError ? id + '-error' : ''}`.trim()
+			"
+			rows="4"
+		></textarea>
+
+		@if (iconoDerecha) {
+			<span class="form-textarea__icono form-textarea__icono--derecha" aria-hidden="true">
+				<i [class]="iconoDerecha"></i>
+			</span>
+		}
+	</div>
+
+	@if (textoAyuda && !hayError) {
+		<small class="form-textarea__mensaje" [id]="`${id}-ayuda`">
+			{{ textoAyuda }}
+		</small>
+	}
+
+	@if (!textoAyuda && mensajeExito && !hayError) {
+		<small class="form-textarea__mensaje" [id]="`${id}-ayuda`">{{ mensajeExito }}</small>
+	}
+
+	@if (!textoAyuda && !mensajeExito && exito && !hayError) {
+		<small class="form-textarea__mensaje" [id]="`${id}-ayuda`">Correcto</small>
+	}
+
+	@if (mensajeError && hayError) {
+		<small
+			class="form-textarea__mensaje form-textarea__mensaje--error"
+			[id]="`${id}-error`"
+			role="alert"
+		>
+			{{ mensajeError }}
+		</small>
+	}
+</div>

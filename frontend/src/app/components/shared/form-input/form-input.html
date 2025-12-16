@@ -1,4 +1,4 @@
-<div class="form-input">
+<div class="form-input" [class.form-input--exito]="exito" [class.form-input--erro]="hayError" [class.form-input--desactivado]="desactivado" [class.form-input--requerido]="requerido">
   <label class="form-input__label" [for]="id">
     <span class="form-input__label-texto">{{ etiqueta }}</span>
     @if (requerido) {
@@ -21,11 +21,13 @@
       [name]="name"
       [type]="tipo"
       [placeholder]="placeholder"
+      [disabled]="desactivado"
+      [attr.aria-disabled]="desactivado ? 'true' : null"
       [attr.aria-required]="requerido ? 'true' : null"
       [required]="requerido"
       [attr.aria-invalid]="hayError ? 'true' : 'false'"
       [attr.aria-describedby]="
-        `${textoAyuda ? id + '-ayuda' : ''} ${mensajeError && hayError ? id + '-error' : ''}`.trim()
+        `${(textoAyuda || mensajeExito) ? id + '-ayuda' : ''} ${mensajeError && hayError ? id + '-error' : ''}`.trim()
       "
     />
 
@@ -40,6 +42,14 @@
     <small class="form-input__mensaje" [id]="`${id}-ayuda`">
       {{ textoAyuda }}
     </small>
+  }
+
+  @if (!textoAyuda && mensajeExito && !hayError) {
+    <small class="form-input__mensaje" [id]="`${id}-ayuda`">{{ mensajeExito }}</small>
+  }
+
+  @if (!textoAyuda && !mensajeExito && exito && !hayError) {
+    <small class="form-input__mensaje" [id]="`${id}-ayuda`">Correcto</small>
   }
 
   @if (mensajeError && hayError) {

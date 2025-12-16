@@ -1,0 +1,148 @@
+@use '../../../../styles/00-settings/variables' as *;
+
+
+.boton {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: $font-weight-medium;
+    line-height: $line-button;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid var(--borde);
+    border-radius: $radio-boton;
+    transition: all $transicion-base $transicion-suave;
+    padding: $espaciado-m;
+
+    &:focus {
+    outline: 2px solid $color-primario;
+    outline-offset: 2px;
+    }
+
+    &:focus:not(:focus-visible) {
+    outline: none;
+    }
+
+    &:focus-visible {
+    outline: 2px solid $color-primario;
+    outline-offset: 2px;
+    }
+
+
+    &__contenedor {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: $espaciado-s;
+    }
+
+
+    &__icono {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        line-height: 0;
+        width: $iconos-menu;
+        height: $iconos-menu;
+    }
+
+    &__texto {
+        display: inline-block;
+        font-size: $text-lg;
+    }
+
+    // variante primario
+    &--primario {
+        background-color: $btn-primario;
+        color: $texto-claro;
+
+        &:hover:not([disabled]):not(.boton--deshabilitado) {
+            background-color: $btn-primario-hover;
+            border-color: $btn-primario-hover;
+        }
+
+        &:active:not([disabled]):not(.boton--deshabilitado) {
+            background-color: $btn-primario-active;
+            border-color: $btn-primario-active;
+            transform: translateY(1px);
+        }
+    }
+
+    // variante secundario
+    &--secundario {
+        background-color: $btn-secundario;
+        color: $texto-oscuro;
+        
+
+        &:hover:not([disabled]):not(.boton--deshabilitado) {
+            background-color: $btn-secundario-hover;
+        }
+
+        &:active:not([disabled]):not(.boton--deshabilitado) {
+            background-color: $btn-secundario-active;
+            transform: translateY(1px);
+        }
+    }
+
+    // variante fantasma (outline)
+    &--fantasma {
+        background-color: transparent;
+        color: $texto-oscuro;
+ 
+
+        &:hover:not([disabled]):not(.boton--deshabilitado) {
+            background-color: $fondo-input-hover;
+            border-color: $texto-oscuro;
+        }
+
+        &:active:not([disabled]):not(.boton--deshabilitado) {
+            background-color: $fondo-input-focus;
+            transform: translateY(1px);
+        }
+    }
+
+    // variante peligro
+    &--peligro {
+    background-color: $color-error;
+    color: $texto-claro;
+
+        &:hover:not([disabled]):not(.boton--deshabilitado) {
+            background-color: $color-error2;
+        }
+
+        &:active:not([disabled]):not(.boton--deshabilitado) {
+            background-color: $color-error2;
+            border-color: $color-error2;
+            transform: translateY(1px);
+        }
+    }
+
+    // tamaño pequeño
+    &--pequeno {
+        height: $boton-pequeno;
+    }
+
+    // tamaño mediano (por defecto)
+    &--mediano {
+        height: $boton-mediano;
+    }
+
+    // tamaño grande
+    &--grande {
+        height: $boton-grande;
+    }
+
+    // estado deshabilitado
+    &--deshabilitado,
+    &[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}

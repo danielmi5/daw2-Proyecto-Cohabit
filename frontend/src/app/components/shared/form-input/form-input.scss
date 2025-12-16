@@ -14,7 +14,7 @@
 
     &-texto {
       line-height: $line-tight;
-      color: var(--texto-primario);
+      color: var(--etiquetas-cards);
     }
 
     &-requerido {
@@ -105,14 +105,92 @@
   }
 
   &__mensaje {
-    display: block;
-    margin-block-start: $espaciado-s;
     font-size: $text-sm;
-    color: var(--texto-primario);
+    color: var(--etiquetas-cards);
     letter-spacing: -0.4px;
 
     &--error {
       color: var(--error);
+    }
+  }
+
+  /* Variante exito */
+  &--exito {
+    .form-input__contenedor-input {
+      border-color: var(--success);
+    }
+
+    .form-input__label-texto {
+      color: var(--success);
+    }
+
+    .form-input__campo::placeholder {
+      color: var(--success);
+    }
+
+    .form-input__mensaje {
+      color: var(--success);
+    }
+  }
+
+  /* Variante error */
+  &--erro {
+    .form-input__contenedor-input {
+      border-color: var(--error);
+    }
+
+    .form-input__label-texto {
+      color: var(--error);
+    }
+
+    .form-input__campo::placeholder {
+      color: var(--error);
+    }
+
+    .form-input__mensaje {
+      color: var(--error);
+    }
+  }
+
+  /* Variante desactivado */
+  &--desactivado {
+    opacity: 0.7;
+    pointer-events: none;
+
+    .form-input__contenedor-input {
+      background: $fondo-input;
+      border-color: $borde-input;
+    }
+
+    .form-input__label-texto {
+      color: $gris4;
+    }
+
+    .form-input__campo::placeholder {
+      color: $gris4;
+    }
+  }
+
+  /* Variante requerido: cuando el campo es obligatorio todo toma el color del asterisco */
+  &--requerido {
+    .form-input__contenedor-input {
+      border-color: var(--warning);
+    }
+
+    .form-input__label-texto {
+      color: var(--warning);
+    }
+
+    .form-input__campo::placeholder {
+      color: var(--warning);
+    }
+
+    .form-input__mensaje {
+      color: var(--warning);
+    }
+
+    .form-input__icono {
+      color: var(--warning);
     }
   }
 

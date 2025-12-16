@@ -1,0 +1,87 @@
+@use '../../../../styles/00-settings/variables' as *;
+
+.form-checkbox {
+	display: flex;
+	align-items: center;
+	gap: $espaciado-xs;
+
+	&__label {
+		display: inline-flex;
+		align-items: center;
+		gap: $espaciado-s;
+	}
+
+	&__campo {
+		position: absolute;
+		opacity: 0;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(1px, 1px, 1px, 1px);
+		white-space: nowrap;
+		border: 0;
+	}
+
+
+	&__visual {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 18px;
+		height: 18px;
+		flex: 0 0 18px;
+		margin-right: $espaciado-s;
+		pointer-events: auto;
+		user-select: none;
+		cursor: pointer;
+
+		.form-checkbox__icon {
+			width: 100%;
+			height: 100%;
+			display: block;
+			color: var(--etiquetas-cards);
+			fill: currentColor;
+			pointer-events: none;
+		}
+
+		.form-checkbox__icon--checked {
+			display: none;
+		}
+	}
+
+	/* cuando el input está checked, muestra el svg checked */
+	input:checked + .form-checkbox__visual .form-checkbox__icon--checked {
+		display: block;
+	}
+
+	/* y oculta el svg anterior cuando esté checked */
+	input:checked + .form-checkbox__visual .form-checkbox__icon--box {
+		display: none;
+	}
+
+	&__label-texto {
+		color: var(--etiquetas-cards);
+	}
+
+	&__label-requerido {
+		color: var(--warning);
+		font-weight: $font-weight-bold;
+	}
+
+	&--desactivado {
+		opacity: 0.7;
+		pointer-events: none;
+
+		.form-checkbox__visual {
+			cursor: default;
+		}
+	}
+
+	input:focus + .form-checkbox__visual,
+	input:focus-visible + .form-checkbox__visual {
+		outline: 3px solid rgba(59,130,246,0.16);
+		outline-offset: 2px;
+		border-radius: 3px;
+	}
+}
+

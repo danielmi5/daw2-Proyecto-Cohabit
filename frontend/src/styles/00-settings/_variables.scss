@@ -43,6 +43,9 @@ $btn-primario: $color-primario-claro; // Botón primario
 $btn-primario-hover: $color-primario; // Hover primario
 $btn-primario-active: $color-primario-oscuro; // Click primario
 
+// Ancho fijo para botones (uso: componentes de ejemplo)
+$boton-ancho: 200px;
+
 $btn-secundario: $blanco; // Botón secundario
 $btn-secundario-hover: $gris1; // Hover secundario
 $btn-secundario-active: $color-complementario1; // Click secundario
@@ -202,5 +205,11 @@ $transicion-suave: ease-in-out;
 $iconos-header: 36px;
 $iconos-menu: 24px;
 $iconos-redes: 20px;
+
+//TAMAÑOS BOTONES
+
+$boton-pequeno: 2.438rem; //39px
+$boton-mediano: 3.5rem; //56px
+$boton-grande: 4.563rem; //73px
 
 

@@ -1,0 +1,44 @@
+<div class="form-select" [class.form-select--requerido]="requerido" [class.form-select--desactivado]="desactivado">
+	<label class="form-select__label" [for]="id">
+		<span class="form-select__label-texto">{{ etiqueta }}</span>
+		@if (requerido) {
+			<span class="form-select__label-requerido" aria-hidden="true">*</span>
+		}
+	</label>
+
+	<div class="form-select__contenedor" (click)="selectRef.focus()">
+		<select #selectRef
+			class="form-select__campo"
+			[id]="id"
+			[name]="name"
+			[disabled]="desactivado"
+			[attr.aria-disabled]="desactivado ? 'true' : null"
+			[attr.aria-required]="requerido ? 'true' : null"
+			[attr.aria-invalid]="hayError ? 'true' : 'false'"
+			[attr.aria-describedby]="((mensajeExito || textoAyuda) ? id + '-ayuda' : '') + (mensajeError && hayError ? ' ' + id + '-error' : '')"
+		>
+			<option value="" disabled [selected]="!valorPredeterminado">Elige una opción</option>
+			@if (opciones && opciones.length) {
+				@for (opt of opciones; track opt.value) {
+					<option [value]="opt.value" [selected]="opt.value === valorPredeterminado">{{ opt.label }}</option>
+				}
+			} @else {
+				<option value="1" [selected]="valorPredeterminado === '1'">Opción 1</option>
+				<option value="2" [selected]="valorPredeterminado === '2'">Opción 2</option>
+				<option value="3" [selected]="valorPredeterminado === '3'">Opción 3</option>
+			}
+		</select>
+		<span class="form-select__icono" aria-hidden="true">
+			<svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+				<path d="M1 1L7 7L13 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+		</span>
+	</div>
+	@if (mensajeExito && !hayError) {
+		<small class="form-select__mensaje" [id]="id + '-ayuda'">{{ mensajeExito }}</small>
+	}
+
+	@if (mensajeError && hayError) {
+		<small class="form-select__mensaje form-select__mensaje--error" [id]="id + '-error'" role="alert">{{ mensajeError }}</small>
+	}
+</div>

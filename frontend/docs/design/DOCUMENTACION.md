@@ -83,7 +83,7 @@ Cada entrada contiene: `- tag`: breve descripción. Por ejemplo:
 <nav aria-label="Menú principal" class="cabecera__navegacion">
   <ul class="cabecera__menu">
     <li><a routerLink="/inicio">INICIO</a></li>
-    <li><a routerLink="/componentes">COMPONENTES</a></li>
+    <li><a routerLink="/style-guide">STYLE GUIDE</a></li>
   </ul>
 </nav>
 ```

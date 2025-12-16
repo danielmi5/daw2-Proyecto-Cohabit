@@ -1,6 +1,6 @@
 @use '../../../styles/00-settings/variables' as *;
 
-.componentes {
+.style-guide {
   padding: $espaciado-m;
 
 
@@ -33,9 +33,33 @@
     border-radius: $radio-card;
   }
 
+  &__botones {
+    width: 100%;
+    display: flex;
+    gap: $espaciado-m;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  &__grupo {
+    display: flex;
+    flex-direction: column;
+    gap: $espaciado-s;
+    align-items: center;
+    min-width: 160px;
+  }
+
+  &__subtitulo {
+    font-size: $text-md;
+    margin-bottom: $espaciado-s;
+  }
+
+  &__grupo app-button {
+    width: $boton-ancho;
+  }
+
   &__titulos{
     color: var(--titulos);
   }
 
 }
-

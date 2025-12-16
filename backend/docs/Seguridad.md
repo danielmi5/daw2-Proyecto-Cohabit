@@ -5,23 +5,23 @@ Documentación de la capa de seguridad del backend, su estructura de carpetas y 
 ## Estructura de carpetas
 
 ### DTO
-Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/auth/dto/]
+Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/auth/dto/](../src/main/java/com/cohabit/cohabit_backend/security/auth/dto/)
 
 Son los DTOs utilizados en los endpoints de autenticación y registro. Validan entrada y modelan la respuesta mínima que necesita el cliente para autenticarse.
 
 
 #### AuthRequestDTO
-	Es la petición de autenticación; se utiliza para el inicio de sesión. Contiene los campos `email` y `password` con validaciones (`@NotBlank`, `@Email`) para rechazar peticiones incorrectas antes de entrar en la lógica de servicio.
+Es la petición de autenticación; se utiliza para el inicio de sesión. Contiene los campos `email` y `password` con validaciones (`@NotBlank`, `@Email`) para rechazar peticiones incorrectas antes de entrar en la lógica de servicio.
 
 #### AuthResponseDTO
-	Es la respuesta tras autenticarse; contiene el `token` JWT. Se devuelve al hacer registro/login para que el cliente lo almacene y lo añada como header `Authorization: Bearer {token}` en llamadas subsiguientes.
+Es la respuesta tras autenticarse; contiene el `token` JWT. Se devuelve al hacer registro/login para que el cliente lo almacene y lo añada como header `Authorization: Bearer {token}` en llamadas subsiguientes.
 
 #### RegisterRequestDTO
-	Es la petición de registro; contiene los campos: `nombre`, `apellidos`, `email`, `password`, `rol` (opcional, se usa en tests; por defecto es `USUARIO`). Incluye validaciones para garantizar integridad mínima antes de persistir.
+Es la petición de registro; contiene los campos: `nombre`, `apellidos`, `email`, `password`, `rol` (opcional, se usa en tests; por defecto es `USUARIO`). Incluye validaciones para garantizar integridad mínima antes de persistir.
 
 
 ### Servicio de autenticación
-Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/auth/service/]
+Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/auth/service/](../src/main/java/com/cohabit/cohabit_backend/security/auth/service/)
 
 Lógica de negocio para iniciar sesión, registrar usuarios y gestionar logout (revocación de tokens). Incluye la adaptación de la entidad `Usuario` a `UserDetailsService` de Spring Security.
 
@@ -35,7 +35,7 @@ Lógica de negocio para iniciar sesión, registrar usuarios y gestionar logout (
 Implementa `UserDetailsService`. Carga `Usuario` por `email` desde el repositorio y convierte su `rol` en `GrantedAuthority` con prefijo `ROLE_`. Se inyecta en la configuración de autenticación (`DaoAuthenticationProvider`) para validar credenciales.
 
 ### Controlador de autenticación
-Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/auth/controller/]
+Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/auth/controller/](../src/main/java/com/cohabit/cohabit_backend/security/auth/controller/)
 
 Se encarga de exponer endpoints REST públicos para login, registro y logout, y de validar entradas y mapear respuestas a DTOs.
 
@@ -46,7 +46,7 @@ Se encarga de exponer endpoints REST públicos para login, registro y logout, y 
 
 
 ### JWT (servicios y filtro)
-Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/jwt/]
+Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/jwt/](../src/main/java/com/cohabit/cohabit_backend/security/jwt/)
 
 Se encarga de la generación, parsing, validación y revocación del token JWT. Integración con la cadena de filtros de Spring Security.
 
@@ -68,7 +68,7 @@ También maneja casos de token no válido/expirado devolviendo 401 desde `Authen
 Implementación en memoria que almacena `jti` hasta la expiración del token. Limpia entradas expiradas de forma periódica o al insertar.
 
 ### Configuración de seguridad
-Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/config/]
+Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/config/](../src/main/java/com/cohabit/cohabit_backend/security/config/)
 
 Define la configuración de seguridad de la cadena de filtros, reglas de acceso por URL/método y política de sesión (stateless).
 
@@ -80,7 +80,7 @@ Define la configuración de seguridad de la cadena de filtros, reglas de acceso 
 
 
 ### Autorización específica del dominio
-Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/authorization/]
+Se encuentra en [backend/src/main/java/com/cohabit/cohabit_backend/security/authorization/](../src/main/java/com/cohabit/cohabit_backend/security/authorization/)
 
 Encapsula reglas de autorización que combinan información de negocio (miembros, creadores, propietarios) con roles, para usar desde anotaciones `@PreAuthorize`.
 
@@ -127,12 +127,11 @@ jwt.tiempo-expiracion=86400000
 - Endpoints de autenticación: públicos (`/auth/*`).
 - Resto de la API: requiere autenticación.
 - Ejemplos de restricciones:
-	- Operaciones administrativas → `ROLE_ADMIN`.
-	- Acciones sobre recursos/grupos → combinaciones de `@PreAuthorize` y comprobaciones en `GrupoSecurityService`.
+	- Operaciones globales: `ROLE_ADMIN`.
+	- Acciones sobre recursos/grupos: combinaciones de `@PreAuthorize` y comprobaciones en `GrupoSecurityService` mediante roles de grupo.
 
 ## Tests de integración y utilidades de test
-- Clase helper: `AutenticadorTests` (en `src/test/...`) que registra usuarios de prueba y obtiene tokens JWT (`ADMIN`, `USUARIO`).
-- Los tests usan estos tokens en el header `Authorization` para verificar comportamiento autorizado y no autorizado (401/403).
+Clase helper: `AutenticadorTests` (en `src/test/...`) que registra usuarios de prueba y obtiene tokens JWT (`ADMIN`, `USUARIO`). Los tests usan estos tokens en el header `Authorization` para verificar comportamiento autorizado y no autorizado (401/403).
 
 
 

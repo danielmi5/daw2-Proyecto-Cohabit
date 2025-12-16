@@ -64,7 +64,7 @@ La carpeta `src/main/java/com/cohabit/cohabit_backend/dto` contiene los objetos 
 - `ReglaRecursoRequestDTO` / `ReglaRecursoResponseDTO` / `ReglaRecursoUpdateDTO`: entidad `ReglaRecurso`.
 - `ApiErrorDTO`
 
-Nota: los DTOs de `Request` son para las perticiones POST, `Response` para las peticiones GET o peticiones que devuelvan información y los DTOs de actualización (`UpdateDTO`) usados para las operaciones PATCH/PUT desde el cliente. 
+Nota: los DTOs de `Request` son para las peticiones POST, `Response` para las peticiones GET o peticiones que devuelvan información y los DTOs de actualización (`UpdateDTO`) usados para las operaciones PATCH/PUT desde el cliente. 
 
 ### Mapper
 
@@ -98,16 +98,6 @@ Los controladores exponen la API REST y traducen DTOs a llamadas a servicios. Se
 - `RecursoController` (`/api/recursos`): CRUD recursos.
 - `ReglaRecursoController` (`/api/reglas`): CRUD reglas.
 - `ReservaController` (`/api/reservas`): CRUD reservas.
-
-**Requisitos**
-- Java 17+
-- Maven
-- PostgreSQL (configurable en `src/main/resources/application.properties`)
-
-**Cómo ejecutar (resumen)**
-1. Configurar la base de datos en `src/main/resources/application.properties`.
-2. Construir con `mvn clean package`.
-3. Ejecutar el JAR o usar Docker/Docker Compose según el repositorio raíz.
 
 
 ## Modelo de Datos
@@ -271,4 +261,4 @@ Relaciones:
 ## Seguridad
 La seguridad del backend está basada en JWT: los endpoints usan un filtro que valida el header `Authorization: Bearer {token}`, los roles (`ADMIN`, `USUARIO`) controlan accesos y existen utilidades de autorización de dominio (`GrupoSecurityService`) usadas desde `@PreAuthorize`. Se aplica un enfoque stateless con `SessionCreationPolicy.STATELESS`, las contraseñas se hashean con `BCryptPasswordEncoder` y hay soporte para invalidación de tokens (lista negra in-memory para logout). Los tests incluyen pruebas unitarias sobre los servicios y pruebas de integración sobre los controladores que usan autenticación (los helpers de test registran usuarios y obtienen tokens para `MockMvc`).
 
-Documentación detallada de seguridad: [Seguridad.md](backend/docs/Seguridad.md)
+Documentación detallada de la implementación: [Seguridad.md](docs/Seguridad.md)

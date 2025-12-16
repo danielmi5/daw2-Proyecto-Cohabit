@@ -1,0 +1,54 @@
+<div class="form-input">
+  <label class="form-input__label" [for]="id">
+    <span class="form-input__label-texto">{{ etiqueta }}</span>
+    @if (requerido) {
+      <span class="form-input__label-requerido" aria-hidden="true">*</span>
+    }
+  </label>
+
+  <div class="form-input__contenedor">
+    @if (iconoIzquierda) {
+      <span class="form-input__icono form-input__icono--izquierda" aria-hidden="true">
+        <i [class]="iconoIzquierda"></i>
+      </span>
+    }
+
+    <input
+      class="form-input__campo"
+      [class.form-input__campo--con-icono-izquierda]="iconoIzquierda"
+      [class.form-input__campo--con-icono-derecha]="iconoDerecha"
+      [id]="id"
+      [name]="name"
+      [type]="tipo"
+      [placeholder]="placeholder"
+      [attr.aria-required]="requerido ? 'true' : null"
+      [required]="requerido"
+      [attr.aria-invalid]="hayError ? 'true' : 'false'"
+      [attr.aria-describedby]="
+        `${textoAyuda ? id + '-ayuda' : ''} ${mensajeError && hayError ? id + '-error' : ''}`.trim()
+      "
+    />
+
+    @if (iconoDerecha) {
+      <span class="form-input__icono form-input__icono--derecha" aria-hidden="true">
+        <i [class]="iconoDerecha"></i>
+      </span>
+    }
+  </div>
+
+  @if (textoAyuda && !hayError) {
+    <small class="form-input__mensaje" [id]="`${id}-ayuda`">
+      {{ textoAyuda }}
+    </small>
+  }
+
+  @if (mensajeError && hayError) {
+    <small
+      class="form-input__mensaje form-input__mensaje--error"
+      [id]="`${id}-error`"
+      role="alert"
+    >
+      {{ mensajeError }}
+    </small>
+  }
+</div>

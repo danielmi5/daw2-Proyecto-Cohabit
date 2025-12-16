@@ -1,6 +1,8 @@
 // Imports orden ITCSS
 // 1) Settings (variables)
 @use "00-settings/variables" as *;
+// 1.1) Variables CSS derivadas de SCSS (custom properties)
+@use "00-settings/css-variables";
 // 2) Tools (mixins)
 @use "01-tools/mixins" as *;
 // 3) Generic (reset)

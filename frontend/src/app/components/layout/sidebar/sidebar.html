@@ -1,31 +1,96 @@
 <aside class="barra-lateral">
   <header class="barra-lateral__encabezado">
+    <h2 class="barra-lateral__titulo">{{ nombreUsuario }}</h2>
     <figure class="barra-lateral__perfil">
-      <picture class="barra-lateral__perfil-icono">
-        <img src="" alt="Usuario" class="barra-lateral__perfil-icono">
-      </picture>
-      <figcaption class="barra-lateral__perfil-nombre">COHABIT</figcaption>
+      <img 
+        [src]="imagenPerfil" 
+        [alt]="nombreUsuario"
+        class="barra-lateral__perfil-imagen"
+      />
     </figure>
   </header>
   
   <nav class="barra-lateral__navegacion">
     <ul class="barra-lateral__menu">
-      <li class="barra-lateral__menu-item barra-lateral__menu-item--activo">
-        <a routerLink="/dashboard" class="barra-lateral__menu-enlace">
-          <picture class="barra-lateral__menu-icono">
-            <img src="" alt="" class="barra-lateral__menu-icono">
-          </picture>
+      <li class="barra-lateral__menu-item">
+        <a 
+          routerLink="/dashboard" 
+          routerLinkActive="barra-lateral__menu-enlace--activo"
+          class="barra-lateral__menu-enlace"
+        >
+          <span class="barra-lateral__menu-icono" aria-hidden="true">
+            <i class="icono-casa"></i>
+          </span>
           <span class="barra-lateral__menu-texto">Dashboard</span>
         </a>
       </li>
       <li class="barra-lateral__menu-item">
-        <a routerLink="/reservas" class="barra-lateral__menu-enlace">
-          <picture class="barra-lateral__menu-icono">
-            <img src="" alt="" class="barra-lateral__menu-icono">
-          </picture>
-          <span class="barra-lateral__menu-texto">Reservas</span>
+        <a 
+          routerLink="/configuracion" 
+          routerLinkActive="barra-lateral__menu-enlace--activo"
+          class="barra-lateral__menu-enlace"
+        >
+          <span class="barra-lateral__menu-icono" aria-hidden="true">
+            <i class="icono-engranaje"></i>
+          </span>
+          <span class="barra-lateral__menu-texto">Dashboard</span>
+        </a>
+      </li>
+      <li class="barra-lateral__menu-item">
+        <a 
+          routerLink="/usuarios" 
+          routerLinkActive="barra-lateral__menu-enlace--activo"
+          class="barra-lateral__menu-enlace"
+        >
+          <span class="barra-lateral__menu-icono" aria-hidden="true">
+            <i class="icono-usuarios"></i>
+          </span>
+          <span class="barra-lateral__menu-texto">Dashboard</span>
+        </a>
+      </li>
+      <li class="barra-lateral__menu-item">
+        <a 
+          routerLink="/seguridad" 
+          routerLinkActive="barra-lateral__menu-enlace--activo"
+          class="barra-lateral__menu-enlace"
+        >
+          <span class="barra-lateral__menu-icono" aria-hidden="true">
+            <i class="icono-candado"></i>
+          </span>
+          <span class="barra-lateral__menu-texto">Dashboard</span>
         </a>
       </li>
     </ul>
   </nav>
+
+  @if (mostrarOpcionesPerfil) {
+    <footer class="barra-lateral__pie">
+      <ul class="barra-lateral__menu barra-lateral__menu--secundario">
+        <li class="barra-lateral__menu-item">
+          <a 
+            routerLink="/informacion" 
+            routerLinkActive="barra-lateral__menu-enlace--activo"
+            class="barra-lateral__menu-enlace"
+          >
+            <span class="barra-lateral__menu-icono" aria-hidden="true">
+              <i class="icono-info"></i>
+            </span>
+            <span class="barra-lateral__menu-texto">Ayuda</span>
+          </a>
+        </li>
+        <li class="barra-lateral__menu-item">
+          <button 
+            type="button"
+            id = "btn-cerrar-sesion"
+            class="barra-lateral__menu-enlace"
+          >
+            <span class="barra-lateral__menu-icono" aria-hidden="true">
+              <i class="icono-salir"></i>
+            </span>
+            <span class="barra-lateral__menu-texto">Cerrar sesión</span>
+          </button>
+        </li>
+      </ul>
+    </footer>
+  }
 </aside>

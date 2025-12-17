@@ -65,7 +65,6 @@ También hay pesos para la tipografía (`$font-weight-regular`, `$font-weight-me
 
 ### 2.1 Elementos semánticos utilizados
 
-Cada entrada contiene: `- tag`: breve descripción. Por ejemplo:
 
 - `header`: se utiliza como encabezado de páginas o secciones. Por ejemplo:
 
@@ -201,66 +200,298 @@ Ejemplo de jerarquía:
 
 ### 2.3 Estructura de formularios
 
-Reglas y buenas prácticas aplicadas:
+En este proyecto seguimos buenas prácticas de accesibilidad y semántica en los formularios. A continuación se describe la estructura recomendada y cómo la usamos en los componentes.
 
-- Agrupa controles relacionados con `fieldset` y describe el grupo con `legend`.
-- Asocia siempre `label` con `input` mediante `for` y `id`, o envolviendo el `input` con el `label` (ambas formas son accesibles).
-- Añade `aria-describedby` para relacionar un `input` con un `small` que contiene texto de ayuda.
-- Muestra mensajes de error usando `role="alert"` y `aria-invalid="true"` en el `input` cuando corresponde.
+- `fieldset` / `legend`:
+  - `fieldset` agrupa controles relacionados (por ejemplo, datos personales, dirección, credenciales).
+  - `legend` actúa como título del grupo y es leído por tecnologías de asistencia, por lo que mejora la accesibilidad.
 
-Ejemplo de estructura:
+  Ejemplo:
+
+  ```html
+  <fieldset>
+    <legend>Datos personales</legend>
+    <label for="nombre">Nombre</label>
+    <input id="nombre" name="nombre" />
+
+    <label for="apellidos">Apellidos</label>
+    <input id="apellidos" name="apellidos" />
+  </fieldset>
+  ```
+
+- Asociación de `label` con `input`:
+  - Usar `for` en el `label` apuntando al `id` del `input` proporciona un objetivo claro para cliques y lectores de pantalla.
+  - Además se puede envolver el `input` dentro del `label` también establecería la asociación:
+
+  ```html
+  <label>Correo electrónico
+    <input type="email" name="email" />
+  </label>
+  ```
+
+- Reglas prácticas aplicadas en el repo:
+  - Siempre definir `id` en inputs que vayan a ser referenciados desde `label`.
+  - Agrupar visual y semánticamente controles relacionados en `fieldset` con `legend` descriptivos.
+  - Añadir atributos ARIA cuando sea necesario (por ejemplo, `aria-describedby` para textos de ayuda o mensajes de error).
+
+
+#### Ejemplo del formulario usado en LoginForm para el login
 
 ```html
-<form>
-  <fieldset>
-    <legend>Información personal</legend>
+<form class="login-form" [formGroup]="formularioLogin" (ngSubmit)="onSubmit()" novalidate>
+	<h2 class="login-form__title">Inicio de sesión</h2>
 
-    <label for="nombre">Nombre
-      <input id="nombre" name="nombre" type="text" required />
-    </label>
+	<fieldset class="login-form__fieldset">
+		<legend class="login-form__legend">Credenciales</legend>
 
-    <label for="email">Correo electrónico
-      <input id="email" name="email" type="email" aria-describedby="email-help" required />
-      <small id="email-help">Nunca compartiremos tu email</small>
-    </label>
-  </fieldset>
+        <app-form-input
+            id="login-email"
+            name="email"
+            formControlName="email"
+            etiqueta="Correo electrónico"
+            placeholder="example@example.ext"
+            [tipo]="'email'"
+            [requerido]="true"
+            [estadoValidacion]="getValidationState('email')"
+            [mensajeAdvertencia]="getWarningMessage('email')"
+            [mensajeError]="getErrorMessage('email')"
+            [mensajeExito]="getSuccessMessage('email')"
+            textoAyuda="Debe seguir el formato estándar de correo."
+        ></app-form-input>
+
+        <app-form-input
+            id="login-password"
+            name="password"
+            formControlName="password"
+            etiqueta="Contraseña"
+            placeholder="Contraseña"
+            [tipo]="'password'"
+            [requerido]="true"
+            [estadoValidacion]="getValidationState('password')"
+            [mensajeAdvertencia]="getWarningMessage('password')"
+            [mensajeError]="getErrorMessage('password')"
+            [mensajeExito]="getSuccessMessage('password')"
+            textoAyuda="Debe tener como mínimo 8 caracteres."
+        ></app-form-input>
+
+		<app-form-checkbox 
+            id="login-remember" 
+            name="remember" 
+            formControlName="remember"
+            etiqueta="Recuérdame"
+        ></app-form-checkbox>
+
+        <p class="login-form__cta">¿Aún no tienes una cuenta? - <a routerLink="/registro" class="login-form__cta-link">Regístrate</a></p>
+	</fieldset>
+
+	<footer class="login-form__botones">
+		<app-button 
+            variante="primario" 
+            tipo="submit" 
+            ariaLabel="Iniciar sesión"
+            [deshabilitado]="formularioLogin.invalid"
+        >
+            Iniciar sesión
+    </app-button>
+
+		<app-button 
+            variante="secundario" 
+            tipo="button" 
+            ariaLabel="Iniciar sesión con Google"
+            (click)="onGoogleLogin()"
+        >
+            Iniciar sesión con Google
+        </app-button>
+	</footer>
 </form>
 ```
 
-Ejemplo del componente `form-input` (uso recomendado dentro de formularios):
+Explicación de la estructura HTML seguida:
+
+- El `form` está vinculado a un `FormGroup` mediante `[formGroup]="formularioLogin"`, de modo que Angular controla estado/valor/validación.
+- Se usa `fieldset` + `legend` para agrupar las credenciales y aportar contexto semántico y accesible.
+- Contiene una línea CTA (etiqueta p) con enlace, que ayuda al usuario a saber si debe registrarse o iniciar sesión y facilita el acceso al formulario contrario.
+- Al final, el `footer` contiene los `app-button`: botón primario (submit) y botón secundario ("Iniciar sesión con Google").
+- Cada control se encapsula en un componente `app-form-input` para mantener la plantilla limpia y reutilizable.
+- Los `app-form-input` reciben `id` y `name` para facilitar la asociación con `label` si se usa fuera del componente, además de `placeholder` y `textoAyuda` para mejorar la UX.
+- Para mensajes y estados se pasan propiedades como `[estadoValidacion]`, `[mensajeAdvertencia]`, `[mensajeError]` y `[mensajeExito]` que el componente muestra según el estado.
+- El atributo `novalidate` en el `form` evita la validación nativa del navegador para delegar en el sistema reactivo de Angular.
+
+
+#### Ejemplo del formulario usado en RegistroForm para el registro
 
 ```html
-<!-- Uso del componente presentacional -->
-<app-form-input
-  id="example-email"
-  nombre="email"
-  tipo="email"
-  etiqueta="Correo electrónico"
-  placeholder="tu@ejemplo.com"
-  [requerido]="true"
-  textoAyuda="Nunca compartiremos tu email"
->
-  <!-- Etiqueta envolviendo el control y el texto de ayuda -->
-  <label>
-    Correo electrónico
-    <input
-      id="example-email"
-      name="email"
-      type="email"
-      required
-      aria-describedby="example-email-ayuda"
-      placeholder="tu@ejemplo.com"
-    />
-    <small id="example-email-ayuda">Nunca compartiremos tu email</small>
-  </label>
+<form class="registro-form" [formGroup]="formularioRegistro" (ngSubmit)="onSubmit()" novalidate>
+	<h2 class="registro-form__title">Registrarse</h2>
 
-  <!-- Mensaje de error y ayuda proyectados -->
-  <div fi-error>Introduce un correo válido</div>
-  <div fi-help>Usa tu correo de trabajo</div>
-</app-form-input>
+	<fieldset class="registro-form__fieldset">
+		<legend class="registro-form__legend">Datos personales</legend>
+
+		<app-form-input 
+			class="registro-form__half" 
+			id="nombre" 
+			name="nombre"
+			formControlName="nombre"
+			etiqueta="Nombre" 
+			placeholder="Nombre"
+			[requerido]="true"
+			[estadoValidacion]="getValidationState('nombre')"
+			[mensajeAdvertencia]="getWarningMessage('nombre')"
+			[mensajeError]="getErrorMessage('nombre')"
+			[mensajeExito]="getSuccessMessage('nombre')"
+		></app-form-input>
+
+		<app-form-input 
+			class="registro-form__half" 
+			id="apellidos" 
+			name="apellidos"
+			formControlName="apellidos"
+			etiqueta="Apellidos" 
+			placeholder="Apellidos"
+			[requerido]="true"
+			[estadoValidacion]="getValidationState('apellidos')"
+			[mensajeAdvertencia]="getWarningMessage('apellidos')"
+			[mensajeError]="getErrorMessage('apellidos')"
+			[mensajeExito]="getSuccessMessage('apellidos')"
+		></app-form-input>
+	</fieldset>
+
+	<fieldset class="registro-form__fieldset">
+		<legend class="registro-form__legend">Cuenta</legend>
+
+		<div class="registro-form__campo-async">
+			<app-form-input 
+				id="reg-email" 
+				name="email"
+				formControlName="email"
+				etiqueta="Correo electrónico" 
+				placeholder="example@example.ext" 
+				[tipo]="'email'"
+				[requerido]="true"
+				[estadoValidacion]="getValidationState('email')"
+				[mensajeAdvertencia]="getWarningMessage('email')"
+				[mensajeError]="getErrorMessage('email')"
+				[mensajeExito]="getSuccessMessage('email')"
+			></app-form-input>
+			@if (isEmailPending()) {
+				<p class="registro-form__validando">Verificando disponibilidad...</p>
+			}
+		</div>
+
+		<app-form-input 
+			id="reg-pass" 
+			name="password"
+			formControlName="password"
+			etiqueta="Contraseña" 
+			placeholder="Contraseña" 
+			[tipo]="'password'" 
+			[requerido]="true"
+			[estadoValidacion]="getValidationState('password')"
+			[mensajeAdvertencia]="getWarningMessage('password')"
+			[mensajeError]="getErrorMessage('password')"
+			[mensajeExito]="getSuccessMessage('password')"
+			textoAyuda="Debe ser una combinación mínima de 8 letras, números, y símbolos."
+		></app-form-input>
+
+		<app-form-input 
+			id="reg-pass-confirm" 
+			name="passwordConfirm"
+			formControlName="passwordConfirm"
+			etiqueta="Confirmar contraseña" 
+			placeholder="Repite la contraseña" 
+			[tipo]="'password'"
+			[requerido]="true"
+			[estadoValidacion]="getValidationState('passwordConfirm')"
+			[mensajeAdvertencia]="getWarningMessage('passwordConfirm')"
+			[mensajeError]="getErrorMessage('passwordConfirm')"
+			[mensajeExito]="getSuccessMessage('passwordConfirm')"
+			textoAyuda="Deben coincidir las contraseñas."
+		></app-form-input>
+
+		<app-form-checkbox 
+			id="check-politicas" 
+			name="terminos"
+			formControlName="terminos"
+			[requerido]="true"
+		>
+			He leído y acepto los <a routerLink="/terminos">Términos y Condiciones</a> y la <a routerLink="/privacidad">Política de Privacidad</a>
+		</app-form-checkbox>
+		@if (shouldShowError('terminos')) {
+			<p class="registro-form__error">{{ getWarningMessage('terminos') }}</p>
+		}
+
+		<p class="registro-form__cta">¿Ya tienes una cuenta? - <a routerLink="/login" class="registro-form__cta-link">Inicia Sesión</a></p>
+	</fieldset>
+
+	<footer class="registro-form__botones">
+		<app-button 
+			variante="primario" 
+			tipo="submit" 
+			ariaLabel="Registrarse"
+			[deshabilitado]="formularioRegistro.invalid || isFormPending()"
+		>
+			{{ getSubmitButtonText() }}
+		</app-button>
+
+		<app-button 
+			variante="secundario" 
+			tipo="button" 
+			ariaLabel="Continuar con Google"
+			(click)="onGoogleRegister()"
+		>
+			Continuar con Google
+		</app-button>
+	</footer>
+</form>
+
 ```
 
-Notas finales:
+Explicación de la estructura HTML:
 
-- El componente `form-input` del proyecto está pensado para ser presentacional: la lógica de validación y estado (mostrar `mensajeError`, `hayError`) se maneja desde el `ts` del formulario que lo utiliza.
-- Se mantiene accesibilidad mediante: `aria-describedby`, `aria-invalid` y `role="alert"` ayudan a lectores de pantalla a informar estados y ayudas.
+- El `form` está enlazado a `formularioRegistro` mediante `[formGroup]`, por tanto Angular gestiona valores, estados y validaciones.
+- Se organizan dos `fieldset` claros: uno para "Datos personales" y otro para "Cuenta"; cada `fieldset` tiene su `legend` que aporta contexto y accesibilidad.
+- Cada campo se implementa con el componente reutilizable `app-form-input`. Este componente encapsula el `input` y la presentación (etiqueta, placeholder, mensajes) y se integra con el `FormGroup` usando `formControlName`.
+- Contiene una línea CTA (etiqueta p) con enlace, que ayuda al usuario a saber si debe registrarse o iniciar sesión y facilita el acceso al formulario contrario.
+- Al final, el `footer` contiene los `app-button`: botón primario (submit) y botón secundario ("Continuar con Google").
+- Manejo de validaciones asíncronas: el campo `email` muestra un indicador (`Verificando disponibilidad...`) mientras `isEmailPending()` es `true` (control `pending`).
+- Checkbox de términos: se usa `app-form-checkbox` y, si se desmarca, se muestra el mensaje de advertencia desde `shouldShowError('terminos')`.
+- `novalidate` en el `form` desactiva la validación nativa del navegador para delegar completamente en la validación reactiva de Angular.
+- Botones: el botón de submit está deshabilitado cuando `formularioRegistro.invalid` o `isFormPending(), esto evita envíos no válidos o mientras hay validaciones pendientes.
+
+#### Propiedades utilizadas en form-input:
+
+```ts
+export type EstadoValidacion = 'inicial' | 'advertencia' | 'error' | 'exito';
+export class FormInput implements ControlValueAccessor {
+  @Input() tipo: string = 'text';
+  @Input() name: string = '';
+  @Input() id: string = '';
+  @Input() etiqueta: string = '';
+  @Input() placeholder: string = '';
+  @Input() requerido: boolean = false;
+  @Input() mensajeAdvertencia?: string;
+  @Input() mensajeError?: string;
+  @Input() estadoValidacion: EstadoValidacion = 'inicial';
+}
+```
+
+Explicación de las propiedades de `app-form-input`:
+
+- `tipo`: tipo de input (`text`, `email`, `password`, etc.). Determina el `type` del elemento `input` interno.
+- `name`: nombre del control para identificar el campo.
+- `id`: identificador DOM del input; se usa para asociar `label` externos (`for="id"`) y para accesibilidad.
+- `etiqueta`: texto visible del `label` que muestra el componente; mejora la semántica y UX.
+- `placeholder`: texto auxiliar dentro del input para orientar al usuario sobre el formato esperado.
+- `requerido`: indica si el campo es obligatorio; el componente puede usarlo para añadir el asterisco (*) visual y para lógica de presentación de advertencias.
+- `mensajeAdvertencia`: texto mostrado cuando el estado es `advertencia` (p. ej. campo obligatorio vacío tras interacción).
+- `mensajeError`: texto mostrado cuando el estado es `error` (p. ej. formato inválido, validación fallida).
+- `estadoValidacion`: enum local que indica el estado efectivo del control (`inicial`, `advertencia`, `error`, `exito`). El componente lo usa para aplicar estilos y decidir qué mensaje mostrar.
+
+
+HTML del componente input:
+
+
+
+
+Con esta estructura se logra una interfaz accesible y consistente: los `label` enlazan con los `input`, los `fieldset` aportan contexto y los componentes reutilizables (`app-form`) encapsulan la lógica de `ControlValueAccessor` para integrarse con `FormGroup`.
+

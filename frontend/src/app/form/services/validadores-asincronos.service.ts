@@ -11,7 +11,7 @@ import { switchMap, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ValidadoresAsincronosService {
-  // Correos simulados que ya están registrados (para testing)
+  // Correos simulados que ya están registrados (para testing al no tener conexión con backend)
   private correosRegistrados = [
     'daniel@test.com',
     'daniel@cohabit.com',
@@ -40,7 +40,7 @@ export class ValidadoresAsincronosService {
   }
 
   /**
-   * Método para añadir un correo a la lista de registrados (útil tras registro exitoso).
+   * Método para añadir un correo a la lista de registrados.
    */
   agregarCorreoRegistrado(correo: string): void {
     if (!this.correosRegistrados.includes(correo.toLowerCase())) {

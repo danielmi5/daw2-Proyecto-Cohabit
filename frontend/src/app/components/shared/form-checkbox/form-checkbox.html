@@ -26,7 +26,12 @@
 		</svg>
 	</span>
 
-	<span class="form-checkbox__label-texto">{{ etiqueta }}</span>
+		<span class="form-checkbox__label-texto">
+			<ng-content></ng-content>
+			@if (!tieneProyectado) {
+				<span>{{ etiqueta }}</span>
+			}
+		</span>
 	@if (requerido) {
 		<span class="form-checkbox__label-requerido" aria-hidden="true">*</span>
 	}

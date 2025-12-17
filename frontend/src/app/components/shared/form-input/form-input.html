@@ -1,4 +1,8 @@
-<div class="form-input" [class.form-input--exito]="exito" [class.form-input--erro]="hayError" [class.form-input--desactivado]="desactivado" [class.form-input--requerido]="requerido">
+<div class="form-input" 
+  [class.form-input--exito]="getEstadoEfectivo() === 'exito'" 
+  [class.form-input--advertencia]="getEstadoEfectivo() === 'advertencia'"
+  [class.form-input--error]="getEstadoEfectivo() === 'error'" 
+  [class.form-input--desactivado]="desactivado">
   <label class="form-input__label" [for]="id">
     <span class="form-input__label-texto">{{ etiqueta }}</span>
     @if (requerido) {
@@ -22,13 +26,14 @@
       [type]="tipo"
       [placeholder]="placeholder"
       [disabled]="desactivado"
+      [value]="valor"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
       [attr.aria-disabled]="desactivado ? 'true' : null"
       [attr.aria-required]="requerido ? 'true' : null"
       [required]="requerido"
-      [attr.aria-invalid]="hayError ? 'true' : 'false'"
-      [attr.aria-describedby]="
-        `${(textoAyuda || mensajeExito) ? id + '-ayuda' : ''} ${mensajeError && hayError ? id + '-error' : ''}`.trim()
-      "
+      [attr.aria-invalid]="getEstadoEfectivo() === 'error' ? 'true' : 'false'"
+      [attr.aria-describedby]="id + '-mensaje'"
     />
 
     @if (iconoDerecha) {
@@ -38,27 +43,31 @@
     }
   </div>
 
-  @if (textoAyuda && !hayError) {
-    <small class="form-input__mensaje" [id]="`${id}-ayuda`">
+  <!-- Estado INICIAL: mostrar texto de ayuda -->
+  @if (getEstadoEfectivo() === 'inicial' && textoAyuda) {
+    <small class="form-input__mensaje" [id]="id + '-mensaje'">
       {{ textoAyuda }}
     </small>
   }
 
-  @if (!textoAyuda && mensajeExito && !hayError) {
-    <small class="form-input__mensaje" [id]="`${id}-ayuda`">{{ mensajeExito }}</small>
+  <!-- Estado ADVERTENCIA: mostrar mensaje de advertencia (campo obligatorio vacío) -->
+  @if (getEstadoEfectivo() === 'advertencia' && mensajeAdvertencia) {
+    <small class="form-input__mensaje form-input__mensaje--advertencia" [id]="id + '-mensaje'" role="alert">
+      {{ mensajeAdvertencia }}
+    </small>
   }
 
-  @if (!textoAyuda && !mensajeExito && exito && !hayError) {
-    <small class="form-input__mensaje" [id]="`${id}-ayuda`">Correcto</small>
-  }
-
-  @if (mensajeError && hayError) {
-    <small
-      class="form-input__mensaje form-input__mensaje--error"
-      [id]="`${id}-error`"
-      role="alert"
-    >
+  <!-- Estado ERROR: mostrar mensaje de error (valor incorrecto) -->
+  @if (getEstadoEfectivo() === 'error' && mensajeError) {
+    <small class="form-input__mensaje form-input__mensaje--error" [id]="id + '-mensaje'" role="alert">
       {{ mensajeError }}
+    </small>
+  }
+
+  <!-- Estado ÉXITO: mostrar mensaje de éxito -->
+  @if (getEstadoEfectivo() === 'exito') {
+    <small class="form-input__mensaje form-input__mensaje--exito" [id]="id + '-mensaje'">
+      {{ mensajeExito || 'Correcto' }}
     </small>
   }
 </div>

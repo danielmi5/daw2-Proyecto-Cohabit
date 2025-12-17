@@ -1,0 +1,122 @@
+<form class="registro-form" [formGroup]="formularioRegistro" (ngSubmit)="onSubmit()" novalidate>
+	<h2 class="registro-form__title">Registrarse</h2>
+
+	<fieldset class="registro-form__fieldset">
+		<legend class="registro-form__legend">Datos personales</legend>
+
+		<app-form-input 
+			class="registro-form__half" 
+			id="nombre" 
+			name="nombre"
+			formControlName="nombre"
+			etiqueta="Nombre" 
+			placeholder="Nombre"
+			[requerido]="true"
+			[estadoValidacion]="getValidationState('nombre')"
+			[mensajeAdvertencia]="getWarningMessage('nombre')"
+			[mensajeError]="getErrorMessage('nombre')"
+			[mensajeExito]="getSuccessMessage('nombre')"
+		></app-form-input>
+
+		<app-form-input 
+			class="registro-form__half" 
+			id="apellidos" 
+			name="apellidos"
+			formControlName="apellidos"
+			etiqueta="Apellidos" 
+			placeholder="Apellidos"
+			[requerido]="true"
+			[estadoValidacion]="getValidationState('apellidos')"
+			[mensajeAdvertencia]="getWarningMessage('apellidos')"
+			[mensajeError]="getErrorMessage('apellidos')"
+			[mensajeExito]="getSuccessMessage('apellidos')"
+		></app-form-input>
+	</fieldset>
+
+	<fieldset class="registro-form__fieldset">
+		<legend class="registro-form__legend">Cuenta</legend>
+
+		<div class="registro-form__campo-async">
+			<app-form-input 
+				id="reg-email" 
+				name="email"
+				formControlName="email"
+				etiqueta="Correo electrónico" 
+				placeholder="example@example.ext" 
+				[tipo]="'email'"
+				[requerido]="true"
+				[estadoValidacion]="getValidationState('email')"
+				[mensajeAdvertencia]="getWarningMessage('email')"
+				[mensajeError]="getErrorMessage('email')"
+				[mensajeExito]="getSuccessMessage('email')"
+			></app-form-input>
+			@if (isEmailPending()) {
+				<p class="registro-form__validando">Verificando disponibilidad...</p>
+			}
+		</div>
+
+		<app-form-input 
+			id="reg-pass" 
+			name="password"
+			formControlName="password"
+			etiqueta="Contraseña" 
+			placeholder="Contraseña" 
+			[tipo]="'password'" 
+			[requerido]="true"
+			[estadoValidacion]="getValidationState('password')"
+			[mensajeAdvertencia]="getWarningMessage('password')"
+			[mensajeError]="getErrorMessage('password')"
+			[mensajeExito]="getSuccessMessage('password')"
+			textoAyuda="Debe ser una combinación mínima de 8 letras, números, y símbolos."
+		></app-form-input>
+
+		<app-form-input 
+			id="reg-pass-confirm" 
+			name="passwordConfirm"
+			formControlName="passwordConfirm"
+			etiqueta="Confirmar contraseña" 
+			placeholder="Repite la contraseña" 
+			[tipo]="'password'"
+			[requerido]="true"
+			[estadoValidacion]="getValidationState('passwordConfirm')"
+			[mensajeAdvertencia]="getWarningMessage('passwordConfirm')"
+			[mensajeError]="getErrorMessage('passwordConfirm')"
+			[mensajeExito]="getSuccessMessage('passwordConfirm')"
+			textoAyuda="Deben coincidir las contraseñas."
+		></app-form-input>
+
+		<app-form-checkbox 
+			id="check-politicas" 
+			name="terminos"
+			formControlName="terminos"
+			[requerido]="true"
+		>
+			He leído y acepto los <a routerLink="/terminos">Términos y Condiciones</a> y la <a routerLink="/privacidad">Política de Privacidad</a>
+		</app-form-checkbox>
+		@if (shouldShowError('terminos')) {
+			<p class="registro-form__error">{{ getWarningMessage('terminos') }}</p>
+		}
+
+		<p class="registro-form__cta">¿Ya tienes una cuenta? - <a routerLink="/login" class="registro-form__cta-link">Inicia Sesión</a></p>
+	</fieldset>
+
+	<footer class="registro-form__botones">
+		<app-button 
+			variante="primario" 
+			tipo="submit" 
+			ariaLabel="Registrarse"
+			[deshabilitado]="formularioRegistro.invalid || isFormPending()"
+		>
+			{{ getSubmitButtonText() }}
+		</app-button>
+
+		<app-button 
+			variante="secundario" 
+			tipo="button" 
+			ariaLabel="Continuar con Google"
+			(click)="onGoogleRegister()"
+		>
+			Continuar con Google
+		</app-button>
+	</footer>
+</form>

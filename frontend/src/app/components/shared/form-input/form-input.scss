@@ -109,8 +109,16 @@
     color: var(--etiquetas-cards);
     letter-spacing: -0.4px;
 
+    &--advertencia {
+      color: var(--warning);
+    }
+
     &--error {
       color: var(--error);
+    }
+
+    &--exito {
+      color: var(--success);
     }
   }
 
@@ -131,10 +139,37 @@
     .form-input__mensaje {
       color: var(--success);
     }
+
+    .form-input__icono {
+      color: var(--success);
+    }
   }
 
-  /* Variante error */
-  &--erro {
+  /* Variante advertencia (campo obligatorio vacío tras interacción) */
+  &--advertencia {
+    .form-input__contenedor-input {
+      border-color: var(--warning);
+    }
+
+    .form-input__label-texto {
+      color: var(--warning);
+    }
+
+    .form-input__campo::placeholder {
+      color: var(--warning);
+    }
+
+    .form-input__mensaje {
+      color: var(--warning);
+    }
+
+    .form-input__icono {
+      color: var(--warning);
+    }
+  }
+
+  /* Variante error (valor incorrecto) */
+  &--error {
     .form-input__contenedor-input {
       border-color: var(--error);
     }
@@ -148,6 +183,10 @@
     }
 
     .form-input__mensaje {
+      color: var(--error);
+    }
+
+    .form-input__icono {
       color: var(--error);
     }
   }
@@ -171,27 +210,9 @@
     }
   }
 
-  /* Variante requerido: cuando el campo es obligatorio todo toma el color del asterisco */
-  &--requerido {
-    .form-input__contenedor-input {
-      border-color: var(--warning);
-    }
-
-    .form-input__label-texto {
-      color: var(--warning);
-    }
-
-    .form-input__campo::placeholder {
-      color: var(--warning);
-    }
-
-    .form-input__mensaje {
-      color: var(--warning);
-    }
-
-    .form-input__icono {
-      color: var(--warning);
-    }
+  /* El asterisco de requerido */
+  .form-input__label-requerido {
+    color: var(--warning);
   }
 
   @media (max-width: 400px) {

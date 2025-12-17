@@ -1,0 +1,66 @@
+<form class="login-form" [formGroup]="formularioLogin" (ngSubmit)="onSubmit()" novalidate>
+	<h2 class="login-form__title">Inicio de sesión</h2>
+
+	<fieldset class="login-form__fieldset">
+		<legend class="login-form__legend">Credenciales</legend>
+
+        <app-form-input
+            id="login-email"
+            name="email"
+            formControlName="email"
+            etiqueta="Correo electrónico"
+            placeholder="example@example.ext"
+            [tipo]="'email'"
+            [requerido]="true"
+            [estadoValidacion]="getValidationState('email')"
+            [mensajeAdvertencia]="getWarningMessage('email')"
+            [mensajeError]="getErrorMessage('email')"
+            [mensajeExito]="getSuccessMessage('email')"
+            textoAyuda="Debe seguir el formato estándar de correo."
+        ></app-form-input>
+
+        <app-form-input
+            id="login-password"
+            name="password"
+            formControlName="password"
+            etiqueta="Contraseña"
+            placeholder="Contraseña"
+            [tipo]="'password'"
+            [requerido]="true"
+            [estadoValidacion]="getValidationState('password')"
+            [mensajeAdvertencia]="getWarningMessage('password')"
+            [mensajeError]="getErrorMessage('password')"
+            [mensajeExito]="getSuccessMessage('password')"
+            textoAyuda="Debe tener como mínimo 8 caracteres."
+        ></app-form-input>
+
+		<app-form-checkbox 
+            id="login-remember" 
+            name="remember" 
+            formControlName="remember"
+            etiqueta="Recuérdame"
+        ></app-form-checkbox>
+
+        <p class="login-form__cta">¿Aún no tienes una cuenta? - <a routerLink="/registro" class="login-form__cta-link">Regístrate</a></p>
+	</fieldset>
+
+	<footer class="login-form__botones">
+		<app-button 
+            variante="primario" 
+            tipo="submit" 
+            ariaLabel="Iniciar sesión"
+            [deshabilitado]="formularioLogin.invalid"
+        >
+            Iniciar sesión
+        </app-button>
+
+		<app-button 
+            variante="secundario" 
+            tipo="button" 
+            ariaLabel="Iniciar sesión con Google"
+            (click)="onGoogleLogin()"
+        >
+            Iniciar sesión con Google
+        </app-button>
+	</footer>
+</form>

@@ -64,7 +64,6 @@
 
         &:hover:not([disabled]):not(.boton--deshabilitado) {
             background-color: $btn-primario-hover;
-            border-color: $btn-primario-hover;
         }
 
         &:active:not([disabled]):not(.boton--deshabilitado) {

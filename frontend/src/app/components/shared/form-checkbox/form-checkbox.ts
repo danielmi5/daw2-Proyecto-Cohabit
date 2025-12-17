@@ -1,12 +1,20 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, AfterContentInit, ContentChildren, QueryList, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-form-checkbox',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './form-checkbox.html',
   styleUrl: './form-checkbox.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FormCheckbox),
+      multi: true
+    }
+  ]
 })
-export class FormCheckbox {
+export class FormCheckbox implements ControlValueAccessor, AfterContentInit {
   @Input() id: string = '';
   @Input() name: string = '';
   @Input() etiqueta: string = '';
@@ -18,9 +26,45 @@ export class FormCheckbox {
 
   @ViewChild('checkboxInput', { static: false }) checkboxInput?: ElementRef<HTMLInputElement>;
 
+  /* Lógica de proyección de contenido:
+  - `elementosProyectados` recoge los nodos que el componente padre proyecta dentro de este componente (<ng-content>).
+  - `tieneProyectado` se usa para saber si mostrar el `etiqueta` por defecto (cuando no hay contenido proyectado) o mostrar lo que haya sido proyectado (por ejemplo enlaces con `routerLink`). */
+  @ContentChildren('*', { read: ElementRef }) elementosProyectados?: QueryList<ElementRef>;
+
+  tieneProyectado: boolean = false;
+
+  // ControlValueAccessor
+  onChange: (value: boolean) => void = () => {};
+  onTouched: () => void = () => {};
+
+  ngAfterContentInit() {
+    this.tieneProyectado = !!(this.elementosProyectados && this.elementosProyectados.length > 0);
+  }
+
+  writeValue(value: boolean): void {
+    this.checked = !!value;
+    if (this.checkboxInput?.nativeElement) {
+      this.checkboxInput.nativeElement.checked = this.checked;
+    }
+  }
+
+  registerOnChange(fn: (value: boolean) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.desactivado = isDisabled;
+  }
+
   onNativeChange(evento: Event) {
-    const checkbox = evento.target as HTMLInputElement;
-    this.checked = !!checkbox.checked;
+    const casilla = evento.target as HTMLInputElement;
+    this.checked = !!casilla.checked;
+    this.onChange(this.checked);
+    this.onTouched();
     this.checkedChange.emit(this.checked);
   }
 
@@ -42,6 +86,8 @@ export class FormCheckbox {
       this.checkboxInput.nativeElement.checked = this.checked;
     }
 
+    this.onChange(this.checked);
+    this.onTouched();
     this.checkedChange.emit(this.checked);
   }
 }

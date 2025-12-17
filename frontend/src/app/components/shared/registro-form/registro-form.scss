@@ -1,0 +1,78 @@
+@use '../../../../styles/00-settings/variables' as *;
+
+.registro-form {
+	width: 100%;
+	max-width: 760px;
+	margin: 0 auto;
+	padding: $espaciado-l;
+	display: flex;
+	flex-direction: column;
+	gap: $espaciado-m;
+
+	&__title {
+		font-size: 2rem;
+		text-align: center;
+		margin-bottom: $espaciado-m;
+	}
+
+	&__fieldset {
+		border: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: $espaciado-m;
+		flex-wrap: wrap;
+	}
+
+	&__legend {
+		font-weight: $font-weight-bold;
+		margin-bottom: $espaciado-s;
+		color: var(--titulos);
+	}
+
+	/* two-column helper for host elements */
+	&__half {
+		flex: 1 1 calc(50% - #{$espaciado-m} / 2);
+		min-width: 220px;
+	}
+
+	&__campo-async {
+		position: relative;
+	}
+
+	&__validando {
+		font-size: $text-sm;
+		color: var(--info, #3498db);
+		margin-top: $espaciado-xs;
+		font-style: italic;
+	}
+
+	&__error {
+		font-size: $text-sm;
+		color: var(--error, #e74c3c);
+		margin-top: $espaciado-xs;
+	}
+
+	&__botones {
+		display: flex;
+		flex-direction: column;
+		gap: $espaciado-m;
+
+		app-button {
+			width: 100%;
+		}
+	}
+
+	&__cta {
+		margin-top: $espaciado-s;
+		font-size: $text-md;
+		text-align: center;
+
+		&-link {
+			margin-left: $espaciado-xs;
+			color: var(--titulos);
+			text-decoration: underline;
+		}
+	}
+}

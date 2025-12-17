@@ -43,9 +43,6 @@ $btn-primario: $color-primario-claro; // Botón primario
 $btn-primario-hover: $color-primario; // Hover primario
 $btn-primario-active: $color-primario-oscuro; // Click primario
 
-// Ancho fijo para botones (uso: componentes de ejemplo)
-$boton-ancho: 200px;
-
 $btn-secundario: $blanco; // Botón secundario
 $btn-secundario-hover: $gris1; // Hover secundario
 $btn-secundario-active: $color-complementario1; // Click secundario
@@ -176,6 +173,12 @@ $shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
 $shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.12);
 $shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.15);
 
+// TRANSICIONES
+$transicion-rapida: 150ms;
+$transicion-base: 300ms;
+$transicion-lenta: 500ms;
+$transicion-suave: ease-in-out;
+
 // BORDES
 $borde-thin: 1px;
 $borde-medium: 2px;
@@ -195,12 +198,6 @@ $radio-form: 1.875rem;
 $radio-circulo: 9999px;
 $radio-card: 1rem;
 
-// TRANSICIONES
-$transicion-rapida: 150ms;
-$transicion-base: 300ms;
-$transicion-lenta: 500ms;
-$transicion-suave: ease-in-out;
-
 // TAMAÑOS ICONOS 
 $iconos-header: 36px;
 $iconos-menu: 24px;
@@ -212,4 +209,6 @@ $boton-pequeno: 2.438rem; //39px
 $boton-mediano: 3.5rem; //56px
 $boton-grande: 4.563rem; //73px
 
+// Ancho fijo para botones (uso: componentes de ejemplo)
+$boton-ancho: 200px;
 

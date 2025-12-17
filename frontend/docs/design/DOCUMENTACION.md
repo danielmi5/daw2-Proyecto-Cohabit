@@ -4,35 +4,114 @@
 
 ### 1.1 Principios de comunicación visual
 
+- **Jerarquía**: permite guiar la atención del espectador a través del contenido en un orden determinado, desde lo más importante hasta lo menos relevante. Una buena jerarquía asegura que el mensaje principal se vea claramente.
+
+- **Contraste**: sirve para llamar la atención sobre elementos específicos y resaltar diferencias. Cuando dos elementos contrastan claramente, el ojo humano los distingue con mayor rapidez y entiende mejor su función dentro del diseño.
+
+- **Alineación**: La alineación consiste en colocar los elementos de manera que exista una relación visual entre ellos. Facilita la lectura y la comprensión, y hace que todo tenga sentido, permitiendo que la mirada del espectador recorra la composición de forma natural.
+
+**Proximidad**:  se usa para organizar la información evitando el caos. Agrupar elementos relacionados crea claridad y reduce el desorden en el diseño.
+
+**Repetición**: consiste en repetir los mismos colores, fuentes o formas a lo largo de un diseño para reforzar la identidad y unificar la composición. Esto mejora la consistencia y la coherencia del diseño.
+
+**Páginas de prueba**: 
+
+Página HOME
+![Página de inicio](img/pag-inicio.png)
+
+Página Reservas
+![Página de reservas](img/pag-reservas.png)
+
 #### 1. Jerarquía: Cómo usas tamaños, pesos y espaciado para crear importancia visual
 
+La aplicación reutiliza una escala tipográfica mediante el mixin `@include tipografia(...)` lo que garantiza que títulos, subtítulos y párrafos compartan la misma jerarquía visual.
+
+Además se usan variables de espaciado en componentes para separar visualmente bloques y reforzar la jerarquía entre títulos, campos y controles.
+
+Por ejemplo en la página de inicio, el título principal domina visualmente con un tamaño significativamente mayor que el resto del contenido. La disposición de mayor a menor importancia guía naturalmente la atención del usuario desde el encabezado hasta el botón de acción "Inicia sesión". Además la sección "¿Cómo funciona?" utiliza un orden enumerado (1-2-3-4) que crea un flujo de lectura secuencial de izquierda a derecha. 
+
+![Jerarquía visual de la página de inicio](img/jerarquia.png)
 
 
 #### 2. Contraste: Cómo usas color, tamaño y peso para diferenciar elementos
 
+Se separan colores por uso (botones, fondos, bordes, textos) para asegurar que los elementos interactivos destaquen sobre su fondo..
+
+El peso tipográfico y el tamaño (definidos en las variables tipográficos) se usan junto a los colores para reforzar la diferenciación visual.
+
+El contraste se aplica principalmente a través del color y la saturación. El fondo rosa claro contrasta con las tarjetas de color rosa más intenso, creando separación visual clara entre elementos. La barra de navegación superior en color oscuro contrasta con el resto de la interfaz, estableciéndola como elemento de orientación principal. El botón "Nueva reserva" en la esquina inferior derecha utiliza el mismo tono oscuro para destacarse sobre lo demás.
+![Página de reservas](img/pag-reservas.png)
 
 
 #### 3. Alineación: Tu estrategia de alineación (izquierda, centro, grid)
 
+La estrategia se basa principalmente en Flexbox y utilidades reutilizables. Existe un mixin `@mixin display-flex($direction, $gap, $align, $justify)` y `@mixin centrar-flex(...)` que normalizan la alineación en todo el proyecto.
 
+En las plantillas y estilos se utilizan estas utilidades para aplicar alineaciones coherentes. Por tanto la estrategia es responsiva y basada en flex (alineación a la izquierda o centrada según el layout), con breakpoints definidos en las variables para adaptar el layout cuando sea necesario.
+
+Por ejemplo, la sección de reservas emplea una estrategia de alineación basada en grid. Las tarjetas de recursos están organizadas en una cuadrícula de 4 columnas con alineación consistente, creando orden visual y facilitando la visualización. El menú lateral izquierdo mantiene alineación vertical consistente. Los elementos de texto dentro de cada tarjeta se alinea a la izquierda, estableciendo un ritmo y un orden de lectura coherente y predecible que reduce el esfuerzo del usuario.
+![Reservas](img/pag-reservas.png)
 
 #### 4.Proximidad: Cómo agrupas elementos relacionados con espaciado
 
-
+Por ejemplo, en la página anterior, los elementos relacionados se agrupan mediante espaciado reducido para comunicar relación. Dentro de cada tarjeta, la información de "Fecha" y "Horarios" está estrechamente agrupada, indicando que pertenecen al mismo recurso. El espaciado mayor entre tarjetas las distingue como unidades independientes. El menú lateral agrupa "Dashboard" y "Reservas" con mínimo espaciado, sugiriendo que son opciones de navegación relacionadas.
 
 #### 5.Repetición: Cómo creas coherencia repitiendo patrones visuales
 
+El proyecto sigue BEM y una organización ITCSS en que favorece la repetición y el mantenimiento. Se reutilizan mixins (`tipografia`, `display-flex`, `centrar-flex`) y variables en todos los componentes para crear patrones visuales repetidos: botones, inputs, títulos y listas usan las mismas clases, mixins y variables.
+
+La coherencia visual en la página de reservas se logra mediante la repetición sistemática de patrones. Todas las tarjetas de recursos comparten la misma estructura, tamaño, tipografía y paleta de color, creando unidad visual y facilitando el reconocimiento inmediato de elementos similares.
 
 
 ### 1.2 Metodología CSS
 
-Se utiliza la metodología BEM y una organización basada en ITCSS.
+Se utiliza la metodología BEM y una organización basada en ITCSS. Utilizo BEM porque proporciona una estructura predecible, escalable y mantenible. BEM elimina la ambigüedad en la cascada CSS, reduce conflictos de nombres y hace el código autodocumentado. Sus beneficios son: 
+- Autodocumentación: la propia clase dice que elemento es y su función.
+- Evita accidentes con la especificidad.
+- Se puede reutilizar sin problemas con otros estilos.
+- Permite depurar más fácilmente, pudiendo encontrar clases más rápido.
+- El uso Sass + BEM, permite poder anidar y usar `&` para referirse al selector padre, así no hay que repetir `bloque__elemento` completo ni escribir selectors largos, simplificando el desarrollo.
+- Escalabilidad.
+
+La nomenclatura sigue el patrón `bloque__elemento--modificador`:
+    - Bloque: Es el contenedor de los demás elementos.
+    - Elemento: Son las etiquetas de dentro de un bloque.
+    - Modificador: Es una clase que diferencia a ese elemento de otro.
+
+Ejemplo: 
+```html
+<!-- Bloque: cabecera con elemento logo y modificador oscuro -->
+<header class="cabecera cabecera--oscura">
+	<a class="cabecera__logo" href="/">MiMarca</a>
+	<nav class="cabecera__navegacion">...</nav>
+	<button class="cabecera__boton cabecera__boton--primario">Acción</button>
+</header>
+```
+
+```scss
+/* SCSS usando BEM y el operador & para anidar sin repetir la clase completa */
+.cabecera {
+	background: $fondo;
+	&--oscura { background: $importante-fondo-primario; }
+
+	&__logo { @include tipografia(enlace, $titulos); }
+
+	&__boton {
+		@include tipografia(button);
+		border-radius: $radio-boton;
+		&--primario {
+			background: $btn-primario;
+			&:hover { background: $btn-primario-hover; }
+		}
+	}
+}
+```
 
 ### 1.3 Organización de archivos
 
 La organización sigue la filosofía ITCSS (de menor a mayor especificidad). Empieza con archivos menos específicos (variables) y finaliza con archivos más específicos (layout).
 
-- `00-settings/` : **Variables globales.** Contiene colores, tipografías, espaciados y breakpoints. Es la base; no genera CSS por sí misma, solo valores reutilizables.
+- `00-settings/` : **Variables globales.** Contiene colores, tipografías, espaciados, tamaños, sombras, transiciones, tamaños y breakpoints. Es la base, no genera CSS por sí misma, solo valores reutilizables.
 - `01-tools/` : **Mixins, functions y helpers.** Reglas reutilizables que generan estilos cuando son invocadas.
 - `02-generic/` : **Reset de estilos.** Incluye resets, normalizaciones y estilos globales (body, tipografías base). Afecta todo el proyecto y debe cargarse el primero para resetear el CSS.
 - `03-elements/` : **Elementos HTML puros.** Estilos para etiquetas semánticas (a, h1-h6, p, ul, img).
@@ -40,19 +119,65 @@ La organización sigue la filosofía ITCSS (de menor a mayor especificidad). Emp
 
 ### 1.4 Sistema de Design Tokens
 
-**Colores**: 
+#### Colores 
 - **Selección del color primario (`$color-primario`, `$color-primario-claro`, `$color-primario-oscuro`)**: Estos colores transmite calma y moderna que funciona bien para componentes destacados (botones, enlaces importantes). Se definen variantes para estados y, para mantener contraste y consistencia en interacciones (hover/active).
 - **Colores de soporte y complementarios**: Estos colores facilitan la lectura con fondos suaves y colores secundarios sin competir con el color principal. Esto permite crear capas visuales (cards, banners, fondos) manteniendo coherencia.
 - **Escala de grises (`$blanco` a `$negro`)**: Proporciona colores neutros para textos, fondos y bordes. Los extremos son el blanco y el negro: 
 También se definen 7 grises en una escala numerada para comprender rapidamente la diferencia de contraste para accesibilidad y jerarquía tipográfica.
 - **Colores semánticos (`$color-success`, `$color-error`, `$color-warning`, `$color-info`)**: Se utilizan colores semánticos para estados o feedback al usuario (errores, información, advertencias y éxito).
 
+##### Colores por uso
+
+Separar variables por uso (ej. `fondo`, `borde`, `btn-primario`, `fila2`) reduce la fricción para diseñadores y desarrolladores: cambiar la semántica o el tema global se logra modificando pocas variables en lugar de cientos de reglas CSS. Esto mejora la mantenibilidad del código y consistencia visual en la interfaz. Variables usadas
+
+- **Botones**: El color primario (`$color-primario`, `$btn-primario`) se usa para llamadas a la acción principales porque aporta contraste y orientación visual al usuario. Las variantes `-claro`/`-oscuro` permiten estados `hover` y `active` sin alterar la identidad. El botón secundario (`$btn-secundario`) usa fondos claros y bordes suaves para acciones menos prioritarias, manteniendo legibilidad mediante `$btn-secundario-hover`.
+
+- **Fondos y contenedores**: Variables como `$fondo`, `$fondo-cards`, `$fondo-secciones` y `$fondo-barra-lateral` proporcionan capas de fondo diferenciadas que ayudan a la jerarquía visual. Se usan tonos muy suaves para evitar competir con el contenido principal, y se reservan colores complementarios más saturados para cards o secciones que requieren atención.
+
+- **Bordes y trazos**: `$borde-input`, `$borde-cards` y `$trazo-boton2` se emplean para delimitar áreas interactivas y contenedores. El trazo ligero en inputs ayuda al reconocimiento de campo sin crear ruido visual. `$trazo-boton2` y `$color-apoyo2` sirven para outlines de botones o iconos, dando una señal de interactividad sin saturar la paleta.
+
+- **Textos y jerarquía**: `$texto-oscuro` y `$texto-claro` distinguen textos sobre fondos claros u oscuros respectivamente; `$titulos` se reserva para encabezados con mayor peso visual. `$etiqueta-cards` y `$importante-cards` ayudan a diferenciar metadatos y textos destacados dentro de componentes.
+
+- **Estados semánticos y accesibilidad**: Los colores semánticos (`$color-success`, `$color-error`, `$color-warning`, `$color-info`) se usan para feedback y alertas. Sus variantes (`-2`) aumentan brillo/saturación para escenarios con fondo oscuro.
+
+- **Interacciones (hover, focus)**: Para hover y focus se emplean variables dedicadas (`$btn-primario-hover`, `$fondo-input-focus`, `$hover-ui`) que cambian ligeramente luminosidad o saturación para ofrecer retroalimentación visual inmediata. .
+
+- **Tablas y legibilidad de datos**: `$fila` y `$fila2` se usan para alternar filas (zebra) y mejorar la lectura horizontal. `$header-tabla` resalta el encabezado sin competir con las celdas; los colores elegidos priorizan legibilidad y separación de secciones de datos.
+
+- **Colores feedback**: Las variantes semánticas y colores secundarios (`$color-success2`, `$color-error2`, etc.) están pensadas para mantener la semántica en temas oscuros.
+
+
+
+
+#### Tipografía
+
+**Familia tipográfica**: Se ha utilizado Lexend  porque está diseñada para maximizar la legibilidad y reducir la fatiga visual. Lexend permite que los usuarios se concentren en el contenido en lugar de esforzarse por leer, mejorando significativamente la experiencia de usuario y la accesibilidad para todos los perfiles.
+
 **Escala tipográfica**: La escala va desde `$text-xs` (12px) hasta `$text-5xl` (64px), con `16px` definido como `$text-md` para párrafos. Esta elección obedece a una jerarquía clara: lectura cómoda (16px), subtítulos y títulos escalonados para distinguir niveles de contenido. H1–H4 se encargan del encabezamiento en las diferentes secciones (desde 64px para encabezados de alto impacto hasta 18–36px para títulos de sección). Se usa line-height para mantener la legibilidad.
 También hay pesos para la tipografía (`$font-weight-regular`, `$font-weight-medium`, `$font-weight-bold`) para dar énfasis a las palabras de la interfaz: párrafos con "regular" (menos importante), palabras destacadas con "medium" (destacar sobre los demás), títulos con "bold" (más importante).
 
-
+#### Breakpoints
 **Breakpoints**: Se han elegido esos breakpoints ya que son anchos generales de dispositivos (móviles grandes ~640px, tablets ~768px, escritorios estándar ~1024px y pantallas amplias ~1280px). Esto permite aplicar layout para pantallas específicas.
 
+
+#### Espaciado
+Se ha definido los espaciados en escala (0.25, 0.5, 1, 2, 3, 4 rem) para mantener un diseño coherente, predecible y fácil de mantener. Cada tipo de espacidado cubre un uso típico: xs y s para detalles finos (gaps pequeños, etiquetas), m como unidad base para la mayoría de separaciones, y l–xxl para secciones, grids y espacios grandes, garantizando jerarquía visual clara y buena separación entre bloques. Al estar expresados en rem, el espaciado escala de forma accesible con el tamaño de fuente raíz, lo que mejora la adaptación a distintos dispositivos y necesidades de accesibilidad.
+
+#### Sombreado
+Se ha definido sombras en cuatro niveles para crear jerarquía visual y profundidad coherente en la interfaz. Las sombras pequeñas (sm con 1-2px) añaden sutileza a elementos como botones o tarjetas básicas, mientras que md (4-6px) destaca componentes interactivos como dropdowns o cards elevadas. Las sombras lg y xl (10-15px y 25-50px) reservan mayor elevación para elementos críticos como modales, menús desplegables o paneles flotantes que deben aparecer sobre el resto del contenido. La opacidad progresiva (0.06 a 0.15) mantiene las sombras suaves y naturales, evitando contrastes duros que puedan distraer.
+
+#### Transiciones
+Se ha definido un sistema de transiciones con tres duraciones estándar (150ms, 300ms, 500ms) y una curva suave (ease-in-out) para crear interacciones fluidas y consistentes en toda la aplicación.
+
+#### Tamaños
+
+- **Bordes** (`$borde-thin: 1px`, `$borde-medium: 2px`, `$borde-thick: 4px`): 1px para detalles sutiles, 2px para contornos visibles y 4px para énfasis/estados importantes. Escala simple para jerarquía visual.
+
+- **Radios** (`$radio-xs`, `$radio-sm`, `$radio-md`, `$radio-lg`, `$radio-boton`, `$radio-campo`, `$radio-form`, `$radio-circulo`, `$radio-card`): radios pequeños para microelementos, medios para botones/campos y grandes para formularios/cards; `9999px` para círculos perfectos.
+
+- **Iconos** (`$iconos-header: 36px`, `$iconos-menu: 24px`, `$iconos-redes: 20px`): tamaños por contexto para mantener legibilidad, consistencia y alineación con texto adyacente.
+
+- **Botones** (`$boton-pequeno: 2.438rem`, `$boton-mediano: 3.5rem`, `$boton-grande: 4.563rem`, `$boton-ancho: 200px`): tamaños definidos para facilidad visual y táctil en los botones.
 
 ### 1.5 Mixins y funciones
 Este apartado documenta los mixins definidos en `src/styles/01-tools/_mixins.scss`.
@@ -142,7 +267,7 @@ Código del mixin:
 
 	@else if $type == texto-pequeno {
 		font-family: $font-primary;
-		font-size: $escala-texto-pequeno;
+		font-size: $escala-teto-pequeno;
 		font-weight: $peso-texto-pequeno;
 		line-height: $altura-linea-texto-pequeno;
 		color: $color;
@@ -161,7 +286,12 @@ Código del mixin:
 
 Propósito y propiedades usadas:
 - Propósito: Unificar estilos tipográficos en componentes y módulos reutilizables.
-- Propiedades usadas: `font-family`, `font-size`, `font-weight`, `line-height` y `color`.
+- Propiedades usadas:
+	- `font-family`: define la tipografía a aplicar.
+	- `font-size`: establece el tamaño del texto.
+	- `font-weight`: controla el grosor/énfasis de la fuente.
+	- `line-height`: espaciamiento vertical entre líneas para legibilidad.
+	- `color`: color del texto.
 
 Caso de uso:
 
@@ -197,10 +327,13 @@ Código del mixin:
 	justify-content: $justify;
 }
 ```
-
-Propósito y propiedades usadas:
 - Propósito: Evitar repetir la configuración básica de flexbox y permitir ajustes rápidos desde variables/tokens.
-- Propiedades utilizadas: `flex-direction`, `align-items`, `justify-content`, `gap`.
+- Propiedades utilizadas:
+	- `display: flex`: crea un contenedor flexbox para distribuir elementos hijos.
+	- `flex-direction`: determina la dirección del eje principal (row/column).
+	- `gap`: espacio entre los elementos hijos.
+	- `align-items`: alineación de los elementos en el eje transversal (vertical si row).
+	- `justify-content`: distribución de los elementos a lo largo del eje principal (horizontal si row).
 
 Caso de uso:
 
@@ -227,10 +360,12 @@ Código del mixin:
 	justify-content: center;
 }
 ```
-
-Propósito y propiedades usadas:
 - Propósito: Simplificar patrones comunes de centrado completo (centro tanto vertical como horizontal).
-- Propiedades usadas: `display: flex`, `flex-direction`, `align-items: center`, `justify-content: center`.
+- Propiedades usadas: 
+	- `display: flex`: activa flexbox en el contenedor.
+	- `flex-direction`: controla si los hijos se colocan en fila o columna.
+	- `align-items: center`: centra los hijos en el eje transversal.
+	- `justify-content: center`: centra los hijos en el eje principal.
 
 Caso de uso (ejemplo):
 
@@ -254,9 +389,11 @@ Código del mixin:
 }
 ```
 
-Propósito y propiedades usadas:
 - Propósito: Ofrecer un patrón reutilizable para deshabilitar elementos desde estilos (reduce duplicación y asegura consistencia en la UX).
-- Propiedades usadas: `opacity`, `cursor`, `pointer-events`.
+- Propiedades usadas:
+	- `opacity`: controla la transparencia visual del elemento (valores 0–1).
+	- `cursor`: cambia el cursor al pasar por encima.
+	- `pointer-events`: controla si el elemento responde a eventos del puntero.
 
 Caso de uso:
 
@@ -269,6 +406,29 @@ Caso de uso:
 
 ### 1.6 ViewEncapsulation en Angular
 
+En este proyecto se utiliza la estrategia por defecto de Angular: `ViewEncapsulation.Emulated`. Emula el comportamiento nativo de encapsulación de Shadow DOM añadiendo un atributo específico al elemento host del componente y aplicación del mismo atributo a todos los selectores CSS proporcionados vía styles o styleUrls. 
+
+Se ha elegido porque permite aislar los estilos CSS de cada componente para que no afecten otros componentes y permite que los estilos globales sigan siendo heredados cuando es necesario. Funciona en todos los navegadores sin necesidad de nada más, menos conflictos con bibliotecas externas y facilita el desarrollo y la depuración. 
+
+No ha sido necesario el uso de `none` porque no se ha utilizado estilos globales. La estrategia de encapsulación `none` se utilizará cuando necesite que los estilos de un componente se apliquen globalmente a toda la aplicación.
+
+
+Ejemplo de declaración (no es necesario porque `Emulated` es la opción por defecto):
+```ts
+import { Component, ViewEncapsulation } from '@angular/core';
+
+@Component({
+  selector: 'app-footer',
+  standalone: true,
+  imports: [RouterLink],
+  templateUrl: './footer.html',
+  styleUrls: ['./footer.scss'],
+  encapsulation: ViewEncapsulation.Emulated // declaración explícita (no necesario)
+})
+export class Footer {
+}
+
+```
 
 ## Sección 2: HTML semántico y estructura
 
@@ -703,4 +863,10 @@ HTML del componente input:
 
 
 Con esta estructura se logra una interfaz accesible y consistente: los `label` enlazan con los `input`, los `fieldset` aportan contexto y los componentes reutilizables (`app-form`) encapsulan la lógica de `ControlValueAccessor` para integrarse con `FormGroup`.
+
+
+
+## Documentación utilizada
+
+- [Principios de comunicación visual](https://weareshifta.com/que-son-los-principios-del-diseno-grafico/)
 

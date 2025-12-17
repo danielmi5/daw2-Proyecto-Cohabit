@@ -1,60 +1,53 @@
 @use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as mixins;
 
 .inicio {
   width: 100%;
-  padding: $espaciado-xxl $espaciado-m;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: $fondo-secciones;
+  padding: $espaciado-xxl $espaciado-xxl;
+
+  @include mixins.display-flex(column, $espaciado-xl, center, center);
   text-align: center;
+
+  background-color: $fondo-secciones;
 
 
   &__titulo {
-    font-family: $font-secondary;
-    font-size: $escala-h1;
-    font-weight: $peso-h1;
-    line-height: $altura-linea-h1;
-    color: $titulos;
     margin-bottom: $espaciado-l;
+    @include mixins.tipografia(h1, $titulos);
   }
 
   &__descripcion {
-    font-size: $escala-h3;
-    font-weight: $peso-parrafo;
-    line-height: $altura-linea-parrafo;
-    color: $texto-oscuro;
     margin-bottom: $espaciado-xl;
+    @include mixins.tipografia(h3, $texto-oscuro);
   }
 
   &__acciones {
     width: 100%;
     min-height: 63px;
-    display: flex;
-    gap: $espaciado-m;
-    justify-content: center;
+
+    @include mixins.display-flex(row, $espaciado-m, stretch, center);
     flex-wrap: wrap;
   }
 
   &__boton {
+    max-width: 320px;
     padding: $espaciado-m 0;
+    @include mixins.tipografia(button);
     font-size: $text-lg;
-    font-weight: $font-weight-medium;
-    border-radius: $radio-boton;
+
+    @include mixins.centrar-flex();
+    flex: 1 1 220px;
     text-decoration: none;
+
+    border-radius: $radio-boton;
+    box-sizing: border-box;
+
     transition: all $transicion-base $transicion-suave;
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    flex: 1 1 220px;
-    max-width: 320px;
 
     &--primario {
-      background-color: $btn-primario;
       color: $texto-claro;
+      background-color: $btn-primario;
       border: none;
 
       &:hover {
@@ -68,8 +61,8 @@
     }
 
     &--secundario {
-      background-color: $btn-secundario;
       color: $texto-oscuro;
+      background-color: $btn-secundario;
       border: $borde-medium solid $color-primario;
 
       &:hover {
@@ -85,18 +78,18 @@
 
   @media (max-width: $breakpoint-tablet) {
     padding: $espaciado-xl $espaciado-m;
+
     &__acciones {
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: $espaciado-s;
-      align-items: stretch;
+
+      @include mixins.display-flex(column, $espaciado-s, stretch);
     }
 
     &__boton {
-      flex-basis: 100%;
       max-width: none;
       width: 100%;
+
+      flex-basis: 100%;
     }
   }
 }

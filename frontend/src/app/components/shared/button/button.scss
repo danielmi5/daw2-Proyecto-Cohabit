@@ -1,23 +1,24 @@
 @use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
 
 
 .boton {
     width: 100%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: $font-weight-medium;
-    line-height: $line-button;
+    padding: $espaciado-m;
+
+    @include mixins.centrar-flex();
+    @include mixins.tipografia(button);
     text-align: center;
     text-decoration: none;
     white-space: nowrap;
     vertical-align: middle;
-    cursor: pointer;
-    user-select: none;
+
     border: 1px solid var(--borde);
     border-radius: $radio-boton;
+
     transition: all $transicion-base $transicion-suave;
-    padding: $espaciado-m;
+    cursor: pointer;
+    user-select: none;
 
     &:focus {
     outline: 2px solid $color-primario;
@@ -35,21 +36,18 @@
 
 
     &__contenedor {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include mixins.centrar-flex(row);
         gap: $espaciado-s;
     }
 
 
     &__icono {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        line-height: 0;
         width: $iconos-menu;
         height: $iconos-menu;
+        line-height: 0;
+
+        @include mixins.centrar-flex();
+        flex-shrink: 0;
     }
 
     &__texto {
@@ -59,24 +57,25 @@
 
     // variante primario
     &--primario {
-        background-color: $btn-primario;
         color: $texto-claro;
+        background-color: $btn-primario;
 
         &:hover:not([disabled]):not(.boton--deshabilitado) {
             background-color: $btn-primario-hover;
         }
 
         &:active:not([disabled]):not(.boton--deshabilitado) {
+            transform: translateY(1px);
+
             background-color: $btn-primario-active;
             border-color: $btn-primario-active;
-            transform: translateY(1px);
         }
     }
 
     // variante secundario
     &--secundario {
-        background-color: $btn-secundario;
         color: $texto-oscuro;
+        background-color: $btn-secundario;
         
 
         &:hover:not([disabled]):not(.boton--deshabilitado) {
@@ -84,15 +83,16 @@
         }
 
         &:active:not([disabled]):not(.boton--deshabilitado) {
-            background-color: $btn-secundario-active;
             transform: translateY(1px);
+
+            background-color: $btn-secundario-active;
         }
     }
 
     // variante fantasma (outline)
     &--fantasma {
-        background-color: transparent;
         color: $texto-oscuro;
+        background-color: transparent;
  
 
         &:hover:not([disabled]):not(.boton--deshabilitado) {
@@ -101,24 +101,26 @@
         }
 
         &:active:not([disabled]):not(.boton--deshabilitado) {
-            background-color: $fondo-input-focus;
             transform: translateY(1px);
+
+            background-color: $fondo-input-focus;
         }
     }
 
     // variante peligro
     &--peligro {
-    background-color: $color-error;
     color: $texto-claro;
+    background-color: $color-error;
 
         &:hover:not([disabled]):not(.boton--deshabilitado) {
             background-color: $color-error2;
         }
 
         &:active:not([disabled]):not(.boton--deshabilitado) {
+            transform: translateY(1px);
+
             background-color: $color-error2;
             border-color: $color-error2;
-            transform: translateY(1px);
         }
     }
 
@@ -140,8 +142,6 @@
     // estado deshabilitado
     &--deshabilitado,
     &[disabled] {
-        opacity: 0.6;
-        cursor: not-allowed;
-        pointer-events: none;
+        @include mixins.desactivado();
     }
 }

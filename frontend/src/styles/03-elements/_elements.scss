@@ -6,50 +6,56 @@
 
 /* Body predeterminado */
 body {
-	font-family: $font-primary;
 	font-size: $text-md;
 	line-height: $line-normal;
+	font-family: $font-primary;
+
 	color: $texto-oscuro;
 	background-color: $fondo;
 }
 
 /* Encabezados */
 h1 {
+	margin: 0;
 	font-size: $escala-h1;
 	font-weight: $peso-h1;
 	line-height: $altura-linea-h1;
+
 	color: $titulos;
-	margin: 0;
 }
 
 h2 {
+	margin: 0;
 	font-size: $escala-h2;
 	font-weight: $peso-h2;
 	line-height: $altura-linea-h2;
+
 	color: $titulos;
-	margin: 0;
 }
 
 h3 {
+	margin: 0;
 	font-size: $escala-h3;
 	font-weight: $peso-h3;
 	line-height: $altura-linea-h3;
+
 	color: $titulos;
-	margin: 0;
 }
 
 h4 {
+	margin: 0;
 	font-size: $escala-h4;
 	font-weight: $peso-h4;
 	line-height: $altura-linea-h4;
+
 	color: $titulos;
-	margin: 0;
 }
 
 h5,
 h6 {
-	color: $titulos;
 	margin: 0;
+
+	color: $titulos;
 }
 
 /* Párrafos y texto */
@@ -63,13 +69,16 @@ small {
 
 /* Enlaces */
 a {
-	color: $links-titulo;
 	text-decoration: none;
+
+	color: $links-titulo;
+
 	transition: color $transicion-rapida ease-in-out;
 
 	&:hover {
-		color: $hover-ui;
 		text-decoration: underline;
+
+		color: $hover-ui;
 	}
 
 	&:focus {
@@ -89,16 +98,18 @@ picture,
 video,
 canvas,
 svg {
-	display: block;
 	max-width: 100%;
 	height: auto;
+
+	display: block;
 }
 
 /* Listas */
 ul,
 ol {
-	margin: 0;
 	padding-left: 0;
+	margin: 0;
+
 	list-style: none;
 }
 
@@ -110,16 +121,16 @@ li {
 input,
 textarea,
 select {
-	background: $fondo-input;
-	border: 1px solid $borde-input;
-	color: $texto-oscuro;
 	padding: $espaciado-s;
-	border-radius: $radio-campo;
 	font-size: $text-sm;
     font-weight: $font-weight-regular;
     letter-spacing: -0.4px;
     line-height: $line-tight;
 	font: inherit;
+
+	color: $texto-oscuro;
+	background: $fondo-input;
+	border-radius: $radio-campo;
 	
 
 	/*
@@ -131,25 +142,30 @@ select {
 }
 
 label {
-	display: inline-block;
 	margin: 0;
+	font-size: $text-sm;
 	font-weight: $font-weight-regular;
-    font-size: $text-sm;
     letter-spacing: -0.4px;
+
+	display: inline-block;
+
 	color: $texto-oscuro;
 }
 
 /* Botones */
 button {
-	display: inline-block;
 	padding: $espaciado-m;
-	border-radius: $radio-boton;
-	border: none;
 	font-weight: $font-weight-medium;
-	cursor: pointer;
-	background-color: $btn-primario;
+
+	display: inline-block;
+
 	color: $texto-claro;
+	background-color: $btn-primario;
+	border: none;
+	border-radius: $radio-boton;
+
 	transition: background-color $transicion-rapida ease-in-out, transform $transicion-rapida ease-in-out;
+	cursor: pointer;
 
 	&:hover {
 		background-color: $btn-primario-hover;
@@ -164,19 +180,23 @@ button {
 /* Tablas */
 table {
 	width: 100%;
+
 	border-collapse: collapse;
 
 	th,
 	td {
 		padding: $espaciado-s;
+
 		text-align: left;
+
 		border-bottom: 1px solid $borde;
 	}
 
 	th {
-		background-color: $header-tabla;
-		color: $texto-claro;
 		font-weight: $font-weight-medium;
+
+		color: $texto-claro;
+		background-color: $header-tabla;
 	}
 
 	tbody tr:nth-child(even) {

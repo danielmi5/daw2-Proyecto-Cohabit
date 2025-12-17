@@ -1,20 +1,17 @@
 @use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
 
 .form-select {
 	width: 100%;
 	margin: auto;
-	display: flex;
-	flex-direction: column;
-	gap: $espaciado-s;
+
+	@include mixins.display-flex(column, $espaciado-s);
 
 	&__label {
-		display: inline-flex;
-		align-items: center;
-		column-gap: $espaciado-xs;
+		@include mixins.display-flex(row, $espaciado-xs, center);
 
 		&-texto {
-			line-height: $line-tight;
-			color: var(--etiquetas-cards);
+			@include mixins.tipografia(texto-pequeno, var(--etiquetas-cards));
 		}
 
 		&-requerido {
@@ -24,19 +21,21 @@
 	}
 
 	&__contenedor {
-		position: relative;
 		width: 100%;
 		min-width: 0;
 		height: 48px;
-		display: flex;
-		align-items: center;
+		padding: 0 $espaciado-m;
+
+		position: relative;
+		z-index: 0;
+
+		@include mixins.display-flex(row, $espaciado-s, center);
+
 		background: $fondo-input;
 		border: $borde-thin solid $borde-input;
 		border-radius: $radio-campo;
-		padding: 0 $espaciado-m;
-		gap: $espaciado-s;
 		box-sizing: border-box;
-		z-index: 0;
+
 		transition: box-shadow $transicion-rapida ease-in-out, border-color $transicion-rapida ease-in-out;
 
 		&:has(.form-select__campo[aria-invalid="true"])::before {
@@ -45,47 +44,57 @@
 		}
 
 		&:hover {
-			cursor: pointer;
 			background-color: $fondo-input-hover;
+
+			cursor: pointer;
 		}
 
 		&:focus-within {
-			border: 1.8px solid var(--info);
-			background-color: $fondo-input-focus;
 			color: $negro;
+			background-color: $fondo-input-focus;
+			border: 1.8px solid var(--info);
 		}
 	}
 
 	&__campo {
 		width: 100%;
 		height: 100%;
-		border: none;
-		background: transparent;
 		padding-right: $espaciado-l;
-		font-size: $text-md;
-		color: $negro;
+		@include mixins.tipografia(parrafo, $negro);
+
+		background: transparent;
+		border: none;
+
+		cursor: pointer;
 		appearance: none;
+
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
 	}
 
 	&__icono {
 		width: 18px;
 		height: 18px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		@include mixins.tipografia(texto-pequeno, var(--etiquetas-cards));
+
 		position: absolute;
 		right: $espaciado-m;
 		top: 50%;
 		transform: translateY(-50%);
-		pointer-events: none;
+
+		@include mixins.centrar-flex();
+
 		color: $gris5;
+
+		pointer-events: none;
 	}
 
 	&__mensaje {
 		display: block;
 		margin-block-start: 0;
-		font-size: $text-sm;
-		color: var(--etiquetas-cards);
+		@include mixins.tipografia(texto-pequeno, var(--etiquetas-cards));
 	}
 
 	&__mensaje--error {
@@ -109,8 +118,7 @@
 
 	/* Variante desactivado */
 	&--desactivado {
-		opacity: 0.7;
-		pointer-events: none;
+		@include mixins.desactivado();
 
 		.form-select__label-texto {
 			color: $gris4;

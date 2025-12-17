@@ -1,44 +1,42 @@
 @use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
 
 .login-form {
 	width: 100%;
 	max-width: 640px;
 	margin: 0 auto;
 	padding: $espaciado-l;
-	display: flex;
-	flex-direction: column;
-	gap: $espaciado-m;
+
+	@include mixins.display-flex(column, $espaciado-m);
 
 	&__title {
-		font-size: 2rem;
-		text-align: center;
 		margin-bottom: $espaciado-m;
+		@include mixins.tipografia(h2, var(--titulos));
+
+		text-align: center;
 	}
 
 	&__fieldset {
-        display: flex;
-		flex-direction: column;
-		gap: $espaciado-m;
-		border: none;
 		padding: 0;
 		margin: 0;
+
+		@include mixins.display-flex(column, $espaciado-m);
+
+		border: none;
 	}
 
 	&__legend {
-		font-weight: $font-weight-bold;
 		margin-bottom: $espaciado-s;
-		color: var(--titulos);
+		font-weight: $font-weight-bold;
+		@include mixins.tipografia(parrafo, var(--titulos));
 	}
 
 	&__options {
 		margin-top: $espaciado-s;
 	}
 
-	&__botones,
-	&__actions {
-		display: flex;
-		flex-direction: column;
-		gap: $espaciado-m;
+	&__botones {
+		@include mixins.display-flex(column, $espaciado-m);
 
 		app-button {
 			width: 100%;
@@ -47,12 +45,14 @@
 
 	&__cta {
 		margin-top: $espaciado-s;
-		font-size: $text-md;
+		@include mixins.tipografia(parrafo, var(--texto-primario));
+
 		text-align: center;
 
 		&-link {
 			margin-left: $espaciado-xs;
-			color: var(--titulos);
+			@include mixins.tipografia(enlace, var(--titulos));
+
 			text-decoration: underline;
 		}
 	}

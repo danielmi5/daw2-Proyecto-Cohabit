@@ -10,26 +10,29 @@
 */
 
 .fila-flex {
+	gap: $espaciado-s;
+
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	gap: $espaciado-s;
 	align-items: center;
 }
 
 .fila-flex-wrap {
+	gap: $espaciado-s;
+
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	gap: $espaciado-s;
 	align-items: center;
 }
 
 .columna-flex {
+	gap: $espaciado-s;
+
 	display: flex;
 	flex-direction: column;
 	flex-wrap: nowrap;
-	gap: $espaciado-s;
 	align-items: stretch;
 }
 
@@ -43,24 +46,27 @@
 */
 
 .fila-grid {
+	gap: $espaciado-s;
+
 	display: grid;
 	grid-auto-flow: column;
 	grid-auto-columns: minmax(0, auto);
-	gap: $espaciado-s;
 	align-items: center;
 }
 
 .auto-grid {
+	gap: $espaciado-s;
+
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	gap: $espaciado-s;
 	align-items: start;
 }
 
 .columna-grid {
+	gap: $espaciado-s;
+
 	display: grid;
 	grid-auto-rows: minmax(0, auto);
-	gap: $espaciado-s;
 	align-items: start;
 }
 

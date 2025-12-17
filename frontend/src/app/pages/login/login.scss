@@ -1,19 +1,22 @@
 @use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as mixins;
 
 .page-login {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: $espaciado-l;
+
+  @include mixins.centrar-flex();
+
   background-color: var(--bg-page, #f9e9ea);
 
   &__panel {
     width: 90%;
     max-width: 760px;
-    background: var(--bg-ocasional);
     padding: $espaciado-xxl;
+
+    background: var(--bg-ocasional);
+    border: 1px solid var(--borde-cards);
     border-radius: 24px;
     box-shadow: 0 2px 0 rgba(0,0,0,0.08) inset, 0 4px 16px rgba(0,0,0,0.06);
-    border: 1px solid var(--borde-cards);
   }
 }

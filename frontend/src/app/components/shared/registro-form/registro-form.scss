@@ -1,34 +1,35 @@
 @use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
 
 .registro-form {
 	width: 100%;
 	max-width: 760px;
 	margin: 0 auto;
 	padding: $espaciado-l;
-	display: flex;
-	flex-direction: column;
-	gap: $espaciado-m;
+
+	@include mixins.display-flex(column, $espaciado-m);
 
 	&__title {
-		font-size: 2rem;
-		text-align: center;
 		margin-bottom: $espaciado-m;
+		@include mixins.tipografia(h2, var(--titulos));
+
+		text-align: center;
 	}
 
 	&__fieldset {
-		border: none;
 		padding: 0;
 		margin: 0;
-		display: flex;
-		flex-direction: column;
-		gap: $espaciado-m;
+
+		@include mixins.display-flex(column, $espaciado-m);
 		flex-wrap: wrap;
+
+		border: none;
 	}
 
 	&__legend {
-		font-weight: $font-weight-bold;
 		margin-bottom: $espaciado-s;
-		color: var(--titulos);
+		font-weight: $font-weight-bold;
+		@include mixins.tipografia(parrafo, var(--titulos));
 	}
 
 	/* two-column helper for host elements */
@@ -42,22 +43,19 @@
 	}
 
 	&__validando {
-		font-size: $text-sm;
-		color: var(--info, #3498db);
 		margin-top: $espaciado-xs;
+		@include mixins.tipografia(texto-pequeno, var(--info, #3498db));
+
 		font-style: italic;
 	}
 
 	&__error {
-		font-size: $text-sm;
-		color: var(--error, #e74c3c);
+		@include mixins.tipografia(texto-pequeno, var(--error, #e74c3c));
 		margin-top: $espaciado-xs;
 	}
 
 	&__botones {
-		display: flex;
-		flex-direction: column;
-		gap: $espaciado-m;
+		@include mixins.display-flex(column, $espaciado-m);
 
 		app-button {
 			width: 100%;
@@ -66,12 +64,14 @@
 
 	&__cta {
 		margin-top: $espaciado-s;
-		font-size: $text-md;
+		@include mixins.tipografia(parrafo, var(--texto-primario));
+
 		text-align: center;
 
 		&-link {
 			margin-left: $espaciado-xs;
-			color: var(--titulos);
+			@include mixins.tipografia(enlace, var(--titulos));
+
 			text-decoration: underline;
 		}
 	}

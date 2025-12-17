@@ -1,39 +1,38 @@
 @use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
 
 .pie-pagina{
     width: 100%;
     height: fit-content;
     padding: $espaciado-l;
-    display: flex;
-    flex-direction: column;
-    gap: $espaciado-l;
+
+    @include mixins.display-flex(column, $espaciado-l);
+
     background-color: var(--bg-header-footer);
 
     &__superior{
         width: 100%;
         height: fit-content;
-        display: flex;
-        justify-content: space-between;
+
+        @include mixins.display-flex(row, $espaciado-s, stretch, space-between);
     }
 
     &__seccion{
-        display: flex;
-        flex-direction: column;
-        gap: $espaciado-s;
+        @include mixins.display-flex(column, $espaciado-s);
     }
 
     &__titulo{
         width: 100%;
+
         color: $importante-fondo-primario;
     }
 
     &__lista{
-        display: flex;
-        flex-direction: column;
-        gap: $espaciado-s;
+        @include mixins.display-flex(column, $espaciado-s);
 
         &__elemento{
             width: 100%;
+
             color: $texto-fondo-primario;
         }
     }
@@ -46,26 +45,23 @@
     &__inferior{
         width: 100%;
         height: 100px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+
+        @include mixins.display-flex(row, $espaciado-s, center, space-between);
     }
 
     &__redes-lista {
-        display: flex;
-        gap: $espaciado-s;
-        align-items: center;
         width: 100%;
-        justify-content: space-between;
+
+        @include mixins.display-flex(row, $espaciado-s, center, space-between);
+
         color: $importante-fondo-primario;
     }
 
     &__redes-enlace {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
         width: 100%;
         height: 100%;
+
+        @include mixins.centrar-flex();
 
         img,
         picture img {
@@ -88,9 +84,10 @@
     &__redes-sociales{
         width: 160px;
         height: fit-content;
+        gap: $espaciado-m;
+
         display: flex;
         flex-direction: column;
-        gap: $espaciado-m;
     }
 
     &__redes-titulo{

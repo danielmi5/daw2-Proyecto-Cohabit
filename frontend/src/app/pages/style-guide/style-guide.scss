@@ -1,33 +1,31 @@
 @use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as mixins;
 
 .style-guide {
   padding: $espaciado-m;
 
 
   &__titulo {
-
-    color: var(--titulos);
-    text-align: center;
     margin: $espaciado-m 0;
+    @include mixins.tipografia(h1, var(--titulos));
+
+    text-align: center;
   }
 
   &__contenido {
     width: 100%;
     height: fit-content;
     margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: $espaciado-l;
-    align-items: center; 
+
+    @include mixins.display-flex(column, $espaciado-l, center);
   }
 
   &__seccion{
     width: 60%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $espaciado-l;
     padding: $espaciado-xxl;
+
+    @include mixins.display-flex(column, $espaciado-l, center);
+
     background-color: var(--bg-ocasional);
     border: 1px solid var(--borde-cards);
     border-radius: $radio-card;
@@ -35,23 +33,20 @@
 
   &__botones {
     width: 100%;
-    display: flex;
-    gap: $espaciado-m;
+
+    @include mixins.display-flex(row, $espaciado-m, stretch, space-around);
     flex-wrap: wrap;
-    justify-content: space-around;
   }
 
   &__grupo {
-    display: flex;
-    flex-direction: column;
-    gap: $espaciado-s;
-    align-items: center;
     min-width: 160px;
+
+    @include mixins.display-flex(column, $espaciado-s, center);
   }
 
   &__subtitulo {
-    font-size: $text-md;
     margin-bottom: $espaciado-s;
+    @include mixins.tipografia(parrafo);
   }
 
   &__grupo app-button {
@@ -59,7 +54,7 @@
   }
 
   &__titulos{
-    color: var(--titulos);
+    @include mixins.tipografia(h2, var(--titulos));
   }
 
 }

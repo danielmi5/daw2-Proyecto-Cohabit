@@ -55,10 +55,219 @@ También hay pesos para la tipografía (`$font-weight-regular`, `$font-weight-me
 
 
 ### 1.5 Mixins y funciones
+Este apartado documenta los mixins definidos en `src/styles/01-tools/_mixins.scss`.
 
+#### Mixin para tipografía
+Aplica estilos tipográficos estandarizados según un `type` (botón, enlace, h1-h4, párrafo, textos pequeños), usando valores de `00-settings`.
+
+Código del mixin:
+
+```scss
+@mixin tipografia($type, $color: $negro) {
+
+	@if $type == button {
+		font-family: $font-primary;
+		font-size: $text-lg;
+		font-weight: $font-weight-medium;
+		line-height: $line-button;
+		letter-spacing: 0.089em;
+		text-decoration: none;
+		cursor: pointer;
+		color: $color;
+	}
+
+	@else if $type == enlace {
+		font-family: $font-primary;
+		font-size: $text-md;
+		font-weight: $font-weight-regular;
+		line-height: $line-normal;
+		text-decoration: none;
+		color: $color;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	@else if $type == h1 {
+		font-family: $font-secondary;
+		font-size: $escala-h1;
+		font-weight: $peso-h1;
+		line-height: $altura-linea-h1;
+		margin: 0;
+		color: $color;
+	}
+
+	@else if $type == h2 {
+		font-family: $font-secondary;
+		font-size: $escala-h2;
+		font-weight: $peso-h2;
+		line-height: $altura-linea-h2;
+		margin: 0;
+		color: $color;
+	}
+
+	@else if $type == h3 {
+		font-family: $font-secondary;
+		font-size: $escala-h3;
+		font-weight: $peso-h3;
+		line-height: $altura-linea-h3;
+		margin: 0;
+		color: $color;
+	}
+
+	@else if $type == h4 {
+		font-family: $font-secondary;
+		font-size: $escala-h4;
+		font-weight: $peso-h4;
+		line-height: $altura-linea-h4;
+		margin: 0;
+		color: $color;
+	}
+
+	@else if $type == parrafo {
+		font-family: $font-primary;
+		font-size: $escala-parrafo;
+		font-weight: $peso-parrafo;
+		line-height: $altura-linea-parrafo;
+		color: $color;
+	}
+
+	@else if $type == texto-mini {
+		font-family: $font-primary;
+		font-size: $escala-texto-mini;
+		font-weight: $peso-texto-mini;
+		line-height: $altura-linea-texto-mini;
+		color: $color;
+	}
+
+	@else if $type == texto-pequeno {
+		font-family: $font-primary;
+		font-size: $escala-texto-pequeno;
+		font-weight: $peso-texto-pequeno;
+		line-height: $altura-linea-texto-pequeno;
+		color: $color;
+	}
+
+	@else {
+		// Fallback: aplica la tipografía base
+		font-family: $font-primary;
+		font-size: $text-md;
+		font-weight: $font-weight-regular;
+		line-height: $line-normal;
+		color: $color;
+	}
+}
+```
+
+Propósito y propiedades usadas:
+- Propósito: Unificar estilos tipográficos en componentes y módulos reutilizables.
+- Propiedades usadas: `font-family`, `font-size`, `font-weight`, `line-height` y `color`.
+
+Caso de uso:
+
+```scss
+@use 'src/styles/00-settings/variables' as *;
+
+.btn-primario {
+	@include tipografia(button, $color-primario);
+	background: $color-primario;
+}
+
+h1.page-title {
+	@include tipografia(h1, $color-primario-oscuro);
+}
+```
+
+#### Mixin para display-flex
+Crea un contenedor `flex` parametrizable con dirección, gap, alineado y justificado.
+
+Código del mixin:
+
+```scss
+@mixin display-flex(
+	$direction: row,
+	$gap: $espaciado-s,
+	$align: stretch,
+	$justify: flex-start
+) {
+	display: flex;
+	flex-direction: $direction;
+	gap: $gap;
+	align-items: $align;
+	justify-content: $justify;
+}
+```
+
+Propósito y propiedades usadas:
+- Propósito: Evitar repetir la configuración básica de flexbox y permitir ajustes rápidos desde variables/tokens.
+- Propiedades utilizadas: `flex-direction`, `align-items`, `justify-content`, `gap`.
+
+Caso de uso:
+
+```scss
+.fila-centrada {
+	@include display-flex(row, 1rem, center, center);
+}
+
+.columna-gap {
+	@include display-flex(column, 1.5rem, flex-start, space-between);
+}
+```
+
+#### Mixin para centrar-flex
+Centra contenido vertical y horizontalmente usando flexbox (atajo para centrar ambos ejes).
+
+Código del mixin:
+
+```scss
+@mixin centrar-flex($direction: row) {
+	display: flex;
+	flex-direction: $direction;
+	align-items: center;
+	justify-content: center;
+}
+```
+
+Propósito y propiedades usadas:
+- Propósito: Simplificar patrones comunes de centrado completo (centro tanto vertical como horizontal).
+- Propiedades usadas: `display: flex`, `flex-direction`, `align-items: center`, `justify-content: center`.
+
+Caso de uso (ejemplo):
+
+```scss
+.overlay {
+	@include centrar-flex(column);
+	height: 100vh;
+}
+```
+
+#### Mixin para desactivado
+Aplica estilos visuales y funcionales para indicar que un elemento está deshabilitado.
+
+Código del mixin:
+
+```scss
+@mixin desactivado() {
+	opacity: 0.7;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+```
+
+Propósito y propiedades usadas:
+- Propósito: Ofrecer un patrón reutilizable para deshabilitar elementos desde estilos (reduce duplicación y asegura consistencia en la UX).
+- Propiedades usadas: `opacity`, `cursor`, `pointer-events`.
+
+Caso de uso:
+
+```scss
+.btn[disabled],
+.btn--disabled {
+	@include desactivado();
+}
+```
 
 ### 1.6 ViewEncapsulation en Angular
-
 
 
 ## Sección 2: HTML semántico y estructura

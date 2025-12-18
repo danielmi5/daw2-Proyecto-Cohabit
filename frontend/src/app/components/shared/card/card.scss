@@ -1,0 +1,105 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.card {
+
+  border-radius: $radio-card;
+  padding: $espaciado-m;
+  background-color: var(--bg-cards);
+  border: 1px solid var(--borde-cards);
+  max-height: 116px;
+  box-shadow: $shadow-sm;
+
+  &--horizontal {
+    width: fit-content;
+    display: flex;
+    gap: $espaciado-xs;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  &--horizontal {
+    & .card__content {
+      padding: $espaciado-m;
+      border-radius: 0 $radio-card $radio-card 0;
+    }
+
+    & .card__imagen {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+
+      border-radius: $radio-card 0 0 $radio-card;
+    }
+  }
+
+  &__figure {
+    margin: 0;
+    flex-shrink: 0;
+    width: 10rem;
+    height: auto;
+  }
+
+  &__imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: $radio-sm;
+  }
+
+  &__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__header {
+    @include mixins.display-flex(row, $espaciado-s, flex-start, space-between);
+    margin-bottom: $espaciado-s;
+  }
+
+  &__titulo {
+    margin: 0;
+    @include mixins.tipografia(h4, var(--titulos));
+  }
+
+  &__estado {
+    @include mixins.tipografia(texto-pequeno, var(--etiquetas-cards));
+  }
+
+  &__cuerpo {
+    flex: 1;
+  }
+
+  &__detalles {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $espaciado-s;
+  }
+
+  &__detalle-item {
+    display: flex;
+    align-items: baseline;
+    gap: $espaciado-s;
+
+    &::before {
+      content: '▸';
+      color: var(--titulos);
+      font-size: $text-lg;
+      line-height: 1;
+    }
+  }
+
+  &__detalle-etiqueta {
+    @include mixins.tipografia(parrafos, var(--texto-primario));
+  }
+
+  &__detalle-valor {
+    margin: 0;
+    @include mixins.tipografia(parrafos, var(--texto-primario));
+  }
+}

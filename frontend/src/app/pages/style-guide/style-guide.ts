@@ -5,11 +5,13 @@ import { Button } from "../../components/shared/button/button";
 import { FormTextarea } from "../../components/shared/form-textarea/form-textarea";
 import { FormSelect } from "../../components/shared/form-select/form-select";
 import { FormCheckbox } from "../../components/shared/form-checkbox/form-checkbox";
+import { Card } from '../../components/shared/card/card';
 
 @Component({
   selector: 'app-style-guide',
   templateUrl: './style-guide.html',
-  styleUrl: './style-guide.scss',
-  imports: [FormInput, Sidebar, Button, FormTextarea, FormSelect, FormCheckbox]
+  standalone: true,
+  styleUrls: ['./style-guide.scss'],
+  imports: [FormInput, Sidebar, Button, FormTextarea, FormSelect, FormCheckbox, Card]
 })
 export class StyleGuidePage {}

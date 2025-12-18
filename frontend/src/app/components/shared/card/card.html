@@ -1,0 +1,25 @@
+<article class="card" [class.card--horizontal]="variante === 'horizontal'">
+  <figure *ngIf="imagen && variante === 'horizontal'" class="card__figure">
+    <img class="card__imagen" [src]="imagen" [alt]="imagenAlt || titulo" />
+  </figure>
+
+  <div class="card__content">
+    <header class="card__header">
+      <h2 class="card__titulo">{{ titulo }}</h2>
+      <small class="card__estado">{{ estado }}</small>
+    </header>
+
+    <section class="card__cuerpo">
+      <ul class="card__detalles">
+        <li class="card__detalle-item">
+           <strong class="card__detalle-etiqueta">Fecha:</strong>
+           <p class="card__detalle-valor">{{ fecha }}</p>
+         </li>
+        <li class="card__detalle-item">
+          <strong class="card__detalle-etiqueta">Horarios:</strong>
+          <p class="card__detalle-valor">{{ hora }}</p>
+        </li>
+      </ul>
+    </section>
+  </div>
+</article>

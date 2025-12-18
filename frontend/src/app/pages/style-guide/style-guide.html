@@ -45,6 +45,31 @@
       ></app-form-input>
     </section>
     <section class="style-guide__seccion">
+      <h2 class="style-guide__titulos">Card</h2>
+      <div class="style-guide__grupo">
+        <h3 class="style-guide__titulos2">Vertical (por defecto)</h3>
+        <app-card
+          [titulo]="'Cocina'"
+          [estado]="'Disponible'"
+          [fecha]="'17/08/25'"
+          [hora]="'09:00-11:00'">
+        </app-card>
+      </div>
+
+      <div class="style-guide__grupo" style="margin-top:1rem">
+        <h3 class="style-guide__titulos2">Horizontal (con imagen)</h3>
+          <app-card
+            variante="horizontal"
+            imagen="/cocina.png"
+            imagenAlt="Cocina pública"
+            [titulo]="'Cocina'"
+            [estado]="'Reservada'"
+            [fecha]="'17/08/25'"
+            [hora]="'09:00-11:00'">
+          </app-card>
+      </div>
+    </section>
+    <section class="style-guide__seccion">
       <h2 class="style-guide__titulos">Textarea</h2>
       <app-form-textarea
           id="textarea-base"

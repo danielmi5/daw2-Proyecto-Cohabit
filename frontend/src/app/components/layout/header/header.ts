@@ -12,6 +12,7 @@ import { FeatherIconDirective } from '../../../directives/feather-icon.directive
 export class Header implements OnInit {
   modoIcon = 'sun';
   modoTitle = 'Cambiar a modo oscuro';
+  menuAbierto = false;
 
   ngOnInit(): void {
     const temaAlmacenado = localStorage.getItem('theme');
@@ -34,5 +35,9 @@ export class Header implements OnInit {
     const esModoOscuro = document.documentElement.classList.contains('dark');
     this.modoIcon = esModoOscuro ? 'moon' : 'sun';
     this.modoTitle = esModoOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+  }
+
+  toggleMenu(): void {
+    this.menuAbierto = !this.menuAbierto;
   }
 }

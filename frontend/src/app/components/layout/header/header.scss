@@ -1,72 +1,95 @@
 @use '../../../../styles/00-settings/variables' as *;
 
-.cabecera{
+.cabecera {
   width: 100%;
   height: 10vh;
   padding: $espaciado-m;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 
   background-color: var(--bg-header-footer);
 
-  &__logo{
+  &__logo {
     width: 20%;
     height: auto;
 
     display: flex;
     align-items: center;
 
-    &-icono{
-      max-width: 100%;
+    &-icono {
       width: 100%;
+      max-width: 100%;
       height: auto;
 
       display: block;
     }
   }
 
-  &__navegacion{
+  &__hamburguesa {
+    display: none;
+  }
+
+  &__nav {
     width: 40%;
   }
   
-  &__menu{
+  &__menu {
     width: 100%;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
+    &-opcion {
+      list-style: none;
+    }
+
     &-enlace {
-      color: $importante-fondo-primario;
       text-decoration: none;
+
+      color: $importante-fondo-primario;
       transition: color $transicion-rapida $transicion-suave;
 
-      &:hover, &:focus {
-        color: $hover-ui;
+      &:hover,
+      &:focus {
         text-decoration: none;
-      }
 
+        color: $hover-ui;
+      }
     }
   }
 
-  &__utilidades{
+  &__utilidades {
     width: fit-content;
-    gap: $espaciado-m; 
+    gap: $espaciado-m;
 
     display: flex;
     justify-content: space-between;
   }
 
-  &__boton{
-    width: $iconos-header; height: $iconos-header;
+  &__boton {
+    width: $iconos-header;
+    height: $iconos-header;
     padding: 0;
 
     background-color: transparent;
+    border: none;
+
+    cursor: pointer;
+
+    &:focus {
+      outline: 2px solid $color-primario;
+      outline-offset: 2px;
+    }
+
+    &:hover .cabecera__icono {
+      color: $hover-ui;
+    }
   }
 
-  &__icono{
+  &__icono {
     width: $iconos-header;
     height: $iconos-header;
 
@@ -74,20 +97,72 @@
     align-items: center;
     justify-content: center;
 
-    /* Aplica el mismo color que el texto principal del header */
     color: $importante-fondo-primario;
     transition: color $transicion-rapida $transicion-suave;
 
-    /* Si el icono es un SVG, hacer que use currentColor */
     svg {
       width: 100%;
       height: 100%;
+
+      display: block;
+
       stroke: currentColor;
       fill: none;
-      display: block;
     }
-
   }
 
-  
+  // Responsive: movil
+  @media (max-width: $breakpoint-tablet) {
+    &__hamburguesa {
+      display: inline-flex;
+    }
+
+    &__nav {
+      width: 100%;
+      max-height: 0;
+      padding: 0;
+
+      position: absolute;
+      top: 10vh;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+
+      overflow: hidden;
+
+      background-color: var(--bg-header-footer);
+      box-shadow: $shadow-lg;
+
+      transition: max-height $transicion-base $transicion-suave,
+                  padding $transicion-base $transicion-suave;
+
+      &--open {
+        max-height: 300px;
+        padding: $espaciado-m 0;
+      }
+    }
+
+    &__menu {
+      flex-direction: column;
+      gap: $espaciado-s;
+    }
+
+    &__menu-opcion {
+      width: 100%;
+
+      text-align: center;
+    }
+
+    &__menu-enlace {
+      width: 100%;
+      padding: $espaciado-m;
+
+      display: block;
+
+      &:hover,
+      &:focus {
+        background-color: rgba($hover-ui, 0.1);
+      }
+    }
+  }
 }

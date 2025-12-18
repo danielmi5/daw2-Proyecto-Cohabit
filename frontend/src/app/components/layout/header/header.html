@@ -5,24 +5,31 @@
     </picture>
   </a>
 
-  <nav class="cabecera__navegacion">
+  <nav class="cabecera__nav" [class.cabecera__nav--open]="menuAbierto">
     <ul class="cabecera__menu">
       <li class="cabecera__menu-opcion">
-        <a routerLink="/inicio" class="cabecera__menu-enlace">INICIO</a>
+        <a routerLink="/inicio" class="cabecera__menu-enlace" (click)="menuAbierto = false">INICIO</a>
       </li>
       <li class="cabecera__menu-opcion">
-        <a routerLink="/dashboard" class="cabecera__menu-enlace">DASHBOARD</a>
+        <a routerLink="/dashboard" class="cabecera__menu-enlace" (click)="menuAbierto = false">DASHBOARD</a>
       </li>
       <li class="cabecera__menu-opcion">
-        <a routerLink="/style-guide" class="cabecera__menu-enlace">STYLE GUIDE</a>
+        <a routerLink="/style-guide" class="cabecera__menu-enlace" (click)="menuAbierto = false">STYLE GUIDE</a>
       </li>
       <li class="cabecera__menu-opcion">
-        <a routerLink="/dashboard" class="cabecera__menu-enlace">MI GRUPO</a>
+        <a routerLink="/dashboard" class="cabecera__menu-enlace" (click)="menuAbierto = false">MI GRUPO</a>
       </li>
     </ul>
   </nav>
   
   <section class="cabecera__utilidades">
+    <button 
+      class="cabecera__boton cabecera__hamburguesa" 
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuAbierto"
+      aria-label="Abrir menú de navegación">
+      <span class="cabecera__icono" [feather]="'menu'" [tipo]="'header'"></span>
+    </button>
     <button class="cabecera__boton" aria-label="Cambiar tema" (click)="alternarTema()">
       <span class="cabecera__icono" [feather]="modoIcon" [tipo]="'header'" [title]="modoTitle"></span>
     </button>

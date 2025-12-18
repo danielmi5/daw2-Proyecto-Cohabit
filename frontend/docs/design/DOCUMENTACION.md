@@ -551,6 +551,35 @@ Estructura de página (archivo `app.html`):
 <picture>
   <img src="/header/perfil.svg" alt="Perfil" />
 </picture>
+
+- `figure` / `figcaption`: se usan para agrupar contenido multimedia con su leyenda descriptiva. Utilizamos `figure` para demos y previews (por ejemplo en la guía de estilos y en el perfil del sidebar). La etiqueta `figcaption` aporta contexto legible por lectores de pantalla y debe acompañar siempre que la imagen necesite explicación.
+
+```html
+<figure>
+	<img src="/img/cocina.png" alt="Cocina compartida" />
+	<figcaption>Cocina compartida — vista previa del recurso</figcaption>
+</figure>
+```
+
+- `code` / `pre`: para código inline y bloques de código respectivamente. Se usa `code` para mostrar atributos y ejemplos cortos en la documentación (`<code>variante="primario"</code>`). Para bloques de código más largos, usar `pre` envolviendo `code`.
+
+- `svg`: empleamos SVG inline o ficheros SVG en `public/` para iconografía y gráficos. Los SVG inline permiten control accesible y estilizado mediante CSS.
+
+```html
+<svg role="img" aria-label="Icono de calendario" width="24" height="24">...</svg>
+```
+
+- `strong` / `em`: para dar importancia al texto.
+
+```html
+<p>Haga clic en <strong>Guardar cambios</strong> para aplicar la configuración.</p>
+```
+
+- `small`: para textos de ayuda o mensajes secundarios (ej. texto de ayuda de formularios o metadatos), con rol visual reducido.
+
+```html
+<small class="form-input__ayuda">Formato: +34 600 000 000</small>
+```
 ```
 
 ### 2.2 Jerarquía de headings
@@ -859,8 +888,87 @@ Explicación de las propiedades de `app-form-input`:
 
 HTML del componente input:
 
+```html
+<div class="form-input" 
+  [class.form-input--exito]="getEstadoEfectivo() === 'exito'" 
+  [class.form-input--advertencia]="getEstadoEfectivo() === 'advertencia'"
+  [class.form-input--error]="getEstadoEfectivo() === 'error'" 
+  [class.form-input--desactivado]="desactivado">
+  <label class="form-input__label" [for]="id">
+    <span class="form-input__label-texto">{{ etiqueta }}</span>
+    @if (requerido) {
+      <span class="form-input__label-requerido" aria-hidden="true">*</span>
+    }
+  </label>
 
+  <div class="form-input__contenedor-input" (click)="inputRef.focus()">
+    @if (iconoIzquierda) {
+      <span class="form-input__icono form-input__icono--izquierda" aria-hidden="true">
+        <i [class]="iconoIzquierda"></i>
+      </span>
+    }
 
+    <input #inputRef
+      class="form-input__campo"
+      [class.form-input__campo--con-icono-izquierda]="iconoIzquierda"
+      [class.form-input__campo--con-icono-derecha]="iconoDerecha"
+      [id]="id"
+      [name]="name"
+      [type]="tipo"
+      [placeholder]="placeholder"
+      [disabled]="desactivado"
+      [value]="valor"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
+      [attr.aria-disabled]="desactivado ? 'true' : null"
+      [attr.aria-required]="requerido ? 'true' : null"
+      [required]="requerido"
+      [attr.aria-invalid]="getEstadoEfectivo() === 'error' ? 'true' : 'false'"
+      [attr.aria-describedby]="id + '-mensaje'"
+    />
+
+    @if (iconoDerecha) {
+      <span class="form-input__icono form-input__icono--derecha" aria-hidden="true">
+        <i [class]="iconoDerecha"></i>
+      </span>
+    }
+  </div>
+
+  <!-- Estado INICIAL: muestra texto de ayuda -->
+  @if (getEstadoEfectivo() === 'inicial' && textoAyuda) {
+    <small class="form-input__mensaje" [id]="id + '-mensaje'">
+      {{ textoAyuda }}
+    </small>
+  }
+
+  <!-- Estado ADVERTENCIA: muestra mensaje de advertencia (campo obligatorio vacío) -->
+  @if (getEstadoEfectivo() === 'advertencia' && mensajeAdvertencia) {
+    <small class="form-input__mensaje form-input__mensaje--advertencia" [id]="id + '-mensaje'" role="alert">
+      {{ mensajeAdvertencia }}
+    </small>
+  }
+
+  <!-- Estado ERROR: muestra mensaje de error (valor incorrecto) -->
+  @if (getEstadoEfectivo() === 'error' && mensajeError) {
+    <small class="form-input__mensaje form-input__mensaje--error" [id]="id + '-mensaje'" role="alert">
+      {{ mensajeError }}
+    </small>
+  }
+
+  <!-- Estado ÉXITO: muestra mensaje de éxito -->
+  @if (getEstadoEfectivo() === 'exito') {
+    <small class="form-input__mensaje form-input__mensaje--exito" [id]="id + '-mensaje'">
+      {{ mensajeExito || 'Correcto' }}
+    </small>
+  }
+</div>
+```
+- Se utiliza div porque es un contenedor para estructurar y hacer el diseño.
+- La etiqueta`<label>` se asocia al `<input>` mediante `[for]="id"` y `[id]="id"`
+- `aria-describedby` conecta el campo con su mensaje de estado.
+- `aria-invalid` indica si el valor es incorrecto.
+- Las clases `--con-icono-izquierda/derecha` ajustan el espacio para iconos opcionales.
+- Hay 4 estados para los mensajes debajo del input.
 
 Con esta estructura se logra una interfaz accesible y consistente: los `label` enlazan con los `input`, los `fieldset` aportan contexto y los componentes reutilizables (`app-form`) encapsulan la lógica de `ControlValueAccessor` para integrarse con `FormGroup`.
 

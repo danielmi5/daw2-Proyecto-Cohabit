@@ -43,28 +43,28 @@
     }
   </div>
 
-  <!-- Estado INICIAL: mostrar texto de ayuda -->
+  <!-- Estado INICIAL: muestra texto de ayuda -->
   @if (getEstadoEfectivo() === 'inicial' && textoAyuda) {
     <small class="form-input__mensaje" [id]="id + '-mensaje'">
       {{ textoAyuda }}
     </small>
   }
 
-  <!-- Estado ADVERTENCIA: mostrar mensaje de advertencia (campo obligatorio vacío) -->
+  <!-- Estado ADVERTENCIA: muestra mensaje de advertencia (campo obligatorio vacío) -->
   @if (getEstadoEfectivo() === 'advertencia' && mensajeAdvertencia) {
     <small class="form-input__mensaje form-input__mensaje--advertencia" [id]="id + '-mensaje'" role="alert">
       {{ mensajeAdvertencia }}
     </small>
   }
 
-  <!-- Estado ERROR: mostrar mensaje de error (valor incorrecto) -->
+  <!-- Estado ERROR: muestra mensaje de error (valor incorrecto) -->
   @if (getEstadoEfectivo() === 'error' && mensajeError) {
     <small class="form-input__mensaje form-input__mensaje--error" [id]="id + '-mensaje'" role="alert">
       {{ mensajeError }}
     </small>
   }
 
-  <!-- Estado ÉXITO: mostrar mensaje de éxito -->
+  <!-- Estado ÉXITO: muestra mensaje de éxito -->
   @if (getEstadoEfectivo() === 'exito') {
     <small class="form-input__mensaje form-input__mensaje--exito" [id]="id + '-mensaje'">
       {{ mensajeExito || 'Correcto' }}

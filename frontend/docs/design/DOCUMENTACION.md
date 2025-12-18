@@ -978,3 +978,329 @@ Con esta estructura se logra una interfaz accesible y consistente: los `label` e
 
 - [Principios de comunicación visual](https://weareshifta.com/que-son-los-principios-del-diseno-grafico/)
 
+## Sección 3: Sistema de componentes UI
+
+### 3.1 Componentes implementados
+
+#### Button
+
+El componente `Button` es un elemento interactivo fundamental que permite a los usuarios realizar acciones principales o secundarias en la interfaz. Ofrece cuatro variantes visuales (primario, secundario, fantasma y peligro) para establecer una jerarquía clara de acciones según su importancia. Incluye tres tamaños predefinidos (pequeño, mediano y grande) que se adaptan al contexto de uso, y maneja estados como normal, hover, focus, active y desactivado para proporcionar retroalimentación visual clara al usuario. Además, soporta iconos opcionales para reforzar visualmente la acción.
+
+```html
+<app-button 
+  variante="primario" 
+  tamanio="mediano"
+  tipo="submit"
+  [deshabilitado]="false"
+  [tieneIcono]="true"
+  ariaLabel="Guardar cambios">
+  Guardar cambios
+</app-button>
+```
+
+- **`variante`**: define la jerarquía visual del botón (primario para acciones principales, secundario para alternativas, fantasma para acciones terciarias, peligro para destructivas).
+- **`tamanio`**: controla el tamaño del botón adaptándose al contexto (pequeno, mediano por defecto, grande).
+- **`deshabilitado`**: bloquea la interacción y aplica estilos visuales que indican que el botón no está disponible.
+- **`tieneIcono`**: activa el contenedor para iconos, ajustando el espaciado interno para una presentación balanceada.
+- **`ariaLabel`**: mejora la accesibilidad proporcionando contexto adicional para lectores de pantalla.
+
+#### Alert
+
+El componente `Alert` comunica mensajes de feedback al usuario con cuatro variantes semánticas (éxito, error, warning, info) que utilizan colores y iconos diferenciados para transmitir rápidamente el tipo de información. Es cerrable opcionalmente mediante un botón con icono 'x', lo que permite al usuario descartar mensajes una vez leídos. Maneja estados como hover (elevación de sombra) y focus en el botón de cierre para garantizar accesibilidad. El componente es esencial para mostrar confirmaciones, errores de validación, advertencias del sistema o información contextual.
+
+```html
+<app-alert 
+  tipo="error" 
+  [cerrable]="true"
+  (cerrar)="onAlertClose()">
+  Ha ocurrido un error al procesar tu solicitud. Por favor, inténtalo de nuevo.
+</app-alert>
+```
+
+- **`tipo`**: determina el estilo semántico de la alerta (exito para confirmaciones, error para fallos, warning para advertencias, info para información general).
+- **`cerrable`**: controla si se muestra el botón de cierre; útil para mensajes permanentes vs descartables.
+- **`(cerrar)`**: evento emitido al cerrar la alerta, permite al componente padre realizar limpieza o actualizar su estado.
+- El contenido proyectado (`<ng-content>`) permite mensajes personalizados con texto enriquecido o enlaces.
+
+#### Card
+
+El componente `Card` presenta información estructurada de recursos o elementos en un contenedor visual compacto, ideal para listas de reservas, servicios o espacios compartidos. Ofrece dos variantes de layout (vertical para listados compactos sin imagen, horizontal con imagen destacada para mayor peso visual) y muestra datos clave como título, estado, fecha y hora. El componente maneja el formato de fechas automáticamente y permite mostrar opcionalmente una imagen representativa con su texto alternativo para accesibilidad. Es fundamental para crear interfaces de tipo dashboard o catálogo.
+
+```html
+<app-card
+  variante="horizontal"
+  [titulo]="'Cocina Compartida'"
+  [estado]="'Disponible'"
+  [fecha]="'2025-12-20'"
+  [hora]="'14:00-16:00'"
+  imagen="/cocina.png"
+  imagenAlt="Vista de la cocina compartida">
+</app-card>
+```
+
+- **`variante`**: define el layout del componente (vertical sin imagen para listados densos, horizontal con imagen para destacar visualmente).
+- **`titulo`, `estado`, `fecha`, `hora`**: datos estructurados que se presentan de forma consistente en todas las tarjetas.
+- **`imagen` y `imagenAlt`**: permiten añadir contenido visual accesible; `imagenAlt` es esencial para lectores de pantalla.
+- El componente formatea automáticamente fechas si se pasa un objeto `Date` en lugar de string.
+
+#### FormInput
+
+El componente `FormInput` es un control de formulario versátil que implementa `ControlValueAccessor` para integrarse completamente con Angular Reactive Forms. Maneja cuatro estados de validación (inicial, advertencia, error, éxito) con mensajes contextuales y estilos diferenciados, mejorando la experiencia del usuario durante la entrada de datos. Soporta múltiples tipos de input (text, email, password, etc.), iconos opcionales a izquierda o derecha, y proporciona textos de ayuda para guiar al usuario. Incluye atributos ARIA para accesibilidad completa (aria-invalid, aria-describedby, aria-required).
+
+```html
+<app-form-input
+  id="user-email"
+  name="email"
+  formControlName="email"
+  etiqueta="Correo electrónico"
+  placeholder="ejemplo@dominio.com"
+  [tipo]="'email'"
+  [requerido]="true"
+  [estadoValidacion]="'inicial'"
+  textoAyuda="Debe seguir el formato estándar de correo."
+  mensajeError="El formato del correo es inválido."
+  mensajeExito="Correo válido y disponible.">
+</app-form-input>
+```
+
+- **`formControlName`**: integra el input con Angular Reactive Forms para sincronización bidireccional y validación.
+- **`estadoValidacion`**: controla qué mensaje y estilos se muestran (inicial→textoAyuda, advertencia→campo obligatorio vacío, error→validación fallida, exito→validación exitosa).
+- **`tipo`**: define el type del input HTML (text, email, password, etc.) para validación nativa y teclados móviles apropiados.
+- **`mensajeError`, `mensajeExito`, `mensajeAdvertencia`**: permiten feedback contextual según el estado de validación del campo.
+- **`textoAyuda`**: guía al usuario con información sobre el formato esperado antes de interactuar con el campo.
+
+#### FormTextarea
+
+El componente `FormTextarea` extiende la funcionalidad de entrada de texto para contenido multilínea como descripciones, comentarios o notas. Comparte la misma lógica de estados visuales que `FormInput` (normal, error, éxito) con mensajes de feedback diferenciados. Incluye control de deshabilitado y requerido, textos de ayuda opcionales, y soporta iconos decorativos. Es usado para formularios que necesitan capturar información textual extensa manteniendo consistencia visual con otros controles del sistema.
+
+```html
+<app-form-textarea
+  id="desc-recurso"
+  name="descripcion"
+  etiqueta="Descripción del problema"
+  placeholder="Describe detalladamente el problema encontrado..."
+  [requerido]="true"
+  [hayError]="false"
+  textoAyuda="Mínimo 50 caracteres."
+  mensajeError="La descripción es demasiado corta.">
+</app-form-textarea>
+```
+
+- **`etiqueta`**: texto del label asociado al textarea, mejora accesibilidad y UX.
+- **`hayError` y `exito`**: controlan los estados visuales y mensajes de validación del textarea.
+- **`requerido`**: marca el campo como obligatorio visualmente (asterisco) y en el DOM (atributo required).
+- **`textoAyuda`**, **`mensajeError`**, **`mensajeExito`**: proporcionan feedback contextual similar a FormInput.
+- El textarea se auto-ajusta visualmente manteniendo consistencia con el resto de controles de formulario.
+
+#### FormSelect
+
+El componente `FormSelect` presenta una lista desplegable de opciones predefinidas, usado para selecciones únicas de listas cortas o medianas. Acepta un array de objetos con `value` y `label` para añadir las opciones, mantiene estados de error y éxito con mensajes contextuales, y puede configurarse con un valor predeterminado. Incluye estados desactivado y requerido, y proporciona textos de ayuda para orientar la selección. Es fundamental para filtros, categorías, tipos de usuario u otras selecciones categóricas en formularios.
+
+```html
+<app-form-select
+  id="tipo-usuario"
+  name="tipoUsuario"
+  etiqueta="Tipo de usuario"
+  [requerido]="true"
+  [desactivado]="false"
+  valorPredeterminado="user"
+  [opciones]="[
+    { value: 'admin', label: 'Administrador' },
+    { value: 'user', label: 'Usuario estándar' },
+    { value: 'guest', label: 'Invitado' }
+  ]"
+  textoAyuda="Selecciona el rol apropiado.">
+</app-form-select>
+```
+
+- **`opciones`**: array de objetos `{value, label}` que define las opciones disponibles en el desplegable.
+- **`valorPredeterminado`**: preselecciona una opción del select al cargar el formulario.
+- **`hayError` y `exito`**: controlan estados visuales con bordes de color y mensajes de validación.
+- **`desactivado`**: bloquea la interacción con el select cuando el campo no debe ser editable.
+- Mantiene consistencia visual y funcional con `FormInput` y `FormTextarea`.
+
+#### FormCheckbox
+
+El componente `FormCheckbox` implementa una casilla de verificación personalizada con estilos coherentes con el sistema de diseño, integrándose con Angular Reactive Forms mediante `ControlValueAccessor`. Soporta estados checked/unchecked con transiciones suaves, estado disabled, proyección de contenido para etiquetas enriquecidas (con enlaces o texto formateado), y atributos ARIA para accesibilidad completa. Es usado para aceptación de términos, configuraciones booleanas, filtros múltiples u opciones de activación/desactivación.
+
+```html
+<app-form-checkbox
+  id="accept-terms"
+  name="terminos"
+  formControlName="terminos"
+  [requerido]="true"
+  [desactivado]="false">
+  He leído y acepto los <a routerLink="/terminos">Términos y Condiciones</a> y la <a routerLink="/privacidad">Política de Privacidad</a>
+</app-form-checkbox>
+```
+
+- **`formControlName`**: integra el checkbox con Reactive Forms para sincronización bidireccional del valor booleano.
+- **`requerido`**: marca el checkbox como obligatorio, típicamente usado para aceptación de términos.
+- **`desactivado`**: bloquea la interacción cuando el checkbox no debe ser editable por el usuario.
+- **Proyección de contenido** (`<ng-content>`): permite etiquetas complejas con enlaces, negritas u otros elementos HTML.
+- Incluye SVG custom para los estados checked/unchecked manteniendo consistencia visual.
+
+#### Sidebar
+
+El componente `Sidebar` proporciona navegación contextual con tres variantes específicas (dashboard, grupo, perfil) que adaptan los enlaces y opciones mostradas según la sección activa de la aplicación. Muestra información del usuario (nombre e imagen de perfil), y puede mostrar u ocultar opciones adicionales del perfil mediante el input `mostrarOpcionesPerfil`. Integra iconos FeatherIcon para cada opción de navegación y RouterLink para navegación SPA. Es un componente de layout fundamental que facilita la orientación del usuario en la aplicación.
+
+```html
+<app-sidebar 
+  variante="dashboard"
+  nombreUsuario="Juan Pérez"
+  imagenPerfil="/img/perfil-usuario.jpg"
+  [mostrarOpcionesPerfil]="false">
+</app-sidebar>
+```
+
+- **`variante`**: cambia los enlaces mostrados según el contexto (dashboard→inicio y reservas, grupo→gestión grupal, perfil→configuración personal).
+- **`nombreUsuario` e `imagenPerfil`**: personalizan la información del usuario mostrada en la cabecera del sidebar.
+- **`mostrarOpcionesPerfil`**: controla la visibilidad de opciones avanzadas como "Configuración" o "Cerrar sesión".
+- Integra RouterLink de Angular para navegación declarativa sin recargas de página.
+- Usa iconos de Feather Icons con tamaños específicos (24px para menús) manteniendo consistencia.
+
+#### Header
+El componente `Header` es la barra de navegación superior que proporciona acceso a las secciones principales de la aplicación, el logo/marca, y controles globales como el cambio de tema (modo claro/oscuro) y acceso al perfil de usuario. Implementa lógica de detección de preferencias del sistema y persistencia en localStorage para recordar la elección del usuario. Incluye un menú hamburguesa responsive para dispositivos móviles que colapsa/expande la navegación. Es un componente de layout crítico presente en todas las páginas de la aplicación.
+
+```html
+<app-header></app-header>
+```
+
+- El componente no recibe inputs externos ya que gestiona su estado internamente (tema, menú mobile).
+- **Detección automática de tema**: lee `localStorage` y `prefers-color-scheme` al inicializar para aplicar el tema correcto.
+- **`alternarTema()`**: método que cambia entre modo claro y oscuro, persiste la elección y actualiza el icono mostrado.
+- **`toggleMenu()`**: controla la apertura/cierre del menú de navegación en dispositivos móviles.
+- Integra RouterLink para enlaces de navegación y FeatherIcon para iconos de tema y perfil.
+
+#### Footer
+
+El componente `Footer` presenta información secundaria como enlaces legales (términos, privacidad, cookies), enlaces a redes sociales, información de contacto o sobre la empresa. Es un componente de layout puramente presentacional sin lógica de negocio, que mantiene consistencia visual en todas las páginas. Utiliza RouterLink para enlaces internos y estructura semántica con `<footer>`, `<nav>` y `<section>` para mejorar la accesibilidad y SEO.
+
+```html
+<app-footer></app-footer>
+```
+
+- Componente sin inputs ya que su contenido es estático y definido en la plantilla.
+- Usa navegación declarativa con `RouterLink` para enlaces internos sin recargas.
+- Estructura semántica con `<footer>` como contenedor principal y `<nav>` para grupos de enlaces.
+- Presenta enlaces a redes sociales con SVG inline para iconos personalizados.
+- Mejora la accesibilidad con roles ARIA y estructura jerárquica clara de headings.
+
+### 3.2 Nomenclatura y metodología
+
+El proyecto utiliza la metodología **BEM (Block Element Modifier)** para la nomenclatura de clases CSS, lo que garantiza un código escalable, mantenible y autodocumentado. BEM estructura las clases en tres categorías claras que eliminan ambigüedades en la cascada y facilitan la comprensión del propósito de cada elemento.
+
+#### Estructura BEM
+
+**Block (Bloque)**: Representa el componente principal o contenedor independiente. Es la entidad raíz que tiene sentido por sí misma. Ejemplos de blocks en el proyecto:
+
+```scss
+.boton { ... }
+.alert { ... }
+.cabecera { ... }
+.barra-lateral { ... }
+.form-input { ... }
+```
+
+**Element (Elemento)**: Parte interna del bloque que no tiene sentido fuera de su contexto. Se denota con doble guion bajo `__`. Los elementos siempre pertenecen a su bloque padre:
+
+```scss
+.boton__contenedor { ... }
+.boton__icono { ... }
+.alert__content { ... }
+.alert__close { ... }
+.form-input__label { ... }
+.form-input__campo { ... }
+.form-input__mensaje { ... }
+```
+
+**Modifier (Modificador)**: Variante visual o de comportamiento del bloque o elemento. Se denota con doble guion `--`. Los modificadores alteran la apariencia sin cambiar la estructura:
+
+```scss
+.boton--primario { ... }
+.boton--secundario { ... }
+.boton--fantasma { ... }
+.boton--peligro { ... }
+.boton--pequeno { ... }
+.boton--mediano { ... }
+.boton--grande { ... }
+
+.alert--exito { ... }
+.alert--error { ... }
+.alert--warning { ... }
+.alert--info { ... }
+
+.form-input--exito { ... }
+.form-input--advertencia { ... }
+.form-input--error { ... }
+.form-input--desactivado { ... }
+```
+
+#### Clases de estado vs Modificadores BEM
+
+El proyecto distingue entre **modificadores BEM** (variantes permanentes o de diseño) y **clases de estado** (estados dinámicos controlados por lógica):
+
+**Modificadores BEM**: Variantes de diseño que definen la apariencia visual del componente. Se establecen mediante inputs/propiedades y raramente cambian:
+
+```html
+<app-button variante="primario" tamanio="grande">Guardar</app-button>
+<!-- Genera: class="boton boton--primario boton--grande" -->
+```
+
+**Clases de estado**: Estados dinámicos controlados por la lógica de la aplicación. Se prefijan con `is-` o `has-` y se añaden/eliminan reactivamente:
+
+```scss
+.is-active { ... }    // Elemento actualmente seleccionado
+.is-open { ... }      // Menú o modal abierto
+.is-disabled { ... }  // Elemento deshabilitado temporalmente
+.is-loading { ... }   // Proceso en curso
+.has-error { ... }    // Campo con error de validación
+```
+
+Ejemplo de uso combinado:
+
+```html
+<!-- Botón primario grande que está deshabilitado dinámicamente -->
+<button class="boton boton--primario boton--grande is-disabled">
+  Procesando...
+</button>
+
+<!-- Alert de error que se muestra/oculta dinámicamente -->
+<div class="alert alert--error is-active">
+  <p class="alert__content">Error al procesar.</p>
+</div>
+```
+
+#### Estrategia general del proyecto
+
+1. **Block = Componente principal**: Cada componente Angular tiene su clase raíz BEM (`.boton`, `.alert`, `.form-input`).
+2. **Element = Parte interna estructural**: Piezas que componen el componente (`.boton__icono`, `.alert__close`).
+3. **Modifier = Variante visual**: Diferentes estilos del mismo componente (`.boton--primario`, `.alert--error`).
+4. **Clases de estado = Estados dinámicos**: Controlados por lógica Angular/TypeScript (`.is-active`, `.is-open`).
+
+Esta estrategia garantiza que:
+- El CSS sea predecible y fácil de mantener.
+- Los componentes sean reutilizables sin conflictos de nombres.
+- La especificidad permanezca baja y controlada.
+- Los estados dinámicos estén claramente diferenciados de las variantes de diseño.
+
+### 3.3 Style Guide
+
+La página **Style Guide** del proyecto (`/style-guide`) es una documentación visual interactiva de todos los componentes UI implementados, sirviendo como fuente de información para el sistema de diseño de la aplicación. Esta página muestra cada componente en sus diferentes variantes, tamaños y estados, permitiendo verificar rápidamente la apariencia y comportamiento de cada elemento.
+
+#### Propósito del Style Guide
+
+1. **Documentación visual centralizada**: Todos los componentes están reunidos en una sola página con ejemplos reales y código de implementación, eliminando la necesidad de buscar en múltiples archivos o páginas.
+
+2. **Validación de variantes y estados**: Cada componente muestra todas sus variantes (primario, secundario, fantasma, peligro para botones; éxito, error, warning, info para alertas) y estados (normal, hover, disabled) lado a lado, facilitando la comparación visual y detección de inconsistencias.
+
+3. **Referencia para desarrollo**: Los desarrolladores pueden copiar ejemplos de código directamente desde la guía, asegurando el uso correcto de inputs, atributos y clases en nuevas implementaciones.
+
+4. Permite pruebas visuales en diferentes navegadores, temas (claro/oscuro) y dispositivos, detectando errores.
+
+La página está organizada en secciones temáticas (Botones, Formularios, Alertas, Cards, Navegación, Iconografía) y utiliza etiquetas semánticas (`<section>`, `<article>`, `<figure>`) para estructurar el contenido de forma accesible. Cada componente incluye:
+- Descripción del propósito y casos de uso.
+- Ejemplos visuales de todas las variantes.
+- Código HTML con atributos y valores de ejemplo.
+- Especificaciones técnicas (tamaños, colores, estados).
+

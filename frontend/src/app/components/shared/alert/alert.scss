@@ -1,0 +1,99 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.alert {
+  position: relative;
+  width: 25rem;
+  max-width: 100%;
+  padding: $espaciado-m;
+  
+  @include mixins.display-flex(row, $espaciado-m, center, space-between);
+  @include mixins.tipografia(parrafo);
+  
+  border: $borde-medium solid;
+  border-radius: $radio-md;
+  box-shadow: $shadow-sm;
+  
+  transition: all $transicion-base $transicion-suave;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+
+  &__content {
+    flex: 1;
+    margin: 0;
+  }
+
+  &__close {
+    flex-shrink: 0;
+    padding: $espaciado-xs;
+    
+    background: transparent;
+    border: none;
+    border-radius: $radio-sm;
+    
+    cursor: pointer;
+    transition: background-color $transicion-rapida $transicion-suave;
+
+    @include mixins.centrar-flex();
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    &:focus {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    &:focus:not(:focus-visible) {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  &__close-icon {
+    width: $iconos-menu;
+    height: $iconos-menu;
+    line-height: 0;
+    
+    @include mixins.centrar-flex();
+  }
+
+  // éxito (verde)
+  &--exito {
+    color: $blanco-puro;
+    background-color: $color-success;
+    border-color: $color-success;
+  }
+
+  // error (rojo)
+  &--error {
+    color: $blanco-puro;
+    background-color: $color-error;
+    border-color: $color-error;
+  }
+
+  // warning (naranja)
+  &--warning {
+    color: $blanco-puro;
+    background-color: $color-warning;
+    border-color: $color-warning;
+  }
+
+  //info (azul)
+  &--info {
+    color: $blanco-puro;
+    background-color: $color-info;
+    border-color: $color-info;
+  }
+}

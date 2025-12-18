@@ -1,247 +1,603 @@
-<section class="style-guide">
-  <h1 class="style-guide__titulo">Guía de estilos</h1>
+<section class="guia-estilos">
+  <!-- Encabezado -->
+  <header class="guia-estilos__encabezado">
+    <h1 class="guia-estilos__titulo">Guía de Estilos</h1>
+    <p class="guia-estilos__descripcion">
+      Guía de estilos de los componentes creados.
+    </p>
+  </header>
 
-  <section class="style-guide__contenido">
-    <section class="style-guide__seccion">
-      <h2 class="style-guide__titulos">Input</h2>
-      <app-form-input 
-        id="input-base"
-        name="nombre"
-        etiqueta="Input base (solo label)" 
-        placeholder="Placeholder"
-      ></app-form-input>
+  <!-- Contenido principal -->
+  <main class="guia-estilos__contenido">
 
-      <app-form-input
-        id="input-error"
-        name="nombreError"
-        etiqueta="Input con error"
-        placeholder="Valor erróneo"
-        [hayError]="true"
-        mensajeError="El valor no es válido"
-      ></app-form-input>
+    <section id="botones" class="guia-estilos__seccion">
+      <h2 class="guia-estilos__titulo-seccion">Botones</h2>
+      <p class="guia-estilos__descripcion-seccion">
+        Botones interactivos con múltiples variantes, tamaños y estados para diferentes contextos de uso.
+      </p>
 
-      <app-form-input
-        id="input-exito"
-        name="nombreExito"
-        etiqueta="Input correcto"
-        placeholder="El valor es correcto"
-        [exito]="true"
-      ></app-form-input>
+      <!-- Variantes -->
+      <article class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Variantes</h3>
+        <p class="guia-estilos__descripcion-subseccion">4 variantes de botones según su jerarquía e intención.</p>
 
-      <app-form-input
-        id="input-con-mensaje"
-        name="nombreConMensaje"
-        etiqueta="Input con mensaje"
-        placeholder="Valor con mensaje"
-        mensajeExito="Campo válido correctamente"
-      ></app-form-input>
+        <section class="guia-estilos__showcase-componentes">
+          <article class="guia-estilos__item-componente">
+            <header class="guia-estilos__encabezado-componente">
+              <h4 class="guia-estilos__titulo-componente">Primario</h4>
+              <code class="guia-estilos__codigo">variante="primario"</code>
+            </header>
+            <p class="guia-estilos__descripcion-componente">Acción principal de una página o flujo. Máxima prominencia visual.</p>
+            <figure class="guia-estilos__demo">
+              <app-button variante="primario">Botón Primario</app-button>
+            </figure>
+          </article>
 
-      <app-form-input
-        id="input-desactivado"
-        name="nombreDesactivado"
-        etiqueta="Input desactivado"
-        placeholder="No editable"
-        [desactivado]="true"
-      ></app-form-input>
+          <article class="guia-estilos__item-componente">
+            <header class="guia-estilos__encabezado-componente">
+              <h4 class="guia-estilos__titulo-componente">Secundario</h4>
+              <code class="guia-estilos__codigo">variante="secundario"</code>
+            </header>
+            <p class="guia-estilos__descripcion-componente">Acciones secundarias o alternativas. Menor peso visual.</p>
+            <figure class="guia-estilos__demo">
+              <app-button variante="secundario">Botón Secundario</app-button>
+            </figure>
+          </article>
+
+          <article class="guia-estilos__item-componente">
+            <header class="guia-estilos__encabezado-componente">
+              <h4 class="guia-estilos__titulo-componente">Fantasma</h4>
+              <code class="guia-estilos__codigo">variante="fantasma"</code>
+            </header>
+            <p class="guia-estilos__descripcion-componente">Acciones terciarias o navegación. Estilo sutil sin fondo.</p>
+            <figure class="guia-estilos__demo">
+              <app-button variante="fantasma">Botón Fantasma</app-button>
+            </figure>
+          </article>
+
+          <article class="guia-estilos__item-componente">
+            <header class="guia-estilos__encabezado-componente">
+              <h4 class="guia-estilos__titulo-componente">Peligro</h4>
+              <code class="guia-estilos__codigo">variante="peligro"</code>
+            </header>
+            <p class="guia-estilos__descripcion-componente">Acciones destructivas o de alto riesgo (eliminar, cancelar permanente).</p>
+            <figure class="guia-estilos__demo">
+              <app-button variante="peligro">Botón Peligro</app-button>
+            </figure>
+          </article>
+        </section>
+      </article>
+
+      <!-- Tamaños -->
+      <article class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Tamaños</h3>
+        <p class="guia-estilos__descripcion-subseccion">3 tamaños disponibles para adaptarse a diferentes espacios y jerarquías.</p>
+
+        <section class="guia-estilos__showcase-tamanios">
+          <article class="guia-estilos__fila-tamanio">
+            <strong class="guia-estilos__etiqueta-tamanio">Pequeño</strong>
+            <code class="guia-estilos__codigo">tamanio="pequeno"</code>
+            <figure class="guia-estilos__demo-tamanio">
+              <app-button variante="primario" tamanio="pequeno">Pequeño</app-button>
+              <app-button variante="secundario" tamanio="pequeno">Pequeño</app-button>
+              <app-button variante="fantasma" tamanio="pequeno">Pequeño</app-button>
+              <app-button variante="peligro" tamanio="pequeno">Pequeño</app-button>
+            </figure>
+          </article>
+
+          <article class="guia-estilos__fila-tamanio">
+            <strong class="guia-estilos__etiqueta-tamanio">Mediano (default)</strong>
+            <code class="guia-estilos__codigo">tamanio="mediano"</code>
+            <figure class="guia-estilos__demo-tamanio">
+              <app-button variante="primario" tamanio="mediano">Mediano</app-button>
+              <app-button variante="secundario" tamanio="mediano">Mediano</app-button>
+              <app-button variante="fantasma" tamanio="mediano">Mediano</app-button>
+              <app-button variante="peligro" tamanio="mediano">Mediano</app-button>
+            </figure>
+          </article>
+
+          <article class="guia-estilos__fila-tamanio">
+            <strong class="guia-estilos__etiqueta-tamanio">Grande</strong>
+            <code class="guia-estilos__codigo">tamanio="grande"</code>
+            <figure class="guia-estilos__demo-tamanio">
+              <app-button variante="primario" tamanio="grande">Grande</app-button>
+              <app-button variante="secundario" tamanio="grande">Grande</app-button>
+              <app-button variante="fantasma" tamanio="grande">Grande</app-button>
+              <app-button variante="peligro" tamanio="grande">Grande</app-button>
+            </figure>
+          </article>
+        </section>
+      </article>
+
+      <!-- Estados -->
+      <article class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Estados</h3>
+        <p class="guia-estilos__descripcion-subseccion">Estados interactivos: normal, hover, active, focus, disabled.</p>
+
+        <section class="guia-estilos__showcase-estados">
+          <article class="guia-estilos__item-estado">
+            <strong class="guia-estilos__etiqueta-estado">Normal</strong>
+            <app-button variante="primario">Normal</app-button>
+          </article>
+          <article class="guia-estilos__item-estado">
+            <strong class="guia-estilos__etiqueta-estado">Disabled</strong>
+            <app-button variante="primario" [deshabilitado]="true">Deshabilitado</app-button>
+            <code class="guia-estilos__codigo">[deshabilitado]="true"</code>
+          </article>
+        </section>
+      </article>
+
+      <!-- Con iconos -->
+      <article class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Botones con Icono</h3>
+        <p class="guia-estilos__descripcion-subseccion">Botones que incluyen iconografía para reforzar la acción.</p>
+
+        <figure class="guia-estilos__demo">
+          <app-button variante="primario" [tieneIcono]="true">Con Icono</app-button>
+          <app-button variante="secundario" [tieneIcono]="true">Con Icono</app-button>
+          <app-button variante="fantasma" [tieneIcono]="true">Con Icono</app-button>
+          <app-button variante="peligro" [tieneIcono]="true">Con Icono</app-button>
+        </figure>
+        <code class="guia-estilos__codigo">[tieneIcono]="true"</code>
+      </article>
     </section>
-    <section class="style-guide__seccion">
-      <h2 class="style-guide__titulos">Card</h2>
-      <div class="style-guide__grupo">
-        <h3 class="style-guide__titulos2">Vertical (por defecto)</h3>
-        <app-card
-          [titulo]="'Cocina'"
-          [estado]="'Disponible'"
-          [fecha]="'17/08/25'"
-          [hora]="'09:00-11:00'">
-        </app-card>
-      </div>
 
-      <div class="style-guide__grupo" style="margin-top:1rem">
-        <h3 class="style-guide__titulos2">Horizontal (con imagen)</h3>
-          <app-card
-            variante="horizontal"
-            imagen="/cocina.png"
-            imagenAlt="Cocina pública"
-            [titulo]="'Cocina'"
-            [estado]="'Reservada'"
-            [fecha]="'17/08/25'"
-            [hora]="'09:00-11:00'">
-          </app-card>
-      </div>
+    <section id="formularios" class="guia-estilos__seccion">
+      <h2 class="guia-estilos__titulo-seccion">Formularios</h2>
+      <p class="guia-estilos__descripcion-seccion">
+        Componentes de entrada de datos: inputs, textareas, selects y checkboxes con estados de validación.
+      </p>
+
+      <!-- Input Text -->
+      <article class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Input Text</h3>
+        <p class="guia-estilos__descripcion-subseccion">Campo de texto simple para entrada de datos cortos.</p>
+
+        <section class="guia-estilos__showcase-formularios">
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Estado Base</h4>
+            <app-form-input 
+              id="input-base"
+              name="inputBase"
+              etiqueta="Nombre completo" 
+              placeholder="Escribe tu nombre"
+            ></app-form-input>
+          </article>
+
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Con Éxito</h4>
+            <app-form-input
+              id="input-exito"
+              name="inputExito"
+              etiqueta="Email"
+              placeholder="email@ejemplo.com"
+              [exito]="true"
+              mensajeExito="Email disponible"
+            ></app-form-input>
+            <code class="guia-estilos__codigo">[exito]="true"</code>
+          </article>
+
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Con Error</h4>
+            <app-form-input
+              id="input-error"
+              name="inputError"
+              etiqueta="Contraseña"
+              tipo="password"
+              placeholder="••••••••"
+              [hayError]="true"
+              mensajeError="La contraseña debe tener al menos 8 caracteres"
+            ></app-form-input>
+            <code class="guia-estilos__codigo">[hayError]="true"</code>
+          </article>
+
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Deshabilitado</h4>
+            <app-form-input
+              id="input-disabled"
+              name="inputDisabled"
+              etiqueta="Campo bloqueado"
+              placeholder="No editable"
+              [desactivado]="true"
+            ></app-form-input>
+            <code class="guia-estilos__codigo">[desactivado]="true"</code>
+          </article>
+
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Requerido</h4>
+            <app-form-input
+              id="input-required"
+              name="inputRequired"
+              etiqueta="Teléfono"
+              placeholder="+34 600 000 000"
+              [requerido]="true"
+            ></app-form-input>
+            <code class="guia-estilos__codigo">[requerido]="true"</code>
+          </article>
+        </section>
+      </article>
+
+      <!-- Textarea -->
+      <article class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Textarea</h3>
+        <p class="guia-estilos__descripcion-subseccion">Campo de texto multilínea para contenido extenso.</p>
+
+        <section class="guia-estilos__showcase-formularios">
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Estado Base</h4>
+            <app-form-textarea
+              id="textarea-base"
+              name="textareaBase"
+              etiqueta="Descripción"
+              placeholder="Escribe una descripción detallada..."
+            ></app-form-textarea>
+          </article>
+
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Requerido con Mensaje</h4>
+            <app-form-textarea
+              id="textarea-required"
+              name="textareaRequired"
+              etiqueta="Comentarios"
+              placeholder="Tus comentarios aquí"
+              [requerido]="true"
+              mensajeExito="Comentario guardado correctamente"
+            ></app-form-textarea>
+          </article>
+
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Deshabilitado</h4>
+            <app-form-textarea
+              id="textarea-disabled"
+              name="textareaDisabled"
+              etiqueta="Notas del sistema"
+              placeholder="Solo lectura"
+              [desactivado]="true"
+            ></app-form-textarea>
+          </article>
+        </section>
+      </article>
+
+      <!-- Select -->
+      <article class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Select</h3>
+        <p class="guia-estilos__descripcion-subseccion">Menú desplegable para selección única entre opciones predefinidas.</p>
+
+        <section class="guia-estilos__showcase-formularios">
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Estado Base</h4>
+            <app-form-select
+              id="select-base"
+              name="selectBase"
+              etiqueta="País"
+              [opciones]="[
+                { value: 'es', label: 'España' }, 
+                { value: 'fr', label: 'Francia' }, 
+                { value: 'it', label: 'Italia' }
+              ]"
+            ></app-form-select>
+          </article>
+
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Requerido</h4>
+            <app-form-select
+              id="select-required"
+              name="selectRequired"
+              etiqueta="Tipo de usuario"
+              [requerido]="true"
+              [opciones]="[
+                { value: 'admin', label: 'Administrador' }, 
+                { value: 'user', label: 'Usuario' }
+              ]"
+            ></app-form-select>
+          </article>
+
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Deshabilitado</h4>
+            <app-form-select
+              id="select-disabled"
+              name="selectDisabled"
+              etiqueta="Rol (bloqueado)"
+              [desactivado]="true"
+              [opciones]="[{ value: 'guest', label: 'Invitado' }]"
+            ></app-form-select>
+          </article>
+        </section>
+      </article>
+
+      <!-- Checkbox -->
+      <article class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Checkbox</h3>
+        <p class="guia-estilos__descripcion-subseccion">Selector de opción binaria (sí/no, activado/desactivado).</p>
+
+        <section class="guia-estilos__showcase-formularios guia-estilos__showcase-formularios--inline">
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Normal</h4>
+            <app-form-checkbox
+              id="checkbox-normal"
+              name="checkboxNormal"
+              etiqueta="Acepto los términos y condiciones"
+            ></app-form-checkbox>
+          </article>
+
+          <article class="guia-estilos__item-formulario">
+            <h4 class="guia-estilos__etiqueta">Deshabilitado</h4>
+            <app-form-checkbox
+              id="checkbox-disabled"
+              name="checkboxDisabled"
+              etiqueta="Opción no disponible"
+              [desactivado]="true"
+            ></app-form-checkbox>
+          </article>
+        </section>
+      </article>
     </section>
-    <section class="style-guide__seccion">
-      <h2 class="style-guide__titulos">Textarea</h2>
-      <app-form-textarea
-          id="textarea-base"
-          name="mensajeBase"
-          etiqueta="Textarea base"
-          placeholder="Texto base"
-        ></app-form-textarea>
 
-        <app-form-textarea
-          id="textarea-con-mensaje"
-          name="mensajeConMensaje"
-          etiqueta="Textarea con mensaje"
-          placeholder="Texto con mensaje"
-          mensajeExito="Mensaje personalizado"
-        ></app-form-textarea>
+    <section id="alertas" class="guia-estilos__seccion">
+      <h2 class="guia-estilos__titulo-seccion">Alertas y Mensajes</h2>
+      <p class="guia-estilos__descripcion-seccion">
+        Mensajes de feedback para comunicar el estado de acciones o información importante.
+      </p>
 
-        <app-form-textarea
-          id="textarea-obligatorio"
-          name="mensajeObligatorio"
-          etiqueta="Textarea obligatorio"
-          placeholder="Obligatorio"
-          [requerido]="true"
-        ></app-form-textarea>
+      <section class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Tipos de Alertas</h3>
+        <p class="guia-estilos__descripcion-subseccion">4 variantes semánticas según el tipo de mensaje.</p>
 
-        <app-form-textarea
-          id="textarea-desactivado"
-          name="mensajeDesactivado"
-          etiqueta="Textarea desactivado"
-          placeholder="No editable"
-          [desactivado]="true"
-        ></app-form-textarea>
+        <section class="guia-estilos__showcase-alertas">
+          <article class="guia-estilos__item-alerta">
+            <h4 class="guia-estilos__etiqueta">Éxito</h4>
+            <code class="guia-estilos__codigo">tipo="exito"</code>
+            <app-alert tipo="exito" [cerrable]="true">
+              Esto es un mensaje de éxito
+            </app-alert>
+          </article>
+
+          <article class="guia-estilos__item-alerta">
+            <h4 class="guia-estilos__etiqueta">Error</h4>
+            <code class="guia-estilos__codigo">tipo="error"</code>
+            <app-alert tipo="error" [cerrable]="true">
+              Esto es un mensaje de error
+            </app-alert>
+          </article>
+
+          <article class="guia-estilos__item-alerta">
+            <h4 class="guia-estilos__etiqueta">Advertencia</h4>
+            <code class="guia-estilos__codigo">tipo="warning"</code>
+            <app-alert tipo="warning" [cerrable]="true">
+              Esto es un mensaje de advertencia
+            </app-alert>
+          </article>
+
+          <article class="guia-estilos__item-alerta">
+            <h4 class="guia-estilos__etiqueta">Información</h4>
+            <code class="guia-estilos__codigo">tipo="info"</code>
+            <app-alert tipo="info" [cerrable]="true">
+              Esto es un mensaje de información
+            </app-alert>
+          </article>
+
+          <article class="guia-estilos__item-alerta">
+            <h4 class="guia-estilos__etiqueta">Sin cerrar</h4>
+            <code class="guia-estilos__codigo">[cerrable]="false"</code>
+            <app-alert tipo="info" [cerrable]="false">
+              Mensaje permanente que no puede cerrarse
+            </app-alert>
+          </article>
+        </section>
+      </section>
     </section>
-    <section class="style-guide__seccion">
-      <h2 class="style-guide__titulos">Select</h2>
-      <app-form-select
-        id="select-base"
-        name="selectBase"
-        etiqueta="Select base"
-        [opciones]="[{ value: '1', label: 'Opción 1' }, { value: '2', label: 'Opción 2' }, { value: '3', label: 'Opción 3' }]"
-      ></app-form-select>
 
-      <app-form-select
-        id="select-obligatorio"
-        name="selectObligatorio"
-        etiqueta="Select obligatorio"
-        [requerido]="true"
-        [opciones]="[{ value: '1', label: 'Opción 1' }, { value: '2', label: 'Opción 2' }]"
-      ></app-form-select>
+    <section id="cards" class="guia-estilos__seccion">
+      <h2 class="guia-estilos__titulo-seccion">Cards</h2>
+      <p class="guia-estilos__descripcion-seccion">
+        Contenedores de información con diseño vertical u horizontal para mostrar reservas y recursos.
+      </p>
 
-      <app-form-select
-        id="select-desactivado"
-        name="selectDesactivado"
-        etiqueta="Select desactivado"
-        [desactivado]="true"
-        [opciones]="[{ value: '1', label: 'Opción 1' }]"
-      ></app-form-select>
+      <article class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Variantes de Layout</h3>
+
+        <section class="guia-estilos__showcase-cards">
+          <article class="guia-estilos__item-card">
+            <h4 class="guia-estilos__etiqueta">Vertical (default)</h4>
+            <code class="guia-estilos__codigo">Sin atributo variante</code>
+            <p class="guia-estilos__descripcion-componente">Layout vertical sin imagen. Ideal para listados compactos.</p>
+            <app-card
+              [titulo]="'Sala de Reuniones'"
+              [estado]="'Disponible'"
+              [fecha]="'20/12/2025'"
+              [hora]="'10:00-12:00'">
+            </app-card>
+          </article>
+
+          <article class="guia-estilos__item-card">
+            <h4 class="guia-estilos__etiqueta">Horizontal con Imagen</h4>
+            <code class="guia-estilos__codigo">variante="horizontal"</code>
+            <p class="guia-estilos__descripcion-componente">Layout horizontal con imagen destacada. Mayor peso visual.</p>
+            <app-card
+              variante="horizontal"
+              imagen="/cocina.png"
+              imagenAlt="Cocina compartida"
+              [titulo]="'Cocina Compartida'"
+              [estado]="'Reservada'"
+              [fecha]="'20/12/2025'"
+              [hora]="'14:00-16:00'">
+            </app-card>
+          </article>
+        </section>
+      </article>
     </section>
-    <section class="style-guide__seccion">
-      <h2 class="style-guide__titulos">Checkbox</h2>
-      <app-form-checkbox
-        id="checkbox-normal"
-        name="checkboxNormal"
-        etiqueta="Checkbox normal"
-      ></app-form-checkbox>
 
-      <app-form-checkbox
-        id="checkbox-desactivado"
-        name="checkboxDesactivado"
-        etiqueta="Checkbox desactivado"
-        [desactivado]="true"
-      ></app-form-checkbox>
+    <section id="navegacion" class="guia-estilos__seccion">
+      <h2 class="guia-estilos__titulo-seccion">Navegación</h2>
+      <p class="guia-estilos__descripcion-seccion">
+        Componentes de navegación: sidebar con diferentes variantes según el contexto.
+      </p>
+
+      <article class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Sidebar</h3>
+        <p class="guia-estilos__descripcion-subseccion">Barra lateral de navegación con 3 variantes según la sección.</p>
+
+        <section class="guia-estilos__showcase-sidebar">
+          <article class="guia-estilos__item-sidebar">
+            <h4 class="guia-estilos__etiqueta">Dashboard</h4>
+            <code class="guia-estilos__codigo">variante="dashboard"</code>
+            <app-sidebar variante="dashboard" [mostrarOpcionesPerfil]="false"></app-sidebar>
+          </article>
+
+          <article class="guia-estilos__item-sidebar">
+            <h4 class="guia-estilos__etiqueta">Grupo</h4>
+            <code class="guia-estilos__codigo">variante="grupo"</code>
+            <app-sidebar variante="grupo" [mostrarOpcionesPerfil]="false"></app-sidebar>
+          </article>
+
+          <article class="guia-estilos__item-sidebar">
+            <h4 class="guia-estilos__etiqueta">Perfil</h4>
+            <code class="guia-estilos__codigo">variante="perfil"</code>
+            <app-sidebar variante="perfil" [mostrarOpcionesPerfil]="true"></app-sidebar>
+          </article>
+        </section>
+      </article>
     </section>
-    <section class="style-guide__seccion">
-      <h2 class="style-guide__titulos">Sidebar</h2>
 
-      <div class="style-guide__sidebars">
-        <div class="style-guide__sidebar-item">
-          <h3 class="style-guide__titulos2">Dashboard</h3>
-          <app-sidebar variante="dashboard" [mostrarOpcionesPerfil]="false"></app-sidebar>
-        </div>
+    <section id="iconos" class="guia-estilos__seccion">
+      <h2 class="guia-estilos__titulo-seccion">Iconografía</h2>
+      <p class="guia-estilos__descripcion-seccion">
+        Sistema de iconos FeatherIcon con diferentes tamaños según el contexto de uso.
+      </p>
 
-        <div class="style-guide__sidebar-item">
-          <h3 class="style-guide__titulos2">Grupo</h3>
-          <app-sidebar variante="grupo" [mostrarOpcionesPerfil]="false"></app-sidebar>
-        </div>
-
-        <div class="style-guide__sidebar-item">
-          <h3 class="style-guide__titulos2">Perfil</h3>
-          <app-sidebar variante="perfil" [mostrarOpcionesPerfil]="true"></app-sidebar>
-        </div>
-      </div>
-    </section>
-    <section class="style-guide__seccion">
-      <h2 class="style-guide__titulos">Botón</h2>
-      <div class="style-guide__botones">
-        <section class="style-guide__grupo">
-          <h3 class="style-guide__titulos">Primario</h3>
-          <app-button variante="primario" tamanio="pequeno" [tieneIcono]="true">pequeño</app-button>
-          <app-button variante="primario" tamanio="mediano">mediano</app-button>
-          <app-button variante="primario" tamanio="grande">grande</app-button>
-          <app-button variante="primario" [deshabilitado]="true">desactivado</app-button>
+      <article class="guia-estilos__subseccion">
+        <h3 class="guia-estilos__titulo-subseccion">Iconos por Contexto</h3>
+        
+        <section class="guia-estilos__grupo-iconos">
+          <h4 class="guia-estilos__etiqueta">Submenús (24x24px)</h4>
+          <code class="guia-estilos__codigo">[tipo]="'submenu'"</code>
+          <ul class="guia-estilos__grid-iconos">
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'calendar'" [tipo]="'submenu'"></span>
+              <span class="guia-estilos__nombre-icono">calendar</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'home'" [tipo]="'submenu'"></span>
+              <span class="guia-estilos__nombre-icono">home</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'settings'" [tipo]="'submenu'"></span>
+              <span class="guia-estilos__nombre-icono">settings</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'lock'" [tipo]="'submenu'"></span>
+              <span class="guia-estilos__nombre-icono">lock</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'users'" [tipo]="'submenu'"></span>
+              <span class="guia-estilos__nombre-icono">users</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'sliders'" [tipo]="'submenu'"></span>
+              <span class="guia-estilos__nombre-icono">sliders</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'layers'" [tipo]="'submenu'"></span>
+              <span class="guia-estilos__nombre-icono">layers</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'info'" [tipo]="'submenu'"></span>
+              <span class="guia-estilos__nombre-icono">info</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'log-out'" [tipo]="'submenu'"></span>
+              <span class="guia-estilos__nombre-icono">log-out</span>
+            </li>
+          </ul>
         </section>
 
-        <section class="style-guide__grupo">
-          <h3 class="style-guide__titulos">Secundario</h3>
-          <app-button variante="secundario" tamanio="pequeno">pequeño</app-button>
-          <app-button variante="secundario" tamanio="mediano" [tieneIcono]="true">mediano</app-button>
-          <app-button variante="secundario" tamanio="grande">grande</app-button>
-          <app-button variante="secundario" [deshabilitado]="true">desactivado</app-button>
+        <section class="guia-estilos__grupo-iconos">
+          <h4 class="guia-estilos__etiqueta">Campos y Botones (20x20px)</h4>
+          <code class="guia-estilos__codigo">[tipo]="'botones'"</code>
+          <ul class="guia-estilos__grid-iconos">
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'arrow-right'" [tipo]="'botones'"></span>
+              <span class="guia-estilos__nombre-icono">arrow-right</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'alert-circle'" [tipo]="'botones'"></span>
+              <span class="guia-estilos__nombre-icono">alert-circle</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'check'" [tipo]="'botones'"></span>
+              <span class="guia-estilos__nombre-icono">check</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'eye'" [tipo]="'botones'"></span>
+              <span class="guia-estilos__nombre-icono">eye</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'eye-off'" [tipo]="'botones'"></span>
+              <span class="guia-estilos__nombre-icono">eye-off</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'edit-2'" [tipo]="'botones'"></span>
+              <span class="guia-estilos__nombre-icono">edit-2</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'x'" [tipo]="'botones'"></span>
+              <span class="guia-estilos__nombre-icono">x</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'menu'" [tipo]="'botones'"></span>
+              <span class="guia-estilos__nombre-icono">menu</span>
+            </li>
+          </ul>
         </section>
 
-        <section class="style-guide__grupo">
-          <h3 class="style-guide__titulos">Fantasma</h3>
-          <app-button variante="fantasma" tamanio="pequeno">pequeño</app-button>
-          <app-button variante="fantasma" tamanio="mediano">mediano</app-button>
-          <app-button variante="fantasma" tamanio="grande" [tieneIcono]="true">grande</app-button>
-          <app-button variante="fantasma" [deshabilitado]="true">desactivado</app-button>
+        <section class="guia-estilos__grupo-iconos">
+          <h4 class="guia-estilos__etiqueta">Redes Sociales (20x20px)</h4>
+          <code class="guia-estilos__codigo">[tipo]="'botones'"</code>
+          <ul class="guia-estilos__grid-iconos">
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'youtube'" [tipo]="'botones'"></span>
+              <span class="guia-estilos__nombre-icono">youtube</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'facebook'" [tipo]="'botones'"></span>
+              <span class="guia-estilos__nombre-icono">facebook</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'instagram'" [tipo]="'botones'"></span>
+              <span class="guia-estilos__nombre-icono">instagram</span>
+            </li>
+          </ul>
         </section>
 
-        <section class="style-guide__grupo">
-          <h3 class="style-guide__titulos">Peligro</h3>
-          <app-button variante="peligro" tamanio="pequeno">pequeño</app-button>
-          <app-button variante="peligro" tamanio="mediano">mediano</app-button>
-          <app-button variante="peligro" tamanio="grande">grande</app-button>
-          <app-button variante="peligro" [deshabilitado]="true" [tieneIcono]="true">desactivado</app-button>
+        <section class="guia-estilos__grupo-iconos">
+          <h4 class="guia-estilos__etiqueta">Navegación Header (36x36px)</h4>
+          <code class="guia-estilos__codigo">[tipo]="'header'"</code>
+          <ul class="guia-estilos__grid-iconos">
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'moon'" [tipo]="'header'"></span>
+              <span class="guia-estilos__nombre-icono">moon</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'sun'" [tipo]="'header'"></span>
+              <span class="guia-estilos__nombre-icono">sun</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'user'" [tipo]="'header'"></span>
+              <span class="guia-estilos__nombre-icono">user</span>
+            </li>
+            <li class="guia-estilos__item-icono">
+              <span [feather]="'bell'" [tipo]="'header'"></span>
+              <span class="guia-estilos__nombre-icono">bell</span>
+            </li>
+          </ul>
         </section>
-      </div>
+      </article>
     </section>
-    <section class="style-guide__seccion">
-      <h2 class="style-guide__titulos">Iconos</h2>
 
-      <div class="sg-iconos">
-        <h3 class="style-guide__titulos2">Submenús</h3>
-        <div class="sg-fila">
-          <span [feather]="'calendar'" [tipo]="'submenu'" class="sg-icono"></span>
-          <span [feather]="'home'" [tipo]="'submenu'" class="sg-icono"></span>
-          <span [feather]="'settings'" [tipo]="'submenu'" class="sg-icono"></span>
-          <span [feather]="'lock'" [tipo]="'submenu'" class="sg-icono"></span>
-          <span [feather]="'users'" [tipo]="'submenu'" class="sg-icono"></span>
-          <span [feather]="'sliders'" [tipo]="'submenu'" class="sg-icono"></span>
-          <span [feather]="'layers'" [tipo]="'submenu'" class="sg-icono"></span>
-          <span [feather]="'info'" [tipo]="'submenu'" class="sg-icono"></span>
-          <span [feather]="'log-out'" [tipo]="'submenu'" class="sg-icono"></span>
-        </div>
+  </main>
 
-        <h3 class="style-guide__titulos2">Campos y botones</h3>
-        <div class="sg-fila">
-          <span [feather]="'arrow-right'" [tipo]="'botones'" class="sg-icono"></span>
-          <span [feather]="'alert-circle'" [tipo]="'botones'" class="sg-icono"></span>
-          <span [feather]="'check'" [tipo]="'botones'" class="sg-icono"></span>
-          <span [feather]="'eye'" [tipo]="'botones'" class="sg-icono"></span>
-          <span [feather]="'eye-off'" [tipo]="'botones'" class="sg-icono"></span>
-          <span [feather]="'edit-2'" [tipo]="'botones'" class="sg-icono"></span>
-          <span [feather]="'x'" [tipo]="'botones'" class="sg-icono"></span>
-          <span [feather]="'menu'" [tipo]="'botones'" class="sg-icono"></span>
-        </div>
-
-        <h3 class="style-guide__titulos2">Redes sociales footer</h3>
-        <div class="sg-fila">
-          <span [feather]="'youtube'" [tipo]="'botones'" class="sg-icono"></span>
-          <span [feather]="'facebook'" [tipo]="'botones'" class="sg-icono"></span>
-          <span [feather]="'instagram'" [tipo]="'botones'" class="sg-icono"></span>
-        </div>
-
-        <h3 class="style-guide__titulos2">Navegación</h3>
-        <div class="sg-fila">
-          <span [feather]="'moon'" [tipo]="'header'" class="sg-icono"></span>
-          <span [feather]="'sun'" [tipo]="'header'" class="sg-icono"></span>
-          <span [feather]="'user'" [tipo]="'header'" class="sg-icono"></span>
-          <span [feather]="'bell'" [tipo]="'header'" class="sg-icono"></span>
-        </div>
-      </div>
-    </section>
-  </section>
+  <!-- Footer de la style guide -->
+  <footer class="guia-estilos__pie">
+    <p>Cohabit Guía de estilo — Documentación actualizada: Diciembre 2025</p>
+  </footer>
 </section>

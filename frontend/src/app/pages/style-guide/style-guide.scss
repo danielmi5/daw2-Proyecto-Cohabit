@@ -1,127 +1,346 @@
 @use '../../../styles/00-settings/variables' as *;
 @use '../../../styles/01-tools/mixins' as mixins;
 
-.style-guide {
-  padding: $espaciado-m;
+/* ========================================
+   GUÍA DE ESTILOS - PÁGINA DE DOCUMENTACIÓN
+   ======================================== */
 
+.guia-estilos {
+  min-height: 100vh;
+  background-color: var(--bg-primario);
+  padding: $espaciado-xxl $espaciado-m;
 
-  &__titulo {
-    margin: $espaciado-m 0;
-    @include mixins.tipografia(h1, var(--titulos));
-
-    text-align: center;
+  @media (min-width: $breakpoint-tablet) {
+    padding: $espaciado-xxl $espaciado-xl;
   }
+}
 
-  &__contenido {
-    width: 100%;
-    height: fit-content;
-    margin: auto;
+/* ========== ENCABEZADO ========== */
+.guia-estilos__encabezado {
+  text-align: center;
+  margin-bottom: $espaciado-xxl;
+  padding-bottom: $espaciado-xl;
+  border-bottom: 2px solid var(--borde-cards);
+}
 
-    @include mixins.display-flex(column, $espaciado-l, center);
+.guia-estilos__titulo {
+  @include mixins.tipografia(h1, var(--titulos));
+  margin-bottom: $espaciado-m;
+}
+
+.guia-estilos__descripcion {
+  @include mixins.tipografia(parrafo, var(--texto-primario));
+  max-width: 700px;
+  margin: 0 auto;
+  opacity: 0.8;
+}
+
+/* ========== CONTENIDO PRINCIPAL ========== */
+.guia-estilos__contenido {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ========== SECCIONES ========== */
+.guia-estilos__seccion {
+  margin-bottom: $espaciado-xxl * 1.5;
+  padding-bottom: $espaciado-xxl;
+  border-bottom: 1px solid var(--borde);
+
+  &:last-child {
+    border-bottom: none;
   }
+}
 
-  &__seccion{
-    width: 60%;
-    padding: $espaciado-xxl;
+.guia-estilos__titulo-seccion {
+  @include mixins.tipografia(h2, var(--titulos));
+  margin-bottom: $espaciado-m;
+  scroll-margin-top: $espaciado-xl;
+}
 
-    @include mixins.display-flex(column, $espaciado-l, center);
+.guia-estilos__descripcion-seccion {
+  @include mixins.tipografia(parrafo, var(--texto-primario));
+  margin-bottom: $espaciado-xl;
+  opacity: 0.9;
+  max-width: 800px;
+}
 
-    background-color: var(--bg-ocasional);
-    border: 1px solid var(--borde-cards);
-    border-radius: $radio-card;
+/* ========== SUBSECCIONES ========== */
+.guia-estilos__subseccion {
+  margin-bottom: $espaciado-xl;
+}
+
+.guia-estilos__titulo-subseccion {
+  @include mixins.tipografia(h3, var(--titulos));
+  margin-bottom: $espaciado-s;
+}
+
+.guia-estilos__descripcion-subseccion {
+  @include mixins.tipografia(texto-pequeno, var(--texto-primario));
+  margin-bottom: $espaciado-l;
+  opacity: 0.8;
+}
+
+/* ========== ETIQUETAS Y CÓDIGOS ========== */
+.guia-estilos__etiqueta {
+  @include mixins.tipografia(texto-pequeno, var(--texto-primario));
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: $espaciado-s;
+  display: block;
+}
+
+.guia-estilos__codigo {
+  @include mixins.tipografia(texto-mini);
+  font-family: 'Courier New', monospace;
+  background-color: var(--bg-ocasional);
+  color: var(--texto-primario);
+  padding: $espaciado-xs $espaciado-s;
+  border-radius: $radio-sm;
+  display: inline-block;
+  margin-top: $espaciado-xs;
+}
+
+.guia-estilos__nota-estado {
+  @include mixins.tipografia(texto-mini);
+  font-style: italic;
+  opacity: 0.7;
+  margin-top: $espaciado-xs;
+  display: block;
+}
+
+/* ========== COMPONENTES: SHOWCASE GENÉRICO ========== */
+.guia-estilos__showcase-componentes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: $espaciado-l;
+  margin-bottom: $espaciado-xl;
+}
+
+.guia-estilos__item-componente {
+  background-color: var(--bg-cards);
+  border: 1px solid var(--borde);
+  border-radius: $radio-card;
+  padding: $espaciado-l;
+  display: flex;
+  flex-direction: column;
+  gap: $espaciado-m;
+}
+
+.guia-estilos__encabezado-componente {
+  display: flex;
+  flex-direction: column;
+  gap: $espaciado-xs;
+}
+
+.guia-estilos__titulo-componente {
+  @include mixins.tipografia(h4, var(--titulos));
+  margin: 0;
+}
+
+.guia-estilos__descripcion-componente {
+  @include mixins.tipografia(texto-pequeno);
+  opacity: 0.8;
+  margin: 0;
+}
+
+.guia-estilos__demo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $espaciado-m;
+  align-items: center;
+  justify-content: center;
+  padding: $espaciado-l;
+  background-color: var(--texto-claro);
+  border-radius: $radio-md;
+  min-height: 80px;
+}
+
+/* ========== BOTONES: TAMAÑOS ========== */
+.guia-estilos__showcase-tamanios {
+  display: flex;
+  flex-direction: column;
+  gap: $espaciado-l;
+}
+
+.guia-estilos__fila-tamanio {
+  display: grid;
+  grid-template-columns: 150px 180px 1fr;
+  gap: $espaciado-m;
+  align-items: center;
+  padding: $espaciado-l;
+  background-color: var(--bg-cards);
+  border: 1px solid var(--borde);
+  border-radius: $radio-md;
+
+  @media (max-width: $breakpoint-tablet) {
+    grid-template-columns: 1fr;
+    gap: $espaciado-s;
   }
+}
 
-  &__sidebars {
-    width: 100%;
+.guia-estilos__etiqueta-tamanio {
+  @include mixins.tipografia(texto-pequeno, var(--texto-primario));
+  font-weight: $font-weight-semibold;
+}
+
+.guia-estilos__demo-tamanio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $espaciado-m;
+  align-items: center;
+}
+
+/* ========== BOTONES: ESTADOS ========== */
+.guia-estilos__showcase-estados {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $espaciado-xl;
+  margin-bottom: $espaciado-l;
+}
+
+.guia-estilos__item-estado {
+  display: flex;
+  flex-direction: column;
+  gap: $espaciado-s;
+  align-items: flex-start;
+}
+
+.guia-estilos__etiqueta-estado {
+  @include mixins.tipografia(texto-pequeno, var(--texto-primario));
+  font-weight: $font-weight-semibold;
+}
+
+/* ========== FORMULARIOS ========== */
+.guia-estilos__showcase-formularios {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $espaciado-l;
+
+  &--inline {
     display: flex;
-    flex-direction: row;
-    gap: $espaciado-m;
-    justify-content: center;
-
-    &-item {
-      width: 100%;
-      display: block;
-
-      app-sidebar {
-        display: inline-block;
-      }
-    }
-  }
-
-  &__botones {
-    width: 100%;
-
-    @include mixins.display-flex(row, $espaciado-m, stretch, space-around);
     flex-wrap: wrap;
+    gap: $espaciado-xl;
   }
+}
 
-  &__grupo {
-    min-width: 160px;
+.guia-estilos__item-formulario {
+  background-color: var(--bg-cards);
+  border: 1px solid var(--borde);
+  border-radius: $radio-md;
+  padding: $espaciado-l;
+  display: flex;
+  flex-direction: column;
+  gap: $espaciado-m;
+}
 
-    @include mixins.display-flex(column, $espaciado-s, center);
+/* ========== ALERTAS ========== */
+.guia-estilos__showcase-alertas {
+  display: flex;
+  flex-direction: column;
+  gap: $espaciado-l;
+}
+
+.guia-estilos__item-alerta {
+  display: flex;
+  flex-direction: column;
+  gap: $espaciado-s;
+}
+
+/* ========== CARDS ========== */
+.guia-estilos__showcase-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $espaciado-xl;
+}
+
+.guia-estilos__item-card {
+  display: flex;
+  flex-direction: column;
+  gap: $espaciado-m;
+}
+
+/* ========== NAVEGACIÓN: SIDEBAR ========== */
+.guia-estilos__showcase-sidebar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $espaciado-xl;
+
+  @media (max-width: $breakpoint-tablet) {
+    grid-template-columns: 1fr;
   }
+}
 
-  &__subtitulo {
-    margin-bottom: $espaciado-s;
-    @include mixins.tipografia(parrafo);
-  }
+.guia-estilos__item-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: $espaciado-m;
 
-  &__grupo app-button {
-    width: $boton-ancho;
-  }
-
-  /* Estilos para la sección de iconos */
-  .sg-iconos {
+  app-sidebar {
+    display: inline-block;
     width: 100%;
-    display: block;
-    color: var(--texto-primario);
+    height: 575.5px;
+  }
+}
 
-    .sg-fila {
-      display: flex;
-      gap: $espaciado-m;
-      align-items: center;
-      padding: $espaciado-s $espaciado-m;
-      margin-bottom: $espaciado-m;
-      border: 2px dashed var(--borde);
-      border-radius: $radio-card;
-    }
+/* ========== ICONOS ========== */
+.guia-estilos__grupo-iconos {
+  margin-bottom: $espaciado-xl;
+}
 
+.guia-estilos__grid-iconos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: $espaciado-m;
+}
 
+.guia-estilos__item-icono {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $espaciado-s;
+  padding: $espaciado-m;
+  background-color: var(--bg-cards);
+  border: 1px solid var(--borde);
+  border-radius: $radio-md;
+  text-align: center;
+  transition: all $transicion-rapida $transicion-suave;
 
-    .sg-icono {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-    }
+  &:hover {
+    background-color: var(--hover-enlaces-sidebar);
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
 
-    /* Tamaños por variante (las clases las aplica la directiva) */
-    .feather--submenu .sg-icono,
-    .feather--submenu {
-      width: 24px;
-      height: 24px;
-    }
+.guia-estilos__nombre-icono {
+  @include mixins.tipografia(texto-mini);
+  font-family: 'Courier New', monospace;
+  opacity: 0.7;
+}
 
-    .feather--botones .sg-icono,
-    .feather--botones {
-      width: 20px;
-      height: 20px;
-    }
+/* ========== PIE DE PÁGINA ========== */
+.guia-estilos__pie {
+  margin-top: $espaciado-xxl * 2;
+  padding-top: $espaciado-xl;
+  border-top: 2px solid var(--borde-cards);
+  text-align: center;
 
-    .feather--header .sg-icono,
-    .feather--header {
-      width: 36px;
-      height: 36px;
-    }
+  p {
+    @include mixins.tipografia(texto-pequeno);
+    opacity: 0.6;
+    margin: 0;
+  }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: $breakpoint-tablet) {
+  .guia-estilos__showcase-componentes {
+    grid-template-columns: 1fr;
   }
 
-  &__titulos{
-    @include mixins.tipografia(h2, var(--titulos));
+  .guia-estilos__showcase-cards {
+    grid-template-columns: 1fr;
   }
-
-  &__titulos2{
-    @include mixins.tipografia(h3, var(--titulos));
-  }
-
 }

@@ -1,0 +1,14 @@
+<div class="alert alert--{{ tipo }}" role="alert">
+  <div class="alert__content">
+    <ng-content></ng-content>
+  </div>
+  @if (cerrable) {
+    <button 
+      class="alert__close" 
+      type="button"
+      (click)="alCerrar()"
+      aria-label="Cerrar alerta">
+      <span [feather]="'x'" [tipo]="'botones'" class="alert__close-icon"></span>
+    </button>
+  }
+</div>

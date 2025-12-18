@@ -111,7 +111,16 @@
       justify-content: center;
       flex-shrink: 0;
 
+      /* Color por defecto del icono (usa variable CSS para temas) */
       color: var(--titulos);
+
+      svg {
+        width: 100%;
+        height: 100%;
+        stroke: currentColor;
+        fill: none;
+        display: block;
+      }
     }
 
     &-texto {
@@ -132,3 +141,12 @@
     padding: $espaciado-m;
   }
 }
+
+/* Estilos para las variantes de demostración (usadas en style-guide) */
+.barra-lateral--demo {
+  width: 260px;
+  margin-bottom: $espaciado-l;
+  border: 1px dashed var(--borde);
+}
+
+/* El cambio de color de iconos en hover se elimina: los iconos mantienen su color. */

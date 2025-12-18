@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, FeatherIconDirective],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })
 export class Header implements OnInit {
-  icono = '/header/modo-claro.svg';
+  modoIcon = 'sun';
   modoTitle = 'Cambiar a modo oscuro';
 
   ngOnInit(): void {
@@ -31,7 +32,7 @@ export class Header implements OnInit {
 
   private actualizarIcono(): void {
     const esModoOscuro = document.documentElement.classList.contains('dark');
-    this.icono = esModoOscuro ? '/header/modo-oscuro.svg' : '/header/modo-claro.svg';
+    this.modoIcon = esModoOscuro ? 'moon' : 'sun';
     this.modoTitle = esModoOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
   }
 }

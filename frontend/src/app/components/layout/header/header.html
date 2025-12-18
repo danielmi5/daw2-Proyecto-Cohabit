@@ -24,14 +24,10 @@
   
   <section class="cabecera__utilidades">
     <button class="cabecera__boton" aria-label="Cambiar tema" (click)="alternarTema()">
-      <picture class="cabecera__icono">
-        <img [src]="icono" alt="Cambiar tema" [title]="modoTitle" class="cabecera__icono">
-      </picture>
+      <span class="cabecera__icono" [feather]="modoIcon" [tipo]="'header'" [title]="modoTitle"></span>
     </button>
     <button class="cabecera__boton" aria-label="Perfil de usuario">
-      <picture class="cabecera__icono">
-        <img src="/header/perfil.svg" alt="Perfil" title="Perfil" class="cabecera__icono">
-      </picture>
+      <span class="cabecera__icono" [feather]="'user'" [tipo]="'header'" title="Perfil" role="img" aria-label="Perfil"></span>
     </button>
   </section>
 </header>

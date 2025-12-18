@@ -1,7 +1,9 @@
 <article class="card" [class.card--horizontal]="variante === 'horizontal'">
-  <figure *ngIf="imagen && variante === 'horizontal'" class="card__figure">
-    <img class="card__imagen" [src]="imagen" [alt]="imagenAlt || titulo" />
-  </figure>
+  @if (imagen && variante === 'horizontal') {
+    <figure class="card__figure">
+      <img class="card__imagen" [src]="imagen" [alt]="imagenAlt || titulo" />
+    </figure>
+  }
 
   <div class="card__content">
     <header class="card__header">

@@ -144,9 +144,23 @@
     </section>
     <section class="style-guide__seccion">
       <h2 class="style-guide__titulos">Sidebar</h2>
-      <app-sidebar
-      [mostrarOpcionesPerfil]="true">
-      </app-sidebar>
+
+      <div class="style-guide__sidebars">
+        <div class="style-guide__sidebar-item">
+          <h3 class="style-guide__titulos2">Dashboard</h3>
+          <app-sidebar variante="dashboard" [mostrarOpcionesPerfil]="false"></app-sidebar>
+        </div>
+
+        <div class="style-guide__sidebar-item">
+          <h3 class="style-guide__titulos2">Grupo</h3>
+          <app-sidebar variante="grupo" [mostrarOpcionesPerfil]="false"></app-sidebar>
+        </div>
+
+        <div class="style-guide__sidebar-item">
+          <h3 class="style-guide__titulos2">Perfil</h3>
+          <app-sidebar variante="perfil" [mostrarOpcionesPerfil]="true"></app-sidebar>
+        </div>
+      </div>
     </section>
     <section class="style-guide__seccion">
       <h2 class="style-guide__titulos">Botón</h2>
@@ -182,6 +196,51 @@
           <app-button variante="peligro" tamanio="grande">grande</app-button>
           <app-button variante="peligro" [deshabilitado]="true" [tieneIcono]="true">desactivado</app-button>
         </section>
+      </div>
+    </section>
+    <section class="style-guide__seccion">
+      <h2 class="style-guide__titulos">Iconos</h2>
+
+      <div class="sg-iconos">
+        <h3 class="style-guide__titulos2">Submenús</h3>
+        <div class="sg-fila">
+          <span [feather]="'calendar'" [tipo]="'submenu'" class="sg-icono"></span>
+          <span [feather]="'home'" [tipo]="'submenu'" class="sg-icono"></span>
+          <span [feather]="'settings'" [tipo]="'submenu'" class="sg-icono"></span>
+          <span [feather]="'lock'" [tipo]="'submenu'" class="sg-icono"></span>
+          <span [feather]="'users'" [tipo]="'submenu'" class="sg-icono"></span>
+          <span [feather]="'sliders'" [tipo]="'submenu'" class="sg-icono"></span>
+          <span [feather]="'layers'" [tipo]="'submenu'" class="sg-icono"></span>
+          <span [feather]="'info'" [tipo]="'submenu'" class="sg-icono"></span>
+          <span [feather]="'log-out'" [tipo]="'submenu'" class="sg-icono"></span>
+        </div>
+
+        <h3 class="style-guide__titulos2">Campos y botones</h3>
+        <div class="sg-fila">
+          <span [feather]="'arrow-right'" [tipo]="'botones'" class="sg-icono"></span>
+          <span [feather]="'alert-circle'" [tipo]="'botones'" class="sg-icono"></span>
+          <span [feather]="'check'" [tipo]="'botones'" class="sg-icono"></span>
+          <span [feather]="'eye'" [tipo]="'botones'" class="sg-icono"></span>
+          <span [feather]="'eye-off'" [tipo]="'botones'" class="sg-icono"></span>
+          <span [feather]="'edit-2'" [tipo]="'botones'" class="sg-icono"></span>
+          <span [feather]="'x'" [tipo]="'botones'" class="sg-icono"></span>
+          <span [feather]="'menu'" [tipo]="'botones'" class="sg-icono"></span>
+        </div>
+
+        <h3 class="style-guide__titulos2">Redes sociales footer</h3>
+        <div class="sg-fila">
+          <span [feather]="'youtube'" [tipo]="'botones'" class="sg-icono"></span>
+          <span [feather]="'facebook'" [tipo]="'botones'" class="sg-icono"></span>
+          <span [feather]="'instagram'" [tipo]="'botones'" class="sg-icono"></span>
+        </div>
+
+        <h3 class="style-guide__titulos2">Navegación</h3>
+        <div class="sg-fila">
+          <span [feather]="'moon'" [tipo]="'header'" class="sg-icono"></span>
+          <span [feather]="'sun'" [tipo]="'header'" class="sg-icono"></span>
+          <span [feather]="'user'" [tipo]="'header'" class="sg-icono"></span>
+          <span [feather]="'bell'" [tipo]="'header'" class="sg-icono"></span>
+        </div>
       </div>
     </section>
   </section>

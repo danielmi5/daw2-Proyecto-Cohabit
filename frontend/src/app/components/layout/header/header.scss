@@ -40,6 +40,13 @@
 
     &-enlace {
       color: $importante-fondo-primario;
+      text-decoration: none;
+      transition: color $transicion-rapida $transicion-suave;
+
+      &:hover, &:focus {
+        color: $hover-ui;
+        text-decoration: none;
+      }
 
     }
   }
@@ -60,10 +67,26 @@
   }
 
   &__icono{
-    width: 100%;
-    height: 100%;
+    width: $iconos-header;
+    height: $iconos-header;
 
-    object-fit: contain;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Aplica el mismo color que el texto principal del header */
+    color: $importante-fondo-primario;
+    transition: color $transicion-rapida $transicion-suave;
+
+    /* Si el icono es un SVG, hacer que use currentColor */
+    svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+      fill: none;
+      display: block;
+    }
+
   }
 
   

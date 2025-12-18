@@ -7,9 +7,7 @@
   [attr.aria-disabled]="deshabilitado">
   <div class="boton__contenedor">
     @if (tieneIcono) {
-      <span class="boton__icono">
-        X
-      </span>
+      <span [feather]="'arrow-right'" [tipo]="'botones'" class="boton-icono"></span>
     }
     <p class="boton__texto">
       <ng-content></ng-content>

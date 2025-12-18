@@ -8,7 +8,8 @@
   background-color: var(--bg-cards);
   border: 1px solid var(--borde-cards);
   max-height: 116px;
-  box-shadow: $shadow-sm;
+  box-shadow: $shadow-md;
+  transition: box-shadow $transicion-base $transicion-suave;
 
   &--horizontal {
     width: fit-content;
@@ -16,6 +17,10 @@
     gap: $espaciado-xs;
     align-items: stretch;
     padding: 0;
+  }
+
+  &:hover {
+    box-shadow: $shadow-lg;
   }
 
   &--horizontal {

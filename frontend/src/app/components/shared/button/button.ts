@@ -1,10 +1,12 @@
 import { Component, Input } from '@angular/core';
+import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 
 @Component({
   selector: 'app-button',
-  imports: [],
+  standalone: true,
+  imports: [FeatherIconDirective],
   templateUrl: './button.html',
-  styleUrl: './button.scss',
+  styleUrls: ['./button.scss'],
 })
 export class Button {
   @Input() variante: 'primario' | 'secundario' | 'fantasma' | 'peligro' = 'primario';

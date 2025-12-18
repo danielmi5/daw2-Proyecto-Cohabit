@@ -1,66 +1,96 @@
+<!-- Sidebar único: renderiza según la propiedad `variante` -->
 <aside class="barra-lateral">
   <header class="barra-lateral__encabezado">
     <h2 class="barra-lateral__titulo">{{ nombreUsuario }}</h2>
-      <figure class="barra-lateral__perfil">
-      <img 
-        [src]="imagenPerfil" 
-        [alt]="nombreUsuario"
-        title="Imagen de perfil de {{nombreUsuario}}"
-        class="barra-lateral__perfil-imagen"
-      />
+    <figure class="barra-lateral__perfil">
+      <img [src]="imagenPerfil" [alt]="nombreUsuario" title="Imagen de perfil de {{nombreUsuario}}" class="barra-lateral__perfil-imagen" />
     </figure>
   </header>
-  
+
   <nav class="barra-lateral__navegacion">
     <ul class="barra-lateral__menu">
-      <li class="barra-lateral__menu-item">
-        <a 
-          routerLink="/dashboard" 
-          routerLinkActive="barra-lateral__menu-enlace--activo"
-          class="barra-lateral__menu-enlace"
-        >
-          <span class="barra-lateral__menu-icono" aria-hidden="true">
-            <i class="icono-casa"></i>
-          </span>
-          <span class="barra-lateral__menu-texto">Dashboard</span>
-        </a>
-      </li>
-      <li class="barra-lateral__menu-item">
-        <a 
-          routerLink="/configuracion" 
-          routerLinkActive="barra-lateral__menu-enlace--activo"
-          class="barra-lateral__menu-enlace"
-        >
-          <span class="barra-lateral__menu-icono" aria-hidden="true">
-            <i class="icono-engranaje"></i>
-          </span>
-          <span class="barra-lateral__menu-texto">Dashboard</span>
-        </a>
-      </li>
-      <li class="barra-lateral__menu-item">
-        <a 
-          routerLink="/usuarios" 
-          routerLinkActive="barra-lateral__menu-enlace--activo"
-          class="barra-lateral__menu-enlace"
-        >
-          <span class="barra-lateral__menu-icono" aria-hidden="true">
-            <i class="icono-usuarios"></i>
-          </span>
-          <span class="barra-lateral__menu-texto">Dashboard</span>
-        </a>
-      </li>
-      <li class="barra-lateral__menu-item">
-        <a 
-          routerLink="/seguridad" 
-          routerLinkActive="barra-lateral__menu-enlace--activo"
-          class="barra-lateral__menu-enlace"
-        >
-          <span class="barra-lateral__menu-icono" aria-hidden="true">
-            <i class="icono-candado"></i>
-          </span>
-          <span class="barra-lateral__menu-texto">Dashboard</span>
-        </a>
-      </li>
+      @if (variante === 'dashboard') {
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/dashboard" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'home'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Dashboard</span>
+          </a>
+        </li>
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/reservas" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'layers'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Reservas</span>
+          </a>
+        </li>
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/recursos" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'layers'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Recursos</span>
+          </a>
+        </li>
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/usuarios" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'calendar'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Calendario</span>
+          </a>
+        </li>
+      } @else if (variante === 'grupo') {
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/dashboard" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'home'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Datos del grupo</span>
+          </a>
+        </li>
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/ajustes" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'settings'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Ajustes</span>
+          </a>
+        </li>
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/recursos" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'layers'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Recursos</span>
+          </a>
+        </li>
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/mi-grupo" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'users'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Miembros</span>
+          </a>
+        </li>
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/seguridad" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'lock'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Roles y permisos</span>
+          </a>
+        </li>
+      } @else if (variante === 'perfil') {
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/dashboard" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'home'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Datos personales</span>
+          </a>
+        </li>
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/ajustes" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'settings'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Preferencias</span>
+          </a>
+        </li>
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/recursos" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'users'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Grupo</span>
+          </a>
+        </li>
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/mi-grupo" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'lock'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Seguridad</span>
+          </a>
+        </li>
+      }
     </ul>
   </nav>
 
@@ -68,26 +98,14 @@
     <footer class="barra-lateral__pie">
       <ul class="barra-lateral__menu barra-lateral__menu--secundario">
         <li class="barra-lateral__menu-item">
-          <a 
-            routerLink="/informacion" 
-            routerLinkActive="barra-lateral__menu-enlace--activo"
-            class="barra-lateral__menu-enlace"
-          >
-            <span class="barra-lateral__menu-icono" aria-hidden="true">
-              <i class="icono-info"></i>
-            </span>
+          <a routerLink="/informacion" routerLinkActive="barra-lateral__menu-enlace--activo" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'info'" [tipo]="'submenu'"></span></span>
             <span class="barra-lateral__menu-texto">Ayuda</span>
           </a>
         </li>
         <li class="barra-lateral__menu-item">
-          <button 
-            type="button"
-            id = "btn-cerrar-sesion"
-            class="barra-lateral__menu-enlace"
-          >
-            <span class="barra-lateral__menu-icono" aria-hidden="true">
-              <i class="icono-salir"></i>
-            </span>
+          <button type="button" id="btn-cerrar-sesion" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'log-out'" [tipo]="'submenu'"></span></span>
             <span class="barra-lateral__menu-texto">Cerrar sesión</span>
           </button>
         </li>

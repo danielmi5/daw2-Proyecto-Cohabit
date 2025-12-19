@@ -1,6 +1,11 @@
 # Frontend
 
-Este directorio contiene la aplicación frontend desarrollada con Angular 20, se puede accecer al frontend en este [enlace]().
+Este directorio contiene la aplicación frontend desarrollada con Angular 20, se puede accecer al frontend en este [enlace](https://danielmi5.github.io/daw2-Proyecto-Cohabit/).
+
+## Entregas
+
+- [Documentación para DIW](./docs/design/DOCUMENTACION.md)
+- [Documentación para DWEC](./docs/cliente)
 
 ## Tabla de contenidos
 

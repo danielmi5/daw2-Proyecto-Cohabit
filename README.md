@@ -5,7 +5,6 @@ Proyecto Cohabit es una aplicación web para gestionar recursos compartidos en v
 ## Tabla de contenidos
 
 - [Estructura](#estructura)
-- [Resumen](#resumen)
 - [Características](#características)
 - [Tecnologías](#tecnologías)
 - [Requisitos](#requisitos)
@@ -102,5 +101,5 @@ mvn spring-boot:run
 
 El archivo `docker-compose.yml` en la raíz incluye los servicios `db` (Postgres) y `backend`.
 
-Para el frontend puedes acceder a él desplegandolo localmente (más info en el README del frontend) o accediendo al [enlace]()
+Para el frontend puedes acceder a él desplegandolo localmente (más info en el README del frontend) o accediendo al [enlace](https://danielmi5.github.io/daw2-Proyecto-Cohabit/)
 

@@ -1,11 +1,13 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 
 export type EstadoValidacion = 'inicial' | 'advertencia' | 'error' | 'exito';
 
 @Component({
   selector: 'app-form-input',
-  imports: [ReactiveFormsModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, FeatherIconDirective],
   templateUrl: './form-input.html',
   styleUrl: './form-input.scss',
   providers: [
@@ -17,6 +19,7 @@ export type EstadoValidacion = 'inicial' | 'advertencia' | 'error' | 'exito';
   ]
 })
 export class FormInput implements ControlValueAccessor {
+[x: string]: any;
   @Input() tipo: string = 'text';
   @Input() name: string = '';
   @Input() id: string = '';
@@ -33,6 +36,39 @@ export class FormInput implements ControlValueAccessor {
   @Input() desactivado: boolean = false;
   @Input() iconoIzquierda?: string;
   @Input() iconoDerecha?: string;
+
+  // Estado para mostrar/ocultar contraseña en el input
+  displayTipo: string = 'text';
+
+  ngOnInit(): void {
+    this.displayTipo = this.tipo || 'text';
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['tipo'] && !changes['tipo'].firstChange) {
+      this.displayTipo = changes['tipo'].currentValue || 'text';
+    }
+  }
+
+  toggleMostrarContrasena(): void {
+    if (!this.displayTipo) this.displayTipo = this.tipo || 'text';
+    this.displayTipo = this.displayTipo === 'password' ? 'text' : 'password';
+  }
+
+  // Icono derecho (prioriza iconoDerecha si está definido)
+  getIconoDerechaEfectivo(): string | null {
+    if (this.iconoDerecha) return this.iconoDerecha;
+    const estado = this.getEstadoEfectivo();
+    if (estado === 'exito') return 'check';
+    if (estado === 'error') return 'alert-circle';
+    if (estado === 'advertencia') return 'alert-triangle';
+    return null;
+  }
+
+  // Icono de ojo para contraseña según el displayTipo
+  getIconoMostrarContrasena(): string {
+    return this.displayTipo === 'password' ? 'eye' : 'eye-off';
+  }
 
   /**
    * Determina el estado efectivo de validación.

@@ -3,34 +3,35 @@
 
 	<fieldset class="registro-form__fieldset">
 		<legend class="registro-form__legend">Datos personales</legend>
+		<div class="registro-form__fila">
+			<app-form-input 
+				class="registro-form__input" 
+				id="nombre" 
+				name="nombre"
+				formControlName="nombre"
+				etiqueta="Nombre" 
+				placeholder="Nombre"
+				[requerido]="true"
+				[estadoValidacion]="getValidationState('nombre')"
+				[mensajeAdvertencia]="getWarningMessage('nombre')"
+				[mensajeError]="getErrorMessage('nombre')"
+				[mensajeExito]="getSuccessMessage('nombre')"
+			></app-form-input>
 
-		<app-form-input 
-			class="registro-form__half" 
-			id="nombre" 
-			name="nombre"
-			formControlName="nombre"
-			etiqueta="Nombre" 
-			placeholder="Nombre"
-			[requerido]="true"
-			[estadoValidacion]="getValidationState('nombre')"
-			[mensajeAdvertencia]="getWarningMessage('nombre')"
-			[mensajeError]="getErrorMessage('nombre')"
-			[mensajeExito]="getSuccessMessage('nombre')"
-		></app-form-input>
-
-		<app-form-input 
-			class="registro-form__half" 
-			id="apellidos" 
-			name="apellidos"
-			formControlName="apellidos"
-			etiqueta="Apellidos" 
-			placeholder="Apellidos"
-			[requerido]="true"
-			[estadoValidacion]="getValidationState('apellidos')"
-			[mensajeAdvertencia]="getWarningMessage('apellidos')"
-			[mensajeError]="getErrorMessage('apellidos')"
-			[mensajeExito]="getSuccessMessage('apellidos')"
-		></app-form-input>
+			<app-form-input 
+				class="registro-form__input" 
+				id="apellidos" 
+				name="apellidos"
+				formControlName="apellidos"
+				etiqueta="Apellidos" 
+				placeholder="Apellidos"
+				[requerido]="true"
+				[estadoValidacion]="getValidationState('apellidos')"
+				[mensajeAdvertencia]="getWarningMessage('apellidos')"
+				[mensajeError]="getErrorMessage('apellidos')"
+				[mensajeExito]="getSuccessMessage('apellidos')"
+			></app-form-input>
+		</div>
 	</fieldset>
 
 	<fieldset class="registro-form__fieldset">

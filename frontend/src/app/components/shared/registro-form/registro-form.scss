@@ -32,12 +32,22 @@
 		@include mixins.tipografia(parrafo, var(--titulos));
 	}
 
-	/* two-column helper for host elements */
-	&__half {
-		flex: 1 1 calc(50% - #{$espaciado-m} / 2);
-		min-width: 220px;
+	&__fila {
+		display: flex;
+		flex-direction: row;
+		gap: $espaciado-m;
+		width: 100%;
+		@media (max-width: 600px) {
+			flex-direction: column;
+			gap: $espaciado-s;
+		}
 	}
 
+	&__input {
+		flex: 1 1 0;
+		min-width: 0;
+	}
+	
 	&__campo-async {
 		position: relative;
 	}

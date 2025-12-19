@@ -143,5 +143,6 @@
     &--deshabilitado,
     &[disabled] {
         @include mixins.desactivado();
+        pointer-events: auto;
     }
 }

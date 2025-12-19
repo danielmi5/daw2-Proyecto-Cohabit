@@ -10,6 +10,7 @@
   max-height: 116px;
   box-shadow: $shadow-md;
   transition: box-shadow $transicion-base $transicion-suave;
+  max-width: fit-content;
 
   &--horizontal {
     width: fit-content;

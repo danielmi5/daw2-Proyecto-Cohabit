@@ -1,64 +1,108 @@
 # Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.9.
+Este directorio contiene la aplicación frontend desarrollada con Angular 20, se puede accecer al frontend en este [enlace]().
 
-## Development server
+## Tabla de contenidos
 
-Firstly, install the dependencies: 
+- [Estructura](#estructura)
+- [Requisitos](#requisitos)
+- [Instalación](#instalación)
+- [Scripts disponibles](#scripts-disponibles)
+- [Desarrollo local](#desarrollo-local)
+
+
+## Estructura
+```
+frontend/
+├── .editorconfig
+├── .gitignore
+├── angular.json
+├── package.json
+├── README.md
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.spec.json
+├── .angular/
+│   └── cache/
+├── docs/
+│   ├── cliente/
+│   │   ├── Fase1.md
+│   │   ├── Fase2.md
+│   │   └── Fase3.md
+│   └── design/
+│       ├── DOCUMENTACION.md
+│       └── img/
+├── public/
+│   ├── footer/
+│   ├── header/
+│   └── img/
+├── src/
+│   ├── feather-icons.d.ts
+│   ├── index.html
+│   ├── main.ts
+│   ├── app/
+│   │   ├── app.config.ts
+│   │   ├── app.html
+│   │   ├── app.routes.ts
+│   │   ├── app.scss
+│   │   ├── app.spec.ts
+│   │   ├── app.ts
+	│   ├── components/           # directorio con componentes
+	│   ├── directives/
+	│   │   └── feather-icon.directive.ts
+	│   ├── form/ # servicios y validadores de los formularios
+	│   │   ├── services/ 
+	│   │   │   └── validadores-asincronos.service.ts
+	│   │   └── validators/
+	│   │       ├── email-tld.validator.ts
+	│   │       ├── index.ts
+	│   │       ├── password-match.validator.ts
+	│   │       └── password-strength.validator.ts
+	│   ├── pages/                # directorio con páginas
+	│   
+│   └── styles/ # Estilos definidos
+│       ├── style.scss
+│       ├── 00-settings/
+│       │   ├── _css-variables.scss
+│       │   └── _variables.scss
+│       ├── 01-tools/
+│       │   └── _mixins.scss
+│       ├── 02-generic/
+│       │   └── _reset.scss
+│       ├── 03-elements/
+│       │   └── _elements.scss
+│       └── 04-layout/
+		 │       └── _layout.scss
+```
+
+## Requisitos
+
+- Node.js (recomendado v18+)
+- npm
+- Angular CLI (opcional, se pueden usar los scripts ya definidos)
+
+## Instalación
+
 ```bash
+cd frontend
 npm install
 ```
 
-And to start a local development server, run:
+## Scripts disponibles
+
+- `npm start` : Inicia el servidor de desarrollo (`ng serve`).
+- `npm run build` : Compila el proyecto y genera artefactos en `dist/`.
+- `npm run watch` : Compila en modo watch (desarrollo).
+- `npm test` : Ejecuta tests unitarios (Karma/Jasmine).
+- `npm run test-ci` : Ejecuta tests en modo CI (sin watch, con ChromeHeadless).
+
+## Desarrollo local
+
+Para desarrollar localmente:
 
 ```bash
-ng serve
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Abre `http://localhost:4200` en tu navegador. Los cambios en `src/` se recargarán automáticamente.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

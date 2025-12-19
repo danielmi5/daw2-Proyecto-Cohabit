@@ -8,13 +8,15 @@ import { FormCheckbox } from "../../components/shared/form-checkbox/form-checkbo
 import { Card } from '../../components/shared/card/card';
 import { Alert } from '../../components/shared/alert/alert';
 import { FeatherIconDirective } from '../../directives/feather-icon.directive';
+import { LoginForm } from "../../components/shared/login-form/login-form";
+import { RegistroForm } from "../../components/shared/registro-form/registro-form";
 
 @Component({
   selector: 'app-style-guide',
   templateUrl: './style-guide.html',
   standalone: true,
   styleUrls: ['./style-guide.scss'],
-  imports: [FormInput, Sidebar, Button, FormTextarea, FormSelect, FormCheckbox, Card, Alert, FeatherIconDirective]
+  imports: [FormInput, Sidebar, Button, FormTextarea, FormSelect, FormCheckbox, Card, Alert, FeatherIconDirective, LoginForm, RegistroForm]
 })
 export class StyleGuidePage {
 }

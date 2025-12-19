@@ -11,19 +11,25 @@
   </label>
 
   <div class="form-input__contenedor-input" (click)="inputRef.focus()">
+    <!-- Icono izquierdo: si es campo contraseña ojo para ver/ocultar -->
+    @if (tipo === 'password') {
+      <button type="button" class="form-input__icono form-input__icono--izquierda form-input__icono--boton" aria-label="Mostrar u ocultar contraseña" (click)="toggleMostrarContrasena(); $event.stopPropagation()">
+        <span [feather]="getIconoMostrarContrasena()" [tipo]="'botones'"></span>
+      </button>
+    }
     @if (iconoIzquierda) {
       <span class="form-input__icono form-input__icono--izquierda" aria-hidden="true">
-        <i [class]="iconoIzquierda"></i>
+        <span [feather]="iconoIzquierda" [tipo]="'botones'"></span>
       </span>
     }
 
     <input #inputRef
       class="form-input__campo"
-      [class.form-input__campo--con-icono-izquierda]="iconoIzquierda"
-      [class.form-input__campo--con-icono-derecha]="iconoDerecha"
+      [class.form-input__campo--con-icono-izquierda]="tipo === 'password' || iconoIzquierda"
+      [class.form-input__campo--con-icono-derecha]="!!getIconoDerechaEfectivo()"
       [id]="id"
       [name]="name"
-      [type]="tipo"
+      [type]="displayTipo"
       [placeholder]="placeholder"
       [disabled]="desactivado"
       [value]="valor"
@@ -36,9 +42,10 @@
       [attr.aria-describedby]="id + '-mensaje'"
     />
 
-    @if (iconoDerecha) {
+    <!-- Icono derecho: icono personalizado o icono de estado (éxito/advertencia/error) -->
+    @if (getIconoDerechaEfectivo()) {
       <span class="form-input__icono form-input__icono--derecha" aria-hidden="true">
-        <i [class]="iconoDerecha"></i>
+        <span [feather]="getIconoDerechaEfectivo() ?? ''" [tipo]="'botones'"></span>
       </span>
     }
   </div>

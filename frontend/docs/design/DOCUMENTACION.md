@@ -857,33 +857,47 @@ Explicación de la estructura HTML:
 - Botones: el botón de submit está deshabilitado cuando `formularioRegistro.invalid` o `isFormPending(), esto evita envíos no válidos o mientras hay validaciones pendientes.
 
 #### Propiedades utilizadas en form-input:
-
 ```ts
 export type EstadoValidacion = 'inicial' | 'advertencia' | 'error' | 'exito';
 export class FormInput implements ControlValueAccessor {
-  @Input() tipo: string = 'text';
-  @Input() name: string = '';
-  @Input() id: string = '';
-  @Input() etiqueta: string = '';
-  @Input() placeholder: string = '';
-  @Input() requerido: boolean = false;
-  @Input() mensajeAdvertencia?: string;
-  @Input() mensajeError?: string;
-  @Input() estadoValidacion: EstadoValidacion = 'inicial';
+	@Input() tipo: string = 'text'; // text, email, password, etc.
+	@Input() name: string = '';
+	@Input() id: string = '';
+	@Input() etiqueta: string = '';
+	@Input() placeholder: string = '';
+	@Input() requerido: boolean = false;
+	@Input() textoAyuda?: string;
+	@Input() mensajeError?: string;
+	@Input() mensajeExito?: string;
+	@Input() mensajeAdvertencia?: string;
+	@Input() estadoValidacion: EstadoValidacion = 'inicial';
+	@Input() hayError: boolean = false;
+	@Input() exito: boolean = false;
+	@Input() desactivado: boolean = false;
+	@Input() iconoIzquierda?: string; // nombre de icono Feather o null
+	@Input() iconoDerecha?: string;  // nombre de icono Feather o null
 }
 ```
 
-Explicación de las propiedades de `app-form-input`:
+Explicación de las propiedades:
 
-- `tipo`: tipo de input (`text`, `email`, `password`, etc.). Determina el `type` del elemento `input` interno.
-- `name`: nombre del control para identificar el campo.
-- `id`: identificador DOM del input; se usa para asociar `label` externos (`for="id"`) y para accesibilidad.
-- `etiqueta`: texto visible del `label` que muestra el componente; mejora la semántica y UX.
+- `tipo`: tipo de input (`text`, `email`, `password`, etc.). Determina el `type` del elemento `input` interno y el comportamiento visual (por ejemplo, para `password` se muestra el botón ojo que permite alternar visibilidad).
+- `name`: nombre del control para identificar el campo dentro del `FormGroup`.
+- `id`: identificador DOM del input; se usa para asociar `label` externos (`for="id"`) y para accesibilidad (`aria-describedby`).
+- `etiqueta`: texto visible del `label` que muestra el componente.
 - `placeholder`: texto auxiliar dentro del input para orientar al usuario sobre el formato esperado.
-- `requerido`: indica si el campo es obligatorio; el componente puede usarlo para añadir el asterisco (*) visual y para lógica de presentación de advertencias.
+- `requerido`: marca visual y semánticamente el campo como obligatorio (asterisco en la etiqueta y atributo `required` en el DOM).
+- `textoAyuda`: texto de ayuda mostrado en estado inicial para guiar sobre el formato o requerimientos mínimos.
 - `mensajeAdvertencia`: texto mostrado cuando el estado es `advertencia` (p. ej. campo obligatorio vacío tras interacción).
 - `mensajeError`: texto mostrado cuando el estado es `error` (p. ej. formato inválido, validación fallida).
-- `estadoValidacion`: enum local que indica el estado efectivo del control (`inicial`, `advertencia`, `error`, `exito`). El componente lo usa para aplicar estilos y decidir qué mensaje mostrar.
+- `mensajeExito`: texto mostrado cuando el estado es `exito`.
+- `estadoValidacion`: enum que controla el estado visual del componente (`inicial`, `advertencia`, `error`, `exito`). Si no se especifica, el componente puede inferir estado a partir de `hayError` o `exito`.
+- `hayError`: compatibilidad para marcar error desde la instancia padre.
+- `exito`: compatibilidad para marcar éxito desde la instancia padre.
+- `desactivado`: desactiva el campo (atributo `disabled` + estilos de estado desactivado).
+- `iconoIzquierda`: nombre del icono Feather a mostrar en la izquierda (opcional). Si `tipo === 'password'` el componente mostrará por defecto un botón con el icono `eye`/`eye-off` para alternar ver/ocultar. Se recomienda usar nombres de iconos de Feather (por ejemplo: `user`, `mail`, `lock`).
+- `iconoDerecha`: nombre del icono Feather a mostrar en la derecha (opcional). Si no se pasa, el componente mostrará un icono de estado automáticamente: `check` (éxito), `alert-circle` (error) o `alert-triangle` (advertencia), según el `estadoValidacion`.
+
 
 
 HTML del componente input:
@@ -902,19 +916,25 @@ HTML del componente input:
   </label>
 
   <div class="form-input__contenedor-input" (click)="inputRef.focus()">
+    <!-- Icono izquierdo: si es campo contraseña ojo para ver/ocultar -->
+    @if (tipo === 'password') {
+      <button type="button" class="form-input__icono form-input__icono--izquierda form-input__icono--boton" aria-label="Mostrar u ocultar contraseña" (click)="toggleMostrarContrasena(); $event.stopPropagation()">
+        <span [feather]="getIconoMostrarContrasena()" [tipo]="'botones'"></span>
+      </button>
+    }
     @if (iconoIzquierda) {
       <span class="form-input__icono form-input__icono--izquierda" aria-hidden="true">
-        <i [class]="iconoIzquierda"></i>
+        <span [feather]="iconoIzquierda" [tipo]="'botones'"></span>
       </span>
     }
 
     <input #inputRef
       class="form-input__campo"
-      [class.form-input__campo--con-icono-izquierda]="iconoIzquierda"
-      [class.form-input__campo--con-icono-derecha]="iconoDerecha"
+      [class.form-input__campo--con-icono-izquierda]="tipo === 'password' || iconoIzquierda"
+      [class.form-input__campo--con-icono-derecha]="!!getIconoDerechaEfectivo()"
       [id]="id"
       [name]="name"
-      [type]="tipo"
+      [type]="displayTipo"
       [placeholder]="placeholder"
       [disabled]="desactivado"
       [value]="valor"
@@ -927,9 +947,10 @@ HTML del componente input:
       [attr.aria-describedby]="id + '-mensaje'"
     />
 
-    @if (iconoDerecha) {
+    <!-- Icono derecho: icono personalizado o icono de estado (éxito/advertencia/error) -->
+    @if (getIconoDerechaEfectivo()) {
       <span class="form-input__icono form-input__icono--derecha" aria-hidden="true">
-        <i [class]="iconoDerecha"></i>
+        <span [feather]="getIconoDerechaEfectivo() ?? ''" [tipo]="'botones'"></span>
       </span>
     }
   </div>
@@ -1304,3 +1325,35 @@ La página está organizada en secciones temáticas (Botones, Formularios, Alert
 - Código HTML con atributos y valores de ejemplo.
 - Especificaciones técnicas (tamaños, colores, estados).
 
+Secciones de la guía de estilos:
+
+##### Botones
+
+![Componentes botones](img/botones.png)
+
+##### Formularios
+
+![Componentes internos formulario](img/forms.png)
+![Componentes formularios login/registro](img/forms2.png)
+
+##### Feedback
+
+![Componentes feedback](img/forms.png)
+
+##### Cards
+
+![Componentes cards](img/cards.png)
+
+##### Navegación
+
+![Componentes navegación](img/nav.png)
+
+##### Iconografía
+
+![Componentes iconos](img/iconos.png)
+
+##### Botón hamburguesa
+
+Este componente no está presenta como tal en la guía de estilos pero se puede ver en el header al reducir el tamaño de pantalla de la aplicación:
+
+![Botón hamburguesa](img/hamb.png)

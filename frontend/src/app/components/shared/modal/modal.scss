@@ -1,0 +1,71 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+
+.modal {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: $espaciado-m;
+	z-index: 1000;
+}
+
+.modal::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.45);
+}
+
+.modal__panel {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	max-width: 40rem;
+    color: $texto-oscuro;
+	background: var(--bg-cards);
+    border: 1px solid var(--borde-cards);
+    border-radius: $radio-card;
+	padding: $espaciado-l;
+	box-shadow: $shadow-lg;
+	transition: transform $transicion-base $transicion-suave, opacity $transicion-base $transicion-suave;
+}
+
+.modal__titulo {
+	margin: 0 0 $espaciado-s 0;
+	font-family: $font-secondary;
+	font-size: $escala-h3;
+	font-weight: $peso-h3;
+	color: $titulos;
+}
+
+.modal__info {
+	margin: 0;
+	color: $gris6;
+	font-size: $escala-parrafo;
+	line-height: $altura-linea-parrafo;
+}
+
+.modal__botones {
+	display: flex;
+	gap: $espaciado-s;
+	justify-content: flex-end;
+	margin-top: $espaciado-m;
+}
+
+@media (max-width: $breakpoint-movil-grande) {
+	.modal__panel {
+		padding: $espaciado-m;
+	}
+	.modal__botones {
+		flex-direction: column-reverse;
+		gap: $espaciado-xs;
+	}
+	.modal__botones app-button {
+		width: 100%;
+	}
+}
+
+

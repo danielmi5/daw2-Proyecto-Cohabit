@@ -208,4 +208,9 @@ export class RegistroForm implements OnInit {
     console.log('Google register clicked');
     // TODO: Implementar OAuth con Google
   }
+
+  hayCambiosAuth(): boolean {
+    if (!this.formularioRegistro) return false;
+    return this.formularioRegistro.dirty || this.formularioRegistro.touched;
+  }
 }

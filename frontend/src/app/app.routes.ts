@@ -3,6 +3,7 @@ import { Inicio } from "./pages/inicio/inicio";
 import { StyleGuidePage } from "./pages/style-guide/style-guide";
 import { LoginPage } from "./pages/login/login";
 import { RegistroPage } from "./pages/registro/registro";
+import { salirAuthGuard } from './guards/salir-auth-guard';
 import { authGuard } from "./guards/auth-guard";
 
 /**
@@ -30,13 +31,15 @@ export const routes: Routes = [
     path: "login",
     component: LoginPage,
     title: "Inicio Sesión",
-    data: { breadcrumb: "Login" }
+    data: { breadcrumb: "Login" },
+    canDeactivate: [salirAuthGuard]
   },
   {
     path: "registro",
     component: RegistroPage,
     title: "Registro",
-    data: { breadcrumb: "Registro" }
+    data: { breadcrumb: "Registro" },
+    canDeactivate: [salirAuthGuard]
   },
   {
     path: "style-guide",

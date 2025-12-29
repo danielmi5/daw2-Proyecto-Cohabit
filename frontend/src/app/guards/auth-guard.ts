@@ -1,6 +1,7 @@
-import { CanActivateFn, Router } from "@angular/router";
+import { CanActivateFn } from "@angular/router";
 import { inject } from "@angular/core";
 import { AuthService } from "../services/auth.service";
+import { ModalService } from "../services/modal.service";
 
 /**
  * Guard funcional para proteger rutas que requieren autenticación.
@@ -9,16 +10,10 @@ import { AuthService } from "../services/auth.service";
  */
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
-  const router = inject(Router);
+  const modalService = inject(ModalService);
 
-  if (authService.autenticado()) {
-    return true;
-  }
+  if (authService.autenticado()) return true;
 
-  // Si no está autenticado, redirige a login y guarda la URL a la que iba para redirigir después del login
-  router.navigate(['login'], {
-    queryParams: { returnUrl: state.url }
-  });
-  
+  modalService.mostrarPedirAuth(state.url);
   return false;
 };

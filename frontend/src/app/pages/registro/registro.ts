@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { RegistroForm } from '../../components/shared/registro-form/registro-form';
 
 @Component({
@@ -7,4 +7,10 @@ import { RegistroForm } from '../../components/shared/registro-form/registro-for
   styleUrl: './registro.scss',
   imports: [RegistroForm]
 })
-export class RegistroPage {}
+export class RegistroPage {
+  @ViewChild(RegistroForm) private formulario?: RegistroForm;
+
+  hayCambiosAuth(): boolean {
+    return !!this.formulario && this.formulario.hayCambiosAuth();
+  }
+}

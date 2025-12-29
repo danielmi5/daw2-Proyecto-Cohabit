@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { LoginForm } from '../../components/shared/login-form/login-form';
 
 @Component({
@@ -7,4 +7,10 @@ import { LoginForm } from '../../components/shared/login-form/login-form';
   styleUrl: './login.scss',
   imports: [LoginForm]
 })
-export class LoginPage {}
+export class LoginPage {
+  @ViewChild(LoginForm) private formulario?: LoginForm;
+
+  hayCambiosAuth(): boolean {
+    return !!this.formulario && this.formulario.hayCambiosAuth();
+  }
+}

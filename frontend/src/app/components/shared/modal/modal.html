@@ -1,0 +1,49 @@
+<section class="modal">
+  <div class="modal__panel">
+
+    @if (variante === "pedirAuth"){
+        <h2 class="modal__titulo">DEBES INICIAR SESIÓN</h2>
+        <p class="modal__info">No has iniciado sesión en la aplicación. Para poder acceder a esta página debes iniciar sesión primero.</p>
+        <div class="modal__botones">
+            <app-button
+                variante="secundario"
+                tipo="button"
+                ariaLabel="Cancelar"
+                (click)="cancelarSalida()"
+            >
+                Cancelar
+            </app-button>
+            <app-button
+                variante="primario"
+                tipo="button"
+                ariaLabel="Iniciar sesión"
+                (click)="iniciarSesion()"
+            >
+                Iniciar sesión
+            </app-button>
+        </div>
+    } @else if (variante === "salirAuth") {
+        <h2 class="modal__titulo">¿QUIERES SALIR DEL PROCESO DE AUTENTICACIÓN?</h2>
+        <p class="modal__info">Si no estás seguro de salir del proceso de autenticación pulsa “Cancelar”.</p>
+        <div class="modal__botones">
+            <app-button
+                variante="secundario"
+                tipo="button"
+                ariaLabel="Cancelar"
+                (click)="cancelarSalida()"
+            >
+                Cancelar
+            </app-button>
+            <app-button
+                variante="primario"
+                tipo="button"
+                ariaLabel="Confirmar"
+                (click)="confirmarSalida()"
+            >
+                Confirmar
+            </app-button>
+        </div>
+    }
+
+  </div>
+</section>

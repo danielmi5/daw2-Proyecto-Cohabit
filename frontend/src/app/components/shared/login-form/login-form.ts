@@ -129,6 +129,11 @@ export class LoginForm implements OnInit {
     // TODO: Implementar lógica de autenticación
   }
 
+  hayCambiosAuth(): boolean {
+    if (!this.formularioLogin) return false;
+    return this.formularioLogin.dirty || this.formularioLogin.touched;
+  }
+
   /**
    * Maneja el inicio de sesión con Google
    */

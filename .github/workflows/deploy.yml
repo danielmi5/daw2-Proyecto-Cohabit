@@ -1,9 +1,6 @@
 name: Deploy en GitHub Pages
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 # Permisos necesarios para publicar en Pages y obtener token OIDC

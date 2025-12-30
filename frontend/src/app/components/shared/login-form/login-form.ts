@@ -5,6 +5,7 @@ import { FormInput, EstadoValidacion } from '../form-input/form-input';
 import { FormCheckbox } from '../form-checkbox/form-checkbox';
 import { Button } from '../button/button';
 import { RouterLink } from '@angular/router';
+import { NotificacionService } from '../../../services/notificacion.service';
 
 @Component({
   selector: 'app-login-form',
@@ -14,6 +15,7 @@ import { RouterLink } from '@angular/router';
 })
 export class LoginForm implements OnInit {
   private constructorFormulario = inject(FormBuilder);
+  private notificationService = inject(NotificacionService);
   
   formularioLogin!: FormGroup;
 
@@ -121,12 +123,16 @@ export class LoginForm implements OnInit {
   onSubmit(): void {
     if (this.formularioLogin.invalid) {
       this.formularioLogin.markAllAsTouched();
+      this.notificationService.error('Hay errores en el formulario');
       return;
     }
 
     const { email, password, remember } = this.formularioLogin.value;
     console.log('Login submit:', { email, password, remember });
+    
     // TODO: Implementar lógica de autenticación
+    // Simulación de login exitoso
+    this.notificationService.success('Inicio de sesión completado correctamente');
   }
 
   hayCambiosAuth(): boolean {
@@ -139,5 +145,6 @@ export class LoginForm implements OnInit {
    */
   onGoogleLogin(): void {
     // TODO: Implementar OAuth con Google
+    this.notificationService.info('Iniciando sesión con Google...');
   }
 }

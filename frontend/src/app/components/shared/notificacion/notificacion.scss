@@ -1,0 +1,33 @@
+@use '../../../../styles/00-settings/variables' as *;
+
+.toast-container {
+  position: fixed;
+  top: $espaciado-l;
+  right: $espaciado-l;
+  z-index: 9999;
+  
+  display: flex;
+  flex-direction: column;
+  gap: $espaciado-m;
+  
+  pointer-events: none;
+  
+  @media (max-width: 768px) {
+    top: $espaciado-m;
+    right: $espaciado-m;
+    left: $espaciado-m;
+  }
+}
+
+.toast-wrapper {
+  pointer-events: auto;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    
+    ::ng-deep app-alert {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}

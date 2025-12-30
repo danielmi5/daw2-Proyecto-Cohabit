@@ -6,6 +6,7 @@ import { Button } from '../button/button';
 import { RouterLink } from '@angular/router';
 import { validarFortalezaContrasenia, validarContraseniaCoincidente, validarEmailConTLD } from '../../../form/validators';
 import { ValidadoresAsincronosService } from '../../../form/services/validadores-asincronos.service';
+import { NotificacionService } from '../../../services/notificacion.service';
 
 @Component({
   selector: 'app-registro-form',
@@ -16,6 +17,7 @@ import { ValidadoresAsincronosService } from '../../../form/services/validadores
 export class RegistroForm implements OnInit {
   private constructorFormulario = inject(FormBuilder);
   private validadoresAsincronos = inject(ValidadoresAsincronosService);
+  private notificationService = inject(NotificacionService);
   
   formularioRegistro!: FormGroup;
 
@@ -193,12 +195,15 @@ export class RegistroForm implements OnInit {
   onSubmit(): void {
     if (this.formularioRegistro.invalid) {
       this.formularioRegistro.markAllAsTouched();
+      this.notificationService.error('Hay errores en el formulario');
       return;
     }
 
     const { nombre, apellidos, email, password, terminos } = this.formularioRegistro.value;
     console.log('Registro submit:', { nombre, apellidos, email, password, terminos });
-    // TODO: Implementar lógica de registro
+  
+    this.notificationService.success('Registro completado correctamente');
+
   }
 
   /**
@@ -207,6 +212,7 @@ export class RegistroForm implements OnInit {
   onGoogleRegister(): void {
     console.log('Google register clicked');
     // TODO: Implementar OAuth con Google
+    this.notificationService.info('Iniciando registro con Google...');
   }
 
   hayCambiosAuth(): boolean {

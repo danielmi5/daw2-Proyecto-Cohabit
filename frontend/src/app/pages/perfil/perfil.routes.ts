@@ -6,8 +6,9 @@ import { Routes } from "@angular/router";
 export const PERFIL_RUTAS: Routes = [
   {
     path: "",
-    redirectTo: "preferencias",
-    pathMatch: "full"
+    loadComponent: () => import("../datos-perfil/datos-perfil").then(m => m.DatosPerfil),
+    title: "Mis Datos",
+    data: { breadcrumb: "Mis Datos" }
   },
   {
     path: "preferencias",

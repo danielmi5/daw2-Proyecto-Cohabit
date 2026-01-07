@@ -1,0 +1,102 @@
+<section class="data-perfil">
+    <h2 class="data-perfil__titulo">Datos del perfil</h2>
+
+    <div class="data-perfil__secciones">
+        <section class="data-perfil__seccion data-perfil__foto-seccion">
+            <h3 class="data-perfil__subtitulo">Foto de perfil</h3>
+            <article class="data-perfil__foto-contenido">
+                <figure class="data-perfil__foto">
+                    @if (usuario?.fotoPerfil) {
+                    <img [src]="usuario?.fotoPerfil" alt="Foto de perfil" />
+                    } @else {
+                    <div class="data-perfil__foto-placeholder"></div>
+                    }
+                </figure>
+
+                <section class="data-perfil__acciones">
+                    <app-button 
+                        tipo="button" 
+                        (click)="openFileSelector()" 
+                        [variante]="'primario'">
+                        Subir foto
+                    </app-button>
+                    <label 
+                        (click)="onEliminarFoto()">
+                        Eliminar
+                    </label>
+                </section>
+
+                <section class="data-perfil__nota">
+                    <h4 class="data-perfil__nota__titulo">La imagen debe de ser:</h4>
+                    <ol class="data-perfil__nota__lista">
+                        <li>Min. 400 x 400px</li>
+                        <li>Max. 5MB</li>
+                    </ol>
+                </section>
+            </article>
+        </section>
+
+        <section class="data-perfil__seccion data-perfil__detalles">
+        <h3 class="data-perfil__subtitulo">Detalles</h3>
+
+        <form class="data-perfil__form" [formGroup]="formulario" (ngSubmit)="onGuardar()">
+            <app-form-input
+                id="nombre"
+                name="nombre"
+                etiqueta="Nombre"
+                [placeholder]="usuario?.nombre ?? 'Introduce tu nombre'"
+                formControlName="nombre">
+            </app-form-input>
+
+            <app-form-input
+                id="apellidos"
+                name="apellidos"
+                etiqueta="Apellidos"
+                [placeholder]="usuario?.apellidos ?? 'Introduce tus apellidos'"
+                formControlName="apellidos">
+            </app-form-input>
+
+            <app-form-input
+                id="pais"
+                name="pais"
+                etiqueta="País"
+                [placeholder]="usuario?.pais ?? 'Introduce tu país'"
+                formControlName="pais">
+            </app-form-input>
+
+            <app-form-input
+                id="ciudad"
+                name="ciudad"
+                etiqueta="Ciudad"
+                [placeholder]="usuario?.ciudad ?? 'Introduce tu ciudad'"
+                formControlName="ciudad">
+            </app-form-input>
+
+            <app-form-input
+                id="telefono"
+                name="telefono"
+                tipo="tel"
+                etiqueta="Teléfono"
+                [placeholder]="usuario?.telefono ?? 'XXXXXXXXX'"
+                formControlName="telefono">
+            </app-form-input>
+
+            <section class="data-perfil__stats">
+                <p><strong>Email:</strong> {{ usuario?.email ?? '—' }}</p>
+                <p><strong>Fecha de registro:</strong> {{ usuario?.fechaRegistro ? (usuario?.fechaRegistro | date: 'dd/MM/yyyy') : '—' }}</p>
+                @if (usuario?.miembroGrupoId) {
+                <p><strong>Miembro de grupo ID:</strong> {{ usuario?.miembroGrupoId }}</p>
+                }
+            </section>
+
+            <footer class="data-perfil__footer">
+            <app-button 
+                tipo="submit" 
+                [variante]="'primario'">
+                Guardar
+            </app-button>
+            </footer>
+        </form>
+        </section>
+    </div>
+</section>

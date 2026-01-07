@@ -29,4 +29,10 @@ export class SubidaArchivosService {
     const endpoint = `/api/recursos/${recursoId}/foto`;
     return this.subir(endpoint, archivo, camposAdicionales, 'PUT');
   }
+
+  /** Método especializado para subir la foto de perfil de un usuario */
+  subirFotoPerfil(usuarioId: number, archivo: File, camposAdicionales?: { [key: string]: string | Blob }) : Observable<any> {
+    const endpoint = `/api/usuarios/${usuarioId}/foto`;
+    return this.subir(endpoint, archivo, camposAdicionales, 'PUT');
+  }
 }

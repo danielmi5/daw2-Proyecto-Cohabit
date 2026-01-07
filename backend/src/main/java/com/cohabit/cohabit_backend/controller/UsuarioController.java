@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.Map;
 
 import jakarta.validation.Valid;
@@ -94,6 +95,20 @@ public class UsuarioController {
         @Parameter(description = "ID del usuario") @PathVariable Long id) {
         usuarioService.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/foto")
+    @Operation(summary = "Subir foto de perfil", description = "Subir o actualizar la foto de perfil de un usuario")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Foto subida exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Solo puedes subir tu propia foto de perfil", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esUsuarioIdActual(#id)")
+    public ResponseEntity<UsuarioResponseDTO> subirFoto(
+        @Parameter(description = "ID del usuario") @PathVariable Long id,
+        @Parameter(description = "Archivo de imagen") @RequestParam("archivo") MultipartFile archivo) {
+        return ResponseEntity.ok(usuarioService.subirFoto(id, archivo));
     }
 
     @GetMapping("/existe")

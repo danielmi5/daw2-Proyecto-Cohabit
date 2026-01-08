@@ -1,0 +1,1 @@
+import{Ga as o,Xa as m,Ya as s,mb as i}from"./chunk-DPEM2JHQ.js";import"./chunk-C6Q5SG76.js";var n=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=o({type:t,selectors:[["app-miembros"]],decls:2,vars:0,template:function(e,a){e&1&&(m(0,"p"),i(1,"miembros works!"),s())},encapsulation:2})};export{n as Miembros};

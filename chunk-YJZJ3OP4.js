@@ -1,0 +1,1 @@
+import{Ga as o,Xa as i,Ya as p,mb as n}from"./chunk-DPEM2JHQ.js";import"./chunk-C6Q5SG76.js";var r=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=o({type:t,selectors:[["app-mi-grupo"]],decls:2,vars:0,template:function(e,m){e&1&&(i(0,"p"),n(1,"mi-grupo works!"),p())},encapsulation:2})};export{r as MiGrupo};

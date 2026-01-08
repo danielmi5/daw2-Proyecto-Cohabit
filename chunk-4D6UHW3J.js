@@ -1,0 +1,1 @@
+import{Ga as t,Xa as a,Ya as r,mb as n}from"./chunk-DPEM2JHQ.js";import"./chunk-C6Q5SG76.js";var o=class s{static \u0275fac=function(e){return new(e||s)};static \u0275cmp=t({type:s,selectors:[["app-reservas"]],decls:2,vars:0,template:function(e,p){e&1&&(a(0,"p"),n(1,"reservas works!"),r())},encapsulation:2})};export{o as Reservas};

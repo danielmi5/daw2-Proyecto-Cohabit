@@ -42,7 +42,7 @@ public class Usuario {
     private LocalDateTime fechaRegistro;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "role", nullable = false)
     @Builder.Default
     private RolUsuario rol = RolUsuario.USUARIO;
 

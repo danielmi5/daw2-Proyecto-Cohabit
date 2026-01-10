@@ -41,21 +41,24 @@ public class ConfiguracionSeguridad {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(peticiones -> peticiones
-                        // Endpoints públicos (no requieren autenticación)
-                        .requestMatchers(
-                                "/auth/login",
-                                "/auth/register"
-                        ).permitAll()
+                    // Endpoints públicos (no requieren autenticación)
+                    .requestMatchers(
+                        "/auth/login",
+                        "/auth/register"
+                    ).permitAll()
 
-                        // Gestión de usuarios sólo para administradores
-                        .requestMatchers(HttpMethod.POST, "/api/usuarios/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("ADMIN")
+                    // Actuator: sólo administradores pueden acceder a los endpoints de gestión
+                    .requestMatchers("/actuator/**").hasRole("ADMIN")
+
+                    // Gestión de usuarios sólo para administradores
+                    .requestMatchers(HttpMethod.POST, "/api/usuarios/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/usuarios/**").hasRole("ADMIN")
                         
-                        // Todas las rutas /api/** requieren autenticación
-                        .requestMatchers("/api/**").authenticated()
-                        
-                        // Todos los demás endpoints requieren autenticación
-                        .anyRequest().authenticated()
+                    // Todas las rutas /api/** requieren autenticación
+                    .requestMatchers("/api/**").authenticated()
+
+                    // Todos los demás endpoints requieren autenticación
+                    .anyRequest().authenticated()
                 )
                 .sessionManagement(sesion -> sesion
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

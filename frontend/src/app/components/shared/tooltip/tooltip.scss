@@ -1,0 +1,50 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+:host {
+  /* hace que el componente no afecte al layout para que el elemento mantenga su tamaño/flex */
+  display: contents;
+}
+
+.tooltip-contenedor {
+  position: relative;
+  display: contents; /* mantiene el contenedor interno fuera del flujo para preservar el tamaño del elemento proyectado */
+}
+
+.tooltip-texto {
+  visibility: hidden;
+  max-width: 12rem;
+  background-color: $negro;
+  color: $texto-claro;
+  text-align: center;
+  border-radius: $radio-sm;
+  padding: $espaciado-xs $espaciado-s;
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + #{$espaciado-xs});
+  left: 50%;
+  transform: translateX(-50%) translateY(-0.25rem);
+  opacity: 0;
+  transition: opacity $transicion-base $transicion-suave, transform $transicion-base $transicion-suave;
+  box-shadow: $shadow-sm;
+
+  @include mixins.tipografia(texto-pequeno, $texto-claro);
+}
+
+/* Visibilidad controlada mediante la clase `.tooltip--visible` (gestionada desde TS) */
+.tooltip--visible .tooltip-texto {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.tooltip-texto::after {
+  content: '';
+  position: absolute;
+  top: -#{$espaciado-xs};
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: $espaciado-s;
+  height: $espaciado-s;
+  background: $negro;
+}

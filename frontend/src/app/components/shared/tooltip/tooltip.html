@@ -1,0 +1,10 @@
+<div class="tooltip-contenedor"
+         tabindex="0"
+         (mouseenter)="onMouseEnter()"
+         (mouseleave)="onMouseLeave()"
+         (focusin)="onFocusIn()"
+         (focusout)="onFocusOut()"
+         [class.tooltip--visible]="visible">
+    <ng-content></ng-content>
+    <span class="tooltip-texto" role="tooltip" [attr.aria-hidden]="!visible">{{ texto }}</span>
+</div>

@@ -1,9 +1,11 @@
 <header class="cabecera">
-  <a routerLink="/" class="cabecera__logo" title="Ir a Inicio">
-    <picture class="cabecera__logo-icono">
-      <img src="header/logo.svg" alt="Cohabit" title="Ir a Inicio" class="cabecera__logo-icono">
-    </picture>
-  </a>
+  <app-tooltip texto="Ir a Inicio">
+    <a routerLink="/" class="cabecera__logo">
+      <picture class="cabecera__logo-icono">
+        <img src="header/logo.svg" alt="Cohabit" class="cabecera__logo-icono">
+      </picture>
+    </a>
+  </app-tooltip>
 
   <nav class="cabecera__nav" [class.cabecera__nav--open]="menuAbierto">
     <ul class="cabecera__menu">
@@ -31,10 +33,14 @@
       <span class="cabecera__icono" [feather]="'menu'" [tipo]="'header'"></span>
     </button>
     <button class="cabecera__boton" aria-label="Cambiar tema" (click)="alternarTema()">
-      <span class="cabecera__icono" [feather]="modoIcon" [tipo]="'header'" [title]="modoTitle"></span>
+      <app-tooltip [texto]="modoTitle">
+        <span class="cabecera__icono" [feather]="modoIcon" [tipo]="'header'"></span>
+      </app-tooltip>
     </button>
     <button class="cabecera__boton" aria-label="Perfil de usuario">
-      <span class="cabecera__icono" [feather]="'user'" [tipo]="'header'" title="Perfil" role="img" aria-label="Perfil"></span>
+      <app-tooltip texto="Perfil">
+        <span class="cabecera__icono" [feather]="'user'" [tipo]="'header'" role="img" aria-label="Perfil"></span>
+      </app-tooltip>
     </button>
   </section>
 </header>

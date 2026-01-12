@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
+import { Tooltip } from '../../shared/tooltip/tooltip';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink, FeatherIconDirective],
+  imports: [RouterLink, FeatherIconDirective, Tooltip],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })

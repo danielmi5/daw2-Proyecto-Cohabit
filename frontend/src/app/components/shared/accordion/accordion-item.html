@@ -1,0 +1,33 @@
+<div class="accordion-item" [class.accordion-item--abierto]="estaAbierto" [class.accordion-item--deshabilitado]="deshabilitado">
+  <button
+    type="button"
+    class="accordion-item__header"
+    [attr.id]="id"
+    [attr.aria-expanded]="estaAbierto"
+    [attr.aria-controls]="panelId"
+    [disabled]="deshabilitado"
+    (click)="toggle()"
+  >
+    <span class="accordion-item__titulo">{{ titulo }}</span>
+    <span class="accordion-item__icono">
+      @if (!estaAbierto) {
+        <span [feather]="'plus'" class="accordion-icono"></span>
+      }
+      @if (estaAbierto) {
+        <span [feather]="'minus'" class="accordion-icono"></span>
+      }
+    </span>
+  </button>
+
+  <div
+    class="accordion-item__panel"
+    [attr.id]="panelId"
+    [attr.aria-labelledby]="id"
+    [attr.aria-hidden]="!estaAbierto"
+    [class.accordion-item__panel--abierto]="estaAbierto"
+  >
+    <div class="accordion-item__contenido">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

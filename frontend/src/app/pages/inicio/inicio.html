@@ -14,10 +14,30 @@
   </section>
 </section>
 <section class="inicio">
-  <h2 class="inicio_subtitulo">Próximamente se añadirán más secciones</h2>
-  <p class="inicio__descripcion">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto libero reprehenderit laborum sed odio. Eum optio adipisci, dolores velit similique laboriosam sed, earum et vero aliquam expedita nisi saepe reiciendis.</p>
-  <section class="inicio__acciones">
-    <a routerLink="#" class="inicio__boton inicio__boton--secundario"></a>
-  </section>
+  <h2 class="inicio_subtitulo">Preguntas Frecuentes</h2>
+  <p class="inicio__descripcion">Resolvemos tus dudas sobre cómo funciona nuestra plataforma de gestión de recursos compartidos.</p>
+  
+  <app-accordion modo="independence">
+    <app-accordion-item titulo="¿Cómo puedo crear un grupo?">
+      <p>Para crear un grupo, primero debes registrarte e iniciar sesión. Luego, dirígete a la sección 'Mi Grupo' y haz clic en 'Crear Grupo'. Completa los datos solicitados como nombre del grupo, dirección y descripción.</p>
+    </app-accordion-item>
+    
+    <app-accordion-item titulo="¿Cómo funciona el sistema de reservas?" [estaAbierto]="true">
+      <p>El sistema de reservas te permite gestionar el uso de recursos compartidos. Selecciona el recurso que deseas reservar, elige la fecha y hora, y confirma tu reserva. Recibirás una notificación de confirmación.</p>
+      <p><strong>Importante:</strong> Las reservas deben respetarse para mantener la armonía en el grupo.</p>
+    </app-accordion-item>
+    
+    <app-accordion-item titulo="¿Puedo invitar a otros miembros?">
+      <p>Sí, como administrador del grupo puedes invitar a otros miembros. Ve a la sección 'Miembros' y utiliza la opción 'Invitar Miembro'. Necesitarás su correo electrónico registrado en la plataforma.</p>
+    </app-accordion-item>
+    
+    <app-accordion-item titulo="¿Qué recursos puedo gestionar?">
+      <p>Puedes gestionar cualquier recurso compartido en tu piso: lavadora, parking, sala de estudio, terraza, barbacoa, etc. Cada recurso puede tener sus propias reglas de uso y disponibilidad.</p>
+    </app-accordion-item>
+    
+    <app-accordion-item titulo="¿Es segura la plataforma?">
+      <p>Absolutamente. Utilizamos encriptación de datos, autenticación segura y seguimos las mejores prácticas de seguridad. Tus datos personales están protegidos y nunca los compartimos con terceros.</p>
+    </app-accordion-item>
+  </app-accordion>
 </section>
 

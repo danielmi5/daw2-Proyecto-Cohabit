@@ -1,0 +1,194 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.accordion {
+  width: 100%;
+  border-radius: $radio-md;
+  overflow: hidden;
+}
+
+.accordion-item {
+  border: $borde-thin solid $borde-input;
+  border-bottom: none;
+
+  &:first-child {
+    border-top-left-radius: $radio-md;
+    border-top-right-radius: $radio-md;
+  }
+
+  &:last-child {
+    border-bottom: $borde-thin solid $borde-input;
+    border-bottom-left-radius: $radio-md;
+    border-bottom-right-radius: $radio-md;
+  }
+
+  // Estado abierto
+  &--abierto {
+    .accordion-item__header {
+      background-color: $fondo-input-hover;
+      border-bottom: $borde-thin solid $borde-input;
+    }
+  }
+
+  // Estado deshabilitado
+  &--deshabilitado {
+    opacity: 0.6;
+    cursor: not-allowed;
+
+    .accordion-item__header {
+      cursor: not-allowed;
+      background-color: $gris1;
+    }
+  }
+
+  // Header del accordion
+  &__header {
+    width: 100%;
+    padding: $espaciado-m $espaciado-l;
+    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    @include mixins.tipografia(h4);
+    
+    color: $texto-oscuro;
+    background-color: $fondo;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color $transicion-base $transicion-suave;
+    user-select: none;
+
+    &:hover:not(:disabled) {
+      background-color: $fondo-input-hover;
+    }
+
+    &:focus {
+      outline: 2px solid $color-primario;
+      outline-offset: -2px;
+      z-index: 1;
+    }
+
+    &:focus:not(:focus-visible) {
+      outline: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-primario;
+      outline-offset: -2px;
+      z-index: 1;
+    }
+
+    &:active:not(:disabled) {
+      background-color: $fondo-input-focus;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  // Título del accordion
+  &__titulo {
+    flex: 1;
+    font-size: $text-lg;
+    font-weight: $font-weight-semibold;
+    color: $titulos;
+  }
+
+  // Icono del accordion
+  &__icono {
+    width: $iconos-menu;
+    height: $iconos-menu;
+    flex-shrink: 0;
+    
+    @include mixins.centrar-flex();
+    
+    color: $texto-oscuro;
+    transition: opacity $transicion-base $transicion-suave;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // Panel del contenido
+  &__panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height $transicion-lenta $transicion-suave;
+
+    // Panel abierto
+    &--abierto {
+      max-height: 2000px;
+    }
+  }
+
+  // Contenido del accordion
+  &__contenido {
+    padding: $espaciado-l;
+    background-color: $fondo;
+    
+    @include mixins.tipografia(parrafo);
+    color: $texto-oscuro;
+  }
+}
+
+// Estilos para modo oscuro (opcional, si el proyecto lo soporta)
+@media (prefers-color-scheme: dark) {
+  .accordion-item {
+    border-color: $gris5;
+
+    &__header {
+      color: $texto-claro;
+      background-color: $gris7;
+
+      &:hover:not(:disabled) {
+        background-color: $gris6;
+      }
+
+      &:active:not(:disabled) {
+        background-color: $gris5;
+      }
+    }
+
+    &__titulo {
+      color: $texto-claro;
+    }
+
+    &__icono {
+      color: $texto-claro;
+    }
+
+    &__contenido {
+      background-color: $gris7;
+      color: $texto-claro;
+    }
+
+    &--abierto {
+      .accordion-item__header {
+        background-color: $gris6;
+        border-bottom-color: $gris5;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: $breakpoint-tablet) {
+  .accordion-item {
+    &__header {
+      padding: $espaciado-m;
+    }
+
+    &__titulo {
+      font-size: $text-md;
+    }
+
+    &__contenido {
+      padding: $espaciado-m;
+    }
+  }
+}

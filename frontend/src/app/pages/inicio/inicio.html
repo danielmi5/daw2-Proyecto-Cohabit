@@ -6,13 +6,92 @@
     <a routerLink="/registro" class="inicio__boton inicio__boton--secundario">Comenzar ahora</a>
   </section>
 </section>
-<section class="inicio">
-  <h2 class="inicio_subtitulo">Próximamente se añadirán más secciones</h2>
-  <p class="inicio__descripcion">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto libero reprehenderit laborum sed odio. Eum optio adipisci, dolores velit similique laboriosam sed, earum et vero aliquam expedita nisi saepe reiciendis.</p>
-  <section class="inicio__acciones">
-    <a routerLink="#" class="inicio__boton inicio__boton--secundario"></a>
-  </section>
+
+<section class="como-funciona">
+  <h2 class="como-funciona__titulo">¿Cómo funciona?</h2>
+  
+  <div class="como-funciona__pasos">
+    <article class="paso">
+      <div class="paso__numero">1</div>
+      <h3 class="paso__titulo">Regístrate</h3>
+      <p class="paso__descripcion">Crea tu cuenta con unos pocos datos básicos. Esto te permitirá acceder al sistema completo y comenzar a gestionar las reservas de forma segura.</p>
+    </article>
+
+    <article class="paso">
+      <div class="paso__numero">2</div>
+      <h3 class="paso__titulo">Crea un grupo e invita</h3>
+      <p class="paso__descripcion">Crea un grupo y añade a las personas con las que compartes los recursos. Puedes invitarlas por correo electrónico para que se unan fácilmente.</p>
+    </article>
+
+    <article class="paso">
+      <div class="paso__numero">3</div>
+      <h3 class="paso__titulo">Configura el grupo</h3>
+      <p class="paso__descripcion">Añade recursos que estén disponibles para todos los miembros. Define sus características y reglas de uso para mantener un control claro.</p>
+    </article>
+
+    <article class="paso">
+      <div class="paso__numero">4</div>
+      <h3 class="paso__titulo">Realiza y gestiona tus reservas</h3>
+      <p class="paso__descripcion">Selecciona el recurso que necesitas, elige fecha y horario, y confirma tu reserva. Podrás ver la disponibilidad en tiempo real y gestionar tus usos desde un mismo lugar.</p>
+    </article>
+  </div>
 </section>
+
+<section class="caracteristicas">
+  <h2 class="caracteristicas__titulo">Características</h2>
+  
+  <div class="caracteristicas__contenido">
+    <div class="caracteristicas__imagen">
+      <img src="/img/inicio.png" alt="Imagen de características" class="caracteristicas__ilustracion">
+    </div>
+    
+    <ul class="caracteristicas__lista">
+      <li class="caracteristica">
+        <span class="caracteristica__icono">
+          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
+        </span>
+        <span class="caracteristica__texto">Gestión de reservas.</span>
+      </li>
+      
+      <li class="caracteristica">
+        <span class="caracteristica__icono">
+          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
+        </span>
+        <span class="caracteristica__texto">Vista general de recursos y reservas recientes.</span>
+      </li>
+      
+      <li class="caracteristica">
+        <span class="caracteristica__icono">
+          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
+        </span>
+        <span class="caracteristica__texto">Disponibilidad de los recursos en tiempo real.</span>
+      </li>
+      
+      <li class="caracteristica">
+        <span class="caracteristica__icono">
+          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
+        </span>
+        <span class="caracteristica__texto">Calendario de las reservas.</span>
+      </li>
+      
+      <li class="caracteristica">
+        <span class="caracteristica__icono">
+          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
+        </span>
+        <span class="caracteristica__texto">Gestión total del grupo.</span>
+      </li>
+      
+      <li class="caracteristica">
+        <span class="caracteristica__icono">
+          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
+        </span>
+        <span class="caracteristica__texto">Perfil configurable.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+
 <section class="inicio">
   <h2 class="inicio_subtitulo">Preguntas Frecuentes</h2>
   <p class="inicio__descripcion">Resolvemos tus dudas sobre cómo funciona nuestra plataforma de gestión de recursos compartidos.</p>

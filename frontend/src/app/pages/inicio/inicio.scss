@@ -93,3 +93,199 @@
     }
   }
 }
+
+// Sección ¿Cómo funciona?
+.como-funciona {
+  width: 100%;
+  padding: $espaciado-xxl $espaciado-l;
+  
+  background-color: $blanco;
+  text-align: center;
+
+  &__titulo {
+    margin-bottom: $espaciado-xl;
+    @include mixins.tipografia(h2, $titulos);
+  }
+
+  &__pasos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: $espaciado-xl;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: $espaciado-xl $espaciado-m;
+
+    &__pasos {
+      grid-template-columns: 1fr;
+      gap: $espaciado-l;
+    }
+  }
+}
+
+.paso {
+  @include mixins.display-flex(column, $espaciado-m, center, center);
+  padding: $espaciado-l;
+  text-align: center;
+  height: 100%;
+
+  &__numero {
+    width: 80px;
+    height: 80px;
+    margin-bottom: $espaciado-m;
+    
+    @include mixins.centrar-flex();
+    @include mixins.tipografia(h1, $texto-claro);
+    
+    background-color: $color-apoyo;
+    border-radius: $radio-circulo;
+    font-weight: $font-weight-bold;
+    box-shadow: $shadow-md;
+    flex-shrink: 0;
+  }
+
+  &__titulo {
+    margin-bottom: $espaciado-s;
+    @include mixins.tipografia(h3, $titulos);
+    font-weight: $font-weight-semibold;
+    min-height: 2.5em;
+    @include mixins.centrar-flex();
+  }
+
+  &__descripcion {
+    @include mixins.tipografia(parrafo, $texto-oscuro);
+    line-height: $line-relaxed;
+    flex: 1;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: $espaciado-m;
+
+    &__numero {
+      width: 60px;
+      height: 60px;
+      font-size: $text-2xl;
+    }
+  }
+}
+
+// Sección Características
+.caracteristicas {
+  width: 100%;
+  padding: $espaciado-xxl $espaciado-l;
+  
+  background-color: $color-complementario2;
+  text-align: center;
+
+  &__titulo {
+    margin-bottom: $espaciado-xl;
+    @include mixins.tipografia(h2, $titulos);
+  }
+
+  &__contenido {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $espaciado-xl;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: $espaciado-l;
+    align-items: stretch;
+    grid-auto-rows: 1fr;
+  }
+
+  &__imagen {
+    /* Sin padding para que la imagen ocupe todo el espacio de la celda */
+    display: block;
+    padding: 0;
+    align-self: stretch;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__ilustracion {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: $radio-md;
+  }
+
+  &__lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    @include mixins.display-flex(column, $espaciado-m, flex-start, flex-start);
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: $espaciado-xl $espaciado-m;
+
+    &__contenido {
+      grid-template-columns: 1fr;
+      gap: $espaciado-l;
+    }
+
+    &__imagen {
+      order: -1;
+    }
+  }
+}
+
+.caracteristica {
+  width: 100%;
+  padding: $espaciado-m $espaciado-l;
+  
+  display: flex;
+  align-items: center;
+  gap: $espaciado-m;
+  text-align: left;
+  
+  background-color: $blanco;
+  border: $borde-thin solid $borde-input;
+  border-radius: $radio-md;
+  box-shadow: $shadow-sm;
+  transition: all $transicion-base $transicion-suave;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+    border-color: $color-apoyo;
+  }
+
+  &__icono {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    
+    @include mixins.centrar-flex();
+    
+    color: $color-apoyo;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__texto {
+    flex: 1;
+    @include mixins.tipografia(parrafo, $texto-oscuro);
+    font-weight: $font-weight-medium;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: $espaciado-m;
+
+    &__icono {
+      width: 24px;
+      height: 24px;
+    }
+
+    &__texto {
+      font-size: $text-sm;
+    }
+  }
+}

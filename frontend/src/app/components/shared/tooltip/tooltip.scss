@@ -2,13 +2,12 @@
 @use '../../../../styles/01-tools/mixins' as mixins;
 
 :host {
-  /* hace que el componente no afecte al layout para que el elemento mantenga su tamaño/flex */
-  display: contents;
+  display: inline-block;
 }
 
 .tooltip-contenedor {
   position: relative;
-  display: contents; /* mantiene el contenedor interno fuera del flujo para preservar el tamaño del elemento proyectado */
+  display: inline-block;
 }
 
 .tooltip-texto {

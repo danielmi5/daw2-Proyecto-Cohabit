@@ -1,0 +1,1 @@
+import{Ha as i,Ya as n,Za as o,nb as p}from"./chunk-JWZPF5BZ.js";import"./chunk-C6Q5SG76.js";var r=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=i({type:t,selectors:[["app-perfil"]],decls:2,vars:0,template:function(e,l){e&1&&(n(0,"p"),p(1,"perfil works!"),o())},encapsulation:2})};export{r as Perfil};

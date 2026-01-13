@@ -1,1 +1,14 @@
-<p>perfil works!</p>
+<section class="perfil">
+    <h2 class="perfil__titulo">Página de perfil</h2>
+    <section class="perfil__botones">
+        <!--TODO: Este botón para pruebas se migrará al futuro select en el header de icono de perfil. Así como la lógica que se encuentra en perfil.ts-->
+        <app-button 
+            variante="secundario" 
+            tipo="button" 
+            ariaLabel="Continuar con Google"
+            (click)= "cerrarSesion()"
+        >
+        Cerrar sesión
+        </app-button>
+    </section>
+</section>

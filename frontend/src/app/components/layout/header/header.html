@@ -37,10 +37,10 @@
         <span class="cabecera__icono" [feather]="modoIcon" [tipo]="'header'"></span>
       </app-tooltip>
     </button>
-    <button class="cabecera__boton" aria-label="Perfil de usuario">
+    <a routerLink="/perfil" class="cabecera__boton" aria-label="Perfil de usuario">
       <app-tooltip texto="Perfil">
         <span class="cabecera__icono" [feather]="'user'" [tipo]="'header'" role="img" aria-label="Perfil"></span>
       </app-tooltip>
-    </button>
+    </a>
   </section>
 </header>

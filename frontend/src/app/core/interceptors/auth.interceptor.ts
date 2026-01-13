@@ -4,7 +4,7 @@ import { AuthService } from '../../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  const token = authService.getToken();
+  const token = authService.obtenerToken();
 
   // No añadir token a endpoints públicos.
   const esAuthUrl =

@@ -12,10 +12,10 @@
             placeholder="example@example.ext"
             [tipo]="'email'"
             [requerido]="true"
-            [estadoValidacion]="getValidationState('email')"
-            [mensajeAdvertencia]="getWarningMessage('email')"
-            [mensajeError]="getErrorMessage('email')"
-            [mensajeExito]="getSuccessMessage('email')"
+            [estadoValidacion]="obtenerEstadoValidacion('email')"
+            [mensajeAdvertencia]="obtenerMensajeAdvertencia('email')"
+            [mensajeError]="obtenerMensajeError('email')"
+            [mensajeExito]="obtenerMensajeExito('email')"
             textoAyuda="Debe seguir el formato estándar de correo."
         ></app-form-input>
 
@@ -27,17 +27,17 @@
             placeholder="Contraseña"
             [tipo]="'password'"
             [requerido]="true"
-            [estadoValidacion]="getValidationState('password')"
-            [mensajeAdvertencia]="getWarningMessage('password')"
-            [mensajeError]="getErrorMessage('password')"
-            [mensajeExito]="getSuccessMessage('password')"
+            [estadoValidacion]="obtenerEstadoValidacion('password')"
+            [mensajeAdvertencia]="obtenerMensajeAdvertencia('password')"
+            [mensajeError]="obtenerMensajeError('password')"
+            [mensajeExito]="obtenerMensajeExito('password')"
             textoAyuda="Debe tener como mínimo 8 caracteres."
         ></app-form-input>
 
-		<app-form-checkbox 
-            id="login-remember" 
-            name="remember" 
-            formControlName="remember"
+        <app-form-checkbox 
+            id="login-recordar" 
+            name="recordar" 
+            formControlName="recordar"
             etiqueta="Recuérdame"
         ></app-form-checkbox>
 
@@ -58,7 +58,7 @@
             variante="secundario" 
             tipo="button" 
             ariaLabel="Iniciar sesión con Google"
-            (click)="onGoogleLogin()"
+            (click)="iniciarSesionGoogle()"
         >
             Iniciar sesión con Google
         </app-button>

@@ -1,0 +1,20 @@
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as mixins;
+
+
+.perfil{
+    padding: $espaciado-xl;
+    display: flex;
+    flex-direction: column;
+    gap: $espaciado-xxl;
+    &__titulo{
+        @include mixins.tipografia(h2, var(--titulos));
+    }
+
+    &__botones{
+        width: 30%;
+        align-self: flex-end;
+    }
+}
+
+

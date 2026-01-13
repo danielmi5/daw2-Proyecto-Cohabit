@@ -46,7 +46,7 @@ export class LoginForm implements OnInit {
         updateOn: 'change'
       }],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      remember: [false]
+      recordar: [false]
     });
   }
 
@@ -57,7 +57,7 @@ export class LoginForm implements OnInit {
    * Estado 3: ERROR - valor incorrecto
    * Estado 4: ÉXITO - valor válido
    */
-  getValidationState(controlName: string): EstadoValidacion {
+  obtenerEstadoValidacion(controlName: string): EstadoValidacion {
     const control = this.formularioLogin.get(controlName);
     if (!control) return 'inicial';
 
@@ -87,14 +87,14 @@ export class LoginForm implements OnInit {
   /**
    * Obtiene el mensaje de advertencia (campo obligatorio vacío)
    */
-  getWarningMessage(controlName: string): string {
+  obtenerMensajeAdvertencia(controlName: string): string {
     return (this.mensajes.warning as any)[controlName] || `${controlName} es obligatorio`;
   }
 
   /**
    * Obtiene el mensaje de error (valor incorrecto)
    */
-  getErrorMessage(controlName: string): string {
+  obtenerMensajeError(controlName: string): string {
     const control = this.formularioLogin.get(controlName);
     if (!control || !control.errors) return '';
 
@@ -117,7 +117,7 @@ export class LoginForm implements OnInit {
   /**
    * Obtiene el mensaje de éxito
    */
-  getSuccessMessage(controlName: string): string {
+  obtenerMensajeExito(controlName: string): string {
     return (this.mensajes.success as any)[controlName] || `${controlName} es correcto`;
   }
 
@@ -127,21 +127,21 @@ export class LoginForm implements OnInit {
   onSubmit(): void {
     if (this.formularioLogin.invalid) {
       this.formularioLogin.markAllAsTouched();
-      this.notificationService.error('Hay errores en el formulario');
+      this.notificationService.error("Hay errores en el formulario");
       return;
     }
 
-    const { email, password, remember } = this.formularioLogin.value;
-    this.authService.login({ email, password }).subscribe({
+    const { email, password, recordar } = this.formularioLogin.value;
+    this.authService.iniciarSesion({ email, password }, !!recordar).subscribe({
       next: () => {
-        this.notificationService.success('Inicio de sesión completado correctamente');
+        this.notificationService.success("Inicio de sesión completado correctamente");
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
         if (err?.status === 401) {
-          this.notificationService.error('Credenciales incorrectas. Intenta de nuevo.');
+          this.notificationService.error("Credenciales incorrectas. Intenta de nuevo.");
         } else {
-          this.notificationService.error('Error de conexión con el servidor.');
+          this.notificationService.error("Error de conexión con el servidor.");
         }
       }
     });
@@ -155,8 +155,10 @@ export class LoginForm implements OnInit {
   /**
    * Maneja el inicio de sesión con Google
    */
-  onGoogleLogin(): void {
+  iniciarSesionGoogle(): void {
     // TODO: Implementar OAuth con Google
-    this.notificationService.info('Iniciando sesión con Google...');
+    //this.notificationService.info("Iniciando sesión con Google...");
+
+    this.notificationService.info("Iniciando sesión con Google...");
   }
 }

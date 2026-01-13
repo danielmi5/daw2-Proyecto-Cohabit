@@ -1,7 +1,7 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap, catchError, throwError, map } from 'rxjs';
+import { Observable, tap, catchError, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { LoginRequest, RegisterRequest, AuthResponse, DecodedToken } from '../models/auth.models';
 
@@ -10,63 +10,85 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  // URL del backend (ajusta si tu backend corre en otro host/puerto)
   private apiUrl = 'http://localhost:8080/auth';
 
-  private readonly STORAGE_KEY = 'auth_token';
+  private readonly KEY_LOCAL_STORAGE = 'auth_token';
 
-  private tokenSignal = signal<string | null>(localStorage.getItem(this.STORAGE_KEY));
+  private tokenSignal = signal<string | null>(localStorage.getItem(this.KEY_LOCAL_STORAGE));
 
-  public isAuthenticated = computed(() => !!this.tokenSignal());
-
-  public currentUser = computed(() => {
+  public usuarioActual = computed(() => {
     const token = this.tokenSignal();
     return token ? (jwtDecode(token) as DecodedToken) : null;
   });
 
-  login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(response => this.guardarSesion(response.token)),
+  private tiempoExpiracion: any = null;
+
+  iniciarSesion(credenciales: LoginRequest, recordar: boolean = false): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credenciales).pipe(
+      tap(response => this.guardarSesion(response.token, recordar)),
       catchError(error => throwError(() => error))
     );
   }
 
-  register(data: RegisterRequest): Observable<AuthResponse> {
+  registrar(data: RegisterRequest, recordar: boolean = true): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data).pipe(
-      tap(response => this.guardarSesion(response.token)),
+      tap(response => this.guardarSesion(response.token, recordar)),
       catchError(error => throwError(() => error))
     );
   }
 
-  logout(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
-    this.tokenSignal.set(null);
-    this.router.navigate(['/login']);
-  }
+  private guardarSesion(token: string, recordar: boolean): void {
+    // Borra el temporizador previo
+    this.limpiartiempoExpiracion();
 
-  private guardarSesion(token: string): void {
-    localStorage.setItem(this.STORAGE_KEY, token);
+    if (recordar) {
+      // Persiste el token en localStorage
+      localStorage.setItem(this.KEY_LOCAL_STORAGE, token);
+    }
+
+    // Mantiene el token en memoria (signal) siempre
     this.tokenSignal.set(token);
-  }
 
-  getToken(): string | null {
-    return this.tokenSignal();
-  }
-
-  // Wrappers para compatibilidad con código existente
-  autenticado(): boolean {
-    return this.isAuthenticated();
-  }
-
-  iniciarSesion(email: string, contrasenia: string): Observable<boolean> {
-    return this.login({ email, password: contrasenia }).pipe(map(() => true));
-  }
-
-  cerrarSesion(): void {
-    this.logout();
+    // Si no se recuerda, programa el cierre según el tiempo activo del token
+    if (!recordar) {
+      try {
+        const decoded: any = jwtDecode(token);
+        if (decoded && decoded.exp) {
+          const tiempoToken = decoded.exp * 1000;
+          const tiempoActual = Date.now();
+          const delay = tiempoToken - tiempoActual;
+          if (delay <= 0) {
+            // El token ya expiró
+            this.cerrarSesion();
+          } else {
+            this.tiempoExpiracion = setTimeout(() => this.cerrarSesion(), delay);
+          }
+        }
+      } catch (e) {
+        // Si no puede decodificar, no programa timer
+      }
+    }
   }
 
   obtenerToken(): string | null {
-    return this.getToken();
+    return this.tokenSignal();
+  }
+
+  autenticado(): boolean {
+    return !!this.tokenSignal();
+  }
+
+  cerrarSesion(): void {
+    localStorage.removeItem(this.KEY_LOCAL_STORAGE);
+    this.tokenSignal.set(null);
+    this.limpiartiempoExpiracion();
+    this.router.navigate(['/login']);
+  }
+
+  private limpiartiempoExpiracion(): void {
+    if (this.tiempoExpiracion) {
+      clearTimeout(this.tiempoExpiracion);
+      this.tiempoExpiracion = null;
+    }
   }
 }

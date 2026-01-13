@@ -242,4 +242,10 @@
       @include mixins.tipografia(texto-pequeno);
     }
   }
+
+  /* Oculta el icono nativo de 'reveal password' que algunos navegadores muestran como Edge */
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
 }

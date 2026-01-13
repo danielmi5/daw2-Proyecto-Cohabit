@@ -73,7 +73,7 @@ export class RegistroForm implements OnInit {
    * Estado 3: ERROR - valor incorrecto
    * Estado 4: ÉXITO - valor válido
    */
-  getValidationState(controlName: string): EstadoValidacion {
+  obtenerEstadoValidacion(controlName: string): EstadoValidacion {
     const control = this.formularioRegistro.get(controlName);
     if (!control) return 'inicial';
 
@@ -108,18 +108,17 @@ export class RegistroForm implements OnInit {
   /**
    * Obtiene el mensaje de advertencia (campo obligatorio vacío)
    */
-  getWarningMessage(controlName: string): string {
+  obtenerMensajeAdvertencia(controlName: string): string {
     return (this.mensajes.warning as any)[controlName] || `${controlName} es obligatorio`;
   }
 
   /**
    * Obtiene el mensaje de error (valor incorrecto)
    */
-  getErrorMessage(controlName: string): string {
+  obtenerMensajeError(controlName: string): string {
     const control = this.formularioRegistro.get(controlName);
     if (!control || !control.errors) return '';
 
-    // No mostrar mensaje de required aquí (es para advertencia)
     if (control.errors['required'] && !control.value) return '';
 
     if (control.errors['email']) {
@@ -159,14 +158,14 @@ export class RegistroForm implements OnInit {
   /**
    * Obtiene el mensaje de éxito
    */
-  getSuccessMessage(controlName: string): string {
+  obtenerMensajeExito(controlName: string): string {
     return (this.mensajes.success as any)[controlName] || `${controlName} es correcto`;
   }
 
   /**
    * Verifica si un campo debe mostrar error (para checkbox de términos)
    */
-  shouldShowError(controlName: string): boolean {
+  debeMostrarError(controlName: string): boolean {
     const control = this.formularioRegistro.get(controlName);
     return !!(control?.invalid && (control?.touched || control?.dirty));
   }
@@ -174,22 +173,22 @@ export class RegistroForm implements OnInit {
   /**
    * Verifica si el campo email está pendiente de validación asíncrona
    */
-  isEmailPending(): boolean {
+  emailPendiente(): boolean {
     return this.formularioRegistro.get('email')?.pending ?? false;
   }
 
   /**
    * Verifica si el formulario está pendiente de validación
    */
-  isFormPending(): boolean {
+  formularioPendiente(): boolean {
     return this.formularioRegistro.pending;
   }
 
   /**
    * Obtiene el texto del botón de submit según el estado
    */
-  getSubmitButtonText(): string {
-    if (this.isFormPending()) return 'Validando...';
+  obtenerTextoBotonSubmit(): string {
+    if (this.formularioPendiente()) return 'Validando...';
     return 'Registrarse';
   }
 
@@ -199,23 +198,23 @@ export class RegistroForm implements OnInit {
   onSubmit(): void {
     if (this.formularioRegistro.invalid) {
       this.formularioRegistro.markAllAsTouched();
-      this.notificationService.error('Hay errores en el formulario');
+      this.notificationService.error("Hay errores en el formulario");
       return;
     }
 
     const { nombre, apellidos, email, password, terminos } = this.formularioRegistro.value;
     const request = { nombre, apellidos, email, password };
 
-    this.authService.register(request).subscribe({
+    this.authService.registrar(request).subscribe({
       next: () => {
-        this.notificationService.success('Registro completado correctamente');
+        this.notificationService.success("Registro completado correctamente");
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
         if (err?.status === 409) {
-          this.notificationService.error('Este email ya está registrado');
+          this.notificationService.error("Este email ya está registrado");
         } else {
-          this.notificationService.error('Error al registrar usuario');
+          this.notificationService.error("Error al registrar usuario");
         }
       }
     });
@@ -225,10 +224,10 @@ export class RegistroForm implements OnInit {
   /**
    * Maneja el registro con Google
    */
-  onGoogleRegister(): void {
+  iniciarRegistroGoogle(): void {
     console.log('Google register clicked');
     // TODO: Implementar OAuth con Google
-    this.notificationService.info('Iniciando registro con Google...');
+    this.notificationService.info("Iniciando registro con Google...");
   }
 
   hayCambiosAuth(): boolean {

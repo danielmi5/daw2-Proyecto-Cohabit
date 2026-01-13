@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
+import java.util.Map;
 
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -93,5 +94,12 @@ public class UsuarioController {
         @Parameter(description = "ID del usuario") @PathVariable Long id) {
         usuarioService.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/existe")
+    @Operation(summary = "Comprobar email", description = "Verifica si un email ya está registrado (público)")
+    public ResponseEntity<Map<String, Boolean>> existePorEmail(@RequestParam("email") String email) {
+        boolean existe = usuarioService.existePorEmail(email);
+        return ResponseEntity.ok(Map.of("exists", existe));
     }
 }

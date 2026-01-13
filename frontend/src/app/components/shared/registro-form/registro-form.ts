@@ -7,6 +7,8 @@ import { RouterLink } from '@angular/router';
 import { validarFortalezaContrasenia, validarContraseniaCoincidente, validarEmailConTLD } from '../../../form/validators';
 import { ValidadoresAsincronosService } from '../../../form/services/validadores-asincronos.service';
 import { NotificacionService } from '../../../services/notificacion.service';
+import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registro-form',
@@ -18,6 +20,8 @@ export class RegistroForm implements OnInit {
   private constructorFormulario = inject(FormBuilder);
   private validadoresAsincronos = inject(ValidadoresAsincronosService);
   private notificationService = inject(NotificacionService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
   
   formularioRegistro!: FormGroup;
 
@@ -200,9 +204,21 @@ export class RegistroForm implements OnInit {
     }
 
     const { nombre, apellidos, email, password, terminos } = this.formularioRegistro.value;
-    console.log('Registro submit:', { nombre, apellidos, email, password, terminos });
-  
-    this.notificationService.success('Registro completado correctamente');
+    const request = { nombre, apellidos, email, password };
+
+    this.authService.register(request).subscribe({
+      next: () => {
+        this.notificationService.success('Registro completado correctamente');
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        if (err?.status === 409) {
+          this.notificationService.error('Este email ya está registrado');
+        } else {
+          this.notificationService.error('Error al registrar usuario');
+        }
+      }
+    });
 
   }
 

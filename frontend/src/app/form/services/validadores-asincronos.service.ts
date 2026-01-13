@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable, of, timer } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
+import { switchMap, catchError, map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * Servicio de validadores asíncronos para formularios.
@@ -11,40 +12,26 @@ import { switchMap, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ValidadoresAsincronosService {
-  // Correos simulados que ya están registrados (para testing al no tener conexión con backend)
-  private correosRegistrados = [
-    'daniel@test.com',
-    'daniel@cohabit.com',
-    'daniel@ejemplo.com'
-  ];
+  private http = inject(HttpClient);
 
   /**
    * Validador asíncrono para verificar si un correo ya está registrado.
-   * Simula una llamada al backend ya que actualmente no hay conexión
+   * Hace una llamada al backend para comprobar si existe ya ese correo
    */
   correoUnico(): AsyncValidatorFn {
     return (controlCampo: AbstractControl): Observable<ValidationErrors | null> => {
-      if (!controlCampo.value) {
-        return of(null);
-      }
+      const valor = controlCampo.value;
+      if (!valor) return of(null);
 
-      // Simula delay de red (1 segundo)
-      return timer(1000).pipe(
+      // Pequeño debounce para no disparar demasiadas peticiones
+      return timer(300).pipe(
         switchMap(() => {
-          const correoExiste = this.correosRegistrados.includes(controlCampo.value.toLowerCase());
-          return of(correoExiste ? { emailTaken: true } : null);
-        }),
-        catchError(() => of(null))
+          const url = `http://localhost:8080/api/usuarios/existe?email=${encodeURIComponent(valor)}`;
+          return this.http.get<{ exists: boolean }>(url).pipe(
+            map(resp => (resp.exists ? { emailTaken: true } : null))
+          );
+        })
       );
     };
-  }
-
-  /**
-   * Método para añadir un correo a la lista de registrados.
-   */
-  agregarCorreoRegistrado(correo: string): void {
-    if (!this.correosRegistrados.includes(correo.toLowerCase())) {
-      this.correosRegistrados.push(correo.toLowerCase());
-    }
   }
 }

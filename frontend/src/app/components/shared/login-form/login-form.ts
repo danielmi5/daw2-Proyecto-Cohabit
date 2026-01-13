@@ -6,6 +6,8 @@ import { FormCheckbox } from '../form-checkbox/form-checkbox';
 import { Button } from '../button/button';
 import { RouterLink } from '@angular/router';
 import { NotificacionService } from '../../../services/notificacion.service';
+import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -16,6 +18,8 @@ import { NotificacionService } from '../../../services/notificacion.service';
 export class LoginForm implements OnInit {
   private constructorFormulario = inject(FormBuilder);
   private notificationService = inject(NotificacionService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
   
   formularioLogin!: FormGroup;
 
@@ -128,11 +132,19 @@ export class LoginForm implements OnInit {
     }
 
     const { email, password, remember } = this.formularioLogin.value;
-    console.log('Login submit:', { email, password, remember });
-    
-    // TODO: Implementar lógica de autenticación
-    // Simulación de login exitoso
-    this.notificationService.success('Inicio de sesión completado correctamente');
+    this.authService.login({ email, password }).subscribe({
+      next: () => {
+        this.notificationService.success('Inicio de sesión completado correctamente');
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        if (err?.status === 401) {
+          this.notificationService.error('Credenciales incorrectas. Intenta de nuevo.');
+        } else {
+          this.notificationService.error('Error de conexión con el servidor.');
+        }
+      }
+    });
   }
 
   hayCambiosAuth(): boolean {

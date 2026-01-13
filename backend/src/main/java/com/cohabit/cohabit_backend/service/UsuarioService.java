@@ -86,4 +86,9 @@ public class UsuarioService {
         if (!usuarioRepo.existsById(id)) throw new EntidadNoEncontradaException("Usuario no encontrado: " + id);
         usuarioRepo.deleteById(id);
     }
+
+    public boolean existePorEmail(String email) {
+        if (email == null) return false;
+        return usuarioRepo.existsByEmail(email);
+    }
 }

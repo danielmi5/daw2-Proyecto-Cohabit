@@ -52,7 +52,8 @@ public class ConfiguracionSeguridad {
                     // Endpoints públicos (no requieren autenticación)
                     .requestMatchers(
                         "/auth/login",
-                        "/auth/register"
+                        "/auth/register",
+                        "/api/usuarios/existe"
                     ).permitAll()
 
                     // Actuator: sólo administradores pueden acceder a los endpoints de gestión

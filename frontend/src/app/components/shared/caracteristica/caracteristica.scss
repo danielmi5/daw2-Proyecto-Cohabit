@@ -1,0 +1,38 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.caracteristica {
+  width: 100%;
+  padding: $espaciado-m $espaciado-l;
+  
+  display: flex;
+  align-items: center;
+  gap: $espaciado-m;
+  text-align: left;
+  
+  background-color: $blanco;
+  border: $borde-medium solid var(--borde);
+  border-radius: $radio-md;
+  box-shadow: $shadow-sm;
+  transition: all $transicion-base $transicion-suave;
+
+  &__icono {
+    @include mixins.centrar-flex();
+    
+    color: $color-apoyo;
+  }
+
+  &__texto {
+    flex: 1;
+    @include mixins.tipografia(parrafo, $texto-oscuro);
+    font-weight: $font-weight-medium;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: $espaciado-m;
+
+    &__texto {
+      font-size: $text-sm;
+    }
+  }
+}

@@ -25,7 +25,6 @@
   // Estado abierto
   &--abierto {
     .accordion-item__header {
-      background-color: $fondo-input-hover;
       border-bottom: $borde-thin solid $borde-input;
     }
   }
@@ -53,7 +52,7 @@
     @include mixins.tipografia(h4);
     
     color: $texto-oscuro;
-    background-color: $fondo;
+    background-color: var(--bg-cards);
     border: none;
     cursor: pointer;
     text-align: left;
@@ -61,7 +60,7 @@
     user-select: none;
 
     &:hover:not(:disabled) {
-      background-color: $fondo-input-hover;
+      background-color: var(--hover-enlaces-sidebar);
     }
 
     &:focus {
@@ -94,7 +93,7 @@
     flex: 1;
     font-size: $text-lg;
     font-weight: $font-weight-semibold;
-    color: $titulos;
+    color: var(--titulos);
   }
 
   // Icono del accordion
@@ -103,15 +102,11 @@
     height: $iconos-menu;
     flex-shrink: 0;
     
+    color: var(--titulos);
+
     @include mixins.centrar-flex();
     
-    color: $texto-oscuro;
     transition: opacity $transicion-base $transicion-suave;
-
-    svg {
-      width: 100%;
-      height: 100%;
-    }
   }
 
   // Panel del contenido
@@ -129,50 +124,10 @@
   // Contenido del accordion
   &__contenido {
     padding: $espaciado-l;
-    background-color: $fondo;
+    background-color: var(--bg-secundario);
     
     @include mixins.tipografia(parrafo);
-    color: $texto-oscuro;
-  }
-}
-
-// Estilos para modo oscuro (opcional, si el proyecto lo soporta)
-@media (prefers-color-scheme: dark) {
-  .accordion-item {
-    border-color: $gris5;
-
-    &__header {
-      color: $texto-claro;
-      background-color: $gris7;
-
-      &:hover:not(:disabled) {
-        background-color: $gris6;
-      }
-
-      &:active:not(:disabled) {
-        background-color: $gris5;
-      }
-    }
-
-    &__titulo {
-      color: $texto-claro;
-    }
-
-    &__icono {
-      color: $texto-claro;
-    }
-
-    &__contenido {
-      background-color: $gris7;
-      color: $texto-claro;
-    }
-
-    &--abierto {
-      .accordion-item__header {
-        background-color: $gris6;
-        border-bottom-color: $gris5;
-      }
-    }
+    color: var(--texto-primario);
   }
 }
 

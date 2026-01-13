@@ -12,15 +12,14 @@
   background-color: var(--bg-header-footer);
 
   &__logo {
-    width: 20%;
-    height: auto;
-
     display: flex;
     align-items: center;
+    flex: 0 0 auto;
+    margin-right: $espaciado-l;
 
     &-icono {
-      width: 100%;
-      max-width: 100%;
+      display: block;
+      width: auto;
       height: auto;
 
       display: block;
@@ -33,6 +32,14 @@
 
   &__nav {
     width: 40%;
+    display: flex;
+    align-items: center;
+
+    @media ((max-width: 1000px)){
+      width: auto;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
   }
   
   &__menu {
@@ -48,6 +55,8 @@
 
     &-enlace {
       text-decoration: none;
+      padding: $espaciado-s $espaciado-m;
+      display: inline-block;
 
       color: $importante-fondo-primario;
       transition: color $transicion-rapida $transicion-suave;
@@ -67,6 +76,8 @@
 
     display: flex;
     justify-content: space-between;
+    flex: 0 0 auto;
+    margin-left: $espaciado-l;
   }
 
   &__boton {

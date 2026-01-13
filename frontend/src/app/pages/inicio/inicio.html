@@ -11,29 +11,13 @@
   <h2 class="como-funciona__titulo">¿Cómo funciona?</h2>
   
   <div class="como-funciona__pasos">
-    <article class="paso">
-      <div class="paso__numero">1</div>
-      <h3 class="paso__titulo">Regístrate</h3>
-      <p class="paso__descripcion">Crea tu cuenta con unos pocos datos básicos. Esto te permitirá acceder al sistema completo y comenzar a gestionar las reservas de forma segura.</p>
-    </article>
+    <app-paso [numero]="1" titulo="Regístrate" texto="Crea tu cuenta con unos pocos datos básicos. Esto te permitirá acceder al sistema completo y comenzar a gestionar las reservas de forma segura."></app-paso>
 
-    <article class="paso">
-      <div class="paso__numero">2</div>
-      <h3 class="paso__titulo">Crea un grupo e invita</h3>
-      <p class="paso__descripcion">Crea un grupo y añade a las personas con las que compartes los recursos. Puedes invitarlas por correo electrónico para que se unan fácilmente.</p>
-    </article>
+    <app-paso [numero]="2" titulo="Crea un grupo e invita" texto="Crea un grupo y añade a las personas con las que compartes los recursos. Puedes invitarlas por correo electrónico para que se unan fácilmente."></app-paso>
 
-    <article class="paso">
-      <div class="paso__numero">3</div>
-      <h3 class="paso__titulo">Configura el grupo</h3>
-      <p class="paso__descripcion">Añade recursos que estén disponibles para todos los miembros. Define sus características y reglas de uso para mantener un control claro.</p>
-    </article>
+    <app-paso [numero]="3" titulo="Configura el grupo" texto="Añade recursos que estén disponibles para todos los miembros. Define sus características y reglas de uso para mantener un control claro."></app-paso>
 
-    <article class="paso">
-      <div class="paso__numero">4</div>
-      <h3 class="paso__titulo">Realiza y gestiona tus reservas</h3>
-      <p class="paso__descripcion">Selecciona el recurso que necesitas, elige fecha y horario, y confirma tu reserva. Podrás ver la disponibilidad en tiempo real y gestionar tus usos desde un mismo lugar.</p>
-    </article>
+    <app-paso [numero]="4" titulo="Realiza y gestiona tus reservas" texto="Selecciona el recurso que necesitas, elige fecha y horario, y confirma tu reserva. Podrás ver la disponibilidad en tiempo real y gestionar tus usos desde un mismo lugar."></app-paso>
   </div>
 </section>
 
@@ -46,62 +30,27 @@
     </div>
     
     <ul class="caracteristicas__lista">
-      <li class="caracteristica">
-        <span class="caracteristica__icono">
-          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
-        </span>
-        <span class="caracteristica__texto">Gestión de reservas.</span>
-      </li>
-      
-      <li class="caracteristica">
-        <span class="caracteristica__icono">
-          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
-        </span>
-        <span class="caracteristica__texto">Vista general de recursos y reservas recientes.</span>
-      </li>
-      
-      <li class="caracteristica">
-        <span class="caracteristica__icono">
-          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
-        </span>
-        <span class="caracteristica__texto">Disponibilidad de los recursos en tiempo real.</span>
-      </li>
-      
-      <li class="caracteristica">
-        <span class="caracteristica__icono">
-          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
-        </span>
-        <span class="caracteristica__texto">Calendario de las reservas.</span>
-      </li>
-      
-      <li class="caracteristica">
-        <span class="caracteristica__icono">
-          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
-        </span>
-        <span class="caracteristica__texto">Gestión total del grupo.</span>
-      </li>
-      
-      <li class="caracteristica">
-        <span class="caracteristica__icono">
-          <span [feather]="'check-circle'" class="caracteristica-icono"></span>
-        </span>
-        <span class="caracteristica__texto">Perfil configurable.</span>
-      </li>
+      <app-caracteristica>Gestión de reservas.</app-caracteristica>
+      <app-caracteristica>Vista general de recursos y reservas recientes.</app-caracteristica>
+      <app-caracteristica>Disponibilidad de los recursos en tiempo real.</app-caracteristica>
+      <app-caracteristica>Calendario de las reservas.</app-caracteristica>
+      <app-caracteristica>Gestión total del grupo.</app-caracteristica>
+      <app-caracteristica>Perfil configurable.</app-caracteristica>
     </ul>
   </div>
 </section>
 
 
-<section class="inicio">
-  <h2 class="inicio_subtitulo">Preguntas Frecuentes</h2>
-  <p class="inicio__descripcion">Resolvemos tus dudas sobre cómo funciona nuestra plataforma de gestión de recursos compartidos.</p>
+<section class="faq">
+  <h2 class="faq__titulo">Preguntas Frecuentes</h2>
+  <p class="faq__descripcion">Resolvemos tus dudas sobre cómo funciona nuestra plataforma de gestión de recursos compartidos.</p>
   
   <app-accordion modo="independence">
     <app-accordion-item titulo="¿Cómo puedo crear un grupo?">
       <p>Para crear un grupo, primero debes registrarte e iniciar sesión. Luego, dirígete a la sección 'Mi Grupo' y haz clic en 'Crear Grupo'. Completa los datos solicitados como nombre del grupo, dirección y descripción.</p>
     </app-accordion-item>
     
-    <app-accordion-item titulo="¿Cómo funciona el sistema de reservas?" [estaAbierto]="true">
+    <app-accordion-item titulo="¿Cómo funciona el sistema de reservas?">
       <p>El sistema de reservas te permite gestionar el uso de recursos compartidos. Selecciona el recurso que deseas reservar, elige la fecha y hora, y confirma tu reserva. Recibirás una notificación de confirmación.</p>
       <p><strong>Importante:</strong> Las reservas deben respetarse para mantener la armonía en el grupo.</p>
     </app-accordion-item>

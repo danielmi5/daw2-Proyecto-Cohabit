@@ -1,0 +1,49 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+
+.paso {
+  @include mixins.display-flex(column, $espaciado-m, center, flex-start);
+  padding: $espaciado-l;
+  text-align: center;
+  height: 100%;
+
+  &__numero {
+    width: 80px;
+    height: 80px;
+    margin-bottom: $espaciado-m;
+    
+    @include mixins.centrar-flex();
+    @include mixins.tipografia(h1, $texto-claro);
+    
+    background: linear-gradient(110deg, var(--bg-ocasional) 0%, var(--hover) 100%);
+    border-radius: $radio-circulo;
+    font-weight: $font-weight-bold;
+    box-shadow: $shadow-md;
+    flex-shrink: 0;
+  }
+
+  &__titulo {
+    margin-bottom: $espaciado-s;
+    @include mixins.tipografia(h3, var(--titulos));
+    font-weight: $font-weight-semibold;
+    min-height: 2.5em;
+    @include mixins.centrar-flex();
+  }
+
+  &__descripcion {
+    @include mixins.tipografia(parrafo, var(--texto-primario));
+    line-height: $line-relaxed;
+    flex: 1;
+  }
+
+  @media (max-width: $breakpoint-tablet) {
+    padding: $espaciado-m;
+
+    &__numero {
+      width: 60px;
+      height: 60px;
+      font-size: $text-2xl;
+    }
+  }
+}

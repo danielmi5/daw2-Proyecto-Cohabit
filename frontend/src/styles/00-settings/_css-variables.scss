@@ -46,7 +46,7 @@
 
 /* Clase para forzar modo oscuro desde TS */
 .dark, html.dark {
-  --bg-primario: #{ $negro };
+  --bg-primario: #{ $gris7 };
   --bg-secundario: #{ $negro };
   --bg-header-footer: #{ $gris7 };
   --bg-cards: #{ $gris6 };

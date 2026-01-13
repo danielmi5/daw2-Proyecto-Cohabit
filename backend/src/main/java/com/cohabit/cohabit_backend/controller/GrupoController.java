@@ -8,6 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import com.cohabit.cohabit_backend.dto.ApiErrorDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
@@ -22,7 +25,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/grupos")
 @Tag(name = "Grupos", description = "Gestión de grupos de usuarios para compartir recursos")
-@SecurityRequirement(name = "bearerAuth")
+@SecurityRequirement(name = "esquemaCohabitJWT")
 public class GrupoController {
 
     private final GrupoService grupoService;
@@ -42,8 +45,8 @@ public class GrupoController {
     @Operation(summary = "Obtener grupo", description = "Obtener información detallada de un grupo por ID")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Grupo encontrado"),
-        @ApiResponse(responseCode = "404", description = "Grupo no encontrado"),
-        @ApiResponse(responseCode = "403", description = "No eres miembro de este grupo")
+        @ApiResponse(responseCode = "404", description = "Grupo no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No eres miembro de este grupo", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembro(#id)")
     public ResponseEntity<GrupoResponseDTO> get(
@@ -55,7 +58,7 @@ public class GrupoController {
     @Operation(summary = "Crear grupo", description = "Crear un nuevo grupo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Grupo creado exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Datos inválidos")
+        @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     public ResponseEntity<GrupoResponseDTO> create(
         @Parameter(description = "Datos del nuevo grupo") @Valid @RequestBody GrupoRequestDTO dto) {
@@ -67,8 +70,8 @@ public class GrupoController {
     @Operation(summary = "Actualizar grupo", description = "Actualizar información de un grupo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Grupo actualizado exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Grupo no encontrado"),
-        @ApiResponse(responseCode = "403", description = "Solo el creador o administradores pueden actualizar el grupo")
+        @ApiResponse(responseCode = "404", description = "Grupo no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Solo el creador o administradores pueden actualizar el grupo", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdmin(#id)")
     public ResponseEntity<GrupoResponseDTO> update(
@@ -81,8 +84,8 @@ public class GrupoController {
     @Operation(summary = "Eliminar grupo", description = "Eliminar un grupo del sistema")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Grupo eliminado exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Grupo no encontrado"),
-        @ApiResponse(responseCode = "403", description = "Solo el creador o administradores pueden eliminar el grupo")
+        @ApiResponse(responseCode = "404", description = "Grupo no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Solo el creador o administradores pueden eliminar el grupo", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdmin(#id)")
     public ResponseEntity<Void> delete(

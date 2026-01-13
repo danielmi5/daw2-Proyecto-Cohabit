@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import com.cohabit.cohabit_backend.dto.ApiErrorDTO;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -44,7 +45,8 @@ public class AutenticacionController {
         ),
         @ApiResponse(
             responseCode = "401",
-            description = "Credenciales incorrectas"
+            description = "Credenciales incorrectas",
+            content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))
         )
     })
     public ResponseEntity<AuthResponseDTO> iniciarSesion(@Valid @RequestBody AuthRequestDTO peticion) {
@@ -65,7 +67,8 @@ public class AutenticacionController {
         ),
         @ApiResponse(
             responseCode = "400",
-            description = "Datos de registro inválidos o email ya registrado"
+            description = "Datos de registro inválidos o email ya registrado",
+            content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))
         )
     })
     public ResponseEntity<AuthResponseDTO> registrar(@Valid @RequestBody RegisterRequestDTO peticion) {
@@ -85,10 +88,11 @@ public class AutenticacionController {
         ),
         @ApiResponse(
             responseCode = "401",
-            description = "Token inválido o no proporcionado"
+            description = "Token inválido o no proporcionado",
+            content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))
         )
     })
-    @SecurityRequirement(name = "bearerAuth")
+        @SecurityRequirement(name = "esquemaCohabitJWT")
     public ResponseEntity<Map<String, String>> cerrarSesion(
         @Parameter(description = "Token JWT en formato: Bearer {token}", required = true)
         @RequestHeader(value = "Authorization", required = true) String authorizationHeader) {

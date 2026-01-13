@@ -8,6 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import com.cohabit.cohabit_backend.dto.ApiErrorDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
@@ -22,7 +25,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/reglas")
 @Tag(name = "Reglas", description = "Gestión de reglas de uso de recursos")
-@SecurityRequirement(name = "bearerAuth")
+@SecurityRequirement(name = "esquemaCohabitJWT")
 public class ReglaRecursoController {
 
     private final ReglaRecursoService reglaService;
@@ -42,8 +45,8 @@ public class ReglaRecursoController {
     @Operation(summary = "Obtener regla", description = "Obtener información detallada de una regla por ID")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Regla encontrada"),
-        @ApiResponse(responseCode = "404", description = "Regla no encontrada"),
-        @ApiResponse(responseCode = "403", description = "No tienes acceso a esta regla")
+        @ApiResponse(responseCode = "404", description = "Regla no encontrada", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes acceso a esta regla", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esReglaEnGrupoMiembro(#id)")
     public ResponseEntity<ReglaRecursoResponseDTO> get(
@@ -55,8 +58,8 @@ public class ReglaRecursoController {
     @Operation(summary = "Crear regla", description = "Crear una nueva regla para un recurso")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Regla creada exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-        @ApiResponse(responseCode = "403", description = "No tienes permisos para crear reglas en este recurso")
+        @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para crear reglas en este recurso", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdminRecurso(#dto.recursoId) or @grupoSecurity.esMiembroIdActual(#dto.miembroId)")
     public ResponseEntity<ReglaRecursoResponseDTO> create(
@@ -69,8 +72,8 @@ public class ReglaRecursoController {
     @Operation(summary = "Actualizar regla", description = "Actualizar información de una regla de recurso")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Regla actualizada exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Regla no encontrada"),
-        @ApiResponse(responseCode = "403", description = "No tienes permisos para actualizar esta regla")
+        @ApiResponse(responseCode = "404", description = "Regla no encontrada", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para actualizar esta regla", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdminRegla(#id) or @grupoSecurity.esCreadorDeRegla(#id)")
     public ResponseEntity<ReglaRecursoResponseDTO> update(
@@ -83,8 +86,8 @@ public class ReglaRecursoController {
     @Operation(summary = "Eliminar regla", description = "Eliminar una regla de recurso")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Regla eliminada exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Regla no encontrada"),
-        @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar esta regla")
+        @ApiResponse(responseCode = "404", description = "Regla no encontrada", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar esta regla", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdminRegla(#id) or @grupoSecurity.esCreadorDeRegla(#id)")
     public ResponseEntity<Void> delete(

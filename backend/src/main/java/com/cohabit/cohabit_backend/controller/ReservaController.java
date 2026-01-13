@@ -8,6 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import com.cohabit.cohabit_backend.dto.ApiErrorDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
@@ -24,7 +27,7 @@ import com.cohabit.cohabit_backend.entity.EstadoReserva;
 @RestController
 @RequestMapping("/api/reservas")
 @Tag(name = "Reservas", description = "Gestión de reservas de recursos")
-@SecurityRequirement(name = "bearerAuth")
+@SecurityRequirement(name = "esquemaCohabitJWT")
 public class ReservaController {
 
     private final ReservaService reservaService;
@@ -44,8 +47,8 @@ public class ReservaController {
     @Operation(summary = "Obtener reserva", description = "Obtener información detallada de una reserva por ID")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Reserva encontrada"),
-        @ApiResponse(responseCode = "404", description = "Reserva no encontrada"),
-        @ApiResponse(responseCode = "403", description = "No tienes acceso a esta reserva")
+        @ApiResponse(responseCode = "404", description = "Reserva no encontrada", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes acceso a esta reserva", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esPropietarioReserva(#id) or @grupoSecurity.esReservaEnGrupoMiembro(#id)")
     public ResponseEntity<ReservaResponseDTO> get(
@@ -57,8 +60,8 @@ public class ReservaController {
     @Operation(summary = "Crear reserva", description = "Crear una nueva reserva de un recurso")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Reserva creada exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Datos inválidos o conflicto de reserva"),
-        @ApiResponse(responseCode = "403", description = "No tienes permisos para crear esta reserva")
+        @ApiResponse(responseCode = "400", description = "Datos inválidos o conflicto de reserva", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para crear esta reserva", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembroIdActual(#dto.miembroGrupoId)")
     public ResponseEntity<ReservaResponseDTO> create(
@@ -71,8 +74,8 @@ public class ReservaController {
     @Operation(summary = "Actualizar reserva", description = "Actualizar información de una reserva")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Reserva actualizada exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Reserva no encontrada"),
-        @ApiResponse(responseCode = "403", description = "Solo el propietario puede actualizar la reserva")
+        @ApiResponse(responseCode = "404", description = "Reserva no encontrada", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Solo el propietario puede actualizar la reserva", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esPropietarioReserva(#id)")
     public ResponseEntity<ReservaResponseDTO> update(
@@ -85,8 +88,8 @@ public class ReservaController {
     @Operation(summary = "Eliminar reserva", description = "Cancelar/eliminar una reserva")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Reserva eliminada exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Reserva no encontrada"),
-        @ApiResponse(responseCode = "403", description = "Solo el propietario puede eliminar la reserva")
+        @ApiResponse(responseCode = "404", description = "Reserva no encontrada", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Solo el propietario puede eliminar la reserva", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esPropietarioReserva(#id)")
     public ResponseEntity<Void> delete(
@@ -96,7 +99,14 @@ public class ReservaController {
     }
 
     @GetMapping("/buscar")
-    public ResponseEntity<Page<ReservaResponseDTO>> buscarPorFiltros(@RequestParam(name = "recursoId", required = false) Long recursoId, @RequestParam(name = "usuarioId", required = false) Long usuarioId, @RequestParam(name = "fecha", required = false) LocalDate fecha, @RequestParam(name = "estado", required = false) EstadoReserva estado, Pageable pageable) {
+    @Operation(summary = "Buscar reservas", description = "Buscar reservas por filtros opcionales: recurso, usuario, fecha y estado")
+    @ApiResponse(responseCode = "200", description = "Búsqueda de reservas realizada exitosamente")
+    public ResponseEntity<Page<ReservaResponseDTO>> buscarPorFiltros(
+        @Parameter(description = "ID del recurso") @RequestParam(name = "recursoId", required = false) Long recursoId,
+        @Parameter(description = "ID del usuario") @RequestParam(name = "usuarioId", required = false) Long usuarioId,
+        @Parameter(description = "Fecha de la reserva (formato yyyy-MM-dd)") @RequestParam(name = "fecha", required = false) LocalDate fecha,
+        @Parameter(description = "Estado de la reserva") @RequestParam(name = "estado", required = false) EstadoReserva estado,
+        Pageable pageable) {
         return ResponseEntity.ok(reservaService.buscarPorFiltros(recursoId, usuarioId, fecha, estado, pageable));
     }
 }

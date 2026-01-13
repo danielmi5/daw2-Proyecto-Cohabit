@@ -8,6 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import com.cohabit.cohabit_backend.dto.ApiErrorDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
@@ -26,7 +29,7 @@ import com.cohabit.cohabit_backend.entity.EstadoRecurso;
 @RestController
 @RequestMapping("/api/recursos")
 @Tag(name = "Recursos", description = "Gestión de recursos compartidos en grupos")
-@SecurityRequirement(name = "bearerAuth")
+@SecurityRequirement(name = "esquemaCohabitJWT")
 public class RecursoController {
 
     private final RecursoService recursoService;
@@ -46,8 +49,8 @@ public class RecursoController {
     @Operation(summary = "Obtener recurso", description = "Obtener información detallada de un recurso por ID")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Recurso encontrado"),
-        @ApiResponse(responseCode = "404", description = "Recurso no encontrado"),
-        @ApiResponse(responseCode = "403", description = "No tienes acceso a este recurso")
+        @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes acceso a este recurso", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esRecursoEnGrupoMiembro(#id)")
     public ResponseEntity<RecursoResponseDTO> get(
@@ -59,8 +62,8 @@ public class RecursoController {
     @Operation(summary = "Crear recurso", description = "Crear un nuevo recurso en un grupo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Recurso creado exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-        @ApiResponse(responseCode = "403", description = "No tienes permisos para crear recursos en este grupo")
+        @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para crear recursos en este grupo", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdmin(#dto.grupoId) or @grupoSecurity.esMiembroIdActual(#dto.creadorId)")
     public ResponseEntity<RecursoResponseDTO> create(
@@ -73,8 +76,8 @@ public class RecursoController {
     @Operation(summary = "Actualizar recurso", description = "Actualizar información de un recurso")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Recurso actualizado exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Recurso no encontrado"),
-        @ApiResponse(responseCode = "403", description = "No tienes permisos para actualizar este recurso")
+        @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para actualizar este recurso", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdminRecurso(#id) or @grupoSecurity.esCreadorDelRecurso(#id)")
     public ResponseEntity<RecursoResponseDTO> update(
@@ -87,8 +90,8 @@ public class RecursoController {
     @Operation(summary = "Eliminar recurso", description = "Eliminar un recurso del sistema")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Recurso eliminado exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Recurso no encontrado"),
-        @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar este recurso")
+        @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar este recurso", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdminRecurso(#id) or @grupoSecurity.esCreadorDelRecurso(#id)")
     public ResponseEntity<Void> delete(
@@ -98,7 +101,16 @@ public class RecursoController {
     }
 
     @GetMapping("/buscar")
-    public ResponseEntity<Page<RecursoResponseDTO>> buscarPorFiltros(@RequestParam(name = "grupoId", required = false) Long grupoId, @RequestParam(name = "tipo", required = false) TipoRecurso tipo, @RequestParam(name = "estado", required = false) EstadoRecurso estado, @RequestParam(name = "fecha", required = false) LocalDate fecha, @RequestParam(name = "horaInicio", required = false) LocalTime horaInicio, @RequestParam(name = "horaFin", required = false) LocalTime horaFin, Pageable pageable) {
+    @Operation(summary = "Buscar recursos", description = "Buscar recursos por filtros opcionales: grupo, tipo, estado y disponibilidad")
+    @ApiResponse(responseCode = "200", description = "Búsqueda de recursos realizada exitosamente")
+    public ResponseEntity<Page<RecursoResponseDTO>> buscarPorFiltros(
+        @Parameter(description = "ID del grupo") @RequestParam(name = "grupoId", required = false) Long grupoId,
+        @Parameter(description = "Tipo de recurso") @RequestParam(name = "tipo", required = false) TipoRecurso tipo,
+        @Parameter(description = "Estado del recurso") @RequestParam(name = "estado", required = false) EstadoRecurso estado,
+        @Parameter(description = "Fecha para filtrar disponibilidad (formato yyyy-MM-dd)") @RequestParam(name = "fecha", required = false) LocalDate fecha,
+        @Parameter(description = "Hora de inicio para filtrar disponibilidad (formato HH:mm:ss)") @RequestParam(name = "horaInicio", required = false) LocalTime horaInicio,
+        @Parameter(description = "Hora de fin para filtrar disponibilidad (formato HH:mm:ss)") @RequestParam(name = "horaFin", required = false) LocalTime horaFin,
+        Pageable pageable) {
         return ResponseEntity.ok(recursoService.buscarPorFiltros(grupoId, tipo, estado, fecha, horaInicio, horaFin, pageable));
     }
 }

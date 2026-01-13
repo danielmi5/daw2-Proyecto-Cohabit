@@ -6,10 +6,11 @@ import com.cohabit.cohabit_backend.dto.UsuarioResponseDTO;
 import com.cohabit.cohabit_backend.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import com.cohabit.cohabit_backend.dto.ApiErrorDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/usuarios")
 @Tag(name = "Usuarios", description = "Gestión de usuarios del sistema")
-@SecurityRequirement(name = "bearerAuth")
+@SecurityRequirement(name = "esquemaCohabitJWT")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -44,8 +45,8 @@ public class UsuarioController {
     @Operation(summary = "Obtener usuario", description = "Obtener información detallada de un usuario por ID")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Usuario encontrado"),
-        @ApiResponse(responseCode = "404", description = "Usuario no encontrado"),
-        @ApiResponse(responseCode = "403", description = "No tienes permisos para ver este usuario")
+        @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para ver este usuario", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esUsuarioIdActual(#id) or @grupoSecurity.comparteGrupoConUsuario(#id)")
     public ResponseEntity<UsuarioResponseDTO> get(
@@ -57,8 +58,8 @@ public class UsuarioController {
     @Operation(summary = "Crear usuario", description = "Crear un nuevo usuario (solo administradores)")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Usuario creado exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
-        @ApiResponse(responseCode = "403", description = "Solo administradores pueden crear usuarios")
+        @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Solo administradores pueden crear usuarios", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     public ResponseEntity<UsuarioResponseDTO> create(
         @Parameter(description = "Datos del nuevo usuario") @Valid @RequestBody UsuarioRequestDTO dto) {
@@ -70,8 +71,8 @@ public class UsuarioController {
     @Operation(summary = "Actualizar usuario", description = "Actualizar información de un usuario")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Usuario actualizado exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Usuario no encontrado"),
-        @ApiResponse(responseCode = "403", description = "No tienes permisos para actualizar este usuario")
+        @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para actualizar este usuario", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esUsuarioIdActual(#id)")
     public ResponseEntity<UsuarioResponseDTO> update(
@@ -84,8 +85,8 @@ public class UsuarioController {
     @Operation(summary = "Eliminar usuario", description = "Eliminar un usuario del sistema")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Usuario eliminado exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Usuario no encontrado"),
-        @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar este usuario")
+        @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar este usuario", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esUsuarioIdActual(#id)")
     public ResponseEntity<Void> delete(

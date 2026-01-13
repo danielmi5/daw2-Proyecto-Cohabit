@@ -10,10 +10,10 @@ import lombok.Data;
 public class AuthRequestDTO {
     @NotBlank(message = "El email es obligatorio")
     @Email(message = "El email no tiene un formato válido")
-    @Schema(description = "Email del usuario", example = "admin@cohabit.com", required = true)
+    @Schema(description = "Email del usuario", example = "email@example.com", required = true)
     private String email;
 
     @NotBlank(message = "La contraseña es obligatoria")
-    @Schema(description = "Contraseña del usuario", example = "admin123", required = true)
+    @Schema(description = "Contraseña del usuario", example = "••••••••", required = true)
     private String password;
 }

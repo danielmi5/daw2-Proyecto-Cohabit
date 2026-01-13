@@ -41,6 +41,15 @@ public class ConfiguracionSeguridad {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(peticiones -> peticiones
+                    .requestMatchers(
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/v3/api-docs/**",
+                        "/v3/api-docs",
+                        "/swagger-resources/**",
+                        "/webjars/**"
+                    ).permitAll()
+
                     // Endpoints públicos (no requieren autenticación)
                     .requestMatchers(
                         "/auth/login",

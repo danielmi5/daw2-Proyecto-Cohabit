@@ -4,6 +4,12 @@ import com.cohabit.cohabit_backend.dto.MiembroGrupoRequestDTO;
 import com.cohabit.cohabit_backend.dto.MiembroGrupoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.MiembroGrupoResponseDTO;
 import com.cohabit.cohabit_backend.service.MiembroGrupoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +21,8 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/miembros")
+@Tag(name = "Miembros", description = "Gestión de miembros de grupos")
+@SecurityRequirement(name = "bearerAuth")
 public class MiembroGrupoController {
 
     private final MiembroGrupoService miembroService;
@@ -24,32 +32,63 @@ public class MiembroGrupoController {
     }
 
     @GetMapping
+    @Operation(summary = "Listar miembros", description = "Obtener lista paginada de miembros de grupos")
+    @ApiResponse(responseCode = "200", description = "Lista de miembros obtenida exitosamente")
     public ResponseEntity<Page<MiembroGrupoResponseDTO>> list(Pageable pageable) {
         return ResponseEntity.ok(miembroService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener miembro", description = "Obtener información detallada de un miembro por ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Miembro encontrado"),
+        @ApiResponse(responseCode = "404", description = "Miembro no encontrado"),
+        @ApiResponse(responseCode = "403", description = "No tienes acceso a este miembro")
+    })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembroIdActual(#id) or @grupoSecurity.esCreadorOAdminMiembro(#id)")
-    public ResponseEntity<MiembroGrupoResponseDTO> get(@PathVariable Long id) {
+    public ResponseEntity<MiembroGrupoResponseDTO> get(
+        @Parameter(description = "ID del miembro") @PathVariable Long id) {
         return ResponseEntity.ok(miembroService.obtenerPorId(id));
     }
 
     @PostMapping
+    @Operation(summary = "Agregar miembro", description = "Agregar un nuevo miembro a un grupo")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Miembro agregado exitosamente"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos"),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para agregar miembros a este grupo")
+    })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdmin(#dto.grupoId)")
-    public ResponseEntity<MiembroGrupoResponseDTO> create(@Valid @RequestBody MiembroGrupoRequestDTO dto) {
+    public ResponseEntity<MiembroGrupoResponseDTO> create(
+        @Parameter(description = "Datos del nuevo miembro") @Valid @RequestBody MiembroGrupoRequestDTO dto) {
         MiembroGrupoResponseDTO miembroCreado = miembroService.crear(dto);
         return ResponseEntity.created(URI.create("/api/miembros/" + miembroCreado.getId())).body(miembroCreado);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar miembro", description = "Actualizar información de un miembro (rol, estado, etc.)")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Miembro actualizado exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Miembro no encontrado"),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para actualizar este miembro")
+    })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdminMiembro(#id) or @grupoSecurity.esMiembroIdActual(#id)")
-    public ResponseEntity<MiembroGrupoResponseDTO> update(@PathVariable Long id, @Valid @RequestBody MiembroGrupoUpdateDTO dto) {
+    public ResponseEntity<MiembroGrupoResponseDTO> update(
+        @Parameter(description = "ID del miembro") @PathVariable Long id,
+        @Parameter(description = "Datos actualizados del miembro") @Valid @RequestBody MiembroGrupoUpdateDTO dto) {
         return ResponseEntity.ok(miembroService.actualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar miembro", description = "Remover un miembro de un grupo")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Miembro eliminado exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Miembro no encontrado"),
+        @ApiResponse(responseCode = "403", description = "No tienes permisos para eliminar este miembro")
+    })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdminMiembro(#id) or @grupoSecurity.esMiembroIdActual(#id)")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(
+        @Parameter(description = "ID del miembro") @PathVariable Long id) {
         miembroService.eliminar(id);
         return ResponseEntity.noContent().build();
     }

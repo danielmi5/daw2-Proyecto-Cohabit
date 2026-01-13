@@ -28,6 +28,21 @@ public class FiltroAutenticacionJwt extends OncePerRequestFilter {
     private final DetallesUsuarioService detallesUsuarioService;
     private final TokenInvalidadoService tokenInvalidadoService;
 
+    /**
+     * Determina si el filtro debe ejecutarse o no para una petición específica.
+     * Excluye rutas públicas como Swagger, login y registro.
+     */
+    @Override
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest peticion) {
+        String path = peticion.getRequestURI();
+        return path.startsWith("/swagger-ui") ||
+               path.startsWith("/v3/api-docs") ||
+               path.startsWith("/swagger-resources") ||
+               path.startsWith("/webjars") ||
+               path.equals("/auth/login") ||
+               path.equals("/auth/register");
+    }
+
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest peticion,

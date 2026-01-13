@@ -4,6 +4,12 @@ import com.cohabit.cohabit_backend.dto.GrupoRequestDTO;
 import com.cohabit.cohabit_backend.dto.GrupoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.GrupoResponseDTO;
 import com.cohabit.cohabit_backend.service.GrupoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +21,8 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/grupos")
+@Tag(name = "Grupos", description = "Gestión de grupos de usuarios para compartir recursos")
+@SecurityRequirement(name = "bearerAuth")
 public class GrupoController {
 
     private final GrupoService grupoService;
@@ -24,37 +32,73 @@ public class GrupoController {
     }
 
     @GetMapping
+    @Operation(summary = "Listar grupos", description = "Obtener lista paginada de todos los grupos")
+    @ApiResponse(responseCode = "200", description = "Lista de grupos obtenida exitosamente")
     public ResponseEntity<Page<GrupoResponseDTO>> list(Pageable pageable) {
         return ResponseEntity.ok(grupoService.obtenerTodos(pageable));
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener grupo", description = "Obtener información detallada de un grupo por ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Grupo encontrado"),
+        @ApiResponse(responseCode = "404", description = "Grupo no encontrado"),
+        @ApiResponse(responseCode = "403", description = "No eres miembro de este grupo")
+    })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembro(#id)")
-    public ResponseEntity<GrupoResponseDTO> get(@PathVariable Long id) {
+    public ResponseEntity<GrupoResponseDTO> get(
+        @Parameter(description = "ID del grupo") @PathVariable Long id) {
         return ResponseEntity.ok(grupoService.obtenerPorId(id));
     }
 
     @PostMapping
-    public ResponseEntity<GrupoResponseDTO> create(@Valid @RequestBody GrupoRequestDTO dto) {
+    @Operation(summary = "Crear grupo", description = "Crear un nuevo grupo")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Grupo creado exitosamente"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
+    public ResponseEntity<GrupoResponseDTO> create(
+        @Parameter(description = "Datos del nuevo grupo") @Valid @RequestBody GrupoRequestDTO dto) {
         GrupoResponseDTO grupoCreado = grupoService.crear(dto);
         return ResponseEntity.created(URI.create("/api/grupos/" + grupoCreado.getId())).body(grupoCreado);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar grupo", description = "Actualizar información de un grupo")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Grupo actualizado exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Grupo no encontrado"),
+        @ApiResponse(responseCode = "403", description = "Solo el creador o administradores pueden actualizar el grupo")
+    })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdmin(#id)")
-    public ResponseEntity<GrupoResponseDTO> update(@PathVariable Long id, @Valid @RequestBody GrupoUpdateDTO dto) {
+    public ResponseEntity<GrupoResponseDTO> update(
+        @Parameter(description = "ID del grupo") @PathVariable Long id,
+        @Parameter(description = "Datos actualizados del grupo") @Valid @RequestBody GrupoUpdateDTO dto) {
         return ResponseEntity.ok(grupoService.actualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar grupo", description = "Eliminar un grupo del sistema")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Grupo eliminado exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Grupo no encontrado"),
+        @ApiResponse(responseCode = "403", description = "Solo el creador o administradores pueden eliminar el grupo")
+    })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdmin(#id)")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(
+        @Parameter(description = "ID del grupo") @PathVariable Long id) {
         grupoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/buscar")
-    public ResponseEntity<Page<GrupoResponseDTO>> buscarPorFiltros(@RequestParam(name = "nombre", required = false) String nombre, @RequestParam(name = "descripcion", required = false) String descripcion, @RequestParam(name = "creadorId", required = false) Long creadorId, Pageable pageable) {
+    @Operation(summary = "Buscar grupos", description = "Buscar grupos por filtros opcionales")
+    @ApiResponse(responseCode = "200", description = "Búsqueda realizada exitosamente")
+    public ResponseEntity<Page<GrupoResponseDTO>> buscarPorFiltros(
+        @Parameter(description = "Nombre del grupo") @RequestParam(name = "nombre", required = false) String nombre,
+        @Parameter(description = "Descripción del grupo") @RequestParam(name = "descripcion", required = false) String descripcion,
+        @Parameter(description = "ID del creador") @RequestParam(name = "creadorId", required = false) Long creadorId,
+        Pageable pageable) {
         return ResponseEntity.ok(grupoService.buscarPorFiltros(nombre, descripcion, creadorId, pageable));
     }
 }

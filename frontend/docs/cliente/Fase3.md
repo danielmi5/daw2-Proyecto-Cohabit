@@ -16,7 +16,7 @@
 
 > Nota: Los validadores personalizados se re-exportan desde `frontend/src/app/form/validators/index.ts` para importación centralizada en los formularios.
 
-## Ejemplos de validación asíncrónica
+## Ejemplos de validación asíncrona
 
 En este proyecto se usa un validador asíncrono para comprobar si un correo ya está registrado. 
 

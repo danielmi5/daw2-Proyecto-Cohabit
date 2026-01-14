@@ -1,4 +1,4 @@
-# Fase 2 - Arquitectura de Servicios
+# Fase 2 - Arquitectura de servicios
 
 ## Arquitectura de servicios
 
@@ -76,28 +76,28 @@ Los componentes de formularios (`LoginForm`, `RegistroForm`) actúan como contro
 
 Angular utiliza un sistema de inyección de dependencias que permite desacoplar componentes y servicios. En este proyecto se usa la función moderna `inject()` en lugar del constructor tradicional.
 
-#### 2. Observables y Streams Reactivos (RxJS)
+#### 2. Observables y streams reactivos (RxJS)
 
 Se utilizan Observables para manejar operaciones asíncronas, especialmente en validaciones de formulario.
 
 
-#### 3. Validación Reactiva (Reactive Forms)
+#### 3. Validación reactiva (Reactive Forms)
 
 Patrón que combina formularios reactivos de Angular con validadores síncronos y asíncronos.
 
 
-#### 4. Funciones Validadoras Puras
+#### 4. Funciones validadoras puras
 
 Las validaciones síncronas se implementan como funciones puras que retornan `ValidatorFn`.
 
-#### 5. Request-Response
+#### 5. Request-response
 
 Aunque actualmente el proyecto no tiene conexión con backend real, el patrón está preparado para ello.
 ### Buenas prácticas de separación de responsabilidades
 
 #### Definición de responsabilidades por capa
 
-##### 1. Componentes de Presentación (UI)
+##### 1. Componentes de presentación (UI)
 ##### 2. Componentes Inteligentes (Smart Components)
 ##### 3. Servicios de Dominio
 ##### 4. Validadores Funcionales (Lógica de Dominio Pura)

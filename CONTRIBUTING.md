@@ -49,7 +49,7 @@ Ejemplo:
 git commit -m "feat(frontend): añadir validación al formulario de registro"
 ```
 
-## Proceso de Pull Request
+## Proceso de pull request
 
 - Describe brevemente el objetivo del PR y los cambios principales.
 - Añade capturas de pantalla si el cambio afecta UI.

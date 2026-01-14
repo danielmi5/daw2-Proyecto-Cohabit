@@ -1,4 +1,4 @@
-# Documentación Diseño
+# Documentación diseño
 
 ## Sección 1: Arquitectura CSS y comunicación visual
 
@@ -117,7 +117,7 @@ La organización sigue la filosofía ITCSS (de menor a mayor especificidad). Emp
 - `03-elements/` : **Elementos HTML puros.** Estilos para etiquetas semánticas (a, h1-h6, p, ul, img).
 - `04-layout/` : **Layout y estructuras de página.** Grid, contenedores y utilidades de layout. Estos estilos organizan la página y componen los elementos y componentes.
 
-### 1.4 Sistema de Design Tokens
+### 1.4 Sistema de design tokens
 
 #### Colores 
 - **Selección del color primario (`$color-primario`, `$color-primario-claro`, `$color-primario-oscuro`)**: Estos colores transmite calma y moderna que funciona bien para componentes destacados (botones, enlaces importantes). Se definen variantes para estados y, para mantener contraste y consistencia en interacciones (hover/active).

@@ -1,4 +1,4 @@
-# Backend (Springboot + PostgreSQL)
+# Backend (Spring Boot + PostgreSQL)
 
 API REST del proyecto Cohabit, implementada con Spring Boot y PostgreSQL.
 
@@ -9,7 +9,7 @@ API REST del proyecto Cohabit, implementada con Spring Boot y PostgreSQL.
 - PostgreSQL (configurable en `src/main/resources/application.properties`)
 - Docker
 
-## Como ejecutar
+## Cómo ejecutar
 
 1. Configurar (si es necesario) variables de configuración en `src/main/resources/application.properties` o en las variables de entorno usadas por Docker Compose.
 2. Levantar los servicios con Docker Compose (desde la raíz del proyecto):

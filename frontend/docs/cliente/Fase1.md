@@ -1,4 +1,4 @@
-# Documentación Fase1
+# Documentación fase 1
 
 ## Arquitectura de eventos
 

@@ -7,8 +7,9 @@
 3. [Catálogo de Endpoints](#catálogo-de-endpoints)
 4. [Interfaces TypeScript](#interfaces-typescript)
 5. [Estrategia de Manejo de Errores](#estrategia-de-manejo-de-errores)
+6. [Diagrama de Flujo de Peticiones HTTP](#diagrama-de-flujo-de-peticiones-http)
 
-## Descripción General
+## Descripción general
 
 Esta fase implementa la capa de servicios HTTP del frontend Angular, que se encarga de toda la comunicación con el backend Spring Boot. La arquitectura está diseñada para ser:
 
@@ -18,7 +19,7 @@ Esta fase implementa la capa de servicios HTTP del frontend Angular, que se enca
 - **Resiliente**: Manejo centralizado de errores y reintentos automáticos
 - **Segura**: Interceptores para autenticación JWT automática
 
-### Características Principales
+### Características principales
 
 - Servicios CRUD completos para todas las entidades
 - Interceptor de autenticación JWT automático
@@ -27,7 +28,7 @@ Esta fase implementa la capa de servicios HTTP del frontend Angular, que se enca
 - Reintentos automáticos en peticiones GET
 - Tipado estricto con interfaces TypeScript
 
-## Arquitectura de Servicios
+## Arquitectura de servicios
 
 ```
 frontend/src/app/
@@ -63,7 +64,7 @@ frontend/src/app/
     └── regla-recurso.model.ts      # Interfaces de ReglaRecurso
 ```
 
-### Servicio Base: ApiService
+### Servicio base: ApiService
 
 El `ApiService` centraliza toda la lógica de peticiones HTTP y proporciona métodos genéricos reutilizables:
 
@@ -86,7 +87,7 @@ export class ApiService {
 - Soporte para parámetros HTTP y headers personalizados
 - Tipado genérico para respuestas
 
-## Catálogo de Endpoints
+## Catálogo de endpoints
 
 ### Autenticación (`auth.service.ts`)
 
@@ -545,7 +546,7 @@ type TipoRegla = string;       // 'DURACION_MAX' | 'HORARIO_APERTURA'
 type EstadoReserva = string;   // 'CONFIRMADA' | 'CANCELADA' | 'PENDIENTE'
 ```
 
-## Estrategia de Manejo de Errores
+## Estrategia de manejo de errores
 
 ### Arquitectura de Manejo de Errores
 
@@ -721,4 +722,6 @@ this.usuarioService.get(id).subscribe({
 
 Si el componente necesita lógica específica para algún error, puede capturarlo.
 
+## Diagrama del flujo de peticiones HTTP
 
+![Diagrama del flujo](img/diagrama-flujo-peticiones.png)

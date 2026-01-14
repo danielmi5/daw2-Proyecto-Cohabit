@@ -8,9 +8,9 @@
 
 ---
 
-## Mapa Completo de Rutas
+## Mapa completo de rutas
 
-### Estructura General
+### Estructura general
 
 ```
 /                           (Página de inicio - pública)
@@ -40,9 +40,9 @@
 
 
 
-### Clasificación de Rutas
+### Clasificación de rutas
 
-#### Rutas Públicas (sin autenticación requerida)
+#### Rutas públicas (sin autenticación requerida)
 | Path | Descripción | Parámetros / Query | Guard | Resolver |
 |------|-------------|--------------------|-------|----------|
 | `/` | Página principal (inicio) | - | - | - |
@@ -52,7 +52,7 @@
 | `/style-guide` | Guía de estilos (dev) | - | - | - |
 | `/ayuda` | Página de ayuda | - | - | - |
 
-#### Rutas Privadas (requieren autenticación)
+#### Rutas privadas (requieren autenticación)
 | Path | Descripción | Parámetros / Query | Guard | Resolver |
 |------|-------------|--------------------|-------|----------|
 | `/dashboard` | Shell del dashboard (padre) | - | `authGuard` (canActivate) | `DashboardResolver` (opcional) |
@@ -69,13 +69,13 @@
 | `/perfil/grupo` | Información del grupo del usuario | - | Hereda `authGuard` | - |
 | `/perfil/seguridad` | Gestión de seguridad (cambio contraseña, 2FA) | - | Hereda `authGuard` | - |
 
-#### Rutas Especiales
+#### Rutas especiales
 | Path | Descripción | Parámetros / Query | Guard | Resolver |
 |------|-------------|--------------------|-------|----------|
 | `/**` | Página 404 | - | - | - |
 
 
-## Estrategia de Lazy Loading
+## Estrategia de lazy loading
 
 La aplicación utiliza **lazy loading** (carga diferida) para optimizar el rendimiento y reducir el tamaño del bundle inicial. Esta estrategia consiste en cargar componentes y módulos solo cuando el usuario navega a la ruta correspondiente.
 
@@ -85,9 +85,9 @@ La aplicación utiliza **lazy loading** (carga diferida) para optimizar el rendi
 - **Mejor experiencia de usuario**: Las páginas que el usuario nunca visita no se descargan
 - **Code splitting automático**: Angular genera chunks separados para cada módulo lazy
 
-### Niveles de Lazy Loading
+### Niveles de lazy loading
 
-#### 1. Lazy Loading de Componentes Individuales (`loadComponent`)
+#### 1. Lazy loading de componentes individuales (`loadComponent`)
 
 Utilizado para páginas simples sin rutas hijas:
 

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { LoginRequest, RegisterRequest, AuthResponse, DecodedToken } from '../models/auth.models';
+import { handleHttpError } from './error-handler.util';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -26,15 +27,19 @@ export class AuthService {
   iniciarSesion(credenciales: LoginRequest, recordar: boolean = false): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credenciales).pipe(
       tap(response => this.guardarSesion(response.token, recordar)),
-      catchError(error => throwError(() => error))
+      catchError(error => this.handleError(error))
     );
   }
 
   registrar(data: RegisterRequest, recordar: boolean = true): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data).pipe(
       tap(response => this.guardarSesion(response.token, recordar)),
-      catchError(error => throwError(() => error))
+      catchError(error => this.handleError(error))
     );
+  }
+
+  private handleError(error: any): Observable<never> {
+    return handleHttpError(error);
   }
 
   private guardarSesion(token: string, recordar: boolean): void {

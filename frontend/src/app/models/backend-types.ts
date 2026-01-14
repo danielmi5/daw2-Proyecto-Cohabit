@@ -3,3 +3,8 @@ export type TipoRecurso = string;
 export type EstadoRecurso = string;
 export type TipoRegla = string;
 export type EstadoReserva = string;
+
+export interface BackendPage<T> {
+	content: T[];
+	totalElements: number;
+}

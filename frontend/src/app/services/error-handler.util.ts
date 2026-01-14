@@ -1,0 +1,61 @@
+import { Observable, throwError } from 'rxjs';
+
+export type TipoError = 'red' | 'servidor' | 'validacion' | 'cliente' | 'desconocido';
+
+export interface ErrorDetalle {
+  tipo: TipoError;
+  status?: number;
+  mensaje: string;
+  detalles?: any;
+}
+
+export function handleHttpError(error: any): Observable<never> {
+  const detalle = clasificarErrorHttp(error);
+  return throwError(() => detalle);
+}
+
+export function clasificarErrorHttp(error: any): ErrorDetalle {
+  let tipo: TipoError = 'desconocido';
+  let mensaje = 'Se ha producido un error.';
+  let detalles: any = null;
+  let status: number | undefined = undefined;
+
+  // Error de red (no hay respuesta)
+  if ((error instanceof ProgressEvent) || error.status === 0 || (!error.status && !error.error)) {
+    tipo = 'red';
+    mensaje = 'Error de red: no se ha podido conectar con el servidor.';
+    detalles = error;
+  }
+  // Errores de servidor (5xx)
+  else if (error.status >= 500) {
+    tipo = 'servidor';
+    status = error.status;
+    mensaje = `Error del servidor (${status}). Inténtalo más tarde.`;
+    detalles = error.error ?? error;
+  }
+  // Errores de validación (400)
+  else if (error.status === 400) {
+    tipo = 'validacion';
+    status = 400;
+    const body = error.error;
+    detalles = body && (body.errors || body.violations || body.fieldErrors || body) ? (body.errors || body.violations || body.fieldErrors || body) : body;
+    mensaje = 'Error de validación: revisa los datos introducidos.';
+  }
+  // Errores cliente (4xx distintos de 400)
+  else if (error.status >= 400 && error.status < 500) {
+    tipo = 'cliente';
+    status = error.status;
+    mensaje = error.error?.message || `Error de cliente (${status}).`;
+    detalles = error.error ?? error;
+  }
+  // Otros casos
+  else {
+    if (error && error.message) mensaje = error.message;
+    detalles = error;
+  }
+
+  console.error('ManejadorHTTP:', { tipo, status, mensaje, detalles });
+
+  const payload: ErrorDetalle = { tipo, status, mensaje, detalles };
+  return payload;
+}

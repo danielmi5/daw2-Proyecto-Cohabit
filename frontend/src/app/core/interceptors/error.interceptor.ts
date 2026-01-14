@@ -1,30 +1,40 @@
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
-import { catchError, throwError } from 'rxjs';
+import { catchError, throwError, of } from 'rxjs';
 import { inject } from '@angular/core';
 import { NotificacionService } from '../../services/notificacion.service';
+import { Router } from '@angular/router';
+import { clasificarErrorHttp } from '../../services/error-handler.util';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const notificacionService = inject<NotificacionService>(NotificacionService);
+  const router = inject(Router);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      let mensaje = "Error inesperado. Inténtalo de nuevo más tarde.";
+      const detalle = clasificarErrorHttp(error);
 
-      if (error.status === 0) {
-        mensaje = "No hay conexión con el servidor.";
-      } else if (error.status === 401) {
-        mensaje = "Sesión no válida. Vuelve a iniciar sesión.";
-      } else if (error.status === 403) {
-        mensaje = "No tienes permisos para realizar esta acción.";
-      } else if (error.status === 404) {
-        mensaje = "Página no encontrada.";
-      } else if (error.status >= 500) {
-        mensaje = "Error interno del servidor.";
+      // Notificación global para errores de red y servidor
+      if (detalle.tipo === 'red') {
+        notificacionService.error(detalle.mensaje);
+
+      } else if (detalle.tipo === 'servidor') {
+        notificacionService.error(detalle.mensaje);
+
+      } else if (detalle.tipo === 'cliente') {
+        notificacionService.error(detalle.mensaje);
+
+      } else if (detalle.tipo === 'validacion') {
+        notificacionService.warning(detalle.mensaje);
+      } else {
+        notificacionService.error(detalle.mensaje);
       }
 
-      notificacionService.error(mensaje);
+      // Manejo específico para auth
+      if (detalle.status === 401) {
+        router.navigate(['/login']);
+      }
 
-      return throwError(() => error);
+      return throwError(() => detalle);
     })
   );
 };

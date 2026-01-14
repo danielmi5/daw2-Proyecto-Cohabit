@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Button } from '../button/button';
 import { Router } from '@angular/router';
 import { ModalService } from '../../../services/modal.service';
+import { RedireccionService } from '../../../services/redireccion.service';
 
 @Component({
   selector: 'app-modal',
@@ -15,6 +16,7 @@ export class Modal {
 
   private router = inject(Router);
   private modalService = inject(ModalService);
+  private redireccionService = inject(RedireccionService);
 
   @Input() variante: 'pedirAuth' | 'salirAuth' | undefined;
   @Output() cierre = new EventEmitter<void>();
@@ -25,8 +27,7 @@ export class Modal {
   }
 
   iniciarSesion(): void {
-    const url = this.modalService.obtenerUrlRetorno();
-    this.router.navigate(['/login'], { queryParams: url ? { returnUrl: url } : {} });
+    this.router.navigate(['/login']);
     this.modalService.cerrar();
   }
 

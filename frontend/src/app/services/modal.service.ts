@@ -6,10 +6,8 @@ export class ModalService {
   variante = signal<'pedirAuth'|'salirAuth'|undefined>(undefined);
 
   private resolverSalida: ((valor: boolean) => void) | undefined;
-  private urlRetorno: string | undefined;
-
-  mostrarPedirAuth(url?: string): void {
-    this.urlRetorno = url;
+  
+  mostrarPedirAuth(): void {
     this.variante.set('pedirAuth');
     this.abierto.set(true);
   }
@@ -41,10 +39,5 @@ export class ModalService {
   cerrar(): void {
     this.abierto.set(false);
     this.variante.set(undefined);
-    this.urlRetorno = undefined;
-  }
-
-  obtenerUrlRetorno(): string | undefined {
-    return this.urlRetorno;
   }
 }

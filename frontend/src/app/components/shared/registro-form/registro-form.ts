@@ -9,6 +9,7 @@ import { ValidadoresAsincronosService } from '../../../form/services/validadores
 import { NotificacionService } from '../../../services/notificacion.service';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
+import { RedireccionService } from '../../../services/redireccion.service';
 
 @Component({
   selector: 'app-registro-form',
@@ -22,6 +23,7 @@ export class RegistroForm implements OnInit {
   private notificationService = inject(NotificacionService);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private redireccionService = inject(RedireccionService);
   
   formularioRegistro!: FormGroup;
 
@@ -208,7 +210,9 @@ export class RegistroForm implements OnInit {
     this.authService.registrar(request).subscribe({
       next: () => {
         this.notificationService.success("Registro completado correctamente");
-        this.router.navigate(['/dashboard']);
+        const url = this.redireccionService.obtenerUrlAVolver();
+        this.router.navigateByUrl(url ? url : '/perfil')
+        this.redireccionService.limpiarUrlAVolver();
       },
       error: (err) => {
         if (err?.status === 409) {

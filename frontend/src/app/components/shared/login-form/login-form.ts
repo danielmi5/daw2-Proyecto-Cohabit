@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
 import { NotificacionService } from '../../../services/notificacion.service';
 import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
+import { RedireccionService } from '../../../services/redireccion.service';
 
 @Component({
   selector: 'app-login-form',
@@ -20,6 +21,7 @@ export class LoginForm implements OnInit {
   private notificationService = inject(NotificacionService);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private redireccionService = inject(RedireccionService);
   
   formularioLogin!: FormGroup;
 
@@ -135,7 +137,9 @@ export class LoginForm implements OnInit {
     this.authService.iniciarSesion({ email, password }, !!recordar).subscribe({
       next: () => {
         this.notificationService.success("Inicio de sesión completado correctamente");
-        this.router.navigate(['/dashboard']);
+        const url = this.redireccionService.obtenerUrlAVolver();
+        this.router.navigateByUrl(url ? url : '/dashboard')
+        this.redireccionService.limpiarUrlAVolver();
       },
       error: (err) => {
         if (err?.status === 401) {

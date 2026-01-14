@@ -6,7 +6,7 @@
 2. [Arquitectura de Servicios](#arquitectura-de-servicios)
 3. [Catálogo de Endpoints](#catálogo-de-endpoints)
 4. [Interfaces TypeScript](#interfaces-typescript)
-
+5. [Estrategia de Manejo de Errores](#estrategia-de-manejo-de-errores)
 
 ## Descripción General
 
@@ -40,11 +40,16 @@ frontend/src/app/
 │   ├── reserva.service.ts          # CRUD Reservas
 │   ├── miembro-grupo.service.ts    # CRUD Miembros de Grupo
 │   ├── regla-recurso.service.ts    # CRUD Reglas de Recursos
+│   ├── notificacion.service.ts     # Sistema de notificaciones visuales
+│   ├── modal.service.ts            # Gestión de modales
+│   ├── redireccion.service.ts      # Redirecciones con estado
 │   └── error-handler.util.ts       # Utilidad de manejo de errores
 │
 ├── core/
 │   └── interceptors/
-│       └── auth.interceptor.ts     # Interceptor JWT
+│       ├── auth.interceptor.ts     # Interceptor JWT
+│       ├── error.interceptor.ts    # Interceptor global de errores
+│       └── logging.interceptor.ts  # Interceptor de logging HTTP
 │
 └── models/
     ├── auth.models.ts              # Interfaces de autenticación
@@ -539,5 +544,181 @@ type EstadoRecurso = string;   // 'DISPONIBLE' | 'OCUPADO' | 'MANTENIMIENTO'
 type TipoRegla = string;       // 'DURACION_MAX' | 'HORARIO_APERTURA'
 type EstadoReserva = string;   // 'CONFIRMADA' | 'CANCELADA' | 'PENDIENTE'
 ```
+
+## Estrategia de Manejo de Errores
+
+### Arquitectura de Manejo de Errores
+
+La aplicación implementa un sistema de manejo de errores de tres capas:
+
+1. **Interceptor Global de Errores** (`errorInterceptor`): Captura todos los errores HTTP de forma centralizada
+2. **Clasificador de Errores** (`clasificarErrorHttp`): Analiza y clasifica el tipo de error
+3. **Sistema de Notificaciones** (`NotificacionService`): Muestra alertas visuales al usuario
+
+Este enfoque garantiza que todos los errores HTTP se manejen de forma consistente sin necesidad de código repetitivo en cada componente.
+
+### Interceptor Global de Errores
+
+El `errorInterceptor` se registra en `app.config.ts` junto con otros interceptores:
+
+```typescript
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideHttpClient(
+      withInterceptors([authInterceptor, errorInterceptor, loggingInterceptor])
+    )
+  ]
+};
+```
+
+**Implementación**:
+
+```typescript
+export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+  const notificacionService = inject<NotificacionService>(NotificacionService);
+  const router = inject(Router);
+
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      const detalle = clasificarErrorHttp(error);
+
+      // Notificación global según tipo de error
+      if (detalle.tipo === 'red') {
+        notificacionService.error(detalle.mensaje);
+      } else if (detalle.tipo === 'servidor') {
+        notificacionService.error(detalle.mensaje);
+      } else if (detalle.tipo === 'cliente') {
+        notificacionService.error(detalle.mensaje);
+      } else if (detalle.tipo === 'validacion') {
+        notificacionService.warning(detalle.mensaje);
+      } else {
+        notificacionService.error(detalle.mensaje);
+      }
+
+      // Redirección automática para errores de autenticación
+      if (detalle.status === 401) {
+        router.navigate(['/login']);
+      }
+
+      return throwError(() => detalle);
+    })
+  );
+};
+```
+
+**Características del interceptor**:
+- Intercepta **todos los errores HTTP** de la aplicación automáticamente
+- Clasifica el error usando `clasificarErrorHttp`
+- Muestra notificación visual apropiada según el tipo de error
+- Redirige a `/login` en caso de error 401 (no autorizado)
+- Propaga el error para que componentes puedan manejarlo si lo necesitan
+
+### Clasificación de Errores
+
+El sistema clasifica automáticamente todos los errores HTTP en 5 categorías:
+
+```typescript
+type TipoError = 'red' | 'servidor' | 'validacion' | 'cliente' | 'desconocido';
+
+interface ErrorDetalle {
+  tipo: TipoError;
+  status?: number;
+  mensaje: string;
+  detalles?: any;
+}
+```
+
+### Tabla de Clasificación
+
+| Tipo | Condición | Status | Mensaje | Notificación | Acción |
+|------|-----------|--------|---------|--------------|--------|
+| `red` | `error.status === 0` o `ProgressEvent` | - | "Error de red: no se ha podido conectar con el servidor." | Error (rojo) | Verificar conexión |
+| `servidor` | `error.status >= 500` | 500-599 | "Error del servidor (5xx). Inténtalo más tarde." | Error (rojo) | Reintentar después |
+| `validacion` | `error.status === 400` | 400 | "Error de validación: revisa los datos introducidos." | Warning (amarillo) | Corregir formulario |
+| `cliente` | `error.status >= 400 && < 500` | 401-499 | Mensaje del servidor o "Error de cliente (4xx)." | Error (rojo) | 401→login, 403→permisos, 404→no encontrado |
+| `desconocido` | Otros casos | - | `error.message` o "Se ha producido un error." | Error (rojo) | Log y notificar |
+
+### Sistema de Notificaciones Visuales
+
+Los errores se muestran visualmente al usuario mediante notificaciones y el `NotificacionService` las gestiona:
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class NotificacionService {
+  readonly notificaciones = signal<Notificacion[]>([]);
+
+  success(mensaje: string): void;   // Notificación verde de éxito
+  error(mensaje: string): void;     // Notificación roja de error
+  warning(mensaje: string): void;   // Notificación amarilla de advertencia
+  info(mensaje: string): void;      // Notificación azul informativa
+}
+```
+
+**Características**:
+- **Signal-based**: Usa Angular signals para reactividad automática
+- **Auto-desaparición**: Las notificaciones se eliminan después de 5 segundos
+- **Sin duplicados**: Evita mostrar múltiples notificaciones idénticas
+- **Tipado**: 4 tipos visuales (éxito, error, warning, info)
+
+**Estructura de notificación**:
+```typescript
+interface Notificacion {
+  id: number;
+  type: 'exito' | 'error' | 'warning' | 'info';
+  mensaje: string;
+}
+```
+
+### Manejo en Servicios
+
+Todos los servicios aplican `catchError` con `handleHttpError`:
+
+```typescript
+return this.api.get<T>(`${this.base}/${id}`)
+  .pipe(
+    retry(2),  // Solo en GET
+    catchError(error => this.handleError(error))
+  );
+
+private handleError(error: any): Observable<never> {
+  return handleHttpError(error);
+}
+```
+
+### Logging
+
+Todos los errores se registran automáticamente en consola con contexto:
+
+```typescript
+console.error('ManejadorHTTP:', { tipo, status, mensaje, detalles });
+```
+
+### Flujo Completo de Manejo de Errores
+
+1. Petición HTTP falla
+2. errorInterceptor captura el error
+3. clasificarErrorHttp() analiza y clasifica
+4. NotificacionService muestra alerta visual
+5. Si es 401 → redirección a /login
+6. Error se propaga al componente
+
+
+### Uso en Componentes
+
+Gracias al interceptor global los componentes no necesitan manejar errores manualmente, las notificaciones se muestran automáticamente:
+
+```typescript
+// El componente solo necesita manejar el caso de éxito
+this.usuarioService.get(id).subscribe({
+  next: (usuario) => {
+    // La petición fue exitosa
+    this.usuario = usuario;
+  }
+  // No es necesario definir error: {...}
+  // El interceptor ya mostró la notificación
+});
+```
+
+Si el componente necesita lógica específica para algún error, puede capturarlo.
 
 

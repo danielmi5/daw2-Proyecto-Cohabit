@@ -28,7 +28,7 @@ describe('Notificacion', () => {
     notificacionService.success('Test message');
     fixture.detectChanges();
 
-    expect(notificacionService.notifications().length).toBe(1);
-    expect(notificacionService.notifications()[0].message).toBe('Test message');
+    expect(notificacionService.notificaciones().length).toBe(1);
+    expect(notificacionService.notificaciones()[0].message).toBe('Test message');
   });
 });

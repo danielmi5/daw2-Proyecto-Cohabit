@@ -3,46 +3,53 @@ import { Injectable, signal } from '@angular/core';
 export interface Notificacion {
   id: number;
   type: 'exito' | 'error' | 'warning' | 'info';
-  message: string;
+  mensaje: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificacionService {
-  private idCounter = 0;
-  readonly notifications = signal<Notificacion[]>([]);
+  private contadorId = 0;
+  readonly notificaciones = signal<Notificacion[]>([]);
 
-  private show(type: Notificacion['type'], message: string): void {
-    const notification: Notificacion = {
-      id: this.idCounter++,
+  private mostrar(type: Notificacion['type'], mensaje: string): void {
+    const notificacion: Notificacion = {
+      id: this.contadorId++,
       type,
-      message
+      mensaje
     };
 
-    this.notifications.update(current => [...current, notification]);
+    // Evita duplicados
+    // Si ya existe una notificación del mismo tipo y mensaje, no se añade.
+    // Si existe una notificación del mismo tipo pero con mensaje distinto, eliminarla y añadir la nueva.
+    this.notificaciones.update(actual => {
+      if (actual.some(n => n.type === type && n.mensaje === mensaje)) return actual;
+      const sinMismoTipo = actual.filter(n => n.type !== type);
+      return sinMismoTipo.concat(notificacion);
+    });
 
-    // Auto-remover después de 5 segundos
-    setTimeout(() => this.remove(notification.id), 5000);
+    // Se auto elimina después de 5 segundos
+    setTimeout(() => this.eliminar(notificacion.id), 5000);
   }
 
-  remove(id: number): void {
-    this.notifications.update(current => current.filter(n => n.id !== id));
+  eliminar(id: number): void {
+    this.notificaciones.update(actual => actual.filter(n => n.id !== id));
   }
 
-  success(message: string): void {
-    this.show('exito', message);
+  success(mensaje: string): void {
+    this.mostrar('exito', mensaje);
   }
 
-  error(message: string): void {
-    this.show('error', message);
+  error(mensaje: string): void {
+    this.mostrar('error', mensaje);
   }
 
-  warning(message: string): void {
-    this.show('warning', message);
+  warning(mensaje: string): void {
+    this.mostrar('warning', mensaje);
   }
 
-  info(message: string): void {
-    this.show('info', message);
+  info(mensaje: string): void {
+    this.mostrar('info', mensaje);
   }
 }

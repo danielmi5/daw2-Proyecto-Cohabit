@@ -7,7 +7,7 @@
     </a>
   </app-tooltip>
 
-  <nav class="cabecera__nav" [class.cabecera__nav--open]="menuAbierto">
+  <nav class="cabecera__nav" role="navigation" aria-label="Menú principal" [class.cabecera__nav--open]="menuAbierto" [attr.aria-hidden]="!menuAbierto">
     <ul class="cabecera__menu">
       <li class="cabecera__menu-opcion">
         <a routerLink="/inicio" class="cabecera__menu-enlace" (click)="menuAbierto = false">INICIO</a>
@@ -29,7 +29,8 @@
       class="cabecera__boton cabecera__hamburguesa" 
       (click)="toggleMenu()"
       [attr.aria-expanded]="menuAbierto"
-      aria-label="Abrir menú de navegación">
+      [attr.aria-label]="menuAbierto ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'"
+      aria-controls="main-navigation">
       <span class="cabecera__icono" [feather]="'menu'" [tipo]="'header'"></span>
     </button>
     <button class="cabecera__boton" aria-label="Cambiar tema" (click)="alternarTema()">

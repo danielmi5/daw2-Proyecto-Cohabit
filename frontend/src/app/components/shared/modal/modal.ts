@@ -16,7 +16,6 @@ export class Modal {
 
   private router = inject(Router);
   private modalService = inject(ModalService);
-  private redireccionService = inject(RedireccionService);
 
   @Input() variante: 'pedirAuth' | 'salirAuth' | undefined;
   @Output() cierre = new EventEmitter<void>();

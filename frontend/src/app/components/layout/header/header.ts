@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 import { Tooltip } from '../../shared/tooltip/tooltip';
@@ -34,6 +34,13 @@ export class Header implements OnInit, OnDestroy {
 
   toggleMenu(): void {
     this.menuAbierto = !this.menuAbierto;
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscape(_event: unknown): void {
+    if (this.menuAbierto) {
+      this.menuAbierto = false;
+    }
   }
 
   ngOnDestroy(): void {

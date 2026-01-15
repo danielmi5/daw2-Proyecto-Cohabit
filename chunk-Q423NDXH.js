@@ -1,1 +1,0 @@
-import{Ha as t,Ya as a,Za as i,nb as r}from"./chunk-JWZPF5BZ.js";import"./chunk-C6Q5SG76.js";var n=class s{static \u0275fac=function(e){return new(e||s)};static \u0275cmp=t({type:s,selectors:[["app-mis-reservas"]],decls:2,vars:0,template:function(e,m){e&1&&(a(0,"p"),r(1,"mis-reservas works!"),i())},encapsulation:2})};export{n as MisReservas};

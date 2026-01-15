@@ -1,0 +1,1 @@
+import{Ia as t,Za as n,_a as i,ob as p}from"./chunk-NGN5WCTJ.js";import"./chunk-C6Q5SG76.js";var r=class o{static \u0275fac=function(e){return new(e||o)};static \u0275cmp=t({type:o,selectors:[["app-config-grupo"]],decls:2,vars:0,template:function(e,s){e&1&&(n(0,"p"),p(1,"config-grupo works!"),i())},encapsulation:2})};export{r as ConfigGrupo};

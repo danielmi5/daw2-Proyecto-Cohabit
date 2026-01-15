@@ -11,21 +11,22 @@
 			class="form-select__campo"
 			[id]="id"
 			[name]="name"
+			[value]="valor"
 			[disabled]="desactivado"
+			(change)="onChange($event)"
+			(blur)="onBlur()"
 			[attr.aria-disabled]="desactivado ? 'true' : null"
 			[attr.aria-required]="requerido ? 'true' : null"
 			[attr.aria-invalid]="hayError ? 'true' : 'false'"
-			[attr.aria-describedby]="((mensajeExito || textoAyuda) ? id + '-ayuda' : '') + (mensajeError && hayError ? ' ' + id + '-error' : '')"
+			[attr.aria-describedby]="id + '-mensaje'"
 		>
-			<option value="" disabled [selected]="!valorPredeterminado">Elige una opción</option>
-			@if (opciones && opciones.length) {
+			@if (opciones && opciones.length > 0) {
+				<option value="" disabled>Elige una opción</option>
 				@for (opt of opciones; track opt.value) {
-					<option [value]="opt.value" [selected]="opt.value === valorPredeterminado">{{ opt.label }}</option>
+					<option [value]="opt.value">{{ opt.label }}</option>
 				}
 			} @else {
-				<option value="1" [selected]="valorPredeterminado === '1'">Opción 1</option>
-				<option value="2" [selected]="valorPredeterminado === '2'">Opción 2</option>
-				<option value="3" [selected]="valorPredeterminado === '3'">Opción 3</option>
+				<ng-content></ng-content>
 			}
 		</select>
 		<span class="form-select__icono" aria-hidden="true">
@@ -35,10 +36,10 @@
 		</span>
 	</div>
 	@if (mensajeExito && !hayError) {
-		<small class="form-select__mensaje" [id]="id + '-ayuda'">{{ mensajeExito }}</small>
+		<small class="form-select__mensaje" [id]="id + '-mensaje'">{{ mensajeExito }}</small>
 	}
 
 	@if (mensajeError && hayError) {
-		<small class="form-select__mensaje form-select__mensaje--error" [id]="id + '-error'" role="alert">{{ mensajeError }}</small>
+		<small class="form-select__mensaje form-select__mensaje--error" [id]="id + '-mensaje'" role="alert">{{ mensajeError }}</small>
 	}
 </div>

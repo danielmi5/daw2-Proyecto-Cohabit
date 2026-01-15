@@ -14,8 +14,8 @@
       <h2>Error al cargar las reservas</h2>
       <p class="reservas__mensaje-error">{{ errorMessage }}</p>
       <nav class="reservas__acciones">
-        <button class="reservas__boton reservas__boton--primario" (click)="retry()">Reintentar</button>
-        <button class="reservas__boton reservas__boton--secundario" (click)="goToDashboard()">Volver al Dashboard</button>
+        <app-button [variante]="'primario'" (click)="retry()">Reintentar</app-button>
+        <app-button [variante]="'secundario'" (click)="goToDashboard()">Volver al Dashboard</app-button>
       </nav>
     </section>
   }

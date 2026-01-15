@@ -1,0 +1,113 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+// Modal
+.modal-reserva {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  @include mixins.centrar-flex(column);
+  z-index: 1000;
+  padding: $espaciado-l;
+}
+
+.modal-reserva__contenido {
+  background-color: var(--bg-cards);
+  border-radius: $radio-card;
+  padding: $espaciado-xxl;
+  max-width: 640px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: $shadow-xl;
+}
+
+// Formulario
+.modal-reserva__formulario {
+  @include mixins.display-flex(column, $espaciado-l);
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.modal-reserva__titulo {
+  @include mixins.tipografia(h2, var(--titulos));
+  text-align: center;
+  margin-bottom: $espaciado-m;
+}
+
+.modal-reserva__fieldset {
+  @include mixins.display-flex(column, $espaciado-l);
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-reserva__label-texto {
+  @include mixins.tipografia(parrafo, var(--texto-primario));
+  font-weight: $font-weight-medium;
+}
+
+// Repetir opciones
+.modal-reserva__repetir {
+  @include mixins.display-flex(column, $espaciado-m);
+}
+
+.modal-reserva__opciones-repetir {
+  @include mixins.display-flex(row, $espaciado-l, center);
+}
+
+.modal-reserva__radio-label {
+  @include mixins.display-flex(row, $espaciado-s, center);
+  @include mixins.tipografia(parrafo, var(--texto-primario));
+  cursor: pointer;
+}
+
+.modal-reserva__radio {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--btn-primario);
+}
+
+// Horas (dos columnas)
+.modal-reserva__horas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $espaciado-l;
+}
+
+.modal-reserva__footer {
+  @include mixins.display-flex(row, $espaciado-m, center, space-between);
+  margin-top: $espaciado-l;
+  padding-top: $espaciado-l;
+  border-top: 1px solid var(--borde-cards);
+}
+
+// Responsive
+@media (max-width: $breakpoint-tablet) {
+  .modal-reserva__horas {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-reserva__opciones-repetir {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modal-reserva__contenido {
+    padding: $espaciado-l;
+  }
+
+  .modal-reserva__footer {
+    flex-direction: column;
+    gap: $espaciado-m;
+
+    app-button {
+      width: 100%;
+    }
+  }
+}

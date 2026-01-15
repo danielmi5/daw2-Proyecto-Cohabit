@@ -1,0 +1,100 @@
+@if (visible) {
+  <div class="modal-reserva" (click)="onClickFondo($event)">
+    <div class="modal-reserva__contenido">
+      <form class="modal-reserva__formulario" [formGroup]="formulario" (ngSubmit)="onGuardar()">
+        <h2 class="modal-reserva__titulo">{{ modoEdicion ? 'Editar reserva' : 'Hacer reserva' }}</h2>
+
+        <fieldset class="modal-reserva__fieldset">
+          <app-form-select
+            id="recurso"
+            name="recurso"
+            etiqueta="Recurso"
+            formControlName="recursoId"
+            [requerido]="true">
+            <option value="">Seleccionar recurso</option>
+            @for (recurso of recursos; track recurso.id) {
+              <option [value]="recurso.id">{{ recurso.nombre }}</option>
+            }
+          </app-form-select>
+
+          <div class="modal-reserva__repetir">
+            <span class="modal-reserva__label-texto">Repetir</span>
+            <div class="modal-reserva__opciones-repetir">
+              <label class="modal-reserva__radio-label">
+                <input 
+                  type="radio" 
+                  name="repeticion" 
+                  value="no-repetir"
+                  formControlName="repeticion"
+                  class="modal-reserva__radio">
+                No repetir
+              </label>
+              <label class="modal-reserva__radio-label">
+                <input 
+                  type="radio" 
+                  name="repeticion" 
+                  value="cada-dia"
+                  formControlName="repeticion"
+                  class="modal-reserva__radio">
+                Cada día
+              </label>
+              <label class="modal-reserva__radio-label">
+                <input 
+                  type="radio" 
+                  name="repeticion" 
+                  value="varios-dias"
+                  formControlName="repeticion"
+                  class="modal-reserva__radio">
+                Varios días
+              </label>
+            </div>
+          </div>
+
+          <app-form-input
+            id="fecha"
+            name="fecha"
+            tipo="date"
+            etiqueta="Fecha"
+            formControlName="fecha"
+            [requerido]="true">
+          </app-form-input>
+
+          <div class="modal-reserva__horas">
+            <app-form-input
+              id="hora-inicio"
+              name="horaInicio"
+              tipo="time"
+              etiqueta="Hora de inicio"
+              formControlName="horaInicio"
+              [requerido]="true">
+            </app-form-input>
+
+            <app-form-input
+              id="hora-fin"
+              name="horaFin"
+              tipo="time"
+              etiqueta="Hora de finalización"
+              formControlName="horaFin"
+              [requerido]="true">
+            </app-form-input>
+          </div>
+        </fieldset>
+
+        <footer class="modal-reserva__footer">
+          <app-button
+            [variante]="'secundario'"
+            (click)="onCerrar()">
+            Cancelar
+          </app-button>
+          <app-button
+            [tipo]="'submit'"
+            [variante]="'primario'"
+            [tieneIcono]="true"
+            [deshabilitado]="formulario.invalid">
+            {{ modoEdicion ? 'Guardar cambios' : 'Hacer reserva' }}
+          </app-button>
+        </footer>
+      </form>
+    </div>
+  </div>
+}

@@ -2,7 +2,9 @@
 @use '../../../../styles/01-tools/mixins' as mixins;
 
 .card {
-
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
   border-radius: $radio-card;
   padding: $espaciado-m;
   background-color: var(--bg-cards);
@@ -10,13 +12,12 @@
   max-height: 116px;
   box-shadow: $shadow-md;
   transition: box-shadow $transicion-base $transicion-suave;
-  max-width: fit-content;
+  width: 280px;
+  gap: $espaciado-m;
 
   &--horizontal {
     width: fit-content;
-    display: flex;
     gap: $espaciado-xs;
-    align-items: stretch;
     padding: 0;
   }
 
@@ -55,7 +56,8 @@
   }
 
   &__content {
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 0; /* allow content to shrink and prevent overflow */
     display: flex;
     flex-direction: column;
   }
@@ -75,7 +77,8 @@
   }
 
   &__cuerpo {
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   &__detalles {
@@ -85,12 +88,14 @@
     display: flex;
     flex-direction: column;
     gap: $espaciado-s;
+    min-width: 0;
   }
 
   &__detalle-item {
     display: flex;
     align-items: baseline;
     gap: $espaciado-s;
+    min-width: 0;
 
     &::before {
       content: '▸';
@@ -107,5 +112,58 @@
   &__detalle-valor {
     margin: 0;
     @include mixins.tipografia(parrafos, var(--texto-primario));
+    /* Fuerza que el valor no cambie de altura */
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+  }
+
+  &__acciones {
+    @include mixins.display-flex(column, $espaciado-s, center, center);
+    padding-left: $espaciado-m;
+    border-left: 1px solid var(--borde-cards);
+    align-self: center; 
+    flex-shrink: 0;
+  }
+
+  &__boton {
+    @include mixins.display-flex(row, 0, center, center);
+    width: fit-content;
+    height: fit-content;
+    padding: 0;
+    border-radius: $radio-sm;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all $transicion-base $transicion-suave;
+
+    &:hover {
+      background-color: var(--hover-ui);
+      color: inherit;
+    }
+
+    &:focus {
+      outline: 2px solid var(--btn-primario);
+      outline-offset: 2px;
+    }
+
+    &--editar {
+      color: var(--color-success);
+    }
+
+    &--eliminar {
+      color: var(--color-error);
+    }
+  }
+
+  
+}
+
+// Responsive: en pantallas pequeñas las cards ocupan el 100% del ancho disponible
+@media (max-width: $breakpoint-tablet) {
+  .card {
+    width: 100%;
   }
 }

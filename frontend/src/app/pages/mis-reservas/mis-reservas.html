@@ -1,7 +1,77 @@
 <main class="mis-reservas">
-  <header class="mis-reservas__encabezado">
-    <a routerLink="/dashboard/reservas" class="mis-reservas__enlace">Reservas</a>
-    <span class="mis-reservas__icono" [feather]="'chevron-left'" [tipo]="'header'"></span>
-    <h2 class="mis-reservas__titulo">Mis Reservas</h2>
-  </header>
+  <!-- Estado de carga -->
+  @if (loading) {
+    <section class="mis-reservas__estado mis-reservas__estado--carga">
+      <div class="mis-reservas__cargador"></div>
+      <p>Cargando reservas...</p>
+    </section>
+  }
+
+  <!-- Estado de error -->
+  @if (!loading && error) {
+    <section class="mis-reservas__estado mis-reservas__estado--error">
+      <div class="mis-reservas__icono-error">⚠️</div>
+      <h2>Error al cargar las reservas</h2>
+      <p class="mis-reservas__mensaje-error">{{ errorMessage }}</p>
+      <nav class="mis-reservas__acciones">
+        <app-button [variante]="'primario'" (click)="retry()">Reintentar</app-button>
+        <app-button [variante]="'secundario'" (click)="goToDashboard()">Volver al Dashboard</app-button>
+      </nav>
+    </section>
+  }
+
+  <!-- Estado con datos -->
+  @if (!loading && !error) {
+    <section class="mis-reservas__contenido">
+      <header class="mis-reservas__encabezado">
+        <a routerLink="/dashboard/reservas" class="mis-reservas__enlace">Reservas</a>
+        <span class="mis-reservas__icono" [feather]="'chevron-right'" [tipo]="'header'"></span>
+        <h2 class="mis-reservas__titulo">Mis Reservas</h2>
+      </header>
+      
+      @if (reservas.length === 0) {
+        <aside class="mis-reservas__vacio">
+          <p>No tienes reservas aún</p>
+        </aside>
+      }
+
+      @if (reservas.length > 0) {
+        <section class="mis-reservas__lista">
+          <div class="mis-reservas__cuadricula">
+            @for (reserva of reservas; track reserva.id) {
+              <app-card
+                [variante]="'vertical'"
+                [titulo]="getRecursoNombre(reserva.recursoId)"
+                [estado]="reserva.estado || 'Pendiente'"
+                [fecha]="reserva.fecha || ''"
+                [hora]="(reserva.horaInicio || '') + ' - ' + (reserva.horaFin || '')"
+                [mostrarAcciones]="true"
+                (editar)="abrirFormularioEditar(reserva)"
+                (eliminar)="eliminarReserva(reserva)">
+              </app-card>
+            }
+          </div>
+        </section>
+      }
+    </section>
+
+    <!-- Botón para crear nueva reserva -->
+    <app-button
+      class="mis-reservas__boton-flotante"
+      [variante]="'primario'"
+      [ariaLabel]="'Nueva reserva'"
+      (click)="abrirFormularioNuevo()">
+      Nueva reserva
+    </app-button>
+  }
+
+  <!-- Modal de reserva -->
+  <app-modal-reserva
+    [visible]="mostrarFormulario"
+    [modoEdicion]="modoEdicion"
+    [reserva]="reservaEditando"
+    [recursos]="recursos"
+    (cerrar)="cerrarFormulario()"
+    (guardar)="guardarReserva($event)">
+  </app-modal-reserva>
 </main>

@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { ApiListResponse, ReservaResponse } from '../../models';
 import { ReservasResolverData } from '../../resolvers/reservas.resolver';
 import { FeatherIconDirective } from '../../directives/feather-icon.directive';
+import { Button } from '../../components/shared/button/button';
 
 @Component({
   selector: 'app-reservas',
-  imports: [CommonModule, RouterLink, FeatherIconDirective],
+  imports: [CommonModule, RouterLink, FeatherIconDirective, Button],
   templateUrl: './reservas.html',
   styleUrl: './reservas.scss',
 })

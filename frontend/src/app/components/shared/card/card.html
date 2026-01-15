@@ -19,9 +19,28 @@
          </li>
         <li class="card__detalle-item">
           <strong class="card__detalle-etiqueta">Horarios:</strong>
-          <p class="card__detalle-valor">{{ hora }}</p>
+          <p class="card__detalle-valor">{{ formatHora(hora) }}</p>
         </li>
       </ul>
     </section>
   </div>
+
+  @if (mostrarAcciones) {
+    <nav class="card__acciones">
+      <button 
+        type="button" 
+        class="card__boton card__boton--editar" 
+        aria-label="Editar reserva"
+        (click)="onEditar()">
+        <span [feather]="'edit-2'" [tipo]="'botones'"></span>
+      </button>
+      <button 
+        type="button" 
+        class="card__boton card__boton--eliminar" 
+        aria-label="Eliminar reserva"
+        (click)="onEliminar()">
+        <span [feather]="'trash-2'" [tipo]="'botones'"></span>
+      </button>
+    </nav>
+  }
 </article>

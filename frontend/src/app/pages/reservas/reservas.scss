@@ -54,33 +54,6 @@
     margin-top: $espaciado-m;
   }
 
-  &__boton {
-    padding: $espaciado-s $espaciado-l;
-    border: none;
-    border-radius: $radio-boton;
-    cursor: pointer;
-    @include mixins.tipografia(button);
-    transition: background-color $transicion-base $transicion-suave;
-
-    &--primario {
-      background-color: $color-info;
-      color: $blanco;
-
-      &:hover {
-        background-color: darken($color-info, 10%);
-      }
-    }
-
-    &--secundario {
-      background-color: $gris3;
-      color: $blanco;
-
-      &:hover {
-        background-color: $gris4;
-      }
-    }
-  }
-
   // Encabezado con navegación
   &__encabezado {
     @include mixins.display-flex(row, $espaciado-m, center);

@@ -1,0 +1,1 @@
+import{$a as i,Ja as t,_a as o,pb as m}from"./chunk-YXJEUI5X.js";import"./chunk-C6Q5SG76.js";var n=class s{static \u0275fac=function(e){return new(e||s)};static \u0275cmp=t({type:s,selectors:[["app-permisos"]],decls:2,vars:0,template:function(e,r){e&1&&(o(0,"p"),m(1,"permisos works!"),i())},encapsulation:2})};export{n as Permisos};

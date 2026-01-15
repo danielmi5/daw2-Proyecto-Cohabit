@@ -1,1 +1,62 @@
-<p>reservas works!</p>
+<main class="contenedor-reservas">
+  <!-- Estado de carga -->
+  @if (loading) {
+    <section class="estado-carga">
+      <div class="cargador"></div>
+      <p>Cargando reservas...</p>
+    </section>
+  }
+
+  <!-- Estado de error -->
+  @if (!loading && error) {
+    <section class="estado-error">
+      <div class="icono-error">⚠️</div>
+      <h2>Error al cargar las reservas</h2>
+      <p class="mensaje-error">{{ errorMessage }}</p>
+      <nav class="acciones-error">
+        <button class="boton boton-primario" (click)="retry()">Reintentar</button>
+        <button class="boton boton-secundario" (click)="goToDashboard()">Volver al Dashboard</button>
+      </nav>
+    </section>
+  }
+
+  <!-- Estado con datos -->
+  @if (!loading && !error) {
+    <section class="contenido-reservas">
+      <h1>Reservas</h1>
+      
+      @if (reservas.length === 0) {
+        <aside class="estado-vacio">
+          <p>No hay reservas disponibles</p>
+        </aside>
+      }
+
+      @if (reservas.length > 0) {
+        <section class="lista-reservas">
+          <p class="info-total">Total de reservas: {{ total }}</p>
+          
+          <div class="cuadricula-reservas">
+            @for (reserva of reservas; track reserva.id) {
+              <article class="tarjeta-reserva">
+                <header class="encabezado-reserva">
+                  <span class="id-reserva">#{{ reserva.numero || reserva.id }}</span>
+                  <span class="estado-reserva" [class]="'estado-' + reserva.estado?.toLowerCase()">{{ reserva.estado }}</span>
+                </header>
+                <section class="cuerpo-reserva">
+                  <p><strong>Fecha:</strong> {{ reserva.fecha }}</p>
+                  <p><strong>Hora:</strong> {{ reserva.horaInicio }} - {{ reserva.horaFin }}</p>
+                  @if (reserva.numPersonas) {
+                    <p><strong>Personas:</strong> {{ reserva.numPersonas }}</p>
+                  }
+                  @if (reserva.notas) {
+                    <p class="notas-reserva">{{ reserva.notas }}</p>
+                  }
+                </section>
+              </article>
+            }
+          </div>
+        </section>
+      }
+    </section>
+  }
+</main>

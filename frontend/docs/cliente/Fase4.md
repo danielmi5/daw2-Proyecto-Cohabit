@@ -4,7 +4,8 @@
 1. [Mapa Completo de Rutas](#mapa-completo-de-rutas)
 2. [Estrategia de Lazy Loading](#estrategia-de-lazy-loading)
 3. [Guards y Protección de Rutas](#guards-y-protección-de-rutas)
-4. [Metadatos de Rutas](#metadatos-de-rutas)
+4. [Resolvers y Precarga de Datos](#resolvers-y-precarga-de-datos)
+5. [Metadatos de Rutas](#metadatos-de-rutas)
 
 ---
 
@@ -56,9 +57,9 @@
 | Path | Descripción | Parámetros / Query | Guard | Resolver |
 |------|-------------|--------------------|-------|----------|
 | `/dashboard` | Shell del dashboard (padre) | - | `authGuard` (canActivate) | `DashboardResolver` (opcional) |
-| `/dashboard/reservas` | Listado de reservas | page, size, filtro (query) | Hereda `authGuard` | `ReservasResolver` (si implementado) |
-| `/dashboard/mis-reservas` | Reservas del usuario actual | - | Hereda `authGuard` | `MisReservasResolver` (opcional) |
-| `/dashboard/calendario` | Vista de calendario | fecha (query) | Hereda `authGuard` | `CalendarioResolver` (opcional) |
+| `/dashboard/reservas` | Listado de reservas | page, size, filtro (query) | Hereda `authGuard` | `reservasResolver` |
+| `/dashboard/mis-reservas` | Reservas del usuario actual | - | Hereda `authGuard` | - |
+| `/dashboard/calendario` | Vista de calendario | fecha (query) | Hereda `authGuard` | - |
 | `/mi-grupo` | Shell de gestión de grupo | - | `authGuard` | `MiGrupoResolver` (opcional) |
 | `/mi-grupo/config` | Configuración del grupo | - | Hereda `authGuard` | - |
 | `/mi-grupo/recursos` | Recursos del grupo | - | Hereda `authGuard` | `RecursosResolver` (opcional) |
@@ -304,6 +305,177 @@ class LoginPage {
   }
 }
 
+```
+
+## Resolvers y Precarga de Datos
+
+Los resolvers son funciones que se ejecutan antes de activar una ruta, permitiendo pre-cargar datos necesarios para el componente. Esto mejora la experiencia del usuario al evitar estados inconsistentes y proporciona feedback visual durante la carga.
+
+**Beneficios con resolver:**
+- Datos disponibles antes de mostrar el componente
+- Estado de carga gestionado automáticamente por el router
+- Gestión centralizada de errores
+- Experiencia de usuario consistente y profesional
+- Evita vistas en estado inconsistente
+
+### reservasResolver
+
+Se encarga de obtener el listado de reservas antes de activar el componente `/dashboard/reservas`. Se encuentra en`app/resolvers/reservas.resolver.ts`.
+
+**Características:**
+- Tipo de retorno definido con `ReservasResolverData`
+- Soporta parámetros de paginación desde query params
+- Gestión de errores sin bloquear navegación
+- Retorna objeto con estado de éxito/error
+
+### Configuración en Rutas
+
+**Archivo**: `app/pages/dashboard/dashboard.routes.ts`
+
+```typescript
+import { Routes } from "@angular/router";
+import { reservasResolver } from "../../resolvers/reservas.resolver";
+
+export const DASHBOARD_RUTAS: Routes = [
+  {
+    path: "",
+    redirectTo: "reservas",
+    pathMatch: "full"
+  },
+  {
+    path: "reservas",
+    loadComponent: () => import("../reservas/reservas").then(m => m.Reservas),
+    title: "Reservas",
+    data: { breadcrumb: "Reservas" },
+    resolve: {
+      reservasData: reservasResolver  // ← Resolver asociado
+    }
+  },
+  // ...otras rutas
+];
+```
+
+**Configuración:**
+- La propiedad `resolve` asocia el resolver con la ruta
+- La clave `reservasData` es el nombre con el que se acceden los datos en el componente
+- El resolver se ejecuta automáticamente antes de activar el componente
+
+### Consumo en el Componente
+
+**Archivo**: `app/pages/reservas/reservas.ts`
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ReservasResolverData } from '../../resolvers/reservas.resolver';
+
+@Component({
+  selector: 'app-reservas',
+  imports: [CommonModule],
+  templateUrl: './reservas.html',
+  styleUrl: './reservas.scss',
+})
+export class Reservas implements OnInit {
+  reservas: ReservaResponse[] = [];
+  total = 0;
+  error = false;
+  errorMessage = '';
+  loading = true;  // Se muestra mientras el resolver trabaja
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    // Obtiene los datos resueltos
+    const data = this.route.snapshot.data['reservasData'] as ReservasResolverData;
+    
+    this.loading = false;
+
+    if (data.error) {
+      // Maneja el caso de error
+      this.error = true;
+      this.errorMessage = data.errorMessage || 'Error al cargar las reservas';
+      this.reservas = [];
+      this.total = 0;
+    } else if (data.reservas) {
+      // Maneja el caso de éxito
+      this.error = false;
+      this.reservas = data.reservas.items;
+      this.total = data.reservas.total;
+    }
+  }
+
+  retry(): void {
+    this.loading = true;
+    this.error = false;
+    // Recarga la ruta para volver a ejecutar el resolver
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/dashboard/reservas']);
+    });
+  }
+}
+```
+
+**Puntos clave:**
+- Los datos se obtienen de `route.snapshot.data['reservasData']`
+- El nombre de la clave coincide con el configurado en `resolve`
+- El componente maneja ambos casos: éxito y error
+- Método `retry()` para reintentar la carga
+
+### Estados de la Vista
+
+El componente maneja tres estados visuales:
+
+#### 1. Estado de Carga
+Mostrado mientras el resolver obtiene los datos:
+
+```html
+@if (loading) {
+  <section class="estado-carga">
+    <div class="cargador"></div>
+    <p>Cargando reservas...</p>
+  </section>
+}
+```
+
+#### 2. Estado de Error
+Mostrado cuando el resolver retorna `error: true`:
+
+```html
+@if (!loading && error) {
+  <section class="estado-error">
+    <div class="icono-error">⚠️</div>
+    <h2>Error al cargar las reservas</h2>
+    <p class="mensaje-error">{{ errorMessage }}</p>
+    <nav class="acciones-error">
+      <button (click)="retry()">Reintentar</button>
+      <button (click)="goToDashboard()">Volver al Dashboard</button>
+    </nav>
+  </section>
+}
+```
+
+#### 3. Estado con Datos
+Mostrado cuando el resolver devuelve datos exitosamente:
+
+```html
+@if (!loading && !error) {
+  <section class="contenido-reservas">
+    <h1>Reservas</h1>
+    <p class="info-total">Total de reservas: {{ total }}</p>
+    
+    <div class="cuadricula-reservas">
+      @for (reserva of reservas; track reserva.id) {
+        <article class="tarjeta-reserva">
+          <!-- Contenido de la reserva -->
+        </article>
+      }
+    </div>
+  </section>
+}
 ```
 
 ## Metadatos de Rutas

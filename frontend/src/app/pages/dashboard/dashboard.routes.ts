@@ -1,4 +1,5 @@
 import { Routes } from "@angular/router";
+import { reservasResolver } from "../../resolvers/reservas.resolver";
 
 /**
  * Rutas hijas del Dashboard
@@ -13,7 +14,10 @@ export const DASHBOARD_RUTAS: Routes = [
     path: "reservas",
     loadComponent: () => import("../reservas/reservas").then(m => m.Reservas),
     title: "Reservas",
-    data: { breadcrumb: "Reservas" }
+    data: { breadcrumb: "Reservas" },
+    resolve: {
+      reservasData: reservasResolver
+    }
   },
   {
     path: "mis-reservas",

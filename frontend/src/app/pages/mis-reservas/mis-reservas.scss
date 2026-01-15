@@ -57,7 +57,7 @@
   &__contenido {
     display: flex;
     flex-direction: column;
-    gap: $espaciado-l;
+    gap: $espaciado-m;
   }
 
   &__vacio {
@@ -74,18 +74,11 @@
     padding-bottom: $espaciado-xxl;
   }
 
-  // Botón flotante
-  &__boton-flotante {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    box-shadow: $shadow-lg;
-    z-index: 100;
-
-    &:hover {
-      box-shadow: $shadow-xl;
-      transform: translateY(-2px);
-    }
+  &__boton{
+    display: inline-flex;
+    width: auto;
+    align-self: flex-end;
+    padding: $espaciado-s $espaciado-m;
   }
 }
 
@@ -96,12 +89,6 @@
 
     &__cuadricula {
       grid-template-columns: 1fr;
-    }
-
-    &__boton-flotante {
-      bottom: 1rem;
-      right: 1rem;
-      padding: $espaciado-s $espaciado-m;
     }
   }
 }

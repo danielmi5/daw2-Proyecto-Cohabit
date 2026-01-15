@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges, OnDestroy } from '@angular/core';
 import * as feather from 'feather-icons';
 
 /**
@@ -11,7 +11,7 @@ import * as feather from 'feather-icons';
 @Directive({
   selector: '[feather]'
 })
-export class FeatherIconDirective implements OnChanges {
+export class FeatherIconDirective implements OnChanges, OnDestroy {
   /** Nombre del icono (alias de la entrada 'feather'). Ej: 'sun', 'moon' */
   @Input('feather') nombre!: string;
 
@@ -32,6 +32,9 @@ export class FeatherIconDirective implements OnChanges {
   @Input() tipo?: 'header' | 'submenu' | 'botones';
 
   constructor(private elemento: ElementRef<HTMLElement>, private renderer: Renderer2) {}
+
+  /** Referencia al contenedor SVG insertado por Renderer2 */
+  private appendedNode: HTMLElement | null = null;
 
   /** Se ejecuta cuando cambian las entradas y vuelve a renderizar el SVG. */
   ngOnChanges(_: SimpleChanges): void {
@@ -73,7 +76,10 @@ export class FeatherIconDirective implements OnChanges {
   private renderizar(): void {
     // Si no se proporciona nombre, limpiamos el contenido.
     if (!this.nombre) {
-      this.elemento.nativeElement.innerHTML = '';
+      if (this.appendedNode) {
+        this.renderer.removeChild(this.elemento.nativeElement, this.appendedNode);
+        this.appendedNode = null;
+      }
       return;
     }
 
@@ -81,8 +87,10 @@ export class FeatherIconDirective implements OnChanges {
     const iconos = (feather as any).icons || {};
     const icono = iconos[this.nombre];
     if (!icono) {
-      // Si no existe el icono pedido, dejamos el contenido vacío.
-      this.elemento.nativeElement.innerHTML = '';
+      if (this.appendedNode) {
+        this.renderer.removeChild(this.elemento.nativeElement, this.appendedNode);
+        this.appendedNode = null;
+      }
       return;
     }
 
@@ -99,7 +107,32 @@ export class FeatherIconDirective implements OnChanges {
         ? (feather as any).toSvg(this.nombre, atributos)
         : '';
 
-    // Insertar el SVG generado en el elemento host
-    this.elemento.nativeElement.innerHTML = svg || '';
+    // Insertar el SVG generado en el elemento host usando Renderer2
+    if (!svg) {
+      if (this.appendedNode) {
+        this.renderer.removeChild(this.elemento.nativeElement, this.appendedNode);
+        this.appendedNode = null;
+      }
+      return;
+    }
+
+    if (this.appendedNode) {
+      this.renderer.setProperty(this.appendedNode, 'innerHTML', svg);
+    } else {
+      const wrapper = this.renderer.createElement('span');
+      this.renderer.addClass(wrapper, 'feather-icon');
+      this.renderer.setProperty(wrapper, 'innerHTML', svg);
+      this.renderer.appendChild(this.elemento.nativeElement, wrapper);
+      this.appendedNode = wrapper as HTMLElement;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.appendedNode) {
+      try {
+        this.renderer.removeChild(this.elemento.nativeElement, this.appendedNode);
+      } catch {}
+      this.appendedNode = null;
+    }
   }
 }

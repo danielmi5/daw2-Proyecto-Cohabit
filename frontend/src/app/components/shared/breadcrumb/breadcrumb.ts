@@ -35,15 +35,6 @@ export class Breadcrumb {
   migas = this.breadcrumbService.migas;
 
   /**
-   * Verifica si una miga es la última en la lista
-   * (la última miga no debe ser un enlace clickeable)
-   */
-  esUltimaMiga(miga: Miga): boolean {
-    const todasLasMigas = this.migas();
-    return todasLasMigas[todasLasMigas.length - 1] === miga;
-  }
-
-  /**
    * Obtiene el índice de una miga en el array
    */
   obtenerIndice(miga: Miga): number {

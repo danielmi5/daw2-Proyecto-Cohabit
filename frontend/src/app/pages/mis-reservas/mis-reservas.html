@@ -1,4 +1,4 @@
-<main class="mis-reservas">
+<section class="mis-reservas">
   <!-- Estado de carga -->
   @if (loading) {
     <section class="mis-reservas__estado mis-reservas__estado--carga">
@@ -49,16 +49,16 @@
           </div>
         </section>
       }
-    </section>
 
-    <!-- Botón para crear nueva reserva -->
-    <app-button
-      class="mis-reservas__boton-flotante"
-      [variante]="'primario'"
-      [ariaLabel]="'Nueva reserva'"
-      (click)="abrirFormularioNuevo()">
-      Nueva reserva
-    </app-button>
+      <!-- Botón para crear nueva reserva -->
+      <app-button
+        class="mis-reservas__boton"
+        [variante]="'primario'"
+        [ariaLabel]="'Nueva reserva'"
+        (click)="abrirFormularioNuevo()">
+        Nueva reserva
+      </app-button>
+    </section>
   }
 
   <!-- Modal de reserva -->
@@ -70,4 +70,4 @@
     (cerrar)="cerrarFormulario()"
     (guardar)="guardarReserva($event)">
   </app-modal-reserva>
-</main>
+</section>

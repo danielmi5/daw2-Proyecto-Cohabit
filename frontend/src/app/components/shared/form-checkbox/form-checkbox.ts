@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, AfterContentInit, ContentChildren, QueryList, forwardRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, AfterContentInit, ContentChildren, QueryList, forwardRef, inject, Renderer2 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -26,6 +26,8 @@ export class FormCheckbox implements ControlValueAccessor, AfterContentInit {
 
   @ViewChild('checkboxInput', { static: false }) checkboxInput?: ElementRef<HTMLInputElement>;
 
+  private renderer = inject(Renderer2);
+
   /* Lógica de proyección de contenido:
   - `elementosProyectados` recoge los nodos que el componente padre proyecta dentro de este componente (<ng-content>).
   - `tieneProyectado` se usa para saber si mostrar el `etiqueta` por defecto (cuando no hay contenido proyectado) o mostrar lo que haya sido proyectado (por ejemplo enlaces con `routerLink`). */
@@ -44,7 +46,11 @@ export class FormCheckbox implements ControlValueAccessor, AfterContentInit {
   writeValue(value: boolean): void {
     this.checked = !!value;
     if (this.checkboxInput?.nativeElement) {
-      this.checkboxInput.nativeElement.checked = this.checked;
+      try {
+        this.renderer.setProperty(this.checkboxInput.nativeElement, 'checked', this.checked);
+      } catch {
+        this.checkboxInput.nativeElement.checked = this.checked;
+      }
     }
   }
 
@@ -83,7 +89,11 @@ export class FormCheckbox implements ControlValueAccessor, AfterContentInit {
 
     // Actualiza el estado del checkbox
     if (this.checkboxInput && this.checkboxInput.nativeElement) {
-      this.checkboxInput.nativeElement.checked = this.checked;
+      try {
+        this.renderer.setProperty(this.checkboxInput.nativeElement, 'checked', this.checked);
+      } catch {
+        this.checkboxInput.nativeElement.checked = this.checked;
+      }
     }
 
     this.onChange(this.checked);

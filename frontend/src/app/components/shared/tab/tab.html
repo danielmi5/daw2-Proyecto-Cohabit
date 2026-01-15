@@ -1,0 +1,48 @@
+<!-- Variante para la página de reservas -->
+<header role="tablist" class="tab__encabezado" [class.tab--reservas]="tipo === 'reservas'" [class.tab--mis-reservas]="tipo === 'mis-reservas'">
+  @if (tipo === 'reservas') {
+    <h2
+      class="tab__titulo"
+      role="tab"
+      #pestana
+      (keydown)="manejarTecla($event)"
+      aria-selected="true"
+    >
+      Reservas
+    </h2>
+    <span class="tab__icono" [feather]="'chevron-right'" [tipo]="'header'"></span>
+    <a
+      routerLink="/dashboard/mis-reservas"
+      class="tab__enlace"
+      role="tab"
+      #pestana
+      (keydown)="manejarTecla($event)"
+      aria-selected="false"
+    >
+      Mis Reservas
+    </a>
+  }
+
+  @if (tipo === 'mis-reservas') {
+    <a
+      routerLink="/dashboard/reservas"
+      class="tab__enlace"
+      role="tab"
+      #pestana
+      (keydown)="manejarTecla($event)"
+      aria-selected="false"
+    >
+      Reservas
+    </a>
+    <span class="tab__icono" [feather]="'chevron-right'" [tipo]="'header'"></span>
+    <h2
+      class="tab__titulo"
+      role="tab"
+      #pestana
+      (keydown)="manejarTecla($event)"
+      aria-selected="true"
+    >
+      Mis Reservas
+    </h2>
+  }
+</header>

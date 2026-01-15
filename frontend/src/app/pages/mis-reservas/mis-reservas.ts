@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FeatherIconDirective } from '../../directives/feather-icon.directive';
 import { Card } from '../../components/shared/card/card';
@@ -10,9 +10,11 @@ import { RecursoService } from '../../services/recurso.service';
 import { RecursoResponse } from '../../models';
 import { ReservaResponse, ReservaRequest } from '../../models';
 
+import { TabComponent } from '../../components/shared/tab/tab';
+
 @Component({
   selector: 'app-mis-reservas',
-  imports: [CommonModule, RouterLink, FeatherIconDirective, Card, Button, ModalReserva],
+  imports: [CommonModule, Card, Button, ModalReserva, TabComponent],
   templateUrl: './mis-reservas.html',
   styleUrl: './mis-reservas.scss',
 })

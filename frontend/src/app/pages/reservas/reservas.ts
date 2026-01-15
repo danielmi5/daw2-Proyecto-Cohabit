@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ApiListResponse, ReservaResponse } from '../../models';
 import { ReservasResolverData } from '../../resolvers/reservas.resolver';
 import { FeatherIconDirective } from '../../directives/feather-icon.directive';
 import { Button } from '../../components/shared/button/button';
 
+import { TabComponent } from '../../components/shared/tab/tab';
+
 @Component({
   selector: 'app-reservas',
-  imports: [CommonModule, RouterLink, FeatherIconDirective, Button],
+  imports: [CommonModule, Button, TabComponent],
   templateUrl: './reservas.html',
   styleUrl: './reservas.scss',
 })

@@ -10,29 +10,6 @@
   position: relative;
 
   // Encabezado con navegación
-  &__encabezado {
-    @include mixins.display-flex(row, $espaciado-m, center);
-    margin-bottom: $espaciado-l;
-  }
-
-  &__titulo {
-    @include mixins.tipografia(h2, var(--hover));
-  }
-
-  &__icono {
-    @include mixins.display-flex(row, 0, center);
-    height: 100%;
-    color: var(--texto-primario);
-  }
-
-  &__enlace {
-    @include mixins.tipografia(h2, var(--titulos));
-    transition: color $transicion-base $transicion-suave;
-    
-    &:hover {
-      color: var(--btn-primario);
-    }
-  }
 
   // Estados de carga y error
   &__estado {

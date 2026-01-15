@@ -1,0 +1,33 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.tab__encabezado {
+  @include mixins.display-flex(row, $espaciado-m, center);
+  margin-bottom: $espaciado-l;
+}
+
+.tab__titulo {
+  @include mixins.tipografia(h2, var(--hover));
+}
+
+.tab__icono {
+  @include mixins.display-flex(row, 0, center);
+  height: 100%;
+  color: var(--texto-primario);
+}
+
+.tab__enlace {
+  @include mixins.tipografia(h2, var(--titulos));
+  transition: color $transicion-base $transicion-suave;
+}
+
+.tab__encabezado [role="tab"]:focus {
+  outline: 2px solid var(--titulos);
+  outline-offset: 2px;
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .tab__encabezado {
+    gap: $espaciado-s;
+  }
+}

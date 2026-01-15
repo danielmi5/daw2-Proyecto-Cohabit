@@ -23,11 +23,7 @@
   <!-- Estado con datos -->
   @if (!loading && !error) {
     <section class="reservas__contenido">
-      <header class="reservas__encabezado">
-        <h2 class="reservas__titulo">Reservas</h2>
-        <span class="reservas__icono" [feather]="'chevron-right'" [tipo]="'header'"></span>
-        <a routerLink="/dashboard/mis-reservas" class="reservas__enlace">Mis Reservas</a>
-      </header>
+      <app-tab tipo="reservas"></app-tab>
       
       @if (reservas.length === 0) {
         <aside class="reservas__vacio">

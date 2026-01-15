@@ -5,12 +5,13 @@ import { Main } from './components/layout/main/main';
 import { Footer } from './components/layout/footer/footer';
 import { Modal } from './components/shared/modal/modal';
 import { Notificacion } from './components/shared/notificacion/notificacion';
+import { Breadcrumb } from './components/shared/breadcrumb/breadcrumb';
 import { ModalService } from './services/modal.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, Header, Main, Footer, Modal, Notificacion],
+  imports: [RouterOutlet, Header, Main, Footer, Modal, Notificacion, Breadcrumb],
   templateUrl: './app.html',
   styleUrls: ['./app.scss']
 })

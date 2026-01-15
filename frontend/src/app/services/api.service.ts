@@ -10,13 +10,21 @@ export class ApiService {
   private readonly baseUrl = 'http://localhost:4200';
 
   /**
+   * Normaliza la URL eliminando barras duplicadas
+   */
+  private construirUrl(endpoint: string): string {
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
+    return `${this.baseUrl}/${cleanEndpoint}`;
+  }
+
+  /**
    * Realiza una petición GET al endpoint especificado.
    * @param endpoint - Ruta relativa del recurso en la API
    * @param options - Opciones opcionales (params, headers, etc.)
    * @returns Observable con la respuesta tipada
    */
   get<T>(endpoint: string, options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}/${endpoint}`, options)
+    return this.http.get<T>(this.construirUrl(endpoint), options)
       .pipe(catchError(error => this.handleError(error)));
   }
 
@@ -28,7 +36,7 @@ export class ApiService {
    * @returns Observable con la respuesta tipada
    */
   post<T>(endpoint: string, body: unknown, options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T> {
-    return this.http.post<T>(`${this.baseUrl}/${endpoint}`, body, options)
+    return this.http.post<T>(this.construirUrl(endpoint), body, options)
       .pipe(catchError(error => this.handleError(error)));
   }
 
@@ -40,7 +48,7 @@ export class ApiService {
    * @returns Observable con la respuesta tipada
    */
   put<T>(endpoint: string, body: unknown, options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T> {
-    return this.http.put<T>(`${this.baseUrl}/${endpoint}`, body, options)
+    return this.http.put<T>(this.construirUrl(endpoint), body, options)
       .pipe(catchError(error => this.handleError(error)));
   }
 
@@ -52,7 +60,7 @@ export class ApiService {
    * @returns Observable con la respuesta tipada
    */
   delete<T>(endpoint: string, options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T> {
-    return this.http.delete<T>(`${this.baseUrl}/${endpoint}`, options)
+    return this.http.delete<T>(this.construirUrl(endpoint), options)
       .pipe(catchError(error => this.handleError(error)));
   }
 
@@ -82,8 +90,8 @@ export class ApiService {
     }
 
     const peticion = metodo === 'PUT'
-      ? this.http.put<T>(`${this.baseUrl}/${endpoint}`, datosFormulario, options)
-      : this.http.post<T>(`${this.baseUrl}/${endpoint}`, datosFormulario, options);
+      ? this.http.put<T>(this.construirUrl(endpoint), datosFormulario, options)
+      : this.http.post<T>(this.construirUrl(endpoint), datosFormulario, options);
 
     return peticion.pipe(catchError(error => this.handleError(error)));
   }
@@ -118,8 +126,8 @@ export class ApiService {
     }
 
     const peticion = metodo === 'PUT'
-      ? this.http.put<T>(`${this.baseUrl}/${endpoint}`, datosFormulario, options)
-      : this.http.post<T>(`${this.baseUrl}/${endpoint}`, datosFormulario, options);
+      ? this.http.put<T>(this.construirUrl(endpoint), datosFormulario, options)
+      : this.http.post<T>(this.construirUrl(endpoint), datosFormulario, options);
 
     return peticion.pipe(catchError(error => this.handleError(error)));
   }

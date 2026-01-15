@@ -1,0 +1,26 @@
+<nav class="breadcrumb" aria-label="Migas de pan">
+  @if (migas().length > 0) {
+    <ol class="breadcrumb__lista">
+      @for (miga of migas(); track obtenerIndice(miga)) {
+        <li class="breadcrumb__item">
+          @if (esUltimaMiga(miga)) {
+            <!-- Última miga: solo texto, sin enlace -->
+            <span class="breadcrumb__activo" aria-current="page">
+              {{ miga.etiqueta }}
+            </span>
+          } @else {
+            <!-- Migas intermedias: con enlace -->
+            <a 
+              [routerLink]="miga.url" 
+              class="breadcrumb__enlace"
+              [attr.aria-label]="'Navegar a ' + miga.etiqueta"
+            >
+              {{ miga.etiqueta }}
+            </a>
+            <span class="breadcrumb__separador" aria-hidden="true">/</span>
+          }
+        </li>
+      }
+    </ol>
+  }
+</nav>

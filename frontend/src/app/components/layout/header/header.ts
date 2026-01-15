@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 import { Tooltip } from '../../shared/tooltip/tooltip';
+import { ThemeSwitcherService } from '../../../services/theme-switcher.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,35 +12,31 @@ import { Tooltip } from '../../shared/tooltip/tooltip';
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })
-export class Header implements OnInit {
+export class Header implements OnInit, OnDestroy {
   modoIcon = 'sun';
   modoTitle = 'Cambiar a modo oscuro';
   menuAbierto = false;
+  private themeSub?: Subscription;
+
+  constructor(private themeSwitcher: ThemeSwitcherService) {}
 
   ngOnInit(): void {
-    const temaAlmacenado = localStorage.getItem('theme');
-    const esOscuro = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    if (temaAlmacenado === 'dark') document.documentElement.classList.add('dark');
-    else if (temaAlmacenado === 'light') document.documentElement.classList.remove('dark');
-    else if (esOscuro) document.documentElement.classList.add('dark');
-
-    this.actualizarIcono();
+    this.themeSwitcher.init();
+    this.themeSub = this.themeSwitcher.isDark$.subscribe(esModoOscuro => {
+      this.modoIcon = esModoOscuro ? 'moon' : 'sun';
+      this.modoTitle = esModoOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+    });
   }
 
   alternarTema(): void {
-    const esAhoraOscuro = document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme', esAhoraOscuro ? 'dark' : 'light');
-    this.actualizarIcono();
-  }
-
-  private actualizarIcono(): void {
-    const esModoOscuro = document.documentElement.classList.contains('dark');
-    this.modoIcon = esModoOscuro ? 'moon' : 'sun';
-    this.modoTitle = esModoOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+    this.themeSwitcher.alternarTema();
   }
 
   toggleMenu(): void {
     this.menuAbierto = !this.menuAbierto;
+  }
+
+  ngOnDestroy(): void {
+    this.themeSub?.unsubscribe();
   }
 }

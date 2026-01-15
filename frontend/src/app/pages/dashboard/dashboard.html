@@ -1,1 +1,6 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+  <app-sidebar class="dashboard__sidebar" [variante]="'dashboard'" />
+  <section class="dashboard__contenido">
+    <router-outlet />
+  </section>
+</div>

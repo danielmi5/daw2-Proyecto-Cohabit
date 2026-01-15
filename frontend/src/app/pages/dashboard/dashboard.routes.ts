@@ -7,8 +7,8 @@ import { reservasResolver } from "../../resolvers/reservas.resolver";
 export const DASHBOARD_RUTAS: Routes = [
   {
     path: "",
-    redirectTo: "reservas",
-    pathMatch: "full"
+    loadComponent: () => import("../../components/shared/dashboard-index/dashboard-index").then(m => m.DashboardIndex),
+    title: "Dashboard"
   },
   {
     path: "reservas",

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ApiListResponse, ReservaResponse } from '../../models';
 import { ReservasResolverData } from '../../resolvers/reservas.resolver';
+import { FeatherIconDirective } from '../../directives/feather-icon.directive';
 
 @Component({
   selector: 'app-reservas',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, FeatherIconDirective],
   templateUrl: './reservas.html',
   styleUrl: './reservas.scss',
 })

@@ -1,0 +1,35 @@
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as mixins;
+
+.dashboard {
+  @include mixins.display-flex(row, 0, stretch, flex-start);
+  background-color: var(--bg-secundario);
+
+  &__sidebar {
+    flex-shrink: 0;
+    width: 250px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  &__contenido {
+    flex: 1;
+    padding: 0;
+    overflow-x: hidden;
+  }
+}
+
+// Responsive
+@media (max-width: $breakpoint-tablet) {
+  .dashboard {
+    flex-direction: column;
+
+    &__sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+  }
+}

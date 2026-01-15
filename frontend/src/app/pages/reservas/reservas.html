@@ -1,55 +1,59 @@
-<main class="contenedor-reservas">
+<main class="reservas">
   <!-- Estado de carga -->
   @if (loading) {
-    <section class="estado-carga">
-      <div class="cargador"></div>
+    <section class="reservas__estado reservas__estado--carga">
+      <div class="reservas__cargador"></div>
       <p>Cargando reservas...</p>
     </section>
   }
 
   <!-- Estado de error -->
   @if (!loading && error) {
-    <section class="estado-error">
-      <div class="icono-error">⚠️</div>
+    <section class="reservas__estado reservas__estado--error">
+      <div class="reservas__icono-error">⚠️</div>
       <h2>Error al cargar las reservas</h2>
-      <p class="mensaje-error">{{ errorMessage }}</p>
-      <nav class="acciones-error">
-        <button class="boton boton-primario" (click)="retry()">Reintentar</button>
-        <button class="boton boton-secundario" (click)="goToDashboard()">Volver al Dashboard</button>
+      <p class="reservas__mensaje-error">{{ errorMessage }}</p>
+      <nav class="reservas__acciones">
+        <button class="reservas__boton reservas__boton--primario" (click)="retry()">Reintentar</button>
+        <button class="reservas__boton reservas__boton--secundario" (click)="goToDashboard()">Volver al Dashboard</button>
       </nav>
     </section>
   }
 
   <!-- Estado con datos -->
   @if (!loading && !error) {
-    <section class="contenido-reservas">
-      <h1>Reservas</h1>
+    <section class="reservas__contenido">
+      <header class="reservas__encabezado">
+        <h2 class="reservas__titulo">Reservas</h2>
+        <span class="reservas__icono" [feather]="'chevron-right'" [tipo]="'header'"></span>
+        <a routerLink="/dashboard/mis-reservas" class="reservas__enlace">Mis Reservas</a>
+      </header>
       
       @if (reservas.length === 0) {
-        <aside class="estado-vacio">
+        <aside class="reservas__vacio">
           <p>No hay reservas disponibles</p>
         </aside>
       }
 
       @if (reservas.length > 0) {
-        <section class="lista-reservas">
-          <p class="info-total">Total de reservas: {{ total }}</p>
+        <section class="reservas__lista">
+          <p class="reservas__total">Total de reservas: {{ total }}</p>
           
-          <div class="cuadricula-reservas">
+          <div class="reservas__cuadricula">
             @for (reserva of reservas; track reserva.id) {
-              <article class="tarjeta-reserva">
-                <header class="encabezado-reserva">
-                  <span class="id-reserva">#{{ reserva.numero || reserva.id }}</span>
-                  <span class="estado-reserva" [class]="'estado-' + reserva.estado?.toLowerCase()">{{ reserva.estado }}</span>
+              <article class="reservas__tarjeta">
+                <header class="reservas__tarjeta-encabezado">
+                  <span class="reservas__tarjeta-id">#{{ reserva.numero || reserva.id }}</span>
+                  <span class="reservas__tarjeta-estado reservas__tarjeta-estado--{{ reserva.estado?.toLowerCase() }}">{{ reserva.estado }}</span>
                 </header>
-                <section class="cuerpo-reserva">
+                <section class="reservas__tarjeta-cuerpo">
                   <p><strong>Fecha:</strong> {{ reserva.fecha }}</p>
                   <p><strong>Hora:</strong> {{ reserva.horaInicio }} - {{ reserva.horaFin }}</p>
                   @if (reserva.numPersonas) {
                     <p><strong>Personas:</strong> {{ reserva.numPersonas }}</p>
                   }
                   @if (reserva.notas) {
-                    <p class="notas-reserva">{{ reserva.notas }}</p>
+                    <p class="reservas__tarjeta-notas">{{ reserva.notas }}</p>
                   }
                 </section>
               </article>

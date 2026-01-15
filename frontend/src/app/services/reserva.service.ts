@@ -23,7 +23,9 @@ export class ReservaService {
     if (filtros?.fecha) params = params.set('fecha', filtros.fecha);
     if (filtros?.estado) params = params.set('estado', filtros.estado);
 
-    return this.api.get<import('../models').BackendPage<ReservaResponse>>(this.base, { params }).pipe(
+    const endpoint = filtros ? `${this.base}/buscar` : this.base;
+
+    return this.api.get<import('../models').BackendPage<ReservaResponse>>(endpoint, { params }).pipe(
       retry(2),
       map(res => ({ items: res.content, total: res.totalElements })),
       catchError(error => this.handleError(error))

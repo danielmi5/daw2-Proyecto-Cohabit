@@ -66,7 +66,7 @@ frontend/src/app/
 
 ### Servicio base: ApiService
 
-El `ApiService` centraliza toda la lógica de peticiones HTTP y proporciona métodos genéricos reutilizables:
+El `ApiService` centraliza toda la lógica de peticiones HTTP y proporciona métodos genéricos reutilizables.
 
 ```typescript
 @Injectable({ providedIn: 'root' })
@@ -74,17 +74,22 @@ export class ApiService {
   private readonly baseUrl = 'http://localhost:4200';
 
   // Métodos genéricos con manejo de errores integrado
-  get<T>(endpoint: string, options?): Observable<T>
-  post<T>(endpoint: string, body: unknown, options?): Observable<T>
-  put<T>(endpoint: string, body: unknown, options?): Observable<T>
-  delete<T>(endpoint: string, options?): Observable<T>
+  get<T>(endpoint: string, options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T>
+  post<T>(endpoint: string, body: unknown, options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T>
+  put<T>(endpoint: string, body: unknown, options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T>
+  delete<T>(endpoint: string, options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T>
+
+  // Métodos auxiliares para subir archivos (FormData)
+  subirArchivo<T>(endpoint: string, archivo: File, camposAdicionales?: { [k: string]: string | Blob }, metodo: 'POST' | 'PUT' = 'POST', options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T>
+  subirMultiplesArchivos<T>(endpoint: string, archivos: File[], camposAdicionales?: { [k: string]: string | Blob }, metodo: 'POST' | 'PUT' = 'POST', options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T>
 }
 ```
 
 **Características**:
 - URL base centralizada
 - Manejo automático de errores con `catchError`
-- Soporte para parámetros HTTP y headers personalizados
+- Soporte para `options` (query `params` y `headers`) en todas las llamadas
+- Métodos para subir `FormData` que aceptan `options
 - Tipado genérico para respuestas
 
 ## Catálogo de endpoints
@@ -122,7 +127,7 @@ interface AuthResponse {
 | Método | Endpoint | Descripción | Parámetros | Respuesta |
 |--------|----------|-------------|------------|----------|
 | GET | `/api/usuarios/{id}` | Obtener usuario por ID | `id: number` | `UsuarioResponse` |
-| GET | `/api/usuarios` | Listar usuarios paginados | `page, size` (query) | `ApiListResponse<UsuarioResponse>` |
+| GET | `/api/usuarios` | Listar usuarios paginados | `page, size, sort?` (query) | `ApiListResponse<UsuarioResponse>` |
 | POST | `/api/usuarios` | Crear usuario | `UsuarioRequest` (body) | `UsuarioResponse` |
 | PUT | `/api/usuarios/{id}` | Actualizar usuario | `id: number`, `UsuarioUpdate` (body) | `UsuarioResponse` |
 | DELETE | `/api/usuarios/{id}` | Eliminar usuario | `id: number` | `void` |
@@ -134,7 +139,7 @@ interface AuthResponse {
 | Método | Endpoint | Descripción | Parámetros | Respuesta |
 |--------|----------|-------------|------------|----------|
 | GET | `/api/grupos/{id}` | Obtener grupo por ID | `id: number` | `GrupoResponse` |
-| GET | `/api/grupos` | Listar grupos paginados | `page, size, sort?` (query) | `ApiListResponse<GrupoResponse>` |
+| GET | `/api/grupos` | Listar grupos paginados o filtrados | `page, size, sort?, nombre?, descripcion?, creadorId?` (query) | `ApiListResponse<GrupoResponse>` |
 | POST | `/api/grupos` | Crear grupo | `GrupoRequest` (body) | `GrupoResponse` |
 | PUT | `/api/grupos/{id}` | Actualizar grupo | `id: number`, `GrupoUpdate` (body) | `GrupoResponse` |
 | DELETE | `/api/grupos/{id}` | Eliminar grupo | `id: number` | `void` |
@@ -142,12 +147,14 @@ interface AuthResponse {
 **Parámetros de ordenamiento**:
 - `sort`: String con formato `campo,dirección` (ej: `nombre,asc`)
 
+**Búsqueda filtrada**: cuando se usan filtros (`nombre`, `descripcion`, `creadorId`) el frontend hace la petición a `/api/grupos/buscar`.
+
 ### Recursos (`recurso.service.ts`)
 
 | Método | Endpoint | Descripción | Parámetros | Respuesta |
 |--------|----------|-------------|------------|----------|
 | GET | `/api/recursos/{id}` | Obtener recurso por ID | `id: number` | `RecursoResponse` |
-| GET | `/api/recursos` | Listar recursos con filtros | `page, size, grupoId?, tipo?, estado?` (query) | `ApiListResponse<RecursoResponse>` |
+| GET | `/api/recursos` | Listar recursos paginados o filtrados | `page, size, grupoId?, tipo?, estado?, fecha?, horaInicio?, horaFin?` (query). Si se pasan filtros el endpoint usado es `/api/recursos/buscar`. | `ApiListResponse<RecursoResponse>` |
 | POST | `/api/recursos` | Crear recurso | `RecursoRequest` (body) | `RecursoResponse` |
 | PUT | `/api/recursos/{id}` | Actualizar recurso | `id: number`, `RecursoUpdate` (body) | `RecursoResponse` |
 | DELETE | `/api/recursos/{id}` | Eliminar recurso | `id: number` | `void` |
@@ -158,6 +165,9 @@ interface FiltrosRecurso {
   grupoId?: number;
   tipo?: string;      // Ej: 'HABITACION', 'OBJETO', 'COCINA', 'BAÑO'
   estado?: string;    // Ej: 'DISPONIBLE', 'OCUPADO', 'MANTENIMIENTO'
+  fecha?: string;     // Formato ISO: YYYY-MM-DD (filtro de disponibilidad)
+  horaInicio?: string; // Formato HH:mm:ss
+  horaFin?: string;    // Formato HH:mm:ss
 }
 ```
 
@@ -166,7 +176,7 @@ interface FiltrosRecurso {
 | Método | Endpoint | Descripción | Parámetros | Respuesta |
 |--------|----------|-------------|------------|----------|
 | GET | `/api/reservas/{id}` | Obtener reserva por ID | `id: number` | `ReservaResponse` |
-| GET | `/api/reservas` | Listar reservas con filtros | `page, size, recursoId?, usuarioId?, fecha?, estado?` (query) | `ApiListResponse<ReservaResponse>` |
+| GET | `/api/reservas` | Listar reservas paginadas o filtradas | `page, size, recursoId?, usuarioId?, fecha?, estado?` (query). Si se usan filtros el endpoint es `/api/reservas/buscar`. | `ApiListResponse<ReservaResponse>` |
 | POST | `/api/reservas` | Crear reserva | `ReservaRequest` (body) | `ReservaResponse` |
 | PUT | `/api/reservas/{id}` | Actualizar reserva | `id: number`, `ReservaUpdate` (body) | `ReservaResponse` |
 | DELETE | `/api/reservas/{id}` | Eliminar reserva | `id: number` | `void` |
@@ -186,7 +196,7 @@ interface FiltrosReserva {
 | Método | Endpoint | Descripción | Parámetros | Respuesta |
 |--------|----------|-------------|------------|----------|
 | GET | `/api/miembros/{id}` | Obtener miembro por ID | `id: number` | `MiembroGrupoResponse` |
-| GET | `/api/miembros` | Listar miembros paginados | `page, size` (query) | `ApiListResponse<MiembroGrupoResponse>` |
+| GET | `/api/miembros` | Listar miembros paginados | `page, size, sort?` (query) | `ApiListResponse<MiembroGrupoResponse>` |
 | POST | `/api/miembros` | Agregar miembro al grupo | `MiembroGrupoRequest` (body) | `MiembroGrupoResponse` |
 | PUT | `/api/miembros/{id}` | Actualizar miembro | `id: number`, `MiembroGrupoUpdate` (body) | `MiembroGrupoResponse` |
 | DELETE | `/api/miembros/{id}` | Eliminar miembro del grupo | `id: number` | `void` |
@@ -196,7 +206,7 @@ interface FiltrosReserva {
 | Método | Endpoint | Descripción | Parámetros | Respuesta |
 |--------|----------|-------------|------------|----------|
 | GET | `/api/reglas/{id}` | Obtener regla por ID | `id: number` | `ReglaRecursoResponse` |
-| GET | `/api/reglas` | Listar reglas paginadas | `page, size` (query) | `ApiListResponse<ReglaRecursoResponse>` |
+| GET | `/api/reglas` | Listar reglas paginadas | `page, size, sort?` (query) | `ApiListResponse<ReglaRecursoResponse>` |
 | POST | `/api/reglas` | Crear regla | `ReglaRecursoRequest` (body) | `ReglaRecursoResponse` |
 | PUT | `/api/reglas/{id}` | Actualizar regla | `id: number`, `ReglaRecursoUpdate` (body) | `ReglaRecursoResponse` |
 | DELETE | `/api/reglas/{id}` | Eliminar regla | `id: number` | `void` |

@@ -1,5 +1,5 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
@@ -24,15 +24,23 @@ export class AuthService {
 
   private tiempoExpiracion: any = null;
 
-  iniciarSesion(credenciales: LoginRequest, recordar: boolean = false): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credenciales).pipe(
+  iniciarSesion(
+    credenciales: LoginRequest,
+    recordar: boolean = false,
+    options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }
+  ): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credenciales, options).pipe(
       tap(response => this.guardarSesion(response.token, recordar)),
       catchError(error => this.handleError(error))
     );
   }
 
-  registrar(data: RegisterRequest, recordar: boolean = true): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data).pipe(
+  registrar(
+    data: RegisterRequest,
+    recordar: boolean = true,
+    options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }
+  ): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data, options).pipe(
       tap(response => this.guardarSesion(response.token, recordar)),
       catchError(error => this.handleError(error))
     );

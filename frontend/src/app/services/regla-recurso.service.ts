@@ -16,8 +16,10 @@ export class ReglaRecursoService {
     return this.api.get<ReglaRecursoResponse>(`${this.base}/${id}`).pipe(retry(2), catchError(error => this.handleError(error)));
   }
 
-  getAll(page = 0, size = 10): Observable<ApiListResponse<ReglaRecursoResponse>> {
-    const params = new HttpParams().set('page', String(page)).set('size', String(size));
+  getAll(page = 0, size = 10, sort?: string): Observable<ApiListResponse<ReglaRecursoResponse>> {
+    let params = new HttpParams().set('page', String(page)).set('size', String(size));
+    if (sort) params = params.set('sort', sort);
+
     return this.api.get<import('../models').BackendPage<ReglaRecursoResponse>>(this.base, { params }).pipe(
       retry(2),
       map(res => ({ items: res.content, total: res.totalElements })),

@@ -16,8 +16,10 @@ export class MiembroGrupoService {
     return this.api.get<MiembroGrupoResponse>(`${this.base}/${id}`).pipe(retry(2), catchError(error => this.handleError(error)));
   }
 
-  getAll(page = 0, size = 10): Observable<ApiListResponse<MiembroGrupoResponse>> {
-    const params = new HttpParams().set('page', String(page)).set('size', String(size));
+  getAll(page = 0, size = 10, sort?: string): Observable<ApiListResponse<MiembroGrupoResponse>> {
+    let params = new HttpParams().set('page', String(page)).set('size', String(size));
+    if (sort) params = params.set('sort', sort);
+
     return this.api.get<import('../models').BackendPage<MiembroGrupoResponse>>(this.base, { params }).pipe(
       retry(2),
       map(res => ({ items: res.content, total: res.totalElements })),

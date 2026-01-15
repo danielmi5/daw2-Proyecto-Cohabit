@@ -1,11 +1,11 @@
 <div class="toast-container">
-  @for (notification of notificacionService.notificaciones(); track notification.id) {
+  @for (notificacion of notificacionService.notificaciones(); track notificacion.id) {
     <div class="toast-wrapper" @notificacionAnim>
       <app-alert 
-        [tipo]="notification.type"
+        [tipo]="notificacion.type"
         [cerrable]="true"
-        (cerrar)="notificacionService.eliminar(notification.id)">
-        {{ notification.message }}
+        (cerrar)="notificacionService.eliminar(notificacion.id)">
+        {{ notificacion.mensaje }}
       </app-alert>
     </div>
   }

@@ -16,11 +16,16 @@ export class GrupoService {
     return this.api.get<GrupoResponse>(`${this.base}/${id}`).pipe(retry(2), catchError(error => this.handleError(error)));
   }
 
-  getAll(page = 0, size = 10, sort?: string): Observable<ApiListResponse<GrupoResponse>> {
+  getAll(page = 0, size = 10, sort?: string, filtros?: { nombre?: string; descripcion?: string; creadorId?: number }): Observable<ApiListResponse<GrupoResponse>> {
     let params = new HttpParams().set('page', String(page)).set('size', String(size));
     if (sort) params = params.set('sort', sort);
+    if (filtros?.nombre) params = params.set('nombre', filtros.nombre);
+    if (filtros?.descripcion) params = params.set('descripcion', filtros.descripcion);
+    if (filtros?.creadorId) params = params.set('creadorId', String(filtros.creadorId));
 
-    return this.api.get<import('../models').BackendPage<GrupoResponse>>(this.base, { params }).pipe(
+    const endpoint = filtros ? `${this.base}/buscar` : this.base;
+
+    return this.api.get<import('../models').BackendPage<GrupoResponse>>(endpoint, { params }).pipe(
       retry(2),
       map(res => ({ items: res.content, total: res.totalElements })),
       catchError(error => this.handleError(error))

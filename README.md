@@ -99,7 +99,26 @@ mvn spring-boot:run
 
 ## Despliegue
 
-El archivo `docker-compose.yml` en la raíz incluye los servicios `db` (Postgres) y `backend`.
+El archivo `docker-compose.yml` en la raíz incluye los servicios `db` (Postgres), `backend` y `frontend`.
+
+Para desplegar localmente todos los servicios (base de datos, backend y frontend) ejecutar:
+
+```bash
+docker-compose up --build
+```
+
+- **Backend:** estará disponible en `http://localhost:8080`.
+- **Frontend:** la aplicación Angular se sirve con `nginx` en el contenedor y por defecto queda accesible en `http://localhost:4200`.
+
+Si prefieres desarrollar el frontend sin contenedores (modo desarrollo):
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+Más detalles sobre el frontend (scripts, configuración de build) en `frontend/README.md`.
 
 Para el frontend puedes acceder a él desplegandolo localmente (más info en el README del frontend) o accediendo al [enlace](https://danielmi5.github.io/daw2-Proyecto-Cohabit/)
 

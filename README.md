@@ -2,6 +2,8 @@
 
 Proyecto Cohabit es una aplicación web para gestionar recursos compartidos en viviendas y espacios colectivos. Permite a los residentes reservar recursos (cocina, lavadora, salón, etc.), ver calendarios de uso y administrar usuarios para mejorar la convivencia.
 
+Para poder ver la aplicación actualmente, recomiendo levantarla mediante docker. Más info de como desplegarla en la sección "despliegue".
+
 ## Tabla de contenidos
 
 - [Estructura](#estructura)
@@ -65,6 +67,10 @@ daw2-Proyecto-Cohabit/
 
 ## Instalación y ejecución
 
+### Con Docker (Recomendado)
+
+#### Modo Producción
+
 1. Clona el repositorio:
 
 ```bash
@@ -72,45 +78,39 @@ git clone <repo-url>
 cd daw2-Proyecto-Cohabit
 ```
 
-2. Levantar servicios con Docker Compose (recomendado):
+2. Levantar todos los servicios con Docker Compose:
 
 ```bash
 docker-compose up --build
 ```
 
-Esto levantará PostgreSQL y el backend. El backend quedará expuesto en `http://localhost:8080`.
+Esto levantará:
+- PostgreSQL en `localhost:5432`
+- Backend en `http://localhost:8080`
+- Frontend (nginx) en `http://localhost:4200`
 
-3. Ejecutar el frontend en desarrollo (en otra terminal):
+#### Modo Desarrollo (con hot-reload)
+
+Para desarrollo con recarga automática del frontend:
 
 ```bash
-cd frontend
-npm install
-npm start
+docker-compose -f docker-compose.dev.yml up --build
 ```
 
-El frontend normalmente estará disponible en `http://localhost:4200`.
+Esto permite editar archivos del frontend y ver cambios en tiempo real.
 
-Si prefieres ejecutar el backend localmente sin Docker:
+### Sin Docker
+
+#### Backend
 
 ```bash
 cd backend
 mvn spring-boot:run
 ```
 
-## Despliegue
+El backend estará disponible en `http://localhost:8080`.
 
-El archivo `docker-compose.yml` en la raíz incluye los servicios `db` (Postgres), `backend` y `frontend`.
-
-Para desplegar localmente todos los servicios (base de datos, backend y frontend) ejecutar:
-
-```bash
-docker-compose up --build
-```
-
-- **Backend:** estará disponible en `http://localhost:8080`.
-- **Frontend:** la aplicación Angular se sirve con `nginx` en el contenedor y por defecto queda accesible en `http://localhost:4200`.
-
-Si prefieres desarrollar el frontend sin contenedores (modo desarrollo):
+#### Frontend
 
 ```bash
 cd frontend
@@ -118,7 +118,50 @@ npm install
 npm start
 ```
 
-Más detalles sobre el frontend (scripts, configuración de build) en `frontend/README.md`.
+El frontend estará disponible en `http://localhost:4200`.
 
-Para el frontend puedes acceder a él desplegandolo localmente (más info en el README del frontend) o accediendo al [enlace](https://danielmi5.github.io/daw2-Proyecto-Cohabit/)
+## Despliegue
+
+### Docker Compose
+
+El proyecto incluye dos archivos de configuración:
+
+- **`docker-compose.yml`** (Producción): Construye el frontend optimizado con nginx
+- **`docker-compose.dev.yml`** (Desarrollo): Usa servidor de desarrollo con hot-reload
+
+#### Producción
+
+```bash
+docker-compose up --build
+```
+
+- **Base de datos:** PostgreSQL en `localhost:5432`
+- **Backend:** API REST en `http://localhost:8080`
+- **Frontend:** Aplicación Angular servida con nginx en `http://localhost:4200`
+
+#### Desarrollo
+
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+Incluye montaje de volúmenes para hot-reload del frontend.
+
+### Detener servicios
+
+```bash
+docker-compose down
+```
+
+Para eliminar también los volúmenes:
+
+```bash
+docker-compose down -v
+```
+
+---
+
+Para más detalles:
+- Backend: [backend/README.md](./backend/README.md)
+- Frontend: [frontend/README.md](./frontend/README.md)
 

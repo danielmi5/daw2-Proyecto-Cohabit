@@ -1,1 +1,0 @@
-import{$a as n,Ja as o,_a as p,pb as r}from"./chunk-YXJEUI5X.js";import"./chunk-C6Q5SG76.js";var a=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=o({type:t,selectors:[["app-grupo"]],decls:2,vars:0,template:function(e,i){e&1&&(p(0,"p"),r(1,"grupo works!"),n())},encapsulation:2})};export{a as Grupo};

@@ -17,6 +17,7 @@ export class Header implements OnInit, OnDestroy {
   modoTitle = 'Cambiar a modo oscuro';
   menuAbierto = false;
   private themeSub?: Subscription;
+  private readonly breakpointTablet = 768; // px
 
   constructor(private themeSwitcher: ThemeSwitcherService) {}
 
@@ -26,6 +27,11 @@ export class Header implements OnInit, OnDestroy {
       this.modoIcon = esModoOscuro ? 'moon' : 'sun';
       this.modoTitle = esModoOscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
     });
+
+    // Cerrar menú si la ventana ya es ancha al iniciar
+    if (typeof window !== 'undefined' && window.innerWidth >= this.breakpointTablet) {
+      this.menuAbierto = false;
+    }
   }
 
   alternarTema(): void {
@@ -39,6 +45,15 @@ export class Header implements OnInit, OnDestroy {
   @HostListener('document:keydown.escape', ['$event'])
   onEscape(_event: unknown): void {
     if (this.menuAbierto) {
+      this.menuAbierto = false;
+    }
+  }
+
+  @HostListener('window:resize', [])
+  onWindowResize(): void {
+    if (typeof window === 'undefined') return;
+    const width = window.innerWidth;
+    if (width >= this.breakpointTablet && this.menuAbierto) {
       this.menuAbierto = false;
     }
   }

@@ -72,7 +72,7 @@ export const routes: Routes = [
     path: "mi-grupo",
     loadComponent: () => import("./pages/mi-grupo/mi-grupo").then(m => m.MiGrupo),
     canActivate: [authGuard],
-    title: "Mi Grupot",
+    title: "Mi Grupo",
     data: { breadcrumb: "Mi Grupo" },
     children: [
         {

@@ -10,44 +10,65 @@ Este proyecto Angular implementa una arquitectura de servicios basada en compone
 src/app/
  ├─ components/
  │   ├─ shared/
- │   │   ├─ login-form/
- │   │   │   └─ LoginForm (consume: FormBuilder, validadores)
- │   │   ├─ registro-form/
- │   │   │   └─ RegistroForm (consume: FormBuilder, ValidadoresAsincronosService, validadores)
- │   │   ├─ form-input/
- │   │   │   └─ FormInput (componente presentación)
- │   │   ├─ form-checkbox/
- │   │   │   └─ FormCheckbox (componente presentación)
- │   │   └─ button/
- │   │       └─ Button (componente presentación)
+ │   │   ├─ login-form/          └─ LoginForm (consume: FormBuilder, AuthService)
+ │   │   ├─ registro-form/       └─ RegistroForm (consume: FormBuilder, ValidadoresAsincronosService)
+ │   │   ├─ form-input/          └─ FormInput (presentacional)
+ │   │   ├─ form-select/         └─ FormSelect (presentacional)
+ │   │   ├─ form-textarea/       └─ FormTextarea (presentacional)
+ │   │   ├─ form-checkbox/       └─ FormCheckbox (presentacional, emite checkedChange)
+ │   │   ├─ button/              └─ Button (presentacional)
+ │   │   ├─ card/                └─ Card (emite editar, eliminar)
+ │   │   ├─ modal/               └─ Modal (emite cierre)
+ │   │   ├─ modal-reserva/       └─ ModalReserva (emite guardar, cerrar)
+ │   │   ├─ tooltip/             └─ Tooltip (mouseenter/focusin)
+ │   │   ├─ tab/                 └─ Tab (keydown navigation)
+ │   │   ├─ accordion/           └─ Accordion / AccordionItem (emite itemToggled)
+ │   │   └─ notificacion/        └─ Notificacion (gestiona notificaciones)
  │   └─ layout/
- │       └─ header/
- │           └─ Header (gestión de tema con localStorage)
+ │       ├─ header/              └─ Header (gestión tema, menu, @HostListener escape)
+ │       ├─ footer/              └─ Footer
+ │       └─ sidebar/             └─ Sidebar (navegación)
+ │
+ ├─ pages/
+ │   ├─ inicio/                 └─ Inicio (página pública)
+ │   ├─ login/                  └─ Login (form + ngSubmit)
+ │   ├─ registro/               └─ Registro
+ │   ├─ dashboard/              └─ Dashboard (lazy-loaded children)
+ │   ├─ mi-grupo/               └─ MiGrupo (lazy-loaded children)
+ │   └─ ... (recursos, reservas, perfil, etc.)
+ │
+ ├─ services/
+ │   ├─ api.service.ts          └─ ApiService (HTTP wrapper, providedIn: 'root')
+ │   ├─ auth.service.ts         └─ AuthService (login/logout, providedIn: 'root')
+ │   ├─ grupo.service.ts        └─ GrupoService (providedIn: 'root')
+ │   ├─ miembro-grupo.service.ts└─ MiembroGrupoService (providedIn: 'root')
+ │   ├─ recurso.service.ts      └─ RecursoService (providedIn: 'root')
+ │   ├─ reserva.service.ts      └─ ReservaService (providedIn: 'root')
+ │   ├─ regla-recurso.service.ts└─ ReglaRecursoService (providedIn: 'root')
+ │   ├─ notificacion.service.ts └─ NotificacionService (providedIn: 'root')
+ │   ├─ modal.service.ts        └─ ModalService (gestiona apertura/cierre de modales)
+ │   ├─ breadcrumb.service.ts   └─ BreadcrumbService
+ │   ├─ redireccion.service.ts  └─ RedireccionService
+ │   ├─ theme-switcher.service.ts└─ ThemeSwitcherService (gestión tema)
+ │   └─ usuario.service.ts      └─ UsuarioService
  │
  ├─ form/
  │   ├─ services/
  │   │   └─ ValidadoresAsincronosService (providedIn: 'root')
- │   │       └─ correoUnico(): Observable<ValidationErrors | null>
- │   │
  │   └─ validators/
- │       ├─ validarEmailConTLD() (función validadora)
- │       ├─ validarFortalezaContrasenia() (función validadora)
- │       └─ validarContraseniaCoincidente() (función validadora)
+ │       ├─ validarEmailConTLD()
+ │       ├─ validarFortalezaContrasenia()
+ │       └─ validarContraseniaCoincidente()
  │
  ├─ directives/
- │   └─ FeatherIconDirective (infraestructura UI)
+ │   └─ feather-icon.directive.ts └─ FeatherIconDirective
  │
  └─ app.config.ts (configuración de providers)
 
-Angular Core Services (inyectados):
- ├─ FormBuilder (providedIn: 'root')
- ├─ Renderer2 (per-component)
- ├─ ElementRef (per-component)
- └─ Router (providedIn: 'root')
-
-Browser APIs (servicios de infraestructura):
- ├─ localStorage (persistencia de tema)
- └─ window.matchMedia (detección de preferencias del sistema)
+Infraestructura y APIs externas:
+ ├─ Angular Core (inyectables): FormBuilder, Router, Renderer2, ElementRef, HttpClient
+ ├─ Browser APIs: localStorage (persistencia de tema), window.matchMedia (preferencias sistema)
+ └─ Observables (RxJS) para flujos asíncronos y validadores
 ```
 
 #### Flujo de datos y responsabilidades

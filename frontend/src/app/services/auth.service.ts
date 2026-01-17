@@ -17,7 +17,10 @@ export class AuthService {
 
   private readonly KEY_LOCAL_STORAGE = 'auth_token';
 
-  private tokenSignal = signal<string | null>(localStorage.getItem(this.KEY_LOCAL_STORAGE));
+  // Prioriza token persistente (localStorage) y si no existe, usa sessionStorage
+  private tokenSignal = signal<string | null>(
+    localStorage.getItem(this.KEY_LOCAL_STORAGE) ?? sessionStorage.getItem(this.KEY_LOCAL_STORAGE)
+  );
 
   private usuarioDetalles = signal<UsuarioResponse | null>(null);
 
@@ -65,14 +68,18 @@ export class AuthService {
     this.limpiartiempoExpiracion();
 
     if (recordar) {
-      // Se persiste el token en localStorage
+      // Persistir entre cierres del navegador
       localStorage.setItem(this.KEY_LOCAL_STORAGE, token);
+      // Eliminar cualquier token de sesión anterior
+      sessionStorage.removeItem(this.KEY_LOCAL_STORAGE);
     } else {
-      // Se asegura que no quede token persistente si no se pidió recordar
+      // Mantener sólo para la sesión actual (sobrevive recargas, no cierres)
+      sessionStorage.setItem(this.KEY_LOCAL_STORAGE, token);
+      // Asegurarse de no dejar token persistente
       localStorage.removeItem(this.KEY_LOCAL_STORAGE);
     }
 
-    // Se mantiene el token en memoria (signal) siempre
+    // Mantener el token en memoria (signal)
     this.tokenSignal.set(token);
 
     // Se intenta cargar los datos del usuario (incluido su id) a partir del email del token
@@ -108,7 +115,9 @@ export class AuthService {
   }
 
   cerrarSesion(): void {
+    // Borrar token de ambos storages para asegurar cierre completo
     localStorage.removeItem(this.KEY_LOCAL_STORAGE);
+    sessionStorage.removeItem(this.KEY_LOCAL_STORAGE);
     this.tokenSignal.set(null);
     this.usuarioDetalles.set(null);
     this.limpiartiempoExpiracion();

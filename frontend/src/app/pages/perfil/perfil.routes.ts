@@ -16,10 +16,10 @@ export const PERFIL_RUTAS: Routes = [
     data: { breadcrumb: "Preferencias" }
   },
   {
-    path: "grupo",
+    path: "mi-grupo",
     loadComponent: () => import("../grupo/grupo").then(m => m.Grupo),
-    title: "Grupo",
-    data: { breadcrumb: "Grupo" }
+    title: "Mi Grupo",
+    data: { breadcrumb: "Mi Grupo" }
   },
   {
     path: "seguridad",

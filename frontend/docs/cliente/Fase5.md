@@ -71,7 +71,7 @@ El `ApiService` centraliza toda la lógica de peticiones HTTP y proporciona mét
 ```typescript
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private readonly baseUrl = 'http://localhost:4200';
+  private readonly baseUrl = 'http://localhost:8080';
 
   // Métodos genéricos con manejo de errores integrado
   get<T>(endpoint: string, options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T>

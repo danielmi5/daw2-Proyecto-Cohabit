@@ -7,6 +7,8 @@ import com.cohabit.cohabit_backend.entity.Usuario;
 import com.cohabit.cohabit_backend.repository.UsuarioRepository;
 import com.cohabit.cohabit_backend.security.jwt.JwtService;
 import com.cohabit.cohabit_backend.security.jwt.TokenInvalidadoService;
+import com.cohabit.cohabit_backend.dto.UsuarioResponseDTO;
+import com.cohabit.cohabit_backend.mapper.UsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import com.cohabit.cohabit_backend.exception.UsuarioNoEncontradoException;
 import com.cohabit.cohabit_backend.exception.EmailYaRegistradoException;
@@ -82,6 +84,22 @@ public class AutenticacionService {
         } catch (Exception e) {
             throw new TokenInvalidoException("Error al procesar el token JWT", e);
         }
+    }
+
+    public UsuarioResponseDTO obtenerUsuarioActual(String authorizationHeader) {
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new CabeceraAutorizacionInvalidaException("Cabecera de autorización ausente o no válida");
+        }
+
+        String token = authorizationHeader.substring(7);
+        String email = jwtService.extraerEmail(token);
+        
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario == null) {
+            throw new UsuarioNoEncontradoException("Usuario no encontrado");
+        }
+
+        return UsuarioMapper.usuarioEntidadAUsuarioDto(usuario);
     }
 
 }

@@ -103,4 +103,34 @@ public class AutenticacionController {
 
         return ResponseEntity.ok(respuesta);
     }
+
+    @GetMapping("/me")
+    @Operation(
+        summary = "Obtener usuario actual",
+        description = "Obtener los datos del usuario autenticado usando el token JWT"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Usuario obtenido exitosamente",
+            content = @Content(schema = @Schema(implementation = com.cohabit.cohabit_backend.dto.UsuarioResponseDTO.class))
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Token inválido o no proporcionado",
+            content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))
+        ),
+        @ApiResponse(
+            responseCode = "404",
+            description = "Usuario no encontrado",
+            content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))
+        )
+    })
+    @SecurityRequirement(name = "esquemaCohabitJWT")
+    public ResponseEntity<com.cohabit.cohabit_backend.dto.UsuarioResponseDTO> obtenerUsuarioActual(
+        @Parameter(description = "Token JWT en formato: Bearer {token}", required = true)
+        @RequestHeader(value = "Authorization", required = true) String authorizationHeader) {
+        com.cohabit.cohabit_backend.dto.UsuarioResponseDTO usuario = autenticacionService.obtenerUsuarioActual(authorizationHeader);
+        return ResponseEntity.ok(usuario);
+    }
 }

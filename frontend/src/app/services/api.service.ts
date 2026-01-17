@@ -7,7 +7,7 @@ import { handleHttpError } from './error-handler.util';
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:4200';
+  private readonly baseUrl = 'http://localhost:8080';
 
   /**
    * Normaliza la URL eliminando barras duplicadas

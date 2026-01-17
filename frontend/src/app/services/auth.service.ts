@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { LoginRequest, RegisterRequest, AuthResponse, DecodedToken } from '../models/auth.models';
-import { UsuarioService } from './usuario.service';
 import { UsuarioResponse } from '../models/usuario.model';
 import { handleHttpError } from './error-handler.util';
 
@@ -13,7 +12,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private apiUrl = 'http://localhost:8080/auth';
+  private apiUrl = '/auth';
 
   private readonly KEY_LOCAL_STORAGE = 'auth_token';
 
@@ -22,7 +21,7 @@ export class AuthService {
     localStorage.getItem(this.KEY_LOCAL_STORAGE) ?? sessionStorage.getItem(this.KEY_LOCAL_STORAGE)
   );
 
-  private usuarioDetalles = signal<UsuarioResponse | null>(null);
+  public usuarioDetalles = signal<UsuarioResponse | null>(null);
 
   public usuarioActual = computed(() => {
     const token = this.tokenSignal();
@@ -33,9 +32,8 @@ export class AuthService {
     return { ...decoded, id: this.usuarioDetalles()?.id ?? null } as DecodedToken & { id?: number | null };
   });
 
-  private usuarioService = inject(UsuarioService);
-
   private tiempoExpiracion: any = null;
+  private cargaInicial = false;
 
   iniciarSesion(
     credenciales: LoginRequest,
@@ -125,39 +123,32 @@ export class AuthService {
   }
 
   constructor() {
-    // Al crear el servicio, si ya hay token guardado, se cargan los detalles del usuario
-    this.cargarUsuarioDesdeToken();
+    // Defer la carga del usuario para evitar dependencia circular
+    setTimeout(() => {
+      if (!this.cargaInicial && this.tokenSignal()) {
+        this.cargaInicial = true;
+        this.cargarUsuarioDesdeToken().subscribe();
+      }
+    }, 0);
   }
 
-  private cargarUsuarioDesdeToken(): void {
+  public cargarUsuarioDesdeToken(): Observable<UsuarioResponse | null> {
     const token = this.tokenSignal();
     if (!token) {
       this.usuarioDetalles.set(null);
-      return;
+      return throwError(() => new Error('No token available'));
     }
 
-    let decoded: any;
-    try {
-      decoded = jwtDecode(token) as DecodedToken;
-    } catch (e) {
-      this.usuarioDetalles.set(null);
-      return;
-    }
-
-    const email = decoded?.sub;
-    if (!email) {
-      this.usuarioDetalles.set(null);
-      return;
-    }
-
-    // Se obtiene la lista de usuarios y se busca por email. Se usa un tamaño grande para cubrir casos comunes.
-    this.usuarioService.getAll(0, 1000).subscribe({
-      next: (res) => {
-        const encontrado = res.items.find(u => u.email === email) ?? null;
-        this.usuarioDetalles.set(encontrado);
-      },
-      error: () => this.usuarioDetalles.set(null)
-    });
+    // Se obtiene los datos del usuario usando el endpoint /auth/me
+    return this.http.get<UsuarioResponse>(`${this.apiUrl}/me`).pipe(
+      tap((usuario) => {
+        this.usuarioDetalles.set(usuario);
+      }),
+      catchError((error) => {
+        this.usuarioDetalles.set(null);
+        return throwError(() => error);
+      })
+    );
   }
 
   private limpiartiempoExpiracion(): void {

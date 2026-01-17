@@ -31,32 +31,32 @@ export class FormSelect implements ControlValueAccessor {
 
   // ControlValueAccessor
   valor: any = '';
-  alCambiar: (value: any) => void = () => {};
-  alTocar: () => void = () => {};
+  onChange: any = () => {};
+  onTouched: any = () => {};
 
   writeValue(value: any): void {
     this.valor = value || '';
   }
 
-  registerOnChange(fn: (value: any) => void): void {
-    this.alCambiar = fn;
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
-    this.alTocar = fn;
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 
   setDisabledState(isDisabled: boolean): void {
     this.desactivado = isDisabled;
   }
 
-  onChange(event: Event): void {
+  onSelectChange(event: Event): void {
     const elemento = event.target as HTMLSelectElement;
     this.valor = elemento.value;
-    this.alCambiar(this.valor);
+    this.onChange(this.valor);
   }
 
   onBlur(): void {
-    this.alTocar();
+    this.onTouched();
   }
 }

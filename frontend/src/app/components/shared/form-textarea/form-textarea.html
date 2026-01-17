@@ -28,7 +28,10 @@
 			[attr.aria-describedby]="
 				`${(textoAyuda || mensajeExito) ? id + '-ayuda' : ''} ${mensajeError && hayError ? id + '-error' : ''}`.trim()
 			"
-			rows="4"
+			[rows]="rows"
+			[value]="valor"
+			(input)="onInputChange($event)"
+			(blur)="onInputBlur()"
 		></textarea>
 
 		@if (iconoDerecha) {

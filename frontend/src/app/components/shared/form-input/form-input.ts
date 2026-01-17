@@ -86,19 +86,19 @@ export class FormInput implements ControlValueAccessor {
 
   // ControlValueAccessor
   valor: string = '';
-  alCambiar: (value: string) => void = () => {};
-  alTocar: () => void = () => {};
+  onChange: any = () => {};
+  onTouched: any = () => {};
 
-  writeValue(value: string): void {
+  writeValue(value: any): void {
     this.valor = value || '';
   }
 
-  registerOnChange(fn: (value: string) => void): void {
-    this.alCambiar = fn;
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
-    this.alTocar = fn;
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -108,10 +108,10 @@ export class FormInput implements ControlValueAccessor {
   onInput(event: Event): void {
     const elementoInput = event.target as HTMLInputElement;
     this.valor = elementoInput.value;
-    this.alCambiar(this.valor);
+    this.onChange(this.valor);
   }
 
   onBlur(): void {
-    this.alTocar();
+    this.onTouched();
   }
 }

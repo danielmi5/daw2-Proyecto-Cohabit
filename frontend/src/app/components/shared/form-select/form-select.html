@@ -13,7 +13,7 @@
 			[name]="name"
 			[value]="valor"
 			[disabled]="desactivado"
-			(change)="onChange($event)"
+			(change)="onSelectChange($event)"
 			(blur)="onBlur()"
 			[attr.aria-disabled]="desactivado ? 'true' : null"
 			[attr.aria-required]="requerido ? 'true' : null"

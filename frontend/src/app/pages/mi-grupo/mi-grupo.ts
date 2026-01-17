@@ -6,11 +6,13 @@ import { GrupoService } from '../../services/grupo.service';
 import { NotificacionService } from '../../services/notificacion.service';
 import { Button } from '../../components/shared/button/button';
 import { ModalGrupo } from '../../components/shared/modal-grupo/modal-grupo';
+import { DataGrupo } from '../../components/pages/data-grupo/data-grupo';
 import { UsuarioResponse } from '../../models/usuario.model';
+import { Sidebar } from "../../components/layout/sidebar/sidebar";
 
 @Component({
   selector: 'app-mi-grupo',
-  imports: [RouterOutlet, Button, ModalGrupo],
+  imports: [RouterOutlet, Button, ModalGrupo, DataGrupo, Sidebar],
   templateUrl: './mi-grupo.html',
   styleUrl: './mi-grupo.scss',
 })

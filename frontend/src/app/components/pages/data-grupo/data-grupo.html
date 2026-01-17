@@ -1,0 +1,63 @@
+<section class="data-grupo">
+    <h2 class="data-grupo__titulo">Datos del grupo</h2>
+
+    <div class="data-grupo_secciones">
+        <section class="data-grupo__foto-seccion">
+            <h3 class="data-grupo__subtitulo">Foto del grupo</h3>
+            <article class="data-grupo__foto-area">
+            <figure class="data-grupo__avatar">
+                @if (grupo?.fotoGrupo) {
+                <img [src]="grupo?.fotoGrupo" alt="Foto del grupo" />
+                } @else {
+                <div class="data-grupo__avatar-placeholder"></div>
+                }
+            </figure>
+
+            <nav class="data-grupo__acciones">
+                <label class="app-button" for="fileInput">Subir foto</label>
+                <input id="fileInput" type="file" (change)="onSeleccionarArchivo($event)" accept="image/*" hidden />
+                <button class="link" (click)="onEliminarFoto()">Eliminar</button>
+            </nav>
+
+            <section class="data-grupo__nota">
+                <h4>La imagen debe de ser:</h4>
+                <ol>
+                <li>Min. 400 x 400px</li>
+                <li>Max. 2MB</li>
+                </ol>
+            </section>
+            </article>
+        </section>
+
+        <section class="data-grupo__detalles">
+        <h3 class="data-grupo__subtitulo">Detalles</h3>
+
+        <form class="data-grupo__form" [formGroup]="formulario" (ngSubmit)="onGuardar()">
+            <app-form-input
+            id="nombre"
+            name="nombre"
+            etiqueta="Nombre del grupo"
+            placeholder="Placeholder"
+            formControlName="nombre">
+            </app-form-input>
+
+            <app-form-input
+            id="direccion"
+            name="direccion"
+            etiqueta="Dirección"
+            placeholder="Placeholder"
+            formControlName="direccion">
+            </app-form-input>
+
+            <section class="data-grupo__stats">
+            <p><strong>Número de miembros:</strong> {{ grupo?.miembrosIds?.length ?? 0 }}</p>
+            <p><strong>Número de recursos:</strong> {{ grupo?.recursosIds?.length ?? 0 }}</p>
+            </section>
+
+            <footer class="data-grupo__footer">
+            <app-button tipo="submit" [variante]="'primario'">Guardar</app-button>
+            </footer>
+        </form>
+        </section>
+    </div>
+</section>

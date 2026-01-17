@@ -1,0 +1,53 @@
+@if (visible) {
+  <section class="modal-grupo" (click)="onClickFondo($event)">
+    <div class="modal-grupo__contenido">
+      <form class="modal-grupo__formulario" [formGroup]="formulario" (ngSubmit)="onGuardar()">
+        <h2 class="modal-grupo__titulo">Crear grupo</h2>
+
+        <fieldset class="modal-grupo__fieldset">
+          <app-form-input
+            id="nombre"
+            name="nombre"
+            tipo="text"
+            etiqueta="Nombre del grupo"
+            placeholder="Ej: Piso Gran Vía 23"
+            formControlName="nombre"
+            [requerido]="true">
+          </app-form-input>
+
+          <app-form-input
+            id="direccion"
+            name="direccion"
+            tipo="text"
+            etiqueta="Dirección"
+            placeholder="Ej: Calle Gran Vía, 23, 3ºA"
+            formControlName="direccion">
+          </app-form-input>
+
+          <app-form-textarea
+            id="descripcion"
+            name="descripcion"
+            etiqueta="Descripción"
+            placeholder="Describe tu grupo o añade información adicional..."
+            formControlName="descripcion">
+          </app-form-textarea>
+        </fieldset>
+
+        <footer class="modal-grupo__footer">
+          <app-button
+            [variante]="'secundario'"
+            (click)="onCerrar()">
+            Cancelar
+          </app-button>
+          <app-button
+            [tipo]='"submit"'
+            [variante]="'primario'"
+            [tieneIcono]="true"
+            [deshabilitado]="formulario.invalid">
+            Crear grupo
+          </app-button>
+        </footer>
+      </form>
+    </div>
+  </section>
+}

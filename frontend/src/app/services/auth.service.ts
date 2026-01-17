@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { LoginRequest, RegisterRequest, AuthResponse, DecodedToken } from '../models/auth.models';
+import { UsuarioService } from './usuario.service';
+import { UsuarioResponse } from '../models/usuario.model';
 import { handleHttpError } from './error-handler.util';
 
 @Injectable({ providedIn: 'root' })
@@ -17,10 +19,18 @@ export class AuthService {
 
   private tokenSignal = signal<string | null>(localStorage.getItem(this.KEY_LOCAL_STORAGE));
 
+  private usuarioDetalles = signal<UsuarioResponse | null>(null);
+
   public usuarioActual = computed(() => {
     const token = this.tokenSignal();
-    return token ? (jwtDecode(token) as DecodedToken) : null;
+    if (!token) return null;
+
+    const decoded = jwtDecode(token) as DecodedToken;
+    // Se añade id si ya está cargado desde el backend por email
+    return { ...decoded, id: this.usuarioDetalles()?.id ?? null } as DecodedToken & { id?: number | null };
   });
+
+  private usuarioService = inject(UsuarioService);
 
   private tiempoExpiracion: any = null;
 
@@ -51,16 +61,22 @@ export class AuthService {
   }
 
   private guardarSesion(token: string, recordar: boolean): void {
-    // Borra el temporizador previo
+    // Se borra el temporizador previo
     this.limpiartiempoExpiracion();
 
     if (recordar) {
-      // Persiste el token en localStorage
+      // Se persiste el token en localStorage
       localStorage.setItem(this.KEY_LOCAL_STORAGE, token);
+    } else {
+      // Se asegura que no quede token persistente si no se pidió recordar
+      localStorage.removeItem(this.KEY_LOCAL_STORAGE);
     }
 
-    // Mantiene el token en memoria (signal) siempre
+    // Se mantiene el token en memoria (signal) siempre
     this.tokenSignal.set(token);
+
+    // Se intenta cargar los datos del usuario (incluido su id) a partir del email del token
+    this.cargarUsuarioDesdeToken();
 
     // Si no se recuerda, programa el cierre según el tiempo activo del token
     if (!recordar) {
@@ -71,14 +87,14 @@ export class AuthService {
           const tiempoActual = Date.now();
           const delay = tiempoToken - tiempoActual;
           if (delay <= 0) {
-            // El token ya expiró
+              // Se determina que el token ya expiró
             this.cerrarSesion();
           } else {
             this.tiempoExpiracion = setTimeout(() => this.cerrarSesion(), delay);
           }
         }
       } catch (e) {
-        // Si no puede decodificar, no programa timer
+        // Si no se puede decodificar, no se programa temporizador
       }
     }
   }
@@ -94,8 +110,45 @@ export class AuthService {
   cerrarSesion(): void {
     localStorage.removeItem(this.KEY_LOCAL_STORAGE);
     this.tokenSignal.set(null);
+    this.usuarioDetalles.set(null);
     this.limpiartiempoExpiracion();
     this.router.navigate(['/login']);
+  }
+
+  constructor() {
+    // Al crear el servicio, si ya hay token guardado, se cargan los detalles del usuario
+    this.cargarUsuarioDesdeToken();
+  }
+
+  private cargarUsuarioDesdeToken(): void {
+    const token = this.tokenSignal();
+    if (!token) {
+      this.usuarioDetalles.set(null);
+      return;
+    }
+
+    let decoded: any;
+    try {
+      decoded = jwtDecode(token) as DecodedToken;
+    } catch (e) {
+      this.usuarioDetalles.set(null);
+      return;
+    }
+
+    const email = decoded?.sub;
+    if (!email) {
+      this.usuarioDetalles.set(null);
+      return;
+    }
+
+    // Se obtiene la lista de usuarios y se busca por email. Se usa un tamaño grande para cubrir casos comunes.
+    this.usuarioService.getAll(0, 1000).subscribe({
+      next: (res) => {
+        const encontrado = res.items.find(u => u.email === email) ?? null;
+        this.usuarioDetalles.set(encontrado);
+      },
+      error: () => this.usuarioDetalles.set(null)
+    });
   }
 
   private limpiartiempoExpiracion(): void {

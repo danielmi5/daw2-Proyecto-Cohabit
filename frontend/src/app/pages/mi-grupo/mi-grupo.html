@@ -1,1 +1,29 @@
-<p>mi-grupo works!</p>
+@if (cargando()) {
+  <section class="mi-grupo__estado mi-grupo__estado--carga">
+    <div class="mi-grupo__cargador"></div>
+    <p>Cargando...</p>
+  </section>
+} @else {
+  @if (!tieneGrupo()) {
+    <section class="mi-grupo__vacio">
+      <div class="mi-grupo__vacio-contenido">
+        <h2 class="mi-grupo__vacio-titulo">No perteneces a ningún grupo</h2>
+        <p class="mi-grupo__vacio-texto">¿Deseas crear uno para empezar a gestionar tus recursos?</p>
+        <app-button 
+          [variante]="'primario'"
+          [ariaLabel]="'Crear Grupo'"
+          (click)="abrirModal()">
+          Crear Grupo
+        </app-button>
+      </div>
+    </section>
+  } @else {
+    <router-outlet></router-outlet>
+  }
+}
+
+<app-modal-grupo
+  [visible]="mostrarModal()"
+  (cerrar)="cerrarModal()"
+  (guardar)="crearGrupo($event)">
+</app-modal-grupo>

@@ -19,4 +19,5 @@ export interface DecodedToken {
   roles: { authority: string }[];
   exp: number;
   iat: number;
+  id?: number | null;
 }

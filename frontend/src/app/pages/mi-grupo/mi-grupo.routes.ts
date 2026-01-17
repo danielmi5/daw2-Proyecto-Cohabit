@@ -5,11 +5,6 @@ import { Routes } from "@angular/router";
  */
 export const MI_GRUPO_RUTAS: Routes = [
   {
-    path: "",
-    redirectTo: "config",
-    pathMatch: "full"
-  },
-  {
     path: "config",
     loadComponent: () => import("../config-grupo/config-grupo").then(m => m.ConfigGrupo),
     title: "Configuración",

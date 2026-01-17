@@ -2,8 +2,12 @@
   <h1 class="inicio__titulo">¡Reserva de recursos para pisos compartidos!</h1>
   <p class="inicio__descripcion">Gestiona fácilmente los recursos de tu piso compartido. Crea grupos, añade recursos comunes y organiza reservas de manera transparente para evitar conflictos y mantener todo bajo control.</p>
   <section class="inicio__acciones">
-    <a routerLink="/login" class="inicio__boton inicio__boton--primario">Inicia sesión</a>
-    <a routerLink="/registro" class="inicio__boton inicio__boton--secundario">Comenzar ahora</a>
+    @if (!authService.autenticado()) {
+      <a routerLink="/login" class="inicio__boton inicio__boton--primario">Inicia sesión</a>
+      <a routerLink="/registro" class="inicio__boton inicio__boton--secundario">Comenzar ahora</a>
+    } @else {
+      <a routerLink="/dashboard" class="inicio__boton inicio__boton--primario">Ir a Dashboard</a>
+    }
   </section>
 </section>
 
@@ -26,7 +30,7 @@
   
   <article class="caracteristicas__contenido">
     <picture class="caracteristicas__imagen">
-      <img src="./frontend/public/img/inicio.png" alt="Imagen de características" class="caracteristicas__ilustracion">
+      <img src="img/inicio.png" alt="Imagen de características" class="caracteristicas__ilustracion">
     </picture>
     
     <ul class="caracteristicas__lista">
@@ -47,7 +51,7 @@
   
   <app-accordion modo="independence">
     <app-accordion-item titulo="¿Cómo puedo crear un grupo?">
-      <p>Para crear un grupo, primero debes registrarte e iniciar sesión. Luego, dirígete a la sección 'Mi Grupo' y haz clic en 'Crear Grupo'. Completa los datos solicitados como nombre del grupo, dirección y descripción.</p>
+      <p>Para crear un grupo, primero debes registrarte e iniciar sesión. Luego, dirígete a la sección "Mi Grupo" y haz clic en "Crear Grupo". Completa los datos solicitados como nombre del grupo, dirección y descripción.</p>
     </app-accordion-item>
     
     <app-accordion-item titulo="¿Cómo funciona el sistema de reservas?">
@@ -56,7 +60,7 @@
     </app-accordion-item>
     
     <app-accordion-item titulo="¿Puedo invitar a otros miembros?">
-      <p>Sí, como administrador del grupo puedes invitar a otros miembros. Ve a la sección 'Miembros' y utiliza la opción 'Invitar Miembro'. Necesitarás su correo electrónico registrado en la plataforma.</p>
+      <p>Sí, como administrador del grupo puedes invitar a otros miembros. Ve a la sección "Miembros" y utiliza la opción "Invitar Miembro". Necesitarás su correo electrónico registrado en la plataforma.</p>
     </app-accordion-item>
     
     <app-accordion-item titulo="¿Qué recursos puedo gestionar?">

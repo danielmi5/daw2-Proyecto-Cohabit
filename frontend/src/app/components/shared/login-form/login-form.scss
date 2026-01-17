@@ -57,3 +57,9 @@
 		}
 	}
 }
+
+@media (max-width: $breakpoint-movil-grande){
+	.page-login-formulario{
+		padding: 0;
+	}
+}

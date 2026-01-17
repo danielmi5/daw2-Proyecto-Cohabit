@@ -101,3 +101,48 @@
     }
 }
 
+// Responsive: adapt footer layout on small screens
+@media (max-width: $breakpoint-tablet) {
+    .pie-pagina{
+
+        &__superior{
+            width: fit-content;
+            align-self: center;
+            @include mixins.display-flex(column);
+
+        }
+
+        &__seccion{
+            width: fit-content;
+            margin-bottom: $espaciado-m;
+        }
+
+        &__inferior{
+            height: auto;
+            @include mixins.display-flex(column, $espaciado-m, center, center);
+            text-align: center;
+        }
+
+        &__copyright{
+            width: 100%;
+            margin: 0;
+        }
+
+        &__redes-sociales{
+            width: 100%;
+            @include mixins.display-flex(column $espaciado-s, center);
+        }
+
+        &__redes-lista{
+            @include mixins.display-flex(row, $espaciado-s, center, center);
+        }
+
+        &__redes-enlace{
+            img, picture img {
+                width: $iconos-redes;
+                height: $iconos-redes;
+            }
+        }
+    }
+}
+

@@ -1,0 +1,62 @@
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as mixins;
+
+.mi-grupo__estado {
+  @include mixins.centrar-flex(column);
+  min-height: 400px;
+  gap: $espaciado-l;
+
+  &--carga {
+    color: var(--texto-primario);
+  }
+}
+
+.mi-grupo__cargador {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--borde-cards);
+  border-top-color: var(--btn-primario);
+  border-radius: $radio-circulo;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.mi-grupo__vacio {
+  @include mixins.centrar-flex(column);
+  min-height: 400px;
+  text-align: center;
+  padding: $espaciado-xxl;
+}
+
+.mi-grupo__vacio-contenido {
+  @include mixins.display-flex(column, $espaciado-l, center, center);
+  max-width: 600px;
+  background-color: var(--bg-cards);
+  padding: $espaciado-xxl;
+  border-radius: $radio-card;
+  box-shadow: $shadow-md;
+}
+
+.mi-grupo__vacio-titulo {
+  @include mixins.tipografia(h2, var(--titulos));
+}
+
+.mi-grupo__vacio-texto {
+  @include mixins.tipografia(parrafo, var(--texto-primario));
+  margin-bottom: $espaciado-m;
+}
+
+/* Mantener el contenedor principal por si se añaden estilos específicos */
+.datos-grupo {
+  display: block;
+}
+
+/* Responsive: mantener comportamiento columnar en pantallas pequeñas */
+@media (max-width: $breakpoint-tablet) {
+  .mi-grupo__vacio {
+    padding: $espaciado-l;
+  }
+}

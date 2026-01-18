@@ -1,1 +1,80 @@
-<p>recursos works!</p>
+<section class="recursos">
+  <h2 class="recursos__titulo">RECURSOS DISPONIBLES</h2>
+
+  <!-- Estado de carga -->
+  @if (loading) {
+    <section class="recursos__estado recursos__estado--carga">
+      <div class="recursos__cargador"></div>
+      <p>Cargando recursos...</p>
+    </section>
+  }
+
+  <!-- Estado de error -->
+  @if (!loading && error) {
+    <section class="recursos__estado recursos__estado--error">
+      <h2>Error al cargar los recursos</h2>
+      <p class="recursos__mensaje-error">{{ errorMessage }}</p>
+      <nav class="recursos__acciones">
+        <app-button [variante]="'primario'" (click)="retry()">Reintentar</app-button>
+        <app-button [variante]="'secundario'" (click)="goToDashboard()">Volver al Dashboard</app-button>
+      </nav>
+    </section>
+  }
+
+  <!-- Estado con datos -->
+  @if (!loading && !error) {
+    <section class="recursos__contenido">
+      <!-- Buscador y filtros -->
+      <app-buscador-filtros
+        [mostrarFiltros]="true"
+        (filtrosChange)="onFiltrosChange($event)">
+      </app-buscador-filtros>
+
+      <!-- Estado vacío -->
+      @if (recursos.length === 0) {
+        <aside class="recursos__vacio">
+          <h3 class="__titulo">No hay recursos disponibles</h3>
+          <p __texto>Comienza creando tu primer recurso</p>
+        </aside>
+      }
+
+      <!-- Sin resultados de búsqueda/filtros -->
+      @if (recursos.length > 0 && recursosFiltrados.length === 0) {
+        <aside class="recursos__vacio">
+          <h3>No se encontraron resultados</h3>
+          <p>Intenta ajustar tus filtros de búsqueda</p>
+        </aside>
+      }
+
+      <!-- Lista de recursos -->
+      @if (recursosFiltrados.length > 0) {
+        <section class="recursos__seccion">
+          <li class="recursos__lista">
+            @for (recurso of recursosFiltrados; track recurso.id) {
+              <li>
+                <app-card-recurso
+                  [recurso]="recurso"
+                  [mostrarAcciones]="true"
+                  [mostrarVer]="false"
+                  (editar)="editarRecurso($event)"
+                  (eliminar)="eliminarRecurso($event)">
+                </app-card-recurso>
+              </li>
+            }
+          </li>
+        </section>
+      }
+
+      <div class="recursos__contenedor-boton">
+        <!-- Botón para crear nuevo recurso -->
+        <app-button
+          class="recursos__boton"
+          [variante]="'primario'"
+          [ariaLabel]="'Crear Recurso'"
+          (click)="crearRecurso()">
+          Crear Recurso
+        </app-button>
+      </div>
+    </section>
+  }
+</section>

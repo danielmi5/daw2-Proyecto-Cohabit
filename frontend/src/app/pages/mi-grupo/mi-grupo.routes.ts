@@ -5,6 +5,12 @@ import { Routes } from "@angular/router";
  */
 export const MI_GRUPO_RUTAS: Routes = [
   {
+    path: "",
+    loadComponent: () => import("../datos-grupo/datos-grupo").then(m => m.DatosGrupo),
+    title: "Datos del grupo",
+    data: { breadcrumb: "Datos del grupo" }
+  },
+  {
     path: "config",
     loadComponent: () => import("../config-grupo/config-grupo").then(m => m.ConfigGrupo),
     title: "Configuración",

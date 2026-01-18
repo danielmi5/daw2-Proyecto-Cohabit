@@ -10,16 +10,8 @@
     width: 100%;
   }
 
-  &__sidebar {
-    flex-shrink: 0;
-    width: 250px;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow-y: auto;
-  }
-
   &__contenido {
+    height: fit-content;
     flex: 1;
     padding: 0;
     overflow-x: hidden;
@@ -81,11 +73,5 @@
 @media (max-width: $breakpoint-tablet) {
   .mi-grupo {
     flex-direction: column;
-
-    &__sidebar {
-      width: 100%;
-      height: auto;
-      position: relative;
-    }
   }
 }

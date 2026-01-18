@@ -1,0 +1,72 @@
+<div class="buscador-filtros">
+  <!-- Barra de búsqueda -->
+  <div class="buscador-filtros__barra">
+    <div class="buscador-filtros__busqueda">
+      <app-form-input
+        id="busqueda"
+        name="busqueda"
+        tipo="text"
+        etiqueta=""
+        placeholder="Buscar recursos por nombre..."
+        [(ngModel)]="filtros.busqueda"
+        (input)="onBusquedaChange()"
+        aria-label="Buscar recursos">
+      </app-form-input>
+    </div>
+
+    @if (mostrarFiltros) {
+      <app-button
+        [tipo]="'button'"
+        (click)="toggleFiltrosAvanzados()"
+        aria-label="Filtros avanzados"
+        [attr.aria-expanded]="mostrarFiltrosAvanzados"
+        [variante]="'secundario'">
+        <span [feather]="'filter'" [tipo]="'botones'"></span>
+        Filtros
+      </app-button>
+    }
+  </div>
+
+  <!-- Filtros avanzados -->
+  @if (mostrarFiltros && mostrarFiltrosAvanzados) {
+    <div class="buscador-filtros__avanzados">
+      <div class="buscador-filtros__grupo">
+          <label for="filtro-tipo" class="buscador-filtros__label">
+            <span [feather]="'tag'" [tipo]="'botones'"></span>
+            Tipo de recurso
+          </label>
+          <app-form-select
+            id="filtro-tipo"
+            name="filtro-tipo"
+            [opciones]="tiposOpciones"
+            [(ngModel)]="filtros.tipo"
+            (ngModelChange)="onFiltroChange()">
+          </app-form-select>
+      </div>
+
+      <div class="buscador-filtros__grupo">
+        <label for="filtro-estado" class="buscador-filtros__label">
+          <span [feather]="'activity'" [tipo]="'botones'"></span>
+          Estado
+        </label>
+        <app-form-select
+          id="filtro-estado"
+          name="filtro-estado"
+          [opciones]="estadosOpciones"
+          [(ngModel)]="filtros.estado"
+          (ngModelChange)="onFiltroChange()">
+        </app-form-select>
+      </div>
+
+      @if (hayFiltrosActivos) {
+        <app-button
+          [tipo]="'button'"
+          [variante]="'primario'"
+          (click)="limpiarFiltros()">
+          <span [feather]="'x-circle'" [tipo]="'botones'"></span>
+          Limpiar filtros
+        </app-button>
+      }
+    </div>
+  }
+</div>

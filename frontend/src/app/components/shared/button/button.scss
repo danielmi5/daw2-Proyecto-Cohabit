@@ -52,7 +52,7 @@
     }
 
     &__texto {
-        display: inline-block;
+        @include mixins.display-flex(row, $espaciado-s, space-between, center);
         font-size: $text-lg;
     }
 

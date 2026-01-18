@@ -18,7 +18,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -112,6 +115,24 @@ public class GrupoService {
             throw new EntidadNoEncontradaException("Grupo no encontrado: " + id);
         }
         grupoRepository.deleteById(id);
+    }
+
+    @Transactional
+    public GrupoResponseDTO subirFoto(Long id, MultipartFile archivo) {
+        Grupo grupoExistente = grupoRepository.findById(id)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Grupo no encontrado: " + id));
+
+        try {
+            // Convierte el archivo a base64
+            byte[] bytes = archivo.getBytes();
+            String base64 = "data:" + archivo.getContentType() + ";base64," + Base64.getEncoder().encodeToString(bytes);
+            
+            grupoExistente.setFotoGrupo(base64);
+            Grupo grupoGuardado = grupoRepository.save(grupoExistente);
+            return GrupoMapper.grupoEntidadAGrupoDto(grupoGuardado);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al procesar el archivo: " + e.getMessage());
+        }
     }
 
     /**

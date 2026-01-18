@@ -33,14 +33,18 @@ export class MiGrupo implements OnInit {
   cargando = signal<boolean>(true);
 
   ngOnInit(): void {
-    this.cargarUsuario();
+    // Recarga el usuario desde el backend de forma reactiva
+    this.authService.cargarUsuarioDesdeToken().subscribe({
+      next: () => this.cargarUsuario(),
+      error: () => this.cargarUsuario()
+    });
   }
 
   private cargarUsuario(): void {
     const usuario = this.authService.usuarioDetalles();
 
     if (usuario) {
-      // Si ya tenemos los datos del usuario, cargamos el grupo
+      // Si ya se dispone de los datos del usuario, se carga el grupo
       this.tieneGrupo.set(!!usuario.miembroGrupoId);
       if (usuario.miembroGrupoId) {
         this.cargarGrupo(usuario.miembroGrupoId);
@@ -48,19 +52,9 @@ export class MiGrupo implements OnInit {
         this.cargando.set(false);
       }
     } else {
-      // Si aún no se han cargado los datos del usuario, esperamos un poco y volvemos a intentar
-      const checkUsuario = setInterval(() => {
-        const usuarioActualizado = this.authService.usuarioDetalles();
-        if (usuarioActualizado) {
-          clearInterval(checkUsuario);
-          this.tieneGrupo.set(!!usuarioActualizado.miembroGrupoId);
-          if (usuarioActualizado.miembroGrupoId) {
-            this.cargarGrupo(usuarioActualizado.miembroGrupoId);
-          } else {
-            this.cargando.set(false);
-          }
-        }
-      }, 100);
+      // No hay usuario disponible
+      this.cargando.set(false);
+      this.tieneGrupo.set(false);
     }
   }
 
@@ -93,7 +87,7 @@ export class MiGrupo implements OnInit {
       next: (usuario) => {
         this.notificacionService.success("Grupo creado exitosamente");
         this.cerrarModal();
-        // Ahora que el usuario está actualizado, cargar el grupo
+        // Ahora que el usuario está actualizado, se carga el grupo
         this.cargarUsuario();
       },
       error: (error) => {

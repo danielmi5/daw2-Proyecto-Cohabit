@@ -77,7 +77,6 @@ export class ApiService {
     archivo: File,
     camposAdicionales?: { [clave: string]: string | Blob },
     metodo: 'POST' | 'PUT' = 'POST',
-    options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }
   ): Observable<T> {
     const datosFormulario = new FormData();
     datosFormulario.append('archivo', archivo, archivo.name);
@@ -89,9 +88,10 @@ export class ApiService {
       });
     }
 
-    const peticion = metodo === 'PUT'
-      ? this.http.put<T>(this.construirUrl(endpoint), datosFormulario, options)
-      : this.http.post<T>(this.construirUrl(endpoint), datosFormulario, options);
+    // NO establecer Content-Type manualmente para FormData
+    // El navegador lo hará automáticamente con el boundary correcto
+    // Y el interceptor de auth añadirá el Authorization header
+    const peticion = metodo === 'PUT' ? this.http.put<T>(this.construirUrl(endpoint), datosFormulario) : this.http.post<T>(this.construirUrl(endpoint), datosFormulario);
 
     return peticion.pipe(catchError(error => this.handleError(error)));
   }
@@ -125,9 +125,10 @@ export class ApiService {
       });
     }
 
+    // NO establecer Content-Type manualmente para FormData
     const peticion = metodo === 'PUT'
-      ? this.http.put<T>(this.construirUrl(endpoint), datosFormulario, options)
-      : this.http.post<T>(this.construirUrl(endpoint), datosFormulario, options);
+      ? this.http.put<T>(this.construirUrl(endpoint), datosFormulario)
+      : this.http.post<T>(this.construirUrl(endpoint), datosFormulario);
 
     return peticion.pipe(catchError(error => this.handleError(error)));
   }

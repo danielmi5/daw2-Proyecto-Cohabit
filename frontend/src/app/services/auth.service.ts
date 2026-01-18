@@ -1,7 +1,7 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap, catchError, throwError } from 'rxjs';
+import { Observable, tap, catchError, of } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { LoginRequest, RegisterRequest, AuthResponse, DecodedToken } from '../models/auth.models';
 import { UsuarioResponse } from '../models/usuario.model';
@@ -127,16 +127,15 @@ export class AuthService {
     setTimeout(() => {
       if (!this.cargaInicial && this.tokenSignal()) {
         this.cargaInicial = true;
-        this.cargarUsuarioDesdeToken().subscribe();
+        this.cargarUsuarioDesdeToken().subscribe({ next: () => {}, error: () => {} });
       }
     }, 0);
   }
-
   public cargarUsuarioDesdeToken(): Observable<UsuarioResponse | null> {
     const token = this.tokenSignal();
     if (!token) {
       this.usuarioDetalles.set(null);
-      return throwError(() => new Error('No token available'));
+      return of(null);
     }
 
     // Se obtiene los datos del usuario usando el endpoint /auth/me
@@ -146,7 +145,7 @@ export class AuthService {
       }),
       catchError((error) => {
         this.usuarioDetalles.set(null);
-        return throwError(() => error);
+        return of(null);
       })
     );
   }

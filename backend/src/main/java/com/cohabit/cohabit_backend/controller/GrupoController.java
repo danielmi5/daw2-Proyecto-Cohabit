@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import jakarta.validation.Valid;
@@ -103,5 +104,19 @@ public class GrupoController {
         @Parameter(description = "ID del creador") @RequestParam(name = "creadorId", required = false) Long creadorId,
         Pageable pageable) {
         return ResponseEntity.ok(grupoService.buscarPorFiltros(nombre, descripcion, creadorId, pageable));
+    }
+
+    @PutMapping("/{id}/foto")
+    @Operation(summary = "Subir foto del grupo", description = "Subir o actualizar la foto de un grupo")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Foto subida exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Grupo no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Solo el creador o administradores pueden subir la foto", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdmin(#id)")
+    public ResponseEntity<GrupoResponseDTO> subirFoto(
+        @Parameter(description = "ID del grupo") @PathVariable Long id,
+        @Parameter(description = "Archivo de imagen") @RequestParam("archivo") MultipartFile archivo) {
+        return ResponseEntity.ok(grupoService.subirFoto(id, archivo));
     }
 }

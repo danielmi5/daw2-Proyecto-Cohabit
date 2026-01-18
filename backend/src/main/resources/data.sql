@@ -83,6 +83,11 @@ INSERT INTO reservas (fecha, hora_inicio, hora_fin, notas, num_personas, estado,
 (CURRENT_DATE - 7, '20:00:00', '22:00:00', 'Cena que finalmente no se realizó por enfermedad.', 3, 'CANCELADA', 3, 3, 2, NOW() - INTERVAL '8 days', NOW() - INTERVAL '7 days'),
 (CURRENT_DATE - 1, '15:00:00', '16:00:00', 'Limpieza cancelada por falta de tiempo.', 1, 'CANCELADA', 6, 5, 2, NOW() - INTERVAL '2 days', NOW() - INTERVAL '1 day');
 
+-- Ajusta columnas de imagen a tipo TEXT para permitir almacenar cadenas grandes
+ALTER TABLE usuarios ALTER COLUMN foto_perfil TYPE text;
+ALTER TABLE grupos ALTER COLUMN foto_grupo TYPE text;
+ALTER TABLE recursos ALTER COLUMN foto_recurso TYPE text;
+
 -- Muestra resumen de los datos insertados
 SELECT 'Datos insertados correctamente:' AS status;
 SELECT COUNT(*) AS total_usuarios FROM usuarios;

@@ -29,6 +29,8 @@ public class Grupo {
     @Column(length = 1000)
     private String descripcion;
 
+    @Lob
+    @Column(name = "foto_grupo", columnDefinition = "text")
     private String fotoGrupo;
 
     @Column(nullable = false, unique = true)

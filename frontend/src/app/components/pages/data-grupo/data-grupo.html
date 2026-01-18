@@ -1,53 +1,79 @@
 <section class="data-grupo">
     <h2 class="data-grupo__titulo">Datos del grupo</h2>
+    
+    @if (!puedeEditar()) {
+    <div class="data-grupo__aviso">
+        <p>Solo el creador o administradores del grupo pueden editar estos datos</p>
+    </div>
+    }
 
-    <div class="data-grupo_secciones">
-        <section class="data-grupo__foto-seccion">
+    <div class="data-grupo__secciones">
+        <section class="data-grupo__seccion data-grupo__foto-seccion">
             <h3 class="data-grupo__subtitulo">Foto del grupo</h3>
-            <article class="data-grupo__foto-area">
-            <figure class="data-grupo__avatar">
-                @if (grupo?.fotoGrupo) {
-                <img [src]="grupo?.fotoGrupo" alt="Foto del grupo" />
-                } @else {
-                <div class="data-grupo__avatar-placeholder"></div>
-                }
-            </figure>
+            <article class="data-grupo__foto-contenido">
+                <figure class="data-grupo__foto">
+                    @if (grupo?.fotoGrupo) {
+                    <img [src]="grupo?.fotoGrupo" alt="Foto del grupo" />
+                    } @else {
+                    <div class="data-grupo__foto-placeholder"></div>
+                    }
+                </figure>
 
-            <nav class="data-grupo__acciones">
-                <label class="app-button" for="fileInput">Subir foto</label>
-                <input id="fileInput" type="file" (change)="onSeleccionarArchivo($event)" accept="image/*" hidden />
-                <button class="link" (click)="onEliminarFoto()">Eliminar</button>
-            </nav>
+                <section class="data-grupo__acciones">
+                    <app-button 
+                        tipo="button" 
+                        (click)="openFileSelector()" 
+                        [variante]="'primario'"
+                        [deshabilitado]="!puedeEditar()">
+                        Subir foto
+                    </app-button>
+                    <label 
+                        (click)="onEliminarFoto()"
+                        [class.disabled]="!puedeEditar()">
+                        Eliminar
+                    </label>
+                </section>
 
-            <section class="data-grupo__nota">
-                <h4>La imagen debe de ser:</h4>
-                <ol>
-                <li>Min. 400 x 400px</li>
-                <li>Max. 2MB</li>
-                </ol>
-            </section>
+                <section class="data-grupo__nota">
+                    <h4 class="data-grupo__nota__titulo">La imagen debe de ser:</h4>
+                    <ol class="data-grupo__nota__lista">
+                        <li>Min. 400 x 400px</li>
+                        <li>Max. 2MB</li>
+                    </ol>
+                </section>
             </article>
         </section>
 
-        <section class="data-grupo__detalles">
+        <section class="data-grupo__seccion data-grupo__detalles">
         <h3 class="data-grupo__subtitulo">Detalles</h3>
 
         <form class="data-grupo__form" [formGroup]="formulario" (ngSubmit)="onGuardar()">
             <app-form-input
-            id="nombre"
-            name="nombre"
-            etiqueta="Nombre del grupo"
-            placeholder="Placeholder"
-            formControlName="nombre">
+                id="nombre"
+                name="nombre"
+                etiqueta="Nombre del grupo"
+                [placeholder]="grupo?.nombre ?? 'Introduce el nombre'"
+                [desactivado]="!puedeEditar()"
+                formControlName="nombre">
             </app-form-input>
 
             <app-form-input
-            id="direccion"
-            name="direccion"
-            etiqueta="Dirección"
-            placeholder="Placeholder"
-            formControlName="direccion">
+                id="direccion"
+                name="direccion"
+                etiqueta="Dirección"
+                [placeholder]="grupo?.direccion ?? 'Introduce la dirección'"
+                [desactivado]="!puedeEditar()"
+                formControlName="direccion">
             </app-form-input>
+
+            <app-form-textarea
+                id="descripcion"
+                name="descripcion"
+                etiqueta="Descripción"
+                [placeholder]="grupo?.descripcion ?? 'Describe tu grupo o añade información adicional...'"
+                [desactivado]="!puedeEditar()"
+                formControlName="descripcion">
+            </app-form-textarea>
 
             <section class="data-grupo__stats">
             <p><strong>Número de miembros:</strong> {{ grupo?.miembrosIds?.length ?? 0 }}</p>
@@ -55,7 +81,12 @@
             </section>
 
             <footer class="data-grupo__footer">
-            <app-button tipo="submit" [variante]="'primario'">Guardar</app-button>
+            <app-button 
+                tipo="submit" 
+                [variante]="'primario'"
+                [deshabilitado]="!puedeEditar()">
+                Guardar
+            </app-button>
             </footer>
         </form>
         </section>

@@ -23,7 +23,13 @@
       <!--<section class="mi-grupo__contenido"> -->
         <!--<router-outlet /> -->
       <!--</section> -->
-      <app-data-grupo></app-data-grupo>
+      <app-data-grupo 
+        [grupo]="grupoActual()"
+        [miembro]="miembroActual()"
+        (actualizar)="actualizarGrupo($event)"
+        (subirFoto)="subirFotoGrupo($event)"
+        (eliminarFoto)="eliminarFotoGrupo()">
+      </app-data-grupo>
     </div>
 
   }

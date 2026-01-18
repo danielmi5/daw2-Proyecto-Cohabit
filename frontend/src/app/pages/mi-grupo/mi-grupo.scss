@@ -3,8 +3,12 @@
 
 // Bloque principal
 .mi-grupo {
-  @include mixins.display-flex(row, 0, stretch, flex-start);
+  display: flex;
   background-color: var(--bg-secundario);
+
+  app-data-grupo{
+    width: 100%;
+  }
 
   &__sidebar {
     flex-shrink: 0;

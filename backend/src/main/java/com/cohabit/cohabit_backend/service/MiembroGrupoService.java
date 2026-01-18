@@ -63,7 +63,12 @@ public class MiembroGrupoService {
         }
 
         MiembroGrupo entidad = MiembroGrupoMapper.miembroGrupoRequestAMiembroGrupoEntidad(dto, usuario, grupo);
-        entidad.setRol(RolGrupo.MIEMBRO);
+        // Si el DTO trae un rol explícito, lo utiliza. En caso contrario, se asigna por defecto MIEMBRO.
+        if (dto.getRol() != null) {
+            entidad.setRol(dto.getRol());
+        } else {
+            entidad.setRol(RolGrupo.MIEMBRO);
+        }
         entidad.setActivo(true);
         MiembroGrupo miembroGuardado = miembroRepo.save(entidad);
         return MiembroGrupoMapper.miembroGrupoEntidadAMiembroGrupoDto(miembroGuardado);

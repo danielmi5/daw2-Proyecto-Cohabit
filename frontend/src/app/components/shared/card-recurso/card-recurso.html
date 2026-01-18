@@ -1,0 +1,62 @@
+<article class="card-recurso">
+  <div class="card-recurso__imagen-contenedor">
+    @if (recurso.fotoRecurso) {
+      <img class="card-recurso__imagen" [src]="recurso.fotoRecurso" [alt]="recurso.nombre || 'Recurso'" />
+    }
+  </div>
+
+  <div class="card-recurso__contenido">
+      <header class="card-recurso__header">
+      <h3 class="card-recurso__titulo">{{ recurso.nombre || 'Sin nombre' }}</h3>
+      <app-etiqueta-recurso [estado]="recurso.estadoActual"></app-etiqueta-recurso>
+    </header>
+
+    <section class="card-recurso__cuerpo">
+      @if (recurso.descripcion) {
+        <p class="card-recurso__descripcion">{{ recurso.descripcion }}</p>
+      }
+
+      <ul class="card-recurso__detalles">
+        @if (recurso.tipo) {
+          <li class="card-recurso__detalle">
+            <span [feather]="'tag'" [tipo]="'botones'"></span>
+            <span>{{ recurso.tipo }}</span>
+          </li>
+        }
+        @if (recurso.capacidad) {
+          <li class="card-recurso__detalle">
+            <span [feather]="'users'" [tipo]="'botones'"></span>
+            <span>{{ recurso.capacidad }} personas</span>
+          </li>
+        }
+        @if (recurso.ubicacion) {
+          <li class="card-recurso__detalle">
+            <span [feather]="'map-pin'" [tipo]="'botones'"></span>
+            <span>{{ recurso.ubicacion }}</span>
+          </li>
+        }
+      </ul>
+    </section>
+
+    @if (mostrarAcciones) {
+      <div class="card-recurso__acciones">
+        @if (mostrarVer) {
+          <app-button variante="fantasma" aria-label="Ver detalles del recurso" (click)="onVer()">
+            Ver detalles
+            <span [feather]="'arrow-right'" [tipo]="'botones'"></span>
+          </app-button>
+        }
+
+        <div class="card-recurso__acciones--card">
+          <app-button variante="fantasma" aria-label="Editar recurso" (click)="onEditar()">
+            <span [feather]="'edit-2'" [tipo]="'botones'"></span>
+          </app-button>
+
+          <app-button variante="fantasma" aria-label="Eliminar recurso" (click)="onEliminar()">
+            <span [feather]="'trash-2'" [tipo]="'botones'"></span>
+          </app-button>
+        </div>
+      </div>
+    }
+  </div>
+</article>

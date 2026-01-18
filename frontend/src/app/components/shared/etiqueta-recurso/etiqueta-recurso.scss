@@ -1,0 +1,33 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.etiqueta-recurso {
+  @include mixins.tipografia(texto-pequeno, var(--texto-secundario));
+  padding: $espaciado-xs $espaciado-s;
+  border-radius: $radio-sm;
+  display: inline-block;
+  width: fit-content;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &--disponible {
+    background-color: rgba($color-success, 0.1);
+    color: $color-success;
+  }
+
+  &--ocupado {
+    background-color: rgba($color-error, 0.1);
+    color: $color-error;
+  }
+
+  &--mantenimiento {
+    background-color: rgba($color-warning, 0.1);
+    color: $color-warning;
+  }
+
+  &--fuera-servicio {
+    background-color: rgba($gris2, 0.1);
+    color: $gris2;
+  }
+}

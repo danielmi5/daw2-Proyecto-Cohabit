@@ -1,0 +1,114 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.card-recurso {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  border-radius: $radio-card;
+  background-color: var(--bg-cards);
+  border: 1px solid var(--borde-cards);
+  height: 100%;
+
+  &__imagen-contenedor {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background-color: $gris1;
+    @include mixins.display-flex(column, $espaciado-s, center, center)
+  }
+
+  &__imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  &__imagen-placeholder {
+    @include mixins.centrar-flex(column);
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--bg-secundario) 0%, var(--bg-cards) 100%);
+    color: var(--texto-terciario);
+
+    svg {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  &__contenido {
+    @include mixins.display-flex(column, $espaciado-m, stretch, flex-start);
+    padding: $espaciado-m;
+    flex: 1;
+  }
+
+  &__header {
+    width: 100%;
+    @include mixins.display-flex(row, $espaciado-xs, center, space-between);
+  }
+
+  &__titulo {
+    margin: 0;
+    @include mixins.tipografia(h4, var(--titulos));
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Estado moved to app-etiqueta-recurso component */
+
+  &__cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: $espaciado-m;
+    flex: 1;
+
+    color: var(--texto-primario);
+  }
+
+  &__descripcion {
+    @include mixins.tipografia(parrafo, var(--texto-primario));
+  }
+
+  &__detalles {
+    list-style: none;
+    @include mixins.display-flex(column, $espaciado-s, flex-start, stretch);
+  }
+
+  &__detalle {
+    @include mixins.display-flex(row, $espaciado-s, center, center);
+    @include mixins.tipografia(texto-pequeno, var(--texto-primario));
+
+    svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: var(--texto-terciario);
+    }
+  }
+
+  &__acciones {
+    @include mixins.display-flex(row, $espaciado-s, center, space-between);
+    border-top: 1px solid var(--borde-cards);
+    padding: $espaciado-m 0;
+
+    &--card{
+      @include mixins.display-flex(row, $espaciado-xs, center, space-between)
+    }
+  }
+}
+
+// Responsive
+@media (max-width: $breakpoint-tablet) {
+  .card-recurso {
+    &__imagen-contenedor {
+      height: 160px;
+    }
+
+    &__contenido {
+      padding: $espaciado-s;
+    }
+  }
+}

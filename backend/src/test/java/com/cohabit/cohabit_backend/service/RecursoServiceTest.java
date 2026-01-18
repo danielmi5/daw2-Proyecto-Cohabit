@@ -187,12 +187,12 @@ class RecursoServiceTest {
     void buscarPorFiltros() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Recurso> page = new PageImpl<>(List.of(recurso));
-        when(recursoRepo.findByFilters(1L, TipoRecurso.HABITACION, null, null, null, null, pageable)).thenReturn(page);
+        when(recursoRepo.findByFilters(1L, TipoRecurso.ESPACIO, null, null, null, null, pageable)).thenReturn(page);
 
-        Page<RecursoResponseDTO> resultado = recursoService.buscarPorFiltros(1L, TipoRecurso.HABITACION, null, null, null, null, pageable);
+        Page<RecursoResponseDTO> resultado = recursoService.buscarPorFiltros(1L, TipoRecurso.ESPACIO, null, null, null, null, pageable);
 
         assertNotNull(resultado);
         assertEquals(1, resultado.getTotalElements());
-        verify(recursoRepo, times(1)).findByFilters(1L, TipoRecurso.HABITACION, null, null, null, null, pageable);
+        verify(recursoRepo, times(1)).findByFilters(1L, TipoRecurso.ESPACIO, null, null, null, null, pageable);
     }
 }

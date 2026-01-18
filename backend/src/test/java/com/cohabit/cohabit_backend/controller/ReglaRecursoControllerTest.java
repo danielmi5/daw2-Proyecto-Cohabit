@@ -76,7 +76,7 @@ class ReglaRecursoControllerTest {
                 .descripcion("descripcion")
                 .capacidad(1)
                 .ubicacion("ubicacion")
-                .tipo(TipoRecurso.HABITACION)
+                .tipo(TipoRecurso.ESPACIO)
                 .estadoActual(EstadoRecurso.DISPONIBLE)
                 .grupoId(grupo.getId())
                 .creadorId(1L)

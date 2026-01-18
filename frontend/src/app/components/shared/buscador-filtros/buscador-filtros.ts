@@ -9,8 +9,8 @@ import { TipoRecurso, EstadoRecurso } from '../../../models/backend-types';
 
 export interface FiltrosRecurso {
   busqueda: string;
-  tipo: TipoRecurso | '';
-  estado: EstadoRecurso | '';
+  tipo: TipoRecurso | "";
+  estado: EstadoRecurso | "";
 }
 
 @Component({
@@ -25,27 +25,27 @@ export class BuscadorFiltros {
   @Output() filtrosChange = new EventEmitter<FiltrosRecurso>();
 
   filtros: FiltrosRecurso = {
-    busqueda: '',
-    tipo: '',
-    estado: ''
+    busqueda: "",
+    tipo: "",
+    estado: ""
   };
 
   mostrarFiltrosAvanzados = false;
 
-  tiposRecurso: { valor: TipoRecurso | '', etiqueta: string }[] = [
-    { valor: '', etiqueta: 'Todos los tipos' },
-    { valor: 'SALA', etiqueta: 'Sala' },
-    { valor: 'VEHICULO', etiqueta: 'Vehículo' },
-    { valor: 'EQUIPO', etiqueta: 'Equipo' },
-    { valor: 'OTRO', etiqueta: 'Otro' }
+  tiposRecurso: { valor: TipoRecurso | "", etiqueta: string }[] = [
+    { valor: "", etiqueta: "Todos los tipos" },
+    { valor: "ESPACIO", etiqueta: "Espacio" },
+    { valor: "OBJETO", etiqueta: "Objeto" },
+    { valor: "SERVICIO", etiqueta: "Servicio" },
+    { valor: "OTRO", etiqueta: "Otro" }
   ];
 
-  estadosRecurso: { valor: EstadoRecurso | '', etiqueta: string }[] = [
-    { valor: '', etiqueta: 'Todos los estados' },
-    { valor: 'DISPONIBLE', etiqueta: 'Disponible' },
-    { valor: 'OCUPADO', etiqueta: 'Ocupado' },
-    { valor: 'EN_MANTENIMIENTO', etiqueta: 'En mantenimiento' },
-    { valor: 'FUERA_DE_SERVICIO', etiqueta: 'Fuera de servicio' }
+  estadosRecurso: { valor: EstadoRecurso | "", etiqueta: string }[] = [
+    { valor: "", etiqueta: "Todos los estados" },
+    { valor: "DISPONIBLE", etiqueta: "Disponible" },
+    { valor: "OCUPADO", etiqueta: "Ocupado" },
+    { valor: "EN_MANTENIMIENTO", etiqueta: "En mantenimiento" },
+    { valor: "FUERA_DE_SERVICIO", etiqueta: "Fuera de servicio" }
   ];
 
   // Opciones adaptadas para `app-form-select` (array { value, label })
@@ -71,9 +71,9 @@ export class BuscadorFiltros {
 
   limpiarFiltros(): void {
     this.filtros = {
-      busqueda: '',
-      tipo: '',
-      estado: ''
+      busqueda: "",
+      tipo: "",
+      estado: ""
     };
     this.emitirFiltros();
   }
@@ -83,6 +83,6 @@ export class BuscadorFiltros {
   }
 
   get hayFiltrosActivos(): boolean {
-    return this.filtros.tipo !== '' || this.filtros.estado !== '';
+    return this.filtros.tipo !== "" || this.filtros.estado !== "";
   }
 }

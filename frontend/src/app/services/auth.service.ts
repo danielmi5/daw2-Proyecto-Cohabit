@@ -6,13 +6,15 @@ import { jwtDecode } from 'jwt-decode';
 import { LoginRequest, RegisterRequest, AuthResponse, DecodedToken } from '../models/auth.models';
 import { UsuarioResponse } from '../models/usuario.model';
 import { handleHttpError } from './error-handler.util';
+import { RUNTIME_CONFIG } from '../../runtime-config';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private apiUrl = '/auth';
+  private apiUrl = `${RUNTIME_CONFIG.apiBaseUrl.replace(/\/+$/,'')}/auth`;
+
 
   private readonly KEY_LOCAL_STORAGE = 'auth_token';
 

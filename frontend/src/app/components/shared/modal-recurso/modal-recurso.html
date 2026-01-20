@@ -1,0 +1,90 @@
+@if (visible) {
+  <section class="modal-recurso" (click)="onClickFondo($event)">
+    <div class="modal-recurso__contenido">
+      <form class="modal-recurso__formulario" [formGroup]="formulario" (ngSubmit)="onGuardar()">
+        <h2 class="modal-recurso__titulo">{{ modoEdicion ? 'Editar recurso' : 'Crear recurso' }}</h2>
+
+        <fieldset class="modal-recurso__fieldset">
+          <app-form-input
+            id="nombre"
+            name="nombre"
+            tipo="text"
+            etiqueta="Nombre del recurso"
+            formControlName="nombre"
+            [requerido]="true"
+            placeholder="Ej: Sala de reuniones A">
+          </app-form-input>
+
+          <app-form-textarea
+            id="descripcion"
+            name="descripcion"
+            etiqueta="Descripción"
+            formControlName="descripcion"
+            placeholder="Descripción del recurso"
+            [rows]="3">
+          </app-form-textarea>
+
+          <div class="modal-recurso__fila">
+            <app-form-select
+              id="tipo"
+              name="tipo"
+              etiqueta="Tipo"
+              formControlName="tipo"
+              [requerido]="true">
+              @for (tipo of tiposRecurso; track tipo.valor) {
+                <option [value]="tipo.valor">{{ tipo.etiqueta }}</option>
+              }
+            </app-form-select>
+
+            <app-form-select
+              id="estadoActual"
+              name="estadoActual"
+              etiqueta="Estado"
+              formControlName="estadoActual"
+              [requerido]="true">
+              @for (estado of estadosRecurso; track estado.valor) {
+                <option [value]="estado.valor">{{ estado.etiqueta }}</option>
+              }
+            </app-form-select>
+          </div>
+
+          <div class="modal-recurso__fila">
+            <app-form-input
+              id="capacidad"
+              name="capacidad"
+              tipo="number"
+              etiqueta="Capacidad"
+              formControlName="capacidad"
+              placeholder="0">
+            </app-form-input>
+
+            <app-form-input
+              id="ubicacion"
+              name="ubicacion"
+              tipo="text"
+              etiqueta="Ubicación"
+              formControlName="ubicacion"
+              placeholder="Ej: Planta 1">
+            </app-form-input>
+          </div>
+
+          
+        </fieldset>
+
+        <footer class="modal-recurso__footer">
+          <app-button
+            [variante]="'secundario'"
+            (click)="onCerrar()">
+            Cancelar
+          </app-button>
+          <app-button
+            [tipo]="'submit'"
+            [variante]="'primario'"
+            [deshabilitado]="formulario.invalid">
+            {{ modoEdicion ? 'Guardar cambios' : 'Crear recurso' }}
+          </app-button>
+        </footer>
+      </form>
+    </div>
+  </section>
+}

@@ -4,7 +4,6 @@
 .data-grupo {
   width: 100%;
   @include mixins.display-flex(column, $espaciado-l, center, center);
-  padding: $espaciado-xxl;
 
 
   &__titulo {

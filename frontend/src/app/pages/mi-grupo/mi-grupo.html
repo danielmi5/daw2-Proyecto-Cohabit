@@ -1,6 +1,27 @@
-<div class="mi-grupo">
-  <app-sidebar [variante]="'grupo'" />
-  <section class="mi-grupo__contenido">
-    <router-outlet></router-outlet>
+@if (cargando()) {
+  <section class="mi-grupo__estado mi-grupo__estado--carga">
+    <div class="mi-grupo__cargador"></div>
+    <p>Cargando...</p>
   </section>
-</div>
+} @else if (tieneGrupo()) {
+  <div class="mi-grupo">
+    <app-sidebar [variante]="'grupo'" />
+    <section class="mi-grupo__contenido">
+      <router-outlet></router-outlet>
+    </section>
+  </div>
+} @else {
+  <section class="mi-grupo__vacio">
+    <div class="mi-grupo__vacio-contenido">
+      <h2 class="mi-grupo__vacio-titulo">No perteneces a ningún grupo</h2>
+      <p class="mi-grupo__vacio-texto">Crea un grupo para empezar a gestionar recursos compartidos</p>
+      <button class="mi-grupo__vacio-boton" (click)="abrirModal()">Crear Grupo</button>
+    </div>
+  </section>
+}
+
+<app-modal-grupo
+  [visible]="mostrarModal()"
+  (cerrar)="cerrarModal()"
+  (guardar)="crearGrupo($event)">
+</app-modal-grupo>

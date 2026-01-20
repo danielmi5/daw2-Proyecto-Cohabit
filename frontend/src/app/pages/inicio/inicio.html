@@ -30,7 +30,15 @@
   
   <article class="caracteristicas__contenido">
     <picture class="caracteristicas__imagen">
-      <img src="img/inicio.png" alt="Imagen de características" class="caracteristicas__ilustracion">
+      <!-- AVIF si el navegador lo soporta -->
+      <source type="image/avif" srcset="/img_optimizadas/inicio-sm.avif 400w, /img_optimizadas/inicio-md.avif 800w, /img_optimizadas/inicio-lg.avif 1200w" sizes="(max-width: 768px) 100vw, 1200px">
+      <!-- WebP como alternativa -->
+      <source type="image/webp" srcset="/img_optimizadas/inicio-sm.webp 400w, /img_optimizadas/inicio-md.webp 800w, /img_optimizadas/inicio-lg.webp 1200w" sizes="(max-width: 768px) 100vw, 1200px">
+      <!-- Fallback JPG -->
+      <img src="/img_optimizadas/inicio-800.jpg"
+          srcset="/img_optimizadas/inicio-sm.jpg 400w, /img_optimizadas/inicio-8mdjpg 800w, /img_optimizadas/inicio-12lgpg 1200w"
+          sizes="(max-width: 768px) 100vw, 1200px"
+          alt="Vista general de la aplicación Cohabit" width="1200" height="500">
     </picture>
     
     <ul class="caracteristicas__lista">

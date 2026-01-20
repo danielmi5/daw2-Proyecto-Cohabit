@@ -17,13 +17,15 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import com.cohabit.cohabit_backend.entity.TipoRecurso;
 import com.cohabit.cohabit_backend.entity.EstadoRecurso;
-import org.springframework.data.domain.PageImpl;
 
 @Service
 public class RecursoService {
@@ -38,6 +40,7 @@ public class RecursoService {
         this.miembroRepo = miembroRepo;
     }
 
+    @Transactional(readOnly = true)
     public RecursoResponseDTO obtenerPorId(Long id) {
         Recurso recurso = recursoRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Recurso no encontrado: " + id));
         return RecursoMapper.recursoEntidadARecursoDto(recurso);
@@ -102,6 +105,9 @@ public class RecursoService {
         if (!recursoRepo.existsById(id)) throw new EntidadNoEncontradaException("Recurso no encontrado: " + id);
         recursoRepo.deleteById(id);
     }
+
+    
+
     public Page<RecursoResponseDTO> buscarPorFiltros(Long grupoId, TipoRecurso tipo, EstadoRecurso estado, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Pageable pageable) {
         var pagina = recursoRepo.findByFilters(grupoId, tipo, estado, fecha, horaInicio, horaFin, pageable);
         List<RecursoResponseDTO> dtos = pagina.getContent().stream().map(RecursoMapper::recursoEntidadARecursoDto).toList();

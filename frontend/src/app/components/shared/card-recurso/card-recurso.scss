@@ -15,7 +15,8 @@
     height: 180px;
     overflow: hidden;
     background-color: $gris1;
-    @include mixins.display-flex(column, $espaciado-s, center, center)
+    border-radius: $radio-card $radio-card 0 0;
+    @include mixins.display-flex(column, $espaciado-s, center, center);
   }
 
   &__imagen {

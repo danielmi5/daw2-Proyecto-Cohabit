@@ -77,4 +77,12 @@
       </div>
     </section>
   }
+
+  <app-modal-recurso
+    [visible]="mostrarModal"
+    [modoEdicion]="modoEdicion"
+    [recurso]="recursoSeleccionado"
+    (cerrar)="cerrarModal()"
+    (guardar)="guardarRecurso($event)">
+  </app-modal-recurso>
 </section>

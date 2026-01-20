@@ -2,11 +2,9 @@
 @use '../../../styles/01-tools/mixins' as mixins;
 
 .recursos {
-  padding: $espaciado-l;
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
   min-height: calc(100vh - 200px);
-  @include mixins.display-flex(column, $espaciado-l, center, center);
+  @include mixins.display-flex(column, $espaciado-l, center, flex-start);
   position: relative;
 
   &__titulo {
@@ -62,6 +60,7 @@
 
   // Contenido principal
   &__contenido {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: $espaciado-l;
@@ -96,7 +95,7 @@
   &__lista {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: $espaciado-l;
   }
 

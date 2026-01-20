@@ -26,7 +26,7 @@ export class ValidadoresAsincronosService {
       // Pequeño debounce para no disparar demasiadas peticiones
       return timer(300).pipe(
         switchMap(() => {
-          const url = `http://localhost:8080/api/usuarios/existe?email=${encodeURIComponent(valor)}`;
+          const url = `${RUNTIME_CONFIG.apiBaseUrl.replace(/\/+$/,'')}/api/usuarios/existe?email=${encodeURIComponent(valor)}`;
           return this.http.get<{ exists: boolean }>(url).pipe(
             map(resp => (resp.exists ? { emailTaken: true } : null))
           );

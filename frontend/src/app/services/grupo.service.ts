@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError, retry } from 'rxjs/operators';
-import { ApiListResponse, GrupoResponse, GrupoRequest, GrupoUpdate } from '../models';
+import { ApiListResponse, GrupoResponse, GrupoRequest, GrupoUpdate, RecursoResponse } from '../models';
 import { ApiService } from './api.service';
 import { handleHttpError } from './error-handler.util';
 
@@ -42,6 +42,10 @@ export class GrupoService {
 
   delete(id: number): Observable<void> {
     return this.api.delete<void>(`${this.base}/${id}`).pipe(catchError(error => this.handleError(error)));
+  }
+
+  getRecursos(id: number): Observable<RecursoResponse[]> {
+    return this.api.get<RecursoResponse[]>(`${this.base}/${id}/recursos`).pipe(retry(2), catchError(error => this.handleError(error)));
   }
 
   private handleError(error: any): Observable<never> {

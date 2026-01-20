@@ -1,38 +1,16 @@
 @if (cargando()) {
-  <section class="mi-grupo__estado mi-grupo__estado--carga">
-    <div class="mi-grupo__cargador"></div>
-    <p>Cargando...</p>
+  <section class="datos-grupo__estado datos-grupo__estado--carga">
+    <div class="datos-grupo__cargador"></div>
+    <p>Cargando datos del grupo...</p>
   </section>
 } @else {
-  @if (!tieneGrupo()) {
-    <section class="mi-grupo__vacio">
-      <div class="mi-grupo__vacio-contenido">
-        <h2 class="mi-grupo__vacio-titulo">No perteneces a ningún grupo</h2>
-        <p class="mi-grupo__vacio-texto">¿Deseas crear uno para empezar a gestionar tus recursos?</p>
-        <app-button 
-          [variante]="'primario'"
-          [ariaLabel]="'Crear Grupo'"
-          (click)="abrirModal()">
-          Crear Grupo
-        </app-button>
-      </div>
-    </section>
-  } @else {
-    <div class="datos-grupo">
-      <app-data-grupo 
-        [grupo]="grupoActual()"
-        [miembro]="miembroActual()"
-        (actualizar)="actualizarGrupo($event)"
-        (subirFoto)="subirFotoGrupo($event)"
-        (eliminarFoto)="eliminarFotoGrupo()">
-      </app-data-grupo>
-    </div>
-
-  }
+  <section class="datos-grupo">
+    <app-data-grupo 
+      [grupo]="grupoActual()"
+      [miembro]="miembroActual()"
+      (actualizar)="actualizarGrupo($event)"
+      (subirFoto)="subirFotoGrupo($event)"
+      (eliminarFoto)="eliminarFotoGrupo()">
+    </app-data-grupo>
+  </section>
 }
-
-<app-modal-grupo
-  [visible]="mostrarModal()"
-  (cerrar)="cerrarModal()"
-  (guardar)="crearGrupo($event)">
-</app-modal-grupo>

@@ -11,9 +11,9 @@
   }
 
   &__contenido {
+    padding: $espaciado-xxl;
     height: fit-content;
     flex: 1;
-    padding: 0;
     overflow-x: hidden;
   }
 
@@ -21,8 +21,9 @@
   // Estados de carga
   &__estado {
     @include mixins.centrar-flex(column);
-    min-height: 400px;
+    min-height: 100vh;
     gap: $espaciado-l;
+    background-color: var(--bg-secundario);
 
     &--carga {
       color: var(--texto-primario);
@@ -45,9 +46,10 @@
   // Estado vacío (sin grupo)
   &__vacio {
     @include mixins.centrar-flex(column);
-    min-height: 400px;
+    min-height: 100vh;
     text-align: center;
     padding: $espaciado-xxl;
+    background-color: var(--bg-secundario);
   }
 
   &__vacio-contenido {
@@ -73,5 +75,15 @@
 @media (max-width: $breakpoint-tablet) {
   .mi-grupo {
     flex-direction: column;
+  }
+}
+
+@media (max-width: $breakpoint-movil-grande) {
+  .mi-grupo {
+
+    &__contenido{
+      padding: $espaciado-xxl 0;
+    }
+    
   }
 }

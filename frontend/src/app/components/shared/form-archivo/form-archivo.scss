@@ -1,0 +1,98 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.subida-archivo {
+  width: 100%;
+
+  &__zona-arrastre {
+    @include mixins.display-flex(column, $espaciado-m, center, center);
+    border: 2px dashed var(--borde-cards);
+    border-radius: $radio-card;
+    padding: $espaciado-xxl;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: var(--bg-secundario);
+
+    &:hover {
+      border-color: var(--btn-primario);
+      background-color: var(--bg-cards);
+    }
+
+    &--arrastrando {
+      border-color: var(--btn-primario);
+      background-color: var(--bg-hover);
+      transform: scale(1.02);
+    }
+  }
+
+  &__entrada {
+    display: none;
+  }
+
+  &__icono {
+    color: var(--texto-primario);
+  }
+
+  &__texto-principal {
+    @include mixins.tipografia(parrafo, var(--texto-primario));
+    font-weight: $font-weight-medium;
+    margin: 0;
+  }
+
+  &__requisitos {
+    @include mixins.tipografia(pequeno, var(--texto-primario));
+    list-style: none;
+    padding: 0;
+    margin: $espaciado-s 0 0 0;
+    line-height: 1.6;
+
+    li {
+      margin: $espaciado-xs 0;
+    }
+  }
+
+  &__contenedor-previa {
+    @include mixins.display-flex(column, $espaciado-m);
+  }
+
+  &__vista-previa {
+    width: 100%;
+    border-radius: $radio-card;
+    overflow: hidden;
+    border: 2px solid var(--borde-cards);
+  }
+
+  &__imagen-previa {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 300px;
+    object-fit: contain;
+    background-color: var(--bg-secundario);
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .subida-archivo {
+    &__zona-arrastre {
+      padding: $espaciado-l;
+    }
+
+    &__icono {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .subida-archivo {
+    &__zona-arrastre {
+      padding: $espaciado-l;
+    }
+  }
+}
+
+  
+

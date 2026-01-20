@@ -24,4 +24,9 @@ export class SubidaArchivosService {
     const endpoint = `/api/grupos/${grupoId}/foto`;
     return this.subir(endpoint, archivo, camposAdicionales, 'PUT');
   }
+
+  subirFotoRecurso(recursoId: number, archivo: File, camposAdicionales?: { [key: string]: string | Blob }) : Observable<any> {
+    const endpoint = `/api/recursos/${recursoId}/foto`;
+    return this.subir(endpoint, archivo, camposAdicionales, 'PUT');
+  }
 }

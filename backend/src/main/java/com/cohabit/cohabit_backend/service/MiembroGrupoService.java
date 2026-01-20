@@ -35,6 +35,7 @@ public class MiembroGrupoService {
         this.usuarioRepo = usuarioRepo;
     }
 
+    @Transactional(readOnly = true)
     public MiembroGrupoResponseDTO obtenerPorId(Long id) {
         MiembroGrupo miembro = miembroRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Miembro no encontrado: " + id));
         return MiembroGrupoMapper.miembroGrupoEntidadAMiembroGrupoDto(miembro);

@@ -106,7 +106,22 @@ public class RecursoService {
         recursoRepo.deleteById(id);
     }
 
-    
+    @Transactional
+    public RecursoResponseDTO subirFoto(Long id, MultipartFile archivo) {
+        Recurso recursoExistente = recursoRepo.findById(id)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Recurso no encontrado: " + id));
+
+        try {
+            byte[] bytes = archivo.getBytes();
+            String base64 = "data:" + archivo.getContentType() + ";base64," + Base64.getEncoder().encodeToString(bytes);
+            
+            recursoExistente.setFotoRecurso(base64);
+            Recurso recursoGuardado = recursoRepo.save(recursoExistente);
+            return RecursoMapper.recursoEntidadARecursoDto(recursoGuardado);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al procesar el archivo: " + e.getMessage());
+        }
+    }
 
     public Page<RecursoResponseDTO> buscarPorFiltros(Long grupoId, TipoRecurso tipo, EstadoRecurso estado, LocalDate fecha, LocalTime horaInicio, LocalTime horaFin, Pageable pageable) {
         var pagina = recursoRepo.findByFilters(grupoId, tipo, estado, fecha, horaInicio, horaFin, pageable);

@@ -101,7 +101,19 @@ public class RecursoController {
         return ResponseEntity.noContent().build();
     }
 
-    
+    @PutMapping("/{id}/foto")
+    @Operation(summary = "Subir foto del recurso", description = "Subir o actualizar la foto de un recurso")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Foto subida exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Solo el creador o administradores pueden subir la foto", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esCreadorOAdminRecurso(#id) or @grupoSecurity.esCreadorDelRecurso(#id)")
+    public ResponseEntity<RecursoResponseDTO> subirFoto(
+        @Parameter(description = "ID del recurso") @PathVariable Long id,
+        @Parameter(description = "Archivo de imagen") @RequestParam("archivo") MultipartFile archivo) {
+        return ResponseEntity.ok(recursoService.subirFoto(id, archivo));
+    }
 
     @GetMapping("/buscar")
     @Operation(summary = "Buscar recursos", description = "Buscar recursos por filtros opcionales: grupo, tipo, estado y disponibilidad")

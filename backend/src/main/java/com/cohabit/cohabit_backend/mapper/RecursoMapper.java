@@ -19,6 +19,23 @@ public final class RecursoMapper {
             return null;
         }
 
+        List<Long> reservasIds = List.of();
+        List<Long> reglasIds = List.of();
+        
+        try {
+            if (recurso.getReservas() != null && org.hibernate.Hibernate.isInitialized(recurso.getReservas())) {
+                reservasIds = recurso.getReservas().stream().map(Reserva::getId).toList();
+            }
+        } catch (Exception e) {
+        }
+        
+        try {
+            if (recurso.getReglas() != null && org.hibernate.Hibernate.isInitialized(recurso.getReglas())) {
+                reglasIds = recurso.getReglas().stream().map(ReglaRecurso::getId).toList();
+            }
+        } catch (Exception e) {
+        }
+
         return RecursoResponseDTO.builder()
                 .id(recurso.getId())
                 .nombre(recurso.getNombre())
@@ -31,8 +48,8 @@ public final class RecursoMapper {
                 .grupoId(recurso.getGrupo() != null ? recurso.getGrupo().getId() : null)
                 .numero(recurso.getNumero())
                 .creadorId(recurso.getCreador() != null ? recurso.getCreador().getId() : null)
-                .reservasIds(recurso.getReservas() != null ? recurso.getReservas().stream().map(Reserva::getId).toList() : List.of())
-                .reglasIds(recurso.getReglas() != null ? recurso.getReglas().stream().map(ReglaRecurso::getId).toList() : List.of())
+                .reservasIds(reservasIds)
+                .reglasIds(reglasIds)
                 .fechaCreacion(recurso.getFechaCreacion())
                 .fechaActualizacion(recurso.getFechaActualizacion())
                 .build();

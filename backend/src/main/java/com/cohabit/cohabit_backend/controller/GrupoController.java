@@ -3,6 +3,7 @@ package com.cohabit.cohabit_backend.controller;
 import com.cohabit.cohabit_backend.dto.GrupoRequestDTO;
 import com.cohabit.cohabit_backend.dto.GrupoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.GrupoResponseDTO;
+import com.cohabit.cohabit_backend.dto.RecursoResponseDTO;
 import com.cohabit.cohabit_backend.service.GrupoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +23,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/grupos")
@@ -118,5 +120,18 @@ public class GrupoController {
         @Parameter(description = "ID del grupo") @PathVariable Long id,
         @Parameter(description = "Archivo de imagen") @RequestParam("archivo") MultipartFile archivo) {
         return ResponseEntity.ok(grupoService.subirFoto(id, archivo));
+    }
+
+    @GetMapping("/{id}/recursos")
+    @Operation(summary = "Obtener recursos del grupo", description = "Obtener todos los recursos asociados a un grupo")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Recursos obtenidos exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Grupo no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No eres miembro de este grupo", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembro(#id)")
+    public ResponseEntity<List<RecursoResponseDTO>> obtenerRecursos(
+        @Parameter(description = "ID del grupo") @PathVariable Long id) {
+        return ResponseEntity.ok(grupoService.obtenerRecursosPorGrupo(id));
     }
 }

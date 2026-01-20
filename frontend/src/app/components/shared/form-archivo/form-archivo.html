@@ -1,0 +1,44 @@
+ 
+@if (!previewUrl) {
+  <section
+    class="subida-archivo__zona-arrastre"
+    [class.subida-archivo__zona-arrastre--arrastrando]="isDragOver"
+    (click)="triggerFileInput()"
+    (drop)="onDrop($event)"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    role="region"
+    aria-label="Selector de archivo">
+
+    <input
+      type="file"
+      class="subida-archivo__entrada"
+      [accept]="accept"
+      (change)="onFileSelected($event)"
+      hidden>
+
+    <span [feather]="'upload-cloud'" [tipo]="'botones'" class="subida-archivo__icono" aria-hidden="true"></span>
+
+    <p class="subida-archivo__texto-principal">Haz clic para seleccionar o arrastra una imagen</p>
+
+    @if (mostrarRequisitos) {
+      <ul class="subida-archivo__requisitos">
+        <li>Formatos: JPG, PNG, GIF, WebP</li>
+        <li>Tamaño máximo: 5 MB</li>
+        <li>Recomendado: 800x600px o superior</li>
+      </ul>
+    }
+  </section>
+} @else {
+  <figure class="subida-archivo__contenedor-previa">
+    <img [src]="previewUrl" alt="Vista previa" class="subida-archivo__imagen-previa">
+    <figcaption class="subida-archivo__acciones">
+      <app-button
+        [variante]="'secundario'"
+        [tamanio]="'pequeno'"
+        (click)="removeFile()">
+        Quitar imagen
+      </app-button>
+    </figcaption>
+  </figure>
+}

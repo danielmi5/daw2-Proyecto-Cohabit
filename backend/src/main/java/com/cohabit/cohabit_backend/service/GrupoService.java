@@ -3,11 +3,13 @@ package com.cohabit.cohabit_backend.service;
 import com.cohabit.cohabit_backend.dto.GrupoRequestDTO;
 import com.cohabit.cohabit_backend.dto.GrupoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.GrupoResponseDTO;
+import com.cohabit.cohabit_backend.dto.RecursoResponseDTO;
 import com.cohabit.cohabit_backend.entity.Grupo;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
 import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.exception.UsuarioYaPerteneceAUnGrupoException;
 import com.cohabit.cohabit_backend.mapper.GrupoMapper;
+import com.cohabit.cohabit_backend.mapper.RecursoMapper;
 import com.cohabit.cohabit_backend.entity.RolGrupo;
 import com.cohabit.cohabit_backend.entity.Usuario;
 import com.cohabit.cohabit_backend.repository.GrupoRepository;
@@ -24,6 +26,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class GrupoService {
@@ -32,7 +35,7 @@ public class GrupoService {
     private final UsuarioRepository usuarioRepository;
     private final MiembroGrupoService miembroGrupoService;
 
-    public GrupoService(GrupoRepository grupoRepository, UsuarioRepository usuarioRepository,MiembroGrupoService miembroGrupoService) {
+    public GrupoService(GrupoRepository grupoRepository, UsuarioRepository usuarioRepository, MiembroGrupoService miembroGrupoService) {
         this.grupoRepository = grupoRepository;
         this.usuarioRepository = usuarioRepository;
         this.miembroGrupoService = miembroGrupoService;
@@ -152,5 +155,14 @@ public class GrupoService {
             }
         } while (grupoRepository.existsByCodigoInvitacion(codigo));
         return codigo;
+    }
+
+    @Transactional(readOnly = true)
+    public List<RecursoResponseDTO> obtenerRecursosPorGrupo(Long grupoId) {
+        Grupo grupo = grupoRepository.findById(grupoId)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Grupo no encontrado: " + grupoId));
+        return grupo.getRecursos().stream()
+                .map(RecursoMapper::recursoEntidadARecursoDto)
+                .collect(Collectors.toList());
     }
 }

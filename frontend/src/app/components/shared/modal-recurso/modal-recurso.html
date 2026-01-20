@@ -68,7 +68,13 @@
             </app-form-input>
           </div>
 
-          
+          <div class="modal-recurso__grupo-archivo">
+            <label class="modal-recurso__etiqueta">Foto del recurso</label>
+            <app-form-archivo
+              accept="image/*"
+              (archivoSeleccionado)="onArchivoSeleccionado($event)">
+            </app-form-archivo>
+          </div>
         </fieldset>
 
         <footer class="modal-recurso__footer">

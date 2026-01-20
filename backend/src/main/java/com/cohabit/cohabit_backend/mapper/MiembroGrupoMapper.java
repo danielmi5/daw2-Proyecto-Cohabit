@@ -19,14 +19,31 @@ public final class MiembroGrupoMapper {
             return null;
         }
 
+        List<Long> recursosIds = List.of();
+        List<Long> reservasIds = List.of();
+        
+        try {
+            if (miembroGrupo.getRecursos() != null && org.hibernate.Hibernate.isInitialized(miembroGrupo.getRecursos())) {
+                recursosIds = miembroGrupo.getRecursos().stream().map(Recurso::getId).toList();
+            }
+        } catch (Exception e) {
+        }
+        
+        try {
+            if (miembroGrupo.getReservas() != null && org.hibernate.Hibernate.isInitialized(miembroGrupo.getReservas())) {
+                reservasIds = miembroGrupo.getReservas().stream().map(Reserva::getId).toList();
+            }
+        } catch (Exception e) {
+        }
+
         return MiembroGrupoResponseDTO.builder()
                 .id(miembroGrupo.getId())
                 .usuarioId(miembroGrupo.getUsuario() != null ? miembroGrupo.getUsuario().getId() : null)
                 .grupoId(miembroGrupo.getGrupo() != null ? miembroGrupo.getGrupo().getId() : null)
                 .rol(miembroGrupo.getRol())
                 .fechaUnion(miembroGrupo.getFechaUnion())
-                .recursosIds(miembroGrupo.getRecursos() != null ? miembroGrupo.getRecursos().stream().map(Recurso::getId).toList() : List.of())
-                .reservasIds(miembroGrupo.getReservas() != null ? miembroGrupo.getReservas().stream().map(Reserva::getId).toList() : List.of())
+                .recursosIds(recursosIds)
+                .reservasIds(reservasIds)
                 .activo(miembroGrupo.isActivo())
                 .build();
     }

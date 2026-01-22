@@ -1,5 +1,16 @@
 # Documentación diseño
 
+## Índice
+
+- [Sección 1: Arquitectura CSS y comunicación visual](#sección-1-arquitectura-css-y-comunicación-visual)
+- [Sección 2: HTML semántico y estructura](#sección-2-html-semántico-y-estructura)
+- [Sección 3: Sistema de componentes UI](#sección-3-sistema-de-componentes-ui)
+- [Sección 4: Responsive design](#sección-4-responsive-design)
+- [Sección 5: Optimización multimedia](#sección-5-optimización-multimedia)
+- [Sección 6: Sistema de temas](#sección-6-sistema-de-temas)
+- [Sección 7: Aplicación completa y despliegue](#sección-7-aplicación-completa-y-despliegue)
+
+
 ## Sección 1: Arquitectura CSS y comunicación visual
 
 ### 1.1 Principios de comunicación visual
@@ -1362,21 +1373,155 @@ Este componente no está presenta como tal en la guía de estilos pero se puede 
 
 ### 4.1 Breakpoints definidos
 
+Estos son los endpoints definidos en `_variables.scss`:
+```scss
+$breakpoint-movil-pequeno: 320px;
+$breakpoint-movil: 375px;
+$breakpoint-movil-grande: 640px;
+$breakpoint-tablet: 768px;
+$breakpoint-escritorio: 1024px;
+$breakpoint-escritorio-grande: 1280px;
+```
+
+- 375px: Es el ancho lógico estándar de la mayoría de los iPhones y Androids compactos..
+
+- 640px: Funciona como un puente necesario para móviles grandes y visualización en horizontal, evitando saltos bruscos hacia la tablet.
+
+- 768px: Es el estándar universal para tablets en vertical. Es el punto crítico donde la interfaz suele dejar de ser móvil.
+
+- 1024px: Marca el inicio del entorno de escritorio (portátiles pequeños) y tablets en modo horizontal.
+
+- 1280px: Cubre la mayoría de las laptops HD y monitores de escritorio estándar, permitiendo ajustar el contenido antes de llegar a resoluciones Full HD.
+
+
 ### 4.2 Estrategia responsive
+
+He optado por desktop-first, me he basado en la naturaleza de la aplicación y como creo yo que es la experiencia de usuario esperada en este tipo de aplicaciones:
+
+Cohabit es una aplicación de gestión (recursos, reservas, grupos). Este tipo de aplicaciones suelen tener interfaces densas con tablas, barras laterales, calendarios y múltiples columnas de información. Es más natural diseñar estas estructuras complejas aprovechando el ancho completo de una pantalla de escritorio y luego simplificar los elementos para pantallas móviles, que hacerlo al revés, porque para mí es más fácil simplificar información reduciendo complejidad que desarrollarla complicando más el diseño. Además que la gestión suele realizarse con mayor comodidad desde un ordenador.
+
+Por ejemplo, en el componente `Footer`, cuando sobrepasa el limite de la tablet (768: cerca de contactar entre sí las listas de enlace), se modifica la dirección flex para que pase de ser fila a columna,
+```scss
+// frontend/src/app/components/layout/footer/footer.scss
+
+// 1. ESTILOS BASE (ESCRITORIO)
+// Se aplican por defecto sin media queries
+.pie-pagina {
+    // ...
+    
+    &__superior {
+        width: 100%;
+        height: fit-content;
+
+        // Mixin propio: display-flex(direction, gap, align, justify)
+        // Aquí se define fila (row) para escritorio
+        @include mixins.display-flex(row, $espaciado-s, stretch, space-between);
+    }
+    
+    // ...
+}
+
+// 2. (MEDIA QUERY MAX-WIDTH)
+// Se aplica solo si la pantalla es más pequeña que $breakpoint-tablet (768px)
+@media (max-width: $breakpoint-tablet) {
+    .pie-pagina {
+
+        &__superior {
+            width: fit-content;
+            align-self: center;
+            
+            // Se cambia la dirección a columna para móviles
+            @include mixins.display-flex(column);
+        }
+
+        &__inferior {
+            height: auto;
+            // Y se apila también la sección inferior
+            @include mixins.display-flex(column, $espaciado-m, center, center);
+            text-align: center;
+        }
+        
+        // ...
+    }
+}
+```
+
 
 ### 4.3 Container Queries
 
-### 4.4 Adaptaciones principales: Tabla resumen mostrando cómo se adapta la aplicación en mobile, tablet y desktop.
+Permiten que un elemento adapte su diseño basándose en el espacio disponible de su contenedor padre en lugar del viewport. Esto hace que sea más reutilizable el componente pudiendo cambiar de forma dependiendo de como sea el padre.
 
-### 4.5 Páginas implementadas
+Componentes donde se implementaron Container Queries:
+- `app-card` (`src/app/components/shared/card/card.scss`): se ha implementado porque las cards pueden estar en listas compactas, en columnas estrechas o en paneles más anchos. Deben poder pasar de un layout horizontal a uno apilado según el espacio disponible. Ejemplo del código:
+
+```scss
+.card {
+  width: 280px;
+  gap: $espaciado-m;
+  container-type: inline-size;
+  container-name: card-container;
+}
+
+@container card-container (max-width: 400px) {
+  .card {
+    flex-direction: column; /* se apila imagen + contenido */
+    width: 100%;
+    &__imagen { height: 180px; }
+  }
+}
+```
+
+
+- `app-buscador-filtros` (`src/app/components/shared/buscador-filtros/buscador-filtros.scss`): Se ha implementado en el buscador con filtros por si llega a tener que cambiar de una barra horizontal con columnas a un layout vertical y filtros apilados cuando el contenedor es estrecho (por ejemplo, en una panel lateral). Ejemplo del código:
+
+```scss
+.buscador-filtros {
+  padding: $espaciado-m;
+  container-type: inline-size;
+  container-name: buscador-container;
+}
+
+@container buscador-container (max-width: 600px) {
+  .buscador-filtros__barra { flex-direction: column; }
+  .buscador-filtros__avanzados { grid-template-columns: 1fr; }
+}
+```
+
+### 4.4 Adaptaciones principales
+
+Aquí tienes una tabla resumen que ilustra cómo se adapta la interfaz.
+| Componente / Sección | Escritorio | Tablet | Móvil |
+| :--- | :--- | :--- | :--- |
+| **Layout Principal (Dashboard)** | **Dos columnas:** Sidebar lateral fijo a la izquierda (250px) y contenido a la derecha. | **Una columna:** El Sidebar pasa arriba (width 100%) y el contenido se apila debajo. | **Una columna:** El Sidebar pasa arriba (width 100%) y el contenido se apila debajo. |
+| **Navegación (Header)** | **Menú visible:** Enlaces de navegación extendidos horizontalmente. Sin icono hamburguesa. | **Menú hamburguesa:** Enlaces ocultos en un panel desplegable (`absolute`), aparece icono hamburguesa. | **Menú hamburguesa:** Enlaces ocultos en un panel desplegable (`absolute`). Botón hamburguesa sigue visible. |
+| **Grids (Recursos/Reservas)** | **Multicolumna:** Grid de 3 columnas o `auto-fill` (min 280px/300px) para aprovechar el ancho. | **2 columnas / responsive:** Grid reduce columnas (por ejemplo 2 columnas) según espacio. | **Monocolumna:** Grid de 1 sola columna (`1fr`) ocupando todo el ancho disponible. |
+| **Footer** | **Fila:** 4 secciones distribuidas horizontalmente con `space-between`. | **Columna:** Secciones apiladas verticalmente y texto centrado. | **Columna:** Secciones apiladas verticalmente y texto centrado. |
+| **Formularios (Registro/Datos)** | **Híbrido:** Inputs agrupados en filas (ej. Nombre y Apellidos lado a lado). | **Apilado parcial:** Inputs pueden quedar en una columna o en parejas según ancho. | **Apilado total:** Inputs uno debajo del otro para facilitar el toque en pantallas táctiles. |
+| **Modales** | **Centrado:** Ancho limitado (`max-width: 640px`) con margen alrededor. Botones alineados a la derecha. | **Más ancho:** Padding reducido; botones pueden apilarse si cabe. | **Todo el ancho:** Ocupan casi todo el ancho, padding reducido. Botones apilados al ancho máximo. |
+| **Cards (Tarjetas)** | **Compactas:** Ancho fijo o flexible según el grid. Detalles alineados. | **Adaptadas:** Cards reducen contenido visible o cambian a layout apilado parcialmente. | **Expandidas:** Ancho 100%. Imagen y contenido se reajustan verticalmente si es necesario. |
+
+
+### 4.5 Páginas Responsive implementadas
+
+- Inicio (`/`): Imágenes responsives (`<picture>`), las secciones secundarias (features, FAQ) pasan de columnas a bloques apilados en móvil.
+- Login (`/login`) y Registro (`/registro`): Formularios reactivos que se reorganizan en una sola columna en móvil, botones y campos ocupan todo el ancho útil. validaciones y mensajes se muestran por debajo del campo.
+- Dashboard (`/dashboard`): Barra lateral colapsable en móvil (drawer/hamburger), el contenido principal pasa de múltiples columnas a una sola.
+- Reservas (`/dashboard/reservas`): Listados y detalles se reorganizan en móvil; los elementos de lista se muestran como cards con prioridad en la información esencial; filtros y buscadores se apilan.
+- Mi Grupo - datps(`/mi-grupo`): Formularios de edición y listados adaptan la disposición; la sección de `recursos` utiliza un grid responsivo que reduce columnas y las cards pasan a layout vertical en pantallas estrechas.
+- Recursos (`/mi-grupo/recursos`): Grid de cards, se van reorganizando automáticamente dependiendo del ancho disponible.
+- Style Guide (`/style-guide`): Página de documentación de componentes construida para ser responsive.
+- 404 (Not Found): Layout sencillo y centrado que se mantiene legible en cualquier dispositivo.
 
 ### 4.6 Screenshots comparativos
 
-#### desktop (1280px)
+A continuación hay una tabla con capturas para los diferentes viewports. Las imágenes están en `img/viewports/`.
 
-#### tablet (768px) 
+| Página | viewport (320px) | viewport (375px) | viewport (768px) | viewport (1024px) | viewport (1280px) |
+|---|---:|---:|---:|---:|---:|
+| Inicio | [![320px](img/viewports/inicio-viewport-320.png)](img/viewports/inicio-viewport-320.png) | [![375px](img/viewports/inicio-viewport-375.png)](img/viewports/inicio-viewport-375.png) | [![768px](img/viewports/inicio-viewport-768.png)](img/viewports/inicio-viewport-768.png) | [![1024px](img/viewports/inicio-viewport-1024.png)](img/viewports/inicio-viewport-1024.png) | [![1280px](img/viewports/inicio-viewport-1280.png)](img/viewports/inicio-viewport-1280.png) |
+| Login | [![320px](img/viewports/login-viewport-320.png)](img/viewports/login-viewport-320.png) | [![375px](img/viewports/login-viewport-375.png)](img/viewports/login-viewport-375.png) | [![768px](img/viewports/login-viewport-768.png)](img/viewports/login-viewport-768.png) | [![1024px](img/viewports/login-viewport-1024.png)](img/viewports/login-viewport-1024.png) | [![1280px](img/viewports/login-viewport-1280.png)](img/viewports/login-viewport-1280.png) |
+| Recursos | [![320px](img/viewports/recursos-viewport-320.png)](img/viewports/recursos-viewport-320.png) | [![375px](img/viewports/recursos-viewport-375.png)](img/viewports/recursos-viewport-375.png) | [![768px](img/viewports/recursos-viewport-768.png)](img/viewports/recursos-viewport-768.png) | [![1024px](img/viewports/recursos-viewport-1024.png)](img/viewports/recursos-viewport-1024.png) | [![1280px](img/viewports/recursos-viewport-1280.png)](img/viewports/recursos-viewport-1280.png) |
 
-#### mobile (375px) 
 
 ## Sección 5: Optimización multimedia
 

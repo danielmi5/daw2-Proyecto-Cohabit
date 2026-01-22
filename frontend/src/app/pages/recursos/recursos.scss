@@ -56,6 +56,7 @@
 
   &__acciones {
     @include mixins.display-flex(row, $espaciado-m, center, center);
+
   }
 
   // Contenido principal
@@ -132,8 +133,16 @@
 
 @media (max-width: $breakpoint-movil-grande) {
   .recursos {
+    padding: $espaciado-xl $espaciado-l;
+
     &__lista {
       grid-template-columns: 1fr;
     }
+  }
+}
+
+@media (max-width: $breakpoint-movil-pequeno) {
+  .recursos {
+    padding: $espaciado-xl 0;
   }
 }

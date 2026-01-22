@@ -2,7 +2,7 @@
 
 Proyecto Cohabit es una aplicación web para gestionar recursos compartidos en viviendas y espacios colectivos. Permite a los residentes reservar recursos (cocina, lavadora, salón, etc.), ver calendarios de uso y administrar usuarios para mejorar la convivencia.
 
-Para poder ver la aplicación actualmente, recomiendo levantarla mediante docker. Más info de como desplegarla en la sección "despliegue".
+Para poder ver la aplicación puedes acceder a este enlace [https://danielmi5.github.io/daw2-Proyecto-Cohabit/](https://danielmi5.github.io/daw2-Proyecto-Cohabit/).
 
 ## Tabla de contenidos
 
@@ -44,19 +44,25 @@ daw2-Proyecto-Cohabit/
 	└── public/
 ```
 
+Basado en el análisis profundo de tu código (especialmente las entidades del backend, la configuración de seguridad, el uso de Signals en Angular y la infraestructura Docker/Nginx), aquí tienes las secciones actualizadas.
+
+He añadido elementos clave que estaban implementados pero no listados, como la gestión de grupos (núcleo de tu lógica de negocio), el sistema de reglas, el modo oscuro y la infraestructura de despliegue.
+
 ## Características
 
-- Reservas de recursos con ventanas de tiempo.
-- Gestión de usuarios, autenticación y roles básicos.
-- API REST para CRUD de recursos y reservas.
-- Interfaz web responsiva desarrollada con Angular.
+- **Gestión de Grupos de Convivencia:** Creación de grupos, generación de códigos de invitación únicos y gestión de miembros con roles (Creador, Admin, Miembro).
+- **Recursos y Reglas Personalizadas:** CRUD de recursos con reglas de uso específicas (horarios de apertura, duración máxima, capacidad).
+- **Sistema de Reservas:** Validación de conflictos de horario, control de aforo y estados de reserva (Pendiente, Confirmada, Cancelada).
+- **Seguridad y Usuarios:** Autenticación segura mediante JWT, gestión de perfiles y control de acceso basado en roles.
+- **Interfaz Moderna (UI/UX):** Diseño responsive, modo claro/oscuro persistente, notificaciones visuales (Toasts) y modales interactivos.
+- **Búsqueda Avanzada:** Filtrado dinámico de recursos y reservas por múltiples criterios.
 
 ## Tecnologías
 
-- Backend: Java 21, Spring Boot (Web, Data JPA, Security)
-- Base de datos: PostgreSQL
-- Frontend: Angular 20
-- Contenedores: Docker, docker-compose
+- **Backend:** Java 21, Spring Boot 3 (Web, Data JPA, Security, Validation), JWT (jjwt), OpenAPI/Swagger (Documentación).
+- **Base de datos:** PostgreSQL (Producción/Dev), H2 (Tests).
+- **Frontend:** Angular 20 (Standalone Components, Signals, RxJS), TypeScript, SCSS (Arquitectura ITCSS).
+- **Infraestructura:** Docker, Docker Compose, Nginx (Servidor web y Proxy inverso), GitHub Actions (CI/CD).
 
 ## Requisitos
 

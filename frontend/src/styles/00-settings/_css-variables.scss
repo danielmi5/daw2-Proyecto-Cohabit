@@ -41,6 +41,17 @@
   --error: #{ $color-error };
   --warning: #{ $color-warning };
   --info: #{ $color-info }; 
+
+  /*Sombras*/
+  --sombra-color-sm: rgba(16,24,40,0.06);
+  --sombra-color-md: rgba(16,24,40,0.08);
+  --sombra-color-lg: rgba(16,24,40,0.12);
+  --sombra-color-xl: rgba(16,24,40,0.16);
+
+  --sombra-sm: 0 1px 2px var(--sombra-color-sm);
+  --sombra-md: 0 4px 8px var(--sombra-color-md);
+  --sombra-lg: 0 10px 30px var(--sombra-color-lg);
+  --sombra-xl: 0 20px 60px var(--sombra-color-xl);
 }
 
 
@@ -75,4 +86,16 @@
   --error: #{ $color-error2 };
   --warning: #{ $color-warning2 };
   --info: #{ $color-info2 };
+
+  --sombra-color-sm: rgba(0,0,0,0.30);
+  --sombra-color-md: rgba(0,0,0,0.45);
+  --sombra-color-lg: rgba(0,0,0,0.60);
+  --sombra-color-xl: rgba(0,0,0,0.75);
+
+  --sombra-sm: 0 1px 2px var(--sombra-color-sm);
+  --sombra-md: 0 4px 8px var(--sombra-color-md);
+  --sombra-lg: 0 10px 30px var(--sombra-color-lg);
+  --sombra-xl: 0 20px 60px var(--sombra-color-xl);
 }
+
+

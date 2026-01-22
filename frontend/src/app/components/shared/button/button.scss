@@ -92,11 +92,12 @@
 
     // variante fantasma (outline)
     &--fantasma {
-        color: $texto-oscuro;
+        color: var(--texto-primario);
         background-color: transparent;
  
 
         &:hover:not([disabled]):not(.boton--deshabilitado) {
+            color: $negro;
             background-color: $fondo-input-hover;
             border-color: $texto-oscuro;
         }

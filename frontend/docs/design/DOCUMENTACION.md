@@ -1357,3 +1357,542 @@ Secciones de la guía de estilos:
 Este componente no está presenta como tal en la guía de estilos pero se puede ver en el header al reducir el tamaño de pantalla de la aplicación:
 
 ![Botón hamburguesa](img/hamb.png)
+
+## Sección 4: Responsive design
+
+### 4.1 Breakpoints definidos
+
+### 4.2 Estrategia responsive
+
+### 4.3 Container Queries
+
+### 4.4 Adaptaciones principales: Tabla resumen mostrando cómo se adapta la aplicación en mobile, tablet y desktop.
+
+### 4.5 Páginas implementadas
+
+### 4.6 Screenshots comparativos
+
+#### desktop (1280px)
+
+#### tablet (768px) 
+
+#### mobile (375px) 
+
+## Sección 5: Optimización multimedia
+
+### 5.1 Formatos elegidos
+
+#### AVIF
+
+Es la nueva generación de ultra-compresión. Sirve para lograr el menor peso de archivo posible con la máxima calidad visual (incluso mejor que WebP). Es ideal para webs que buscan el máximo rendimiento, aunque requiere navegadores modernos.
+
+**Características**:
+-Máxima compresión: Es el formato más ligero (pesa la mitad que un JPG).
+-Calidad HDR: Soporta colores más vivos y negros profundos (10 y 12 bits).
+-Versatilidad: Admite transparencias y animaciones en archivos diminutos.
+
+
+#### WEBP
+
+Creado por Google para optimizar páginas web. Sirve para reducir el peso de las imágenes (carga más rápido que JPG) manteniendo buena calidad y permitiendo fondos transparentes. Además, es compatible con imágenes animadas, lo que lo hace ideal para banners o publicidad en línea. Sin embargo, el formato WEBP no es compatible con todos los navegadores web y plataformas de redes sociales.
+ 
+**Características:**
+-Puede mostrar una imagen progresivamente
+-Ahorro de espacio: Reduce el peso un 30% frente al JPG manteniendo la calidad.
+-Transparencia: Permite fondos transparentes (canal alfa), algo que el JPG no puede hacer.
+-Soporte total en navegadores modernos: Funciona en todos los navegadores modernos.
+
+
+#### JPG
+
+Es el estándar clásico y universal. Sirve principalmente para fotografías y uso general donde la compatibilidad máxima es prioridad (abre en cualquier dispositivo). No permite fondos transparentes.
+
+**Características:**
+-Compatibilidad Universal: Funciona en cualquier dispositivo creado en los últimos 30 años.
+-Estándar de cámara: Es el formato nativo en el que disparan la mayoría de cámaras y móviles.
+-Decodificación rápida: No exige recursos al procesador para mostrarse.
+
+#### ¿Por qué he elegido JPG por delante de los otros dos?
+
+He optado por JPG para garantizar la compatibilidad universal. Preferí priorizar la accesibilidad y asegurar que las imágenes se vean correctamente en absolutamente todos los dispositivos y navegadores 
+
+Además del formato JPG, también he utilizado SVG, ya que permite que las imágenes sean escalables sin que pierdan calidad, además admite transparencia y animaciones, lo que lo hace ideal para los iconos y el logo de la aplicación. 
+
+### 5.2 Herramientas utilizadas
+
+- [https://imagitool.com/resize-image](https://imagitool.com/resize-image)
+
+He utilizado está pagina web para cambiar las dimensiones de las imagenes, además permite elegir el formato de dicha imagen (jpg).
+
+- [https://jakearchibald.github.io/svgomg/](https://jakearchibald.github.io/svgomg/)
+
+He utilizado está pagina web para comprimir los iconos svg para reducir su tamaño.
+
+- [https://www.iloveimg.com/es/comprimir-imagen](https://www.iloveimg.com/es/comprimir-imagen)
+
+He utilizado está pagina web para comprimir las imágenes jpg y reducir su tamaño.
+
+### 5.3 Resultados de optimización
+
+| Imagen | Tamaño original | Tamaño (400px) | Tamaño optimizado (400px) | Reducción (400px) (%) | Tamaño (800px) | Tamaño optimizado (800px) | Reducción (800px) (%) | Tamaño (1200px) | Tamaño optimizado (1200px) | Reducción (1200px) (%) |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `inicio.jpg` | 292 KB | 46.87 KB | 9.02 KB | 81% | 157.12 KB | 22.07 KB | 86% | 339.63 KB | 37.70 KB | 89% |
+| `img2.jpg` | 5.4 MB | 91.64 KB | 15.48 KB | 84% | 275.33 KB | 45.90 KB | 84% | 541.01 KB | 87.23 KB | 84% |
+| `for1.jpg` | 2.3 MB | 31.44 KB | 16.66 KB | 48% | 98.22 KB | 49.27 KB | 50% | 196.77 KB | 89.56 KB | 55% |
+| `for2.jpg` | 4.4 MB | 39.70 KB | 13.27 KB | 67% | 81.47 KB | 35.45 KB | 57% | 419.83 KB | 58.24 KB | 87% |
+| `fondo.jpg` | 828.6 KB | 78.99 KB | 16.30 KB | 80% | 252.39 KB | 43.97 KB | 83% | 493.93 KB | 74.14 KB | 85% |
+
+### 5.4 Tecnologías implementadas
+En el proyecto hemos utilizado técnicas modernas de entrega de imágenes para mejorar rendimiento, adaptabilidad y accesibilidad.
+
+Dónde se usan en el proyecto:
+- Imagen página de inicio (`/src/app/pages/inicio`): imagen principal entregada con `<picture>` para servir AVIF/WebP/JPG según soporte del navegador y varios tamaños adaptativos.
+- Cards de recursos y listados (página de recursos, dashboard): miniaturas entregadas con `srcset` y `sizes` para elegir la resolución adecuada según el ancho del contenedor (grid responsive).
+- Galerías y previews de recursos: uso de `<picture>` para variantes responsive y formatos modernos cuando la calidad visual es prioritaria.
+- Imágenes decorativas/íconos en `public/` y SVGs**: los SVG se sirven inline o como `img` (no se benefician de `srcset` para raster), y no se cargan con `loading="lazy"` cuando son críticos para la UI (logo o iconos del header).
+
+Por qué se usa:
+- `picture` + `source` permite ofrecer formatos de próxima generación (AVIF/WebP) con fallback a JPG para máxima compatibilidad.
+- `srcset` + `sizes` permiten al navegador elegir la mejor imagen según la densidad de pantalla y el tamaño del contenedor, reduciendo ancho de banda y mejorando el LCP (Largest Contentful Paint).
+- `loading="lazy"` difiere la carga de imágenes fuera de pantalla hasta que son necesarias, reduciendo peticiones iniciales y acelerando la carga.
+
+Ejemplo de uso:
+
+Imagen de la página de inicio
+
+```html
+<picture>
+  <!-- AVIF si el navegador lo soporta -->
+  <source type="image/avif" srcset="/public/img/inicio-sm.avif 400w, /public/img/inicio-md.avif 800w, /public/img/inicio-lg.avif 1200w" sizes="(max-width: 768px) 100vw, 1200px">
+  <!-- WebP como alternativa -->
+  <source type="image/webp" srcset="/public/img/inicio-sm.webp 400w, /public/img/inicio-md.webp 800w, /public/img/inicio-lg.webp 1200w" sizes="(max-width: 768px) 100vw, 1200px">
+  <!-- Fallback JPG -->
+  <img src="/public/img/inicio-800.jpg"
+       srcset="/public/img/inicio-sm.jpg 400w, /public/img/inicio-8mdjpg 800w, /public/img/inicio-12lgpg 1200w"
+       sizes="(max-width: 768px) 100vw, 1200px"
+       alt="Vista general de la aplicación Cohabit" width="1200" height="500">
+</picture>
+```
+
+
+### 5.5 Animaciones CSS
+
+#### 1. Loading spinner 
+Utilizado en las páginas de datos (Reservas, Recursos, Mi Grupo) para indicar al usuario que se están obteniendo datos del servidor. Ejemplo:
+
+```scss
+// Definición de la animación
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Implementación
+.cargador {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--borde-cards);
+  border-top-color: var(--btn-primario);
+  border-radius: 50%; // $radio-circulo
+  // Animación infinita lineal de 1 segundo
+  animation: spin 1s linear infinite;
+}
+```
+
+#### 2. Transiciones de estado (Hover / Focus / Active)
+Aplicadas a elementos interactivos como botones, enlaces, tarjetas (cards) y campos de formulario para suavizar el cambio de propiedades visuales. Se utilizan variables SCSS para transiciones (`$transicion-base`, `$transicion-suave`). Ejemplo:
+
+```scss
+// Variables globales (settings/_variables.scss)
+$transicion-base: 300ms;
+$transicion-suave: ease-in-out;
+
+// Botones
+.boton {
+  transition: all $transicion-base $transicion-suave;
+
+  &:hover {
+    background-color: $btn-primario-hover;
+  }
+  &:active {
+    // Micro-interacción: Pequeño desplazamiento hacia abajo al hacer clic
+    transform: translateY(1px); 
+  }
+}
+
+// Cards
+.card {
+  transition: box-shadow $transicion-base $transicion-suave;
+
+  &:hover {
+    // Elevación visual mediante sombra
+    box-shadow: $shadow-lg; 
+  }
+}
+```
+
+#### 3. Notificaciones Toast (Slide-in & Fade-in)
+Implementado con Angular Animations para las notificaciones del sistema. Las notificaciones entran deslizándose suavemente desde arriba mientras aumentan su opacidad, y se desvanecen al salir.
+
+:
+
+```typescript
+animations: [
+  trigger('notificacionAnim', [
+    // Entrada: Fade in + Slide Down (transform Y)
+    transition(':enter', [
+      style({ opacity: 0, transform: 'translateY(-0.5rem)' }),
+      animate('200ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+    ]),
+    // Salida: Fade out + Slide Up
+    transition(':leave', [
+      animate('150ms ease-in', style({ opacity: 0, transform: 'translateY(-0.25rem)' }))
+    ])
+  ])
+]
+```
+
+#### 4. Tooltip (Fade-in & Slide-up)
+Micro-interacción para mostrar información adicional al pasar el ratón sobre un elemento. El tooltip aparece cambiando de opacidad 0 a 1 y moviéndose ligeramente hacia su posición correspondiente. Ejemplo: 
+
+```scss
+.tooltip-texto {
+  opacity: 0;
+  // Estado inicial: desplazado ligeramente hacia arriba
+  transform: translateX(-50%) translateY(-0.25rem);
+  transition: opacity $transicion-base $transicion-suave, 
+              transform $transicion-base $transicion-suave;
+}
+
+// Clase aplicada por TypeScript al hacer hover/focus
+.tooltip--visible .tooltip-texto {
+  visibility: visible;
+  opacity: 1;
+  // Estado final: posición original
+  transform: translateX(-50%) translateY(0);
+}
+```
+
+#### 5. Modal (Fade & Scale)
+Animación de entrada para los diálogos modales. El panel del modal escala suavemente su tamaño o posición (dependiendo de la implementación específica del navegador) y opacidad.
+Ejemplo:
+
+```scss
+.modal__panel {
+  transition: transform $transicion-base $transicion-suave, 
+              opacity $transicion-base $transicion-suave;
+}
+```
+
+#### 6. Acordeón y menú hamburguesa (Expand/Collapse)
+Utilizado para mostrar/ocultar contenido dinámicamente. Anima la propiedad `max-height` para crear un efecto de deslizamiento suave al abrir o cerrar secciones, como por ejemplo en el acordeón o en el menú hamburguesa:
+
+```scss
+.accordion-item__panel {
+  max-height: 0;
+  overflow: hidden;
+  // Animación lenta para permitir que el contenido se despliegue
+  transition: max-height $transicion-lenta $transicion-suave;
+
+  &--abierto {
+    // Truco CSS: animar hasta un valor seguro que exceda el contenido real
+    max-height: 2000px; 
+  }
+}
+```
+
+#### ¿Por qué animar solo transform y opacity?
+
+Por razones de rendimiento y eficiencia del navegador. Cuando se anima con transform y opacity, el navegador puede delegar el trabajo a la GPU y solo ejecuta la fase de Composite, que es extremadamente rápida. Otras propiedades como width, height o margin activan las tres fases del renderizado: Layout (recalcular posiciones), Paint (repintar píxeles) y Composite, lo que resulta en animaciones lentas y entrecortadas. Por eso se utiliza solo transform y opacity para garantizar mejor rendimiento y eficiencia del navegador, sobre todo para equipos menos potentes.
+
+## Sección 6: Sistema de temas
+
+### 6.1 Variables de tema
+
+```scss
+@use "./variables" as *;
+/*
+  Variables CSS derivadas de las variables SCSS.
+  Estas propiedades irán en :root y se usan para temas dinámicos en tiempo de ejecución (modo claro y oscuro).
+*/
+
+:root {
+  /* Fondos */
+  --bg-primario: #{ $fondo }; //Fondo general de la página
+  --bg-secundario: #{ $color-complementario1 }; // Fondo secciones (dashboard, inicio)
+  --bg-header-footer: #{ $color-primario }; //Fondo header y footer
+  --bg-cards: #{ $color-complementario3 }; //Fondo de elementos dentro de la página (Cards) 
+  --bg-sidebar: #{ $color-complementario3 }; //Fondo del Sidebar
+  --bg-ocasional: #{$color-complementario4}; //Fondo poco utilizado
+  --hover: #{ $color-apoyo };
+  --hover-enlaces-sidebar: #{ $color-complementario4 };
+  
+  //tabla
+  --bg-tabla-th: #{ $color-complementario3 }; //Fondo tabla encabezado
+  --bg-fila1: #{ $blanco-puro }; //Fondo fila impar
+  --bg-fila2: #{ $fila2 }; //Fondo tabla par
+
+  
+
+  /* Textos */
+  --texto-primario: #{ $negro }; //texto sobre fondo claro
+  --texto-secundario: #{ $blanco }; //texto sobre fondo claro
+  --titulos: #{ $color-primario}; //Headings en secciones
+  --etiquetas-cards: #{ $gris7 }; //etiquetas cards
+  --importante-cards: #{ $color-primario-oscuro } ; // Texto importante y hay que dar énfasis en la card sobre lo demás (h4 principalmente)
+  --links-titulo: #{ $color-apoyo };
+
+
+  /* Bordes */
+  --borde-btn-2: #{ $color-apoyo2 }; //Trazos del botón secundario
+  --borde: #{ $negro }; //Borde general
+  --borde-cards: #{ $color-apoyo }; //Borde de las cards
+  
+  /*Feedback*/
+  --success: #{ $color-success };
+  --error: #{ $color-error };
+  --warning: #{ $color-warning };
+  --info: #{ $color-info }; 
+
+  /*Sombras*/
+  --sombra-color-sm: rgba(16,24,40,0.06);
+  --sombra-color-md: rgba(16,24,40,0.08);
+  --sombra-color-lg: rgba(16,24,40,0.12);
+  --sombra-color-xl: rgba(16,24,40,0.16);
+
+  --sombra-sm: 0 1px 2px var(--sombra-color-sm);
+  --sombra-md: 0 4px 8px var(--sombra-color-md);
+  --sombra-lg: 0 10px 30px var(--sombra-color-lg);
+  --sombra-xl: 0 20px 60px var(--sombra-color-xl);
+}
+
+
+/* Clase para forzar modo oscuro desde TS */
+.dark, html.dark {
+  --bg-primario: #{ $gris7 };
+  --bg-secundario: #{ $negro };
+  --bg-header-footer: #{ $gris7 };
+  --bg-cards: #{ $gris6 };
+  --bg-sidebar: #{ $gris6 };
+  --bg-ocasional: #{$gris7}; //Fondo poco utilizado
+  --hover: #{ $gris4 };
+  --hover-enlaces-sidebar: #{ $gris5 };
+
+
+  --bg-tabla-th: #{ $gris2 };
+  --bg-fila1: #{ $gris7 };
+  --bg-fila2: #{ $gris6 };
+
+  --texto-primario: #{ $blanco };
+  --texto-secundario: #{ $negro };
+  --titulos: #{ $blanco-puro };
+  --etiquetas-cards: #{ $gris1 };
+  --importante-cards: #{ $blanco };
+  --links-titulo: #{ $gris3 };
+
+  --borde-btn-2: #{ $color-apoyo2 };
+  --borde: #{ $blanco };
+  --borde-cards: #{ $blanco };
+
+  --success: #{ $color-success2 };
+  --error: #{ $color-error2 };
+  --warning: #{ $color-warning2 };
+  --info: #{ $color-info2 };
+
+  --sombra-color-sm: rgba(0,0,0,0.30);
+  --sombra-color-md: rgba(0,0,0,0.45);
+  --sombra-color-lg: rgba(0,0,0,0.60);
+  --sombra-color-xl: rgba(0,0,0,0.75);
+
+  --sombra-sm: 0 1px 2px var(--sombra-color-sm);
+  --sombra-md: 0 4px 8px var(--sombra-color-md);
+  --sombra-lg: 0 10px 30px var(--sombra-color-lg);
+  --sombra-xl: 0 20px 60px var(--sombra-color-xl);
+}
+```
+
+### 6.2 Implementación del theme switcher
+
+El sistema permite alternar entre modo claro (lightl) y oscuro (dark), persistiendo la elección del usuario y respetando las preferencias del sistema operativo.
+
+## 1. Arquitectura de componentes
+
+1. La lógica de la funcionalidad la realiza el servicio `ThemeSwitcherService` gestiona el estado y la persistencia.
+2. En el header un botón actúa como el disparador (trigger) visual.
+3. Los estilos del modo claro y modo oscuro, `_css-variables.scss` define los valores de diseño para cada tema.
+
+## 2. ThemeSwitcherService
+Se encuentra en `frontend/src/app/services/theme-switcher.service.ts`.
+
+### Lógica de estado y reactividad
+
+Utiliza un `BehaviorSubject<boolean>` llamado `isDarkSubject` para mantener el estado actual (true para oscuro, false para claro).Además expone un observable `isDark$` para que los componentes (como el Header) se suscriban a los cambios.
+
+### Método `init()` 
+
+Se ejecuta al cargar la aplicación siguiendo esta jerarquía de prioridad:
+1.  **LocalStorage:** Si el usuario ya eligió un tema anteriormente (`localStorage.getItem('theme')`), se aplica ese.
+2.  **Preferencia del Sistema:** Si no hay nada guardado, usa la API del navegador `window.matchMedia('(prefers-color-scheme: dark)')`.
+3.  **Listener Dinámico:** Registra un escuchador para que, si el usuario cambia el tema en los ajustes de su sistema operativo (Windows/macOS/Linux), la web cambie automáticamente (siempre que el usuario no haya fijado uno manualmente).
+
+### Método `alternarTema()`
+
+Utiliza `document.documentElement.classList.toggle('dark')`. Esto añade o quita la clase `.dark` a la etiqueta `<html>`. Guarda la elección en `localStorage` para futuras sesiones. Emite el nuevo valor a través del `BehaviorSubject`.
+
+## 3. Botón del header (disparador)
+
+Se encuentra en `frontend/src/app/components/layout/header/header.ts`.
+
+- En el `ngOnInit`, se suscribe al observable `isDark$`.
+- Cambia dinámicamente el icono (`sun` o `moon`) y el texto del `app-tooltip` ("Cambiar a modo oscuro" / "claro") basándose en el estado del servicio.
+- El botón del encabezado llama a `themeSwitcher.alternarTema()`.
+
+## 4. CSS Variables
+Se encuentra en `frontend/src/styles/00-settings/_css-variables.scss`.
+
+El proyecto utiliza **CSS Custom Properties** para una actualización instantánea sin recargar la página.
+
+### Bloque ":root" (Modo Claro por defecto)
+Define los colores base usando variables de SCSS:
+```scss
+:root {
+  --bg-primario: #{$fondo};
+  --texto-primario: #{$negro};
+  --titulos: #{$color-primario};
+  /* ... */
+}
+```
+
+### Bloque ".dark" (Modo Oscuro)
+Cuando la clase `.dark` está presente en el `html`, se sobreescriben los valores de las variables:
+```scss
+.dark {
+  --bg-primario: #{$gris7};
+  --texto-primario: #{$blanco};
+  --titulos: #{$blanco-puro};
+  /* ... */
+}
+```
+
+## 5. Flujo
+
+1.  **Carga:** El `App` inicia -> `Header` llama a `themeSwitcher.init()`.
+2.  **Detección:** El servicio detecta que en `localStorage` no hay nada pero el sistema prefiere "oscuro" -> añade clase `.dark` al HTML.
+3.  **Renderizado:** El navegador lee las variables CSS dentro de `.dark`. El fondo se vuelve gris oscuro y los textos blancos.
+4.  **Interacción:** El usuario hace clic en el icono de la luna.
+5.  **Cambio:** 
+    - El servicio quita la clase `.dark`.
+    - El servicio guarda `theme: light` en `localStorage`.
+    - El servicio emite `false` por el observable.
+    - El `Header` recibe el `false` y cambia el icono a un sol.
+6.  **Resultado:** Instantáneamente, el CSS vuelve a los valores definidos en `:root` (colores claros).
+
+
+### 6.3 Capturas de pantalla 
+
+#### Página de inicio
+
+- Modo claro 
+![Inicio - light](img/light-inicio.png)
+
+- Modo oscuro 
+![Inicio - dark](img/dark-inicio.png)
+
+#### Página de grupo
+
+- Modo claro 
+![Grupo - light](img/light-grupo.png)
+
+- Modo oscuro 
+![Grupo - dark](img/dark-grupo.png)
+
+#### Página de recursos
+
+- Modo claro 
+![Recursos - light](img/light-recursos.png)
+
+- Modo oscuro 
+![Recursos - dark](img/dark-recursos.png)
+
+
+
+## Sección 7: Aplicación completa y despliegue
+
+### 7.1 Estado final de la aplicación: Lista de páginas y funcionalidades implementadas.
+
+La aplicación Cohabit ha sido implementada con las siguientes funcionalidades y páginas operativas:
+
+### Páginas y Navegación
+*   **Página Inicio (`/`):** Página de inicio pública con presentación del producto, secciones "Cómo funciona", características y preguntas frecuentes (FAQ) utilizando componentes de acordeón.
+*   **Autenticación:**
+    *   **Login (`/login`):** Formulario reactivo con validación, manejo de errores y redirección post-login. Incluye guard de salida (`CanDeactivate`) si hay cambios sin guardar.
+    *   **Registro (`/registro`):** Registro de usuarios con validaciones síncronas (formato) y asíncronas (disponibilidad de email en tiempo real).
+*   **Dashboard (`/dashboard`):**
+    *   **Vista Principal:** Acceso rápido a funcionalidades.
+    *   **Reservas Globales (`/dashboard/reservas`):** Listado de todas las reservas del grupo con paginación y estados visuales.
+    *   **Mis Reservas (`/dashboard/mis-reservas`):** Gestión personal de reservas (crear, editar, cancelar) con validación de conflictos de horario.
+    *   **Calendario (`/dashboard/calendario`):** Estructura creada (funcionalidad pendiente de integración visual completa).
+*   **Gestión de Grupo (`/mi-grupo`):**
+    *   **Datos del Grupo:** Visualización y edición de información del grupo y subida de imagen (convertida a Base64).
+    *   **Recursos (`/mi-grupo/recursos`):** CRUD completo de recursos (habitaciones, objetos) con buscador y filtros avanzados (por tipo y estado).
+    *   **Miembros y Permisos:** Estructura de rutas y componentes base implementados.
+*   **Perfil de Usuario (`/perfil`):**
+    *   Gestión de preferencias y cierre de sesión.
+*   **Utilidades:**
+    *   **Style Guide (`/style-guide`):** Página para desarrolladores que documenta todos los componentes UI (botones, inputs, cards, alertas).
+    *   **Página 404:** Manejo de rutas inexistentes.
+
+### Funcionalidades Transversales
+*   **Seguridad:** Implementación completa de JWT (Json Web Tokens) con interceptores HTTP para adjuntar el token automáticamente y manejar errores 401 (expiración).
+*   **Feedback al Usuario:** Sistema global de notificaciones (Toast) para éxito/error y modales para confirmaciones críticas.
+*   **Tema Oscuro/Claro:** Switcher funcional con persistencia en `localStorage` y detección de preferencias del sistema.
+*   **Manejo de Errores:** Interceptor global que clasifica errores (red, servidor, validación) y muestra mensajes personalizados.
+*   **Diseño Responsive:** Interfaz adaptada a todo tipo de pantallas.
+
+
+## 7.2 Despliegue
+
+La aplicación está desplegada en github pages y esta es su url: [https://danielmi5.github.io/daw2-Proyecto-Cohabit/](https://danielmi5.github.io/daw2-Proyecto-Cohabit/). Para la base de datos se usa Render y para el backend se utiliza Digital Ocean.
+
+## 7.3 Problemas conocidos y mejoras futuras
+
+### Problemas
+
+1.  **Rendimiento mejorable:** El rendimiento de la aplicación es mejorable.
+
+2.  **DOM con componentes:** Me costó entender como se estructuraba el DOM cuando tenía múltiples componentes en una misma página porque se llenaba de etiquetas. 
+
+3. **Estilos al utilizar componentes:** Tuve problemas al principio al realizar los estilos con esto (estilos que no funcionaban). Porque no entendía por qué mis componentes ignoraban ciertas propiedades SCSS que les aplicaba desde fuera o desde dentro.
+
+4.  **Almacenamiento de Imágenes:** Actualmente, las imágenes (perfil y grupo) se convierten a Base64 y se guardan en la base de datos (PostgreSQL). Esto no es escalable para producción real, debería migrarse a un servicio de almacenamiento.
+
+5.  **Invalidación de Tokens:** La lista negra de tokens (`TokenInvalidadoService`) reside en la memoria RAM del backend. Si el servidor se reinicia, los tokens invalidados (logout) vuelven a ser válidos hasta que expiren.
+
+### Mejoras Futuras
+
+1.  **Persistencia de Invalidación:** Implementar Redis para manejar la lista negra de tokens JWT, asegurando que el logout persista tras reinicios del servidor.
+
+2.  **Validaciones de Negocio Avanzadas:** Implementar en el backend límites de reservas por usuario (mencionado como comentario en `ReservaService.java`) para evitar abusos.
+
+3.  **Calendario Interactivo:** Integrar una librería visual de calendario (como FullCalendar) en la página `/dashboard/calendario` para ver la disponibilidad de recursos gráficamente.
+
+4.  **Recuperación de Contraseña:** Añadir flujo de "Olvidé mi contraseña" con envío de correos electrónicos.
+
+5.  **Roles Granulares:** Ampliar el sistema de roles (`RolGrupo`) para permitir permisos más específicos dentro de los grupos.
+
+6.  **Tests robustos:** Añadir pruebas End-to-End y tests más robustos para asegurar flujos críticos como el registro y la creación de reservas.
+
+7. **Mejorar la accesibilidad del proyecto**
+
+8. **Componentes por añadir:** Las páginas de "Calendario", "Ajustes grupo", "Roles y permisos", "Páginas de perfil" existen como rutas y componentes, pero no tiene contenido. 
+
+9. **Implementar login mediante google:** Los botones existen en la UI pero no tiene lógica interna.
+
+10. **Anadir notificaciones más detalladas:** Hacer los mensajes más descriptivos.
+
+
+
+
+
+
+
+

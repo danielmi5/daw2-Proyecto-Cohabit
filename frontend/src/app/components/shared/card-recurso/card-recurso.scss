@@ -9,6 +9,7 @@
   background-color: var(--bg-cards);
   border: 1px solid var(--borde-cards);
   height: 100%;
+  overflow: hidden;
 
   &__imagen-contenedor {
     width: 100%;

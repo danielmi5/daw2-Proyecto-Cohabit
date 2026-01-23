@@ -1,0 +1,22 @@
+<figure class="tabla-reservas">
+  <table class="tabla-reservas__tabla">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Recurso</th>
+        <th>Fecha</th>
+        <th>Horario</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (reserva of reservas; track reserva.id; let i = $index) {
+        <tr>
+          <td>{{ reserva.autor?.nombre || 'Nombre' }} {{ reserva.autor?.apellidos || 'Apellidos' }}</td>
+          <td>{{ reserva.nombreRecurso }}</td>
+          <td>{{ reserva.fecha }}</td>
+          <td>{{ formatHora(reserva.horaInicio || '') }}-{{ formatHora(reserva.horaFin || '') }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</figure>

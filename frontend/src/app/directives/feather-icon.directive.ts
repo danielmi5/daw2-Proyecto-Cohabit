@@ -9,7 +9,8 @@ import * as feather from 'feather-icons';
  * conservar compatibilidad con los templates existentes.
  */
 @Directive({
-  selector: '[feather]'
+  selector: '[feather]',
+  standalone: true
 })
 export class FeatherIconDirective implements OnChanges, OnDestroy {
   /** Nombre del icono (alias de la entrada 'feather'). Ej: 'sun', 'moon' */

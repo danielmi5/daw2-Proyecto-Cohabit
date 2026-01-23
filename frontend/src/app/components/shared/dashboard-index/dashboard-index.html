@@ -1,3 +1,64 @@
-<div class="dashboard-index">
-  <h2 class="dashboard-index__titulo">Dashboard</h2>
-</div>
+<main class="dashboard-inicio">
+  @if (cargando()) {
+    <section class="dashboard-inicio__estado dashboard-inicio__estado--carga">
+      <div class="dashboard-inicio__cargador"></div>
+      <p>Cargando datos del dashboard...</p>
+    </section>
+  } @else if (error()) {
+    <section class="dashboard-inicio__estado dashboard-inicio__estado--error">
+      <i class="dashboard-inicio__icono-error" [feather]="'alert-circle'"></i>
+      <h2>Error al cargar</h2>
+      <p class="dashboard-inicio__mensaje-error">{{ error() }}</p>
+      <nav class="dashboard-inicio__acciones">
+        <button class="boton boton--primario" (click)="reintentar()">
+          <i [feather]="'refresh-cw'"></i>
+          Reintentar
+        </button>
+      </nav>
+    </section>
+  } @else {
+    <!-- Estadísticas principales -->
+    <section class="dashboard-inicio__estadisticas">
+      <article class="dashboard-inicio__tarjeta-estadistica">
+        <h3 class="dashboard-inicio__tarjeta-titulo">Total Reservas</h3>
+        <p class="dashboard-inicio__tarjeta-valor">{{ estadisticas().totalReservas }}</p>
+      </article>
+
+      <article class="dashboard-inicio__tarjeta-estadistica">
+        <h3 class="dashboard-inicio__tarjeta-titulo">Recursos ocupados</h3>
+        <p class="dashboard-inicio__tarjeta-valor">{{ estadisticas().recursosOcupados }}</p>
+      </article>
+
+      <article class="dashboard-inicio__tarjeta-estadistica">
+        <h3 class="dashboard-inicio__tarjeta-titulo">Recursos libres</h3>
+        <p class="dashboard-inicio__tarjeta-valor">{{ estadisticas().recursosLibres }}</p>
+      </article>
+    </section>
+
+    <!-- Estado de recursos -->
+    <section class="dashboard-inicio__seccion">
+      <h2 class="dashboard-inicio__titulo-seccion">ESTADO</h2>
+      
+      @if (recursos().length === 0) {
+        <p class="dashboard-inicio__vacio">No hay recursos disponibles</p>
+      } @else {
+        <section class="dashboard-inicio__recursos">
+          @for (recursoInfo of recursos(); track recursoInfo.recurso.id) {
+            <app-recurso-estado [recursoInfo]="recursoInfo" />
+          }
+        </section>
+      }
+    </section>
+
+    <!-- Últimas reservas -->
+    <section class="dashboard-inicio__seccion">
+      <h2 class="dashboard-inicio__titulo-seccion">ÚLTIMAS RESERVAS</h2>
+      
+      @if (ultimasReservas().length === 0) {
+        <p class="dashboard-inicio__vacio">No hay reservas recientes</p>
+      } @else {
+        <app-tabla-reservas [reservas]="ultimasReservas()" />
+      }
+    </section>
+  }
+</main>

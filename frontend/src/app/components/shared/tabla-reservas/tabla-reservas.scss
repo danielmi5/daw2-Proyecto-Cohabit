@@ -1,0 +1,67 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.tabla-reservas {
+  overflow-x: auto;
+  border-radius: $radio-card;
+  border: $borde-thin solid var(--borde-cards);
+  background-color: var(--bg-cards);
+
+  &__tabla {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+      background-color: var(--bg-tabla-th);
+      
+      th {
+        @include mixins.tipografia(parrafo, var(--texto-primario));
+        font-weight: $font-weight-bold;
+        text-align: left;
+        padding: $espaciado-m;
+        border-bottom: $borde-medium solid var(--borde);
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: $borde-thin solid var(--borde-cards);
+
+        &:nth-child(odd) {
+          background-color: var(--bg-fila1);
+        }
+
+        &:nth-child(even) {
+          background-color: var(--bg-fila2);
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+
+        &:hover {
+          background-color: var(--hover);
+        }
+      }
+
+      td {
+        @include mixins.tipografia(parrafo, var(--texto-primario));
+        padding: $espaciado-m;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: $breakpoint-tablet) {
+  .tabla-reservas {
+    font-size: $text-sm;
+
+    &__tabla {
+      th,
+      td {
+        padding: $espaciado-s;
+      }
+    }
+  }
+}

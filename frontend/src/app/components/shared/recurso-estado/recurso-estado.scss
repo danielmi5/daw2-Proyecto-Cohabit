@@ -1,0 +1,60 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.recurso-estado {
+  background-color: var(--bg-cards);
+  border: $borde-thin solid var(--borde-cards);
+  border-radius: $radio-card;
+  padding: $espaciado-m;
+  box-shadow: $shadow-sm;
+  transition: box-shadow $transicion-base $transicion-suave;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+
+  &__header {
+    @include mixins.display-flex(row, $espaciado-s, flex-start, space-between);
+    margin-bottom: $espaciado-m;
+    flex-wrap: wrap;
+  }
+
+  &__nombre {
+    @include mixins.tipografia(h4, var(--titulos));
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__estado {
+    @include mixins.tipografia(texto-pequeno, var(--texto-primario));
+    padding: $espaciado-xs $espaciado-s;
+    border-radius: $radio-sm;
+    font-weight: $font-weight-medium;
+    white-space: nowrap;
+
+    &--ocupado {
+      background-color: var(--error);
+      color: var(--texto-secundario);
+      opacity: 0.9;
+    }
+
+    &--disponible {
+      background-color: var(--success);
+      color: var(--texto-secundario);
+      opacity: 0.9;
+    }
+  }
+
+  &__info {
+    @include mixins.display-flex(row, $espaciado-s, center);
+    @include mixins.tipografia(texto-pequeno, var(--texto-primario));
+
+    i {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+  }
+}

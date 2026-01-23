@@ -1567,11 +1567,15 @@ Además del formato JPG, también he utilizado SVG, ya que permite que las imág
 
 - [https://imagitool.com/resize-image](https://imagitool.com/resize-image)
 
-He utilizado está pagina web para cambiar las dimensiones de las imagenes, además permite elegir el formato de dicha imagen (jpg).
+He utilizado está pagina web para cambiar las dimensiones de las imagenes, además permite elegir el formato de dicha imagen (he utilizado jpg y webp).
+
+- [https://convertio.co/es/](https://convertio.co/es/)
+
+Como la página anterior no tenía el formato avif también he utilizado esta para convertir las imágenes webp redimensionadas a formato avif.
 
 - [https://jakearchibald.github.io/svgomg/](https://jakearchibald.github.io/svgomg/)
 
-He utilizado está pagina web para comprimir los iconos svg para reducir su tamaño.
+He utilizado está pagina web para optimizar los iconos svg y reducir su tamaño.
 
 - [https://www.iloveimg.com/es/comprimir-imagen](https://www.iloveimg.com/es/comprimir-imagen)
 
@@ -1581,11 +1585,11 @@ He utilizado está pagina web para comprimir las imágenes jpg y reducir su tama
 
 | Imagen | Tamaño original | Tamaño (400px) | Tamaño optimizado (400px) | Reducción (400px) (%) | Tamaño (800px) | Tamaño optimizado (800px) | Reducción (800px) (%) | Tamaño (1200px) | Tamaño optimizado (1200px) | Reducción (1200px) (%) |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| `inicio.jpg` | 292 KB | 46.87 KB | 9.02 KB | 81% | 157.12 KB | 22.07 KB | 86% | 339.63 KB | 37.70 KB | 89% |
-| `img2.jpg` | 5.4 MB | 91.64 KB | 15.48 KB | 84% | 275.33 KB | 45.90 KB | 84% | 541.01 KB | 87.23 KB | 84% |
-| `for1.jpg` | 2.3 MB | 31.44 KB | 16.66 KB | 48% | 98.22 KB | 49.27 KB | 50% | 196.77 KB | 89.56 KB | 55% |
-| `for2.jpg` | 4.4 MB | 39.70 KB | 13.27 KB | 67% | 81.47 KB | 35.45 KB | 57% | 419.83 KB | 58.24 KB | 87% |
-| `fondo.jpg` | 828.6 KB | 78.99 KB | 16.30 KB | 80% | 252.39 KB | 43.97 KB | 83% | 493.93 KB | 74.14 KB | 85% |
+| `inicio.jpg` | 293 KB | 14.33 KB | 6.94 KB | 52% | 36.90 KB | 16.82 KB | 55% | 63.39 KB | 28.55 KB | 55% |
+| `img2.jpg` | 5.4 MB | 42.52 KB | 14.52 KB | 66% | 98.77 KB | 44.13 KB | 56% | 180.60 KB | 86.28 KB | 53% |
+| `for1.jpg` | 2.3 MB | 29.77 KB | 45.91 KB | 51% | 92.75 KB | 45.91 KB | 51% | 188.23 KB | 85.75 KB | 55% |
+| `for2.jpg` | 4.4 MB | 38.08 KB | 12.13 KB | 69% | 76.36 KB | 32.15 KB | 58% | 127.82 KB | 56.39 KB | 56% |
+| `fondo.jpg` | 828.6 KB | 28.46 KB | 15.61 KB | 46% | 77.52 KB | 41.88 KB | 46% | 140.33 KB | 73.48 KB | 48% |
 
 ### 5.4 Tecnologías implementadas
 En el proyecto hemos utilizado técnicas modernas de entrega de imágenes para mejorar rendimiento, adaptabilidad y accesibilidad.

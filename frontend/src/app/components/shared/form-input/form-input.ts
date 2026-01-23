@@ -36,6 +36,8 @@ export class FormInput implements ControlValueAccessor {
   @Input() desactivado: boolean = false;
   @Input() iconoIzquierda?: string;
   @Input() iconoDerecha?: string;
+  @Input() min?: string; // Para input type="date", "time", "number"
+  @Input() max?: string; // Para input type="date", "time", "number"
 
   // Estado para mostrar/ocultar contraseña en el input
   displayTipo: string = 'text';

@@ -3,6 +3,7 @@ package com.cohabit.cohabit_backend.controller;
 import com.cohabit.cohabit_backend.dto.ReservaRequestDTO;
 import com.cohabit.cohabit_backend.dto.ReservaUpdateDTO;
 import com.cohabit.cohabit_backend.dto.ReservaResponseDTO;
+import com.cohabit.cohabit_backend.dto.UsuarioResponseDTO;
 import com.cohabit.cohabit_backend.service.ReservaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -54,6 +55,19 @@ public class ReservaController {
     public ResponseEntity<ReservaResponseDTO> get(
         @Parameter(description = "ID de la reserva") @PathVariable Long id) {
         return ResponseEntity.ok(reservaService.obtenerPorId(id));
+    }
+
+    @GetMapping("/{id}/autor")
+    @Operation(summary = "Obtener autor de la reserva", description = "Obtener información del usuario que creó la reserva")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Autor encontrado"),
+        @ApiResponse(responseCode = "404", description = "Reserva no encontrada", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes acceso a esta información", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esReservaEnGrupoMiembro(#id)")
+    public ResponseEntity<UsuarioResponseDTO> getAutor(
+        @Parameter(description = "ID de la reserva") @PathVariable Long id) {
+        return ResponseEntity.ok(reservaService.obtenerAutorReserva(id));
     }
 
     @PostMapping

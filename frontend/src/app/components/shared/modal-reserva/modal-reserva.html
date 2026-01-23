@@ -56,7 +56,8 @@
             tipo="date"
             etiqueta="Fecha"
             formControlName="fecha"
-            [requerido]="true">
+            [requerido]="true"
+            [min]="getFechaMinima()">
           </app-form-input>
 
           <div class="modal-reserva__horas">

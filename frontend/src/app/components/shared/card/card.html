@@ -15,18 +15,24 @@
       <ul class="card__detalles">
         <li class="card__detalle-item">
            <strong class="card__detalle-etiqueta">Fecha:</strong>
-           <p class="card__detalle-valor">{{ fecha }}</p>
+           <p class="card__detalle-valor">{{ fecha || 'Sin especificar' }}</p>
          </li>
         <li class="card__detalle-item">
           <strong class="card__detalle-etiqueta">Horarios:</strong>
           <p class="card__detalle-valor">{{ formatHora(hora) }}</p>
         </li>
+        @if (autor) {
+          <li class="card__detalle-item">
+            <strong class="card__detalle-etiqueta">Autor:</strong>
+            <p class="card__detalle-valor">{{ autor }}</p>
+          </li>
+        }
       </ul>
     </section>
   </div>
 
   @if (mostrarAcciones) {
-    <nav class="card__acciones">
+    <aside class="card__acciones">
       <button 
         type="button" 
         class="card__boton card__boton--editar" 
@@ -41,6 +47,6 @@
         (click)="onEliminar()">
         <span [feather]="'trash-2'" [tipo]="'botones'"></span>
       </button>
-    </nav>
+    </aside>
   }
 </article>

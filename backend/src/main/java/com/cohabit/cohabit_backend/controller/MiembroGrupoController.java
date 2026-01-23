@@ -3,6 +3,7 @@ package com.cohabit.cohabit_backend.controller;
 import com.cohabit.cohabit_backend.dto.MiembroGrupoRequestDTO;
 import com.cohabit.cohabit_backend.dto.MiembroGrupoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.MiembroGrupoResponseDTO;
+import com.cohabit.cohabit_backend.dto.ReservaResponseDTO;
 import com.cohabit.cohabit_backend.service.MiembroGrupoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,6 +22,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/miembros")
@@ -52,6 +54,19 @@ public class MiembroGrupoController {
     public ResponseEntity<MiembroGrupoResponseDTO> get(
         @Parameter(description = "ID del miembro") @PathVariable Long id) {
         return ResponseEntity.ok(miembroService.obtenerPorId(id));
+    }
+
+    @GetMapping("/{id}/reservas")
+    @Operation(summary = "Obtener reservas del miembro", description = "Obtener todas las reservas de un miembro específico")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de reservas obtenida exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Miembro no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes acceso a este miembro", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembroIdActual(#id) or @grupoSecurity.esCreadorOAdminMiembro(#id)")
+    public ResponseEntity<List<ReservaResponseDTO>> getReservas(
+        @Parameter(description = "ID del miembro") @PathVariable Long id) {
+        return ResponseEntity.ok(miembroService.obtenerReservasPorMiembro(id));
     }
 
     @PostMapping

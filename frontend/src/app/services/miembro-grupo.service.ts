@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError, retry } from 'rxjs/operators';
-import { ApiListResponse, MiembroGrupoResponse, MiembroGrupoRequest, MiembroGrupoUpdate } from '../models';
+import { ApiListResponse, MiembroGrupoResponse, MiembroGrupoRequest, MiembroGrupoUpdate, ReservaResponse } from '../models';
 import { ApiService } from './api.service';
 import { handleHttpError } from './error-handler.util';
 
@@ -37,6 +37,10 @@ export class MiembroGrupoService {
 
   delete(id: number): Observable<void> {
     return this.api.delete<void>(`${this.base}/${id}`).pipe(catchError(error => this.handleError(error)));
+  }
+
+  getReservas(id: number): Observable<ReservaResponse[]> {
+    return this.api.get<ReservaResponse[]>(`${this.base}/${id}/reservas`).pipe(retry(2), catchError(error => this.handleError(error)));
   }
 
   private handleError(error: any): Observable<never> {

@@ -2,6 +2,7 @@ package com.cohabit.cohabit_backend.service;
 
 import com.cohabit.cohabit_backend.dto.MiembroGrupoRequestDTO;
 import com.cohabit.cohabit_backend.dto.MiembroGrupoResponseDTO;
+import com.cohabit.cohabit_backend.dto.ReservaResponseDTO;
 import com.cohabit.cohabit_backend.entity.Grupo;
 import com.cohabit.cohabit_backend.entity.MiembroGrupo;
 import com.cohabit.cohabit_backend.entity.Usuario;
@@ -10,9 +11,11 @@ import com.cohabit.cohabit_backend.exception.EntidadYaExisteException;
 import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.exception.UsuarioYaPerteneceAUnGrupoException;
 import com.cohabit.cohabit_backend.mapper.MiembroGrupoMapper;
+import com.cohabit.cohabit_backend.mapper.ReservaMapper;
 import com.cohabit.cohabit_backend.entity.RolGrupo;
 import com.cohabit.cohabit_backend.repository.GrupoRepository;
 import com.cohabit.cohabit_backend.repository.MiembroGrupoRepository;
+import com.cohabit.cohabit_backend.repository.ReservaRepository;
 import com.cohabit.cohabit_backend.repository.UsuarioRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -28,11 +31,13 @@ public class MiembroGrupoService {
     private final MiembroGrupoRepository miembroRepo;
     private final GrupoRepository grupoRepo;
     private final UsuarioRepository usuarioRepo;
+    private final ReservaRepository reservaRepo;
 
-    public MiembroGrupoService(MiembroGrupoRepository miembroRepo, GrupoRepository grupoRepo, UsuarioRepository usuarioRepo) {
+    public MiembroGrupoService(MiembroGrupoRepository miembroRepo, GrupoRepository grupoRepo, UsuarioRepository usuarioRepo, ReservaRepository reservaRepo) {
         this.miembroRepo = miembroRepo;
         this.grupoRepo = grupoRepo;
         this.usuarioRepo = usuarioRepo;
+        this.reservaRepo = reservaRepo;
     }
 
     @Transactional(readOnly = true)
@@ -56,11 +61,11 @@ public class MiembroGrupoService {
 
         // valida que no pertenezca ya a otro grupo
         if (miembroRepo.existsByUsuarioId(usuario.getId())) {
-            throw new UsuarioYaPerteneceAUnGrupoException("El usuario ya pertenece a un grupo");
+            throw new UsuarioYaPerteneceAUnGrupoException("El usuario '" + usuario.getEmail() + "' ya pertenece a un grupo");
         }
 
         if (miembroRepo.existsByUsuarioIdAndGrupoId(usuario.getId(), grupo.getId())) {
-            throw new EntidadYaExisteException("El usuario ya es miembro de este grupo");
+            throw new EntidadYaExisteException("El usuario '" + usuario.getEmail() + "' ya es miembro del grupo '" + grupo.getNombre() + "'");
         }
 
         MiembroGrupo entidad = MiembroGrupoMapper.miembroGrupoRequestAMiembroGrupoEntidad(dto, usuario, grupo);
@@ -91,5 +96,15 @@ public class MiembroGrupoService {
     public void eliminar(Long id) {
         if (!miembroRepo.existsById(id)) throw new EntidadNoEncontradaException("Miembro no encontrado: " + id);
         miembroRepo.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservaResponseDTO> obtenerReservasPorMiembro(Long miembroId) {
+        if (!miembroRepo.existsById(miembroId)) {
+            throw new EntidadNoEncontradaException("Miembro no encontrado: " + miembroId);
+        }
+        return reservaRepo.findByMiembroGrupoId(miembroId).stream()
+                .map(ReservaMapper::reservaEntidadAReservaDto)
+                .toList();
     }
 }

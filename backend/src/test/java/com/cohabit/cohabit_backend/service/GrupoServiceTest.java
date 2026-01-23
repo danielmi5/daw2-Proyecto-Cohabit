@@ -5,7 +5,6 @@ import com.cohabit.cohabit_backend.dto.GrupoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.GrupoResponseDTO;
 import com.cohabit.cohabit_backend.dto.MiembroGrupoRequestDTO;
 import com.cohabit.cohabit_backend.entity.Grupo;
-import com.cohabit.cohabit_backend.entity.RolGrupo;
 import com.cohabit.cohabit_backend.entity.Usuario;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
 import com.cohabit.cohabit_backend.exception.ParametroNuloException;

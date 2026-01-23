@@ -40,6 +40,8 @@
       [required]="requerido"
       [attr.aria-invalid]="getEstadoEfectivo() === 'error' ? 'true' : 'false'"
       [attr.aria-describedby]="id + '-mensaje'"
+      [attr.min]="min"
+      [attr.max]="max"
     />
 
     <!-- Icono derecho: icono personalizado o icono de estado (éxito/advertencia/error) -->

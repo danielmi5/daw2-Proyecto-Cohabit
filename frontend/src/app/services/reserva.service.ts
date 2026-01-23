@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError, retry } from 'rxjs/operators';
-import { ApiListResponse, ReservaResponse, ReservaRequest, ReservaUpdate } from '../models';
+import { ApiListResponse, ReservaResponse, ReservaRequest, ReservaUpdate, UsuarioResponse } from '../models';
 import { ApiService } from './api.service';
 import { handleHttpError } from './error-handler.util';
 
@@ -42,6 +42,10 @@ export class ReservaService {
 
   delete(id: number): Observable<void> {
     return this.api.delete<void>(`${this.base}/${id}`).pipe(catchError(error => this.handleError(error)));
+  }
+
+  getAutor(id: number): Observable<UsuarioResponse> {
+    return this.api.get<UsuarioResponse>(`${this.base}/${id}/autor`).pipe(retry(2), catchError(error => this.handleError(error)));
   }
 
   private handleError(error: any): Observable<never> {

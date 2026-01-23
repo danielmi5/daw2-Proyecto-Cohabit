@@ -16,7 +16,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ApiErrorDTO> handleIllegalArgumentException(IllegalArgumentException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.NOT_FOUND;
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(crearCuerpoJson(status, request, e, "Parámetro no válido"));
     }
 
@@ -29,19 +29,19 @@ public class ApiExceptionHandler {
     @ExceptionHandler(EmailYaRegistradoException.class)
     public ResponseEntity<ApiErrorDTO> handleEmailYaRegistradoException(EmailYaRegistradoException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
-        return ResponseEntity.status(status).body(crearCuerpoJson(status, request, e, "Email ya registrado"));
+        return ResponseEntity.status(status).body(crearCuerpoJson(status, request, e, "El email ya está registrado en el sistema"));
     }
 
     @ExceptionHandler(CabeceraAutorizacionInvalidaException.class)
     public ResponseEntity<ApiErrorDTO> handleCabeceraAutorizacionInvalidaException(CabeceraAutorizacionInvalidaException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
         return ResponseEntity.status(status).body(crearCuerpoJson(status, request, e, "Cabecera de autorización no válida"));
     }
 
     @ExceptionHandler(TokenInvalidoException.class)
     public ResponseEntity<ApiErrorDTO> handleTokenInvalidoException(TokenInvalidoException e, HttpServletRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        return ResponseEntity.status(status).body(crearCuerpoJson(status, request, e, "Token no válido"));
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        return ResponseEntity.status(status).body(crearCuerpoJson(status, request, e, "Token no válido o expirado"));
     }
 
     @ExceptionHandler(EntidadNoEncontradaException.class)
@@ -66,6 +66,12 @@ public class ApiExceptionHandler {
     public ResponseEntity<ApiErrorDTO> handleUsuarioYaPerteneceException(UsuarioYaPerteneceAUnGrupoException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         return ResponseEntity.status(status).body(crearCuerpoJson(status, request, e, "Usuario ya pertenece a un grupo"));
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ApiErrorDTO> handleIllegalStateException(IllegalStateException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        return ResponseEntity.status(status).body(crearCuerpoJson(status, request, e, e.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

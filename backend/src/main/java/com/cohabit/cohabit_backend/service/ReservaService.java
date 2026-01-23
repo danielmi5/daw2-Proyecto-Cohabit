@@ -3,13 +3,16 @@ package com.cohabit.cohabit_backend.service;
 import com.cohabit.cohabit_backend.dto.ReservaRequestDTO;
 import com.cohabit.cohabit_backend.dto.ReservaResponseDTO;
 import com.cohabit.cohabit_backend.dto.ReservaUpdateDTO;
+import com.cohabit.cohabit_backend.dto.UsuarioResponseDTO;
 import com.cohabit.cohabit_backend.entity.EstadoReserva;
 import com.cohabit.cohabit_backend.entity.MiembroGrupo;
 import com.cohabit.cohabit_backend.entity.Recurso;
 import com.cohabit.cohabit_backend.entity.Reserva;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
+import com.cohabit.cohabit_backend.exception.EntidadYaExisteException;
 import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.mapper.ReservaMapper;
+import com.cohabit.cohabit_backend.mapper.UsuarioMapper;
 import com.cohabit.cohabit_backend.repository.MiembroGrupoRepository;
 import com.cohabit.cohabit_backend.repository.ReservaRepository;
 import com.cohabit.cohabit_backend.repository.RecursoRepository;
@@ -50,6 +53,18 @@ public class ReservaService {
         return ReservaMapper.reservaEntidadAReservaDto(reserva);
     }
 
+    @Transactional(readOnly = true)
+    public UsuarioResponseDTO obtenerAutorReserva(Long reservaId) {
+        Reserva reserva = reservaRepo.findById(reservaId)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Reserva no encontrada: " + reservaId));
+        
+        if (reserva.getMiembroGrupo() == null || reserva.getMiembroGrupo().getUsuario() == null) {
+            throw new EntidadNoEncontradaException("No se encontró el autor de la reserva");
+        }
+        
+        return UsuarioMapper.usuarioEntidadAUsuarioDto(reserva.getMiembroGrupo().getUsuario());
+    }
+
     public Page<ReservaResponseDTO> obtenerTodos(Pageable pageable) {
         var paginaReservas = reservaRepo.findAll(pageable);
         List<ReservaResponseDTO> dtos = paginaReservas.getContent().stream().map(reservaEntidad -> ReservaMapper.reservaEntidadAReservaDto(reservaEntidad)).toList();
@@ -64,7 +79,7 @@ public class ReservaService {
         Recurso recurso = recursoRepo.findByIdWithLock(dto.getRecursoId()).orElseThrow(() -> new EntidadNoEncontradaException("Recurso no encontrado: " + dto.getRecursoId()));
 
         if (!miembro.isActivo()) {
-            throw new IllegalStateException("Miembro no activo no puede crear reservas");
+            throw new EntidadYaExisteException("El miembro no está activo y no puede crear reservas");
         }
 
         // Validar que el miembro pertenece al grupo del recurso
@@ -74,7 +89,7 @@ public class ReservaService {
 
         // Validar capacidad si se proporcionó numPersonas
         if (dto.getNumPersonas() != null && recurso.getCapacidad() != null && dto.getNumPersonas() > recurso.getCapacidad()) {
-            throw new ParametroNuloException("El número de personas excede la capacidad del recurso");
+            throw new ParametroNuloException("El número de personas (" + dto.getNumPersonas() + ") excede la capacidad del recurso (" + recurso.getCapacidad() + ")");
         }
 
         LocalDate fechaReserva = dto.getFecha();
@@ -139,6 +154,12 @@ public class ReservaService {
         if (fechaReserva == null || horaInicio == null || horaFin == null) {
             throw new ParametroNuloException("Fecha y horario son obligatorios");
         }
+        
+        // Validar que la fecha no sea anterior a hoy
+        if (fechaReserva.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("No se puede crear o modificar una reserva con fecha pasada");
+        }
+        
         if (!horaInicio.isBefore(horaFin)) {
             throw new ParametroNuloException("La hora de inicio debe ser anterior a la hora de fin");
         }
@@ -155,7 +176,7 @@ public class ReservaService {
             LocalTime horaFinExistente = reservaAComparar.getHoraFin();
             boolean coinciden = horaInicio.isBefore(horaFinExistente) && horaFin.isAfter(horaInicioExistente);
             if (coinciden) {
-                throw new IllegalStateException("El recurso ya está reservado en ese intervalo");
+                throw new EntidadYaExisteException("El recurso ya está reservado en ese intervalo de tiempo (" + horaInicioExistente + " - " + horaFinExistente + ")");
             }
         }
     }

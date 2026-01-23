@@ -47,7 +47,7 @@ public class AutenticacionService {
 
     public AuthResponseDTO registrar(RegisterRequestDTO peticion) {
         if (usuarioRepository.existsByEmail(peticion.getEmail())) {
-            throw new EmailYaRegistradoException("El email ya está registrado");
+            throw new EmailYaRegistradoException("El email '" + peticion.getEmail() + "' ya está registrado en el sistema");
         }
 
         Usuario.UsuarioBuilder usuarioBuilder = Usuario.builder()

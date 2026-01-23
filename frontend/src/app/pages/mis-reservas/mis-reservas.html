@@ -10,7 +10,6 @@
   <!-- Estado de error -->
   @if (!loading && error) {
     <section class="mis-reservas__estado mis-reservas__estado--error">
-      <div class="mis-reservas__icono-error">⚠️</div>
       <h2>Error al cargar las reservas</h2>
       <p class="mis-reservas__mensaje-error">{{ errorMessage }}</p>
       <nav class="mis-reservas__acciones">
@@ -39,10 +38,10 @@
                 [variante]="'vertical'"
                 [titulo]="getRecursoNombre(reserva.recursoId)"
                 [estado]="reserva.estado || 'Pendiente'"
-                [fecha]="reserva.fecha || ''"
+                [fecha]="reserva.fecha || null"
                 [hora]="(reserva.horaInicio || '') + ' - ' + (reserva.horaFin || '')"
                 [mostrarAcciones]="true"
-                (editar)="abrirFormularioEditar(reserva)"
+                (editar)="editarReserva(reserva)"
                 (eliminar)="eliminarReserva(reserva)">
               </app-card>
             }
@@ -55,19 +54,21 @@
         class="mis-reservas__boton"
         [variante]="'primario'"
         [ariaLabel]="'Nueva reserva'"
-        (click)="abrirFormularioNuevo()">
+        (click)="crearReserva()">
         Nueva reserva
       </app-button>
     </section>
   }
 
   <!-- Modal de reserva -->
-  <app-modal-reserva
-    [visible]="mostrarFormulario"
-    [modoEdicion]="modoEdicion"
-    [reserva]="reservaEditando"
-    [recursos]="recursos"
-    (cerrar)="cerrarFormulario()"
-    (guardar)="guardarReserva($event)">
-  </app-modal-reserva>
+  @if (mostrarModal) {
+    <app-modal-reserva
+      [visible]="mostrarModal"
+      [modoEdicion]="modoEdicion"
+      [reserva]="reservaSeleccionada"
+      [recursos]="recursos"
+      (cerrar)="cerrarModal()"
+      (guardar)="guardarReserva($event)">
+    </app-modal-reserva>
+  }
 </section>

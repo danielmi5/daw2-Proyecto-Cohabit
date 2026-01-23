@@ -3,6 +3,7 @@ package com.cohabit.cohabit_backend.controller;
 import com.cohabit.cohabit_backend.dto.RecursoRequestDTO;
 import com.cohabit.cohabit_backend.dto.RecursoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.RecursoResponseDTO;
+import com.cohabit.cohabit_backend.dto.ReservaResponseDTO;
 import com.cohabit.cohabit_backend.service.RecursoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import com.cohabit.cohabit_backend.entity.TipoRecurso;
@@ -57,6 +59,19 @@ public class RecursoController {
     public ResponseEntity<RecursoResponseDTO> get(
         @Parameter(description = "ID del recurso") @PathVariable Long id) {
         return ResponseEntity.ok(recursoService.obtenerPorId(id));
+    }
+
+    @GetMapping("/{id}/reservas")
+    @Operation(summary = "Obtener reservas del recurso", description = "Obtener todas las reservas de un recurso específico")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de reservas obtenida exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes acceso a este recurso", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esRecursoEnGrupoMiembro(#id)")
+    public ResponseEntity<List<ReservaResponseDTO>> getReservas(
+        @Parameter(description = "ID del recurso") @PathVariable Long id) {
+        return ResponseEntity.ok(recursoService.obtenerReservasPorRecurso(id));
     }
 
     @PostMapping

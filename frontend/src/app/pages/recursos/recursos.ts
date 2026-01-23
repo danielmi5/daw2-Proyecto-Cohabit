@@ -149,7 +149,7 @@ export class Recursos implements OnInit {
         },
         error: (error) => {
           console.error('Error al eliminar recurso:', error);
-          this.notificacionService.error(error.message || 'Error al eliminar el recurso');
+          this.notificacionService.error(error.mensaje || 'Error al eliminar el recurso');
         }
       });
     }
@@ -190,7 +190,7 @@ export class Recursos implements OnInit {
         },
         error: (error) => {
           console.error('Error al actualizar recurso:', error);
-          this.notificacionService.error(error.message || 'Error al actualizar el recurso');
+          this.notificacionService.error(error.mensaje || 'Error al actualizar el recurso');
         }
       });
     } else {
@@ -222,7 +222,7 @@ export class Recursos implements OnInit {
         },
         error: (error) => {
           console.error('Error al crear recurso:', error);
-          this.notificacionService.error(error.message || 'Error al crear el recurso');
+          this.notificacionService.error(error.mensaje || 'Error al crear el recurso');
         }
       });
     }

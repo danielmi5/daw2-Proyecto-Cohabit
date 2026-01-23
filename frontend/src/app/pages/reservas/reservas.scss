@@ -18,13 +18,13 @@
       gap: $espaciado-m;
 
       p {
-        @include mixins.tipografia(parrafo, $gris4);
+        @include mixins.tipografia(parrafo, var(--texto-primario));
       }
     }
 
     &--error {
       h2 {
-        @include mixins.tipografia(h2, $color-error);
+        @include mixins.tipografia(h2, var(--error));
       }
     }
   }
@@ -33,8 +33,8 @@
   &__cargador {
     width: 50px;
     height: 50px;
-    border: $borde-thick solid $gris1;
-    border-top: $borde-thick solid $color-info;
+    border: $borde-thick solid var(--borde);
+    border-top: $borde-thick solid var(--info);
     border-radius: $radio-circulo;
     animation: girar 1s linear infinite;
   }
@@ -45,7 +45,7 @@
   }
 
   &__mensaje-error {
-    @include mixins.tipografia(parrafo, $gris4);
+    @include mixins.tipografia(parrafo, var(--texto-primario));
     max-width: 500px;
   }
 
@@ -58,12 +58,12 @@
   &__vacio {
     text-align: center;
     padding: $espaciado-xl;
-    @include mixins.tipografia(parrafo, $gris3);
+    @include mixins.tipografia(parrafo, var(--texto-primario));
   }
 
   &__total {
     margin-bottom: $espaciado-m;
-    @include mixins.tipografia(texto-pequeno, $gris4);
+    @include mixins.tipografia(texto-pequeno, var(--texto-primario));
   }
 
   &__cuadricula {
@@ -75,23 +75,32 @@
 
   // Tarjetas
   &__tarjeta {
-    border: $borde-thin solid $gris2;
+    border: $borde-thin solid var(--borde-cards);
     border-radius: $radio-card;
     padding: $espaciado-m;
-    background: var(--bg-primario);
+    background-color: var(--bg-cards);
     box-shadow: $shadow-sm;
     transition: box-shadow $transicion-base $transicion-suave;
 
     &:hover {
       box-shadow: $shadow-md;
     }
+
+    &-titulo{
+      color: var(--titulos);
+    }
+
+    &-data{
+      color: var(--texto-primario);
+    }
+
   }
 
   &__tarjeta-encabezado {
     @include mixins.display-flex(row, 0, center, space-between);
     margin-bottom: $espaciado-m;
     padding-bottom: $espaciado-s;
-    border-bottom: $borde-thin solid $gris1;
+    border-bottom: $borde-thin solid var(--borde);
   }
 
   &__tarjeta-id {
@@ -105,30 +114,30 @@
     font-weight: $font-weight-medium;
 
     &--pendiente {
-      background-color: lighten($color-warning, 40%);
-      color: darken($color-warning, 30%);
+      background-color: var(--warning);
+      color: var(--texto-secundario);
     }
 
     &--confirmada {
-      background-color: lighten($color-success, 50%);
-      color: darken($color-success, 10%);
+      background-color: var(--success);
+      color: var(--texto-secundario);
     }
 
     &--cancelada {
-      background-color: lighten($color-error, 40%);
-      color: darken($color-error, 10%);
+      background-color: var(--error);
+      color: var(--texto-secundario);
     }
 
     &--completada {
-      background-color: lighten($color-info, 40%);
-      color: darken($color-info, 20%);
+      background-color: var(--info);
+      color: var(--texto-secundario);
     }
   }
 
   &__tarjeta-cuerpo {
     p {
       margin: $espaciado-s 0;
-      @include mixins.tipografia(texto-pequeno, $gris5);
+      @include mixins.tipografia(texto-pequeno, var(--texto-primario));
 
       strong {
         color: var(--texto-primario);
@@ -143,7 +152,19 @@
     background-color: var(--bg-secundario);
     border-radius: $radio-sm;
     font-style: italic;
-    @include mixins.tipografia(texto-pequeno, $gris4);
+    @include mixins.tipografia(texto-pequeno, var(--texto-primario));
+  }
+
+  &__contenido {
+    display: flex;
+    flex-direction: column;
+    gap: $espaciado-l;
+  }
+
+  &__contenedor-boton {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
   }
 }
 

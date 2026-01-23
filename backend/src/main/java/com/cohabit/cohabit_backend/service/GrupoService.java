@@ -6,6 +6,7 @@ import com.cohabit.cohabit_backend.dto.GrupoResponseDTO;
 import com.cohabit.cohabit_backend.dto.RecursoResponseDTO;
 import com.cohabit.cohabit_backend.entity.Grupo;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
+import com.cohabit.cohabit_backend.exception.EntidadYaExisteException;
 import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.exception.UsuarioYaPerteneceAUnGrupoException;
 import com.cohabit.cohabit_backend.mapper.GrupoMapper;
@@ -151,7 +152,7 @@ public class GrupoService {
             codigo = UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase();
             contadorIntentos++;
             if (contadorIntentos > intentosMaximos) {
-                throw new IllegalStateException("No se ha podido generar un código de invitación único tras " + intentosMaximos + " intentos");
+                throw new EntidadYaExisteException("No se pudo generar un código de invitación único después de " + intentosMaximos + " intentos. Por favor, inténtelo de nuevo.");
             }
         } while (grupoRepository.existsByCodigoInvitacion(codigo));
         return codigo;

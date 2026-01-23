@@ -39,13 +39,15 @@ export function clasificarErrorHttp(error: any): ErrorDetalle {
     status = 400;
     const body = error.error;
     detalles = body && (body.errors || body.violations || body.fieldErrors || body) ? (body.errors || body.violations || body.fieldErrors || body) : body;
-    mensaje = 'Error de validación: revisa los datos introducidos.';
+    // Extraer mensaje del backend si está disponible
+    mensaje = body?.mensaje || body?.descripcion || 'Error de validación: revisa los datos introducidos.';
   }
   // Errores cliente (4xx distintos de 400)
   else if (error.status >= 400 && error.status < 500) {
     tipo = 'cliente';
     status = error.status;
-    mensaje = error.error?.message || `Error de cliente (${status}).`;
+    // Extraer mensaje del backend (ApiErrorDTO tiene campos: mensaje, descripcion)
+    mensaje = error.error?.mensaje || error.error?.descripcion || error.error?.message || `Error de cliente (${status}).`;
     detalles = error.error ?? error;
   }
   // Otros casos

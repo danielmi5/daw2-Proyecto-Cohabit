@@ -3,14 +3,17 @@ package com.cohabit.cohabit_backend.service;
 import com.cohabit.cohabit_backend.dto.RecursoRequestDTO;
 import com.cohabit.cohabit_backend.dto.RecursoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.RecursoResponseDTO;
+import com.cohabit.cohabit_backend.dto.ReservaResponseDTO;
 import com.cohabit.cohabit_backend.entity.MiembroGrupo;
 import com.cohabit.cohabit_backend.entity.Grupo;
 import com.cohabit.cohabit_backend.entity.Recurso;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
 import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.mapper.RecursoMapper;
+import com.cohabit.cohabit_backend.mapper.ReservaMapper;
 import com.cohabit.cohabit_backend.repository.MiembroGrupoRepository;
 import com.cohabit.cohabit_backend.repository.RecursoRepository;
+import com.cohabit.cohabit_backend.repository.ReservaRepository;
 import com.cohabit.cohabit_backend.repository.GrupoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -33,11 +36,13 @@ public class RecursoService {
     private final RecursoRepository recursoRepo;
     private final GrupoRepository grupoRepo;
     private final MiembroGrupoRepository miembroRepo;
+    private final ReservaRepository reservaRepo;
 
-    public RecursoService(RecursoRepository recursoRepo, GrupoRepository grupoRepo, MiembroGrupoRepository miembroRepo) {
+    public RecursoService(RecursoRepository recursoRepo, GrupoRepository grupoRepo, MiembroGrupoRepository miembroRepo, ReservaRepository reservaRepo) {
         this.recursoRepo = recursoRepo;
         this.grupoRepo = grupoRepo;
         this.miembroRepo = miembroRepo;
+        this.reservaRepo = reservaRepo;
     }
 
     @Transactional(readOnly = true)
@@ -104,6 +109,16 @@ public class RecursoService {
     public void eliminar(Long id) {
         if (!recursoRepo.existsById(id)) throw new EntidadNoEncontradaException("Recurso no encontrado: " + id);
         recursoRepo.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservaResponseDTO> obtenerReservasPorRecurso(Long recursoId) {
+        if (!recursoRepo.existsById(recursoId)) {
+            throw new EntidadNoEncontradaException("Recurso no encontrado: " + recursoId);
+        }
+        return reservaRepo.findByRecursoId(recursoId).stream()
+                .map(ReservaMapper::reservaEntidadAReservaDto)
+                .toList();
     }
 
     @Transactional

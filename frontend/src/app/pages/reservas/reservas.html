@@ -39,24 +39,47 @@
             @for (reserva of reservas; track reserva.id) {
               <article class="reservas__tarjeta">
                 <header class="reservas__tarjeta-encabezado">
-                  <span class="reservas__tarjeta-id">#{{ reserva.numero || reserva.id }}</span>
+                  <h3 class="reservas__tarjeta-titulo">{{ getRecursoNombre(reserva.recursoId) }}</h3>
                   <span class="reservas__tarjeta-estado reservas__tarjeta-estado--{{ reserva.estado?.toLowerCase() }}">{{ reserva.estado }}</span>
                 </header>
-                <section class="reservas__tarjeta-cuerpo">
-                  <p><strong>Fecha:</strong> {{ reserva.fecha }}</p>
-                  <p><strong>Hora:</strong> {{ reserva.horaInicio }} - {{ reserva.horaFin }}</p>
+                <ul class="reservas__tarjeta-cuerpo">
+                  <li class="reservas__tarjeta-data"><strong>Fecha:</strong> {{ reserva.fecha }}</li>
+                  <li class="reservas__tarjeta-data"><strong>Hora:</strong> {{ reserva.horaInicio }} - {{ reserva.horaFin }}</li>
+                  @if (getAutorNombre(reserva.id)) {
+                    <li class="reservas__tarjeta-data"><strong>Autor:</strong> {{ getAutorNombre(reserva.id) }}</li>
+                  }
                   @if (reserva.numPersonas) {
-                    <p><strong>Personas:</strong> {{ reserva.numPersonas }}</p>
+                    <li class="reservas__tarjeta-data"><strong>Personas:</strong> {{ reserva.numPersonas }}</li>
                   }
                   @if (reserva.notas) {
-                    <p class="reservas__tarjeta-notas">{{ reserva.notas }}</p>
+                    <li class="reservas__tarjeta-notas">{{ reserva.notas }}</li>
                   }
-                </section>
+                </ul>
               </article>
             }
           </div>
         </section>
       }
+
+      <div class="reservas__contenedor-boton">
+        <app-button
+          class="reservas__boton"
+          [variante]="'primario'"
+          [ariaLabel]="'Hacer Reserva'"
+          (click)="crearReserva()">
+          Hacer Reserva
+        </app-button>
+      </div>
     </section>
+  }
+
+  @if (mostrarModal) {
+    <app-modal-reserva
+      [visible]="mostrarModal"
+      [modoEdicion]="false"
+      [recursos]="recursos"
+      (cerrar)="cerrarModal()"
+      (guardar)="guardarReserva($event)">
+    </app-modal-reserva>
   }
 </main>

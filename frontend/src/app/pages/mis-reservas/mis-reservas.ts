@@ -1,53 +1,119 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FeatherIconDirective } from '../../directives/feather-icon.directive';
-import { Card } from '../../components/shared/card/card';
 import { Button } from '../../components/shared/button/button';
+import { Card } from '../../components/shared/card/card';
 import { ModalReserva } from '../../components/shared/modal-reserva/modal-reserva';
+import { TabComponent } from '../../components/shared/tab/tab';
 import { ReservaService } from '../../services/reserva.service';
 import { RecursoService } from '../../services/recurso.service';
-import { RecursoResponse } from '../../models';
-import { ReservaResponse, ReservaRequest } from '../../models';
-
-import { TabComponent } from '../../components/shared/tab/tab';
+import { GrupoService } from '../../services/grupo.service';
+import { AuthService } from '../../services/auth.service';
+import { NotificacionService } from '../../services/notificacion.service';
+import { MiembroGrupoService } from '../../services/miembro-grupo.service';
+import { RecursoResponse, ReservaResponse, ReservaRequest, ReservaUpdate } from '../../models';
 
 @Component({
   selector: 'app-mis-reservas',
-  imports: [CommonModule, Card, Button, ModalReserva, TabComponent],
+  imports: [CommonModule, Button, Card, ModalReserva, TabComponent],
   templateUrl: './mis-reservas.html',
   styleUrl: './mis-reservas.scss',
 })
 export class MisReservas implements OnInit {
+  private reservaService = inject(ReservaService);
+  private recursoService = inject(RecursoService);
+  private grupoService = inject(GrupoService);
+  private authService = inject(AuthService);
+  private notificacionService = inject(NotificacionService);
+  private miembroGrupoService = inject(MiembroGrupoService);
+  private router = inject(Router);
+
   reservas: ReservaResponse[] = [];
+  recursos: RecursoResponse[] = [];
   total = 0;
   loading = true;
   error = false;
   errorMessage = '';
-  recursos: RecursoResponse[] = [];
   
-  mostrarFormulario = false;
-  modoEdicion = false;
-  reservaEditando: ReservaResponse | null = null;
+  grupoId: number | null = null;
+  miembroId: number | null = null;
 
-  constructor(
-    private reservaService: ReservaService,
-    private recursoService: RecursoService,
-    private router: Router
-  ) {}
+  mostrarModal = false;
+  modoEdicion = false;
+  reservaSeleccionada: ReservaResponse | null = null;
 
   ngOnInit(): void {
-    this.cargarRecursos();
-    this.cargarReservas();
+    this.cargarDatosUsuario();
+  }
+
+  private cargarDatosUsuario(): void {
+    const usuario = this.authService.usuarioDetalles();
+    
+    if (!usuario?.miembroGrupoId) {
+      this.error = true;
+      this.errorMessage = 'No perteneces a ningún grupo';
+      this.loading = false;
+      return;
+    }
+
+    this.miembroId = usuario.miembroGrupoId;
+
+    this.miembroGrupoService.get(usuario.miembroGrupoId).subscribe({
+      next: (miembro) => {
+        this.grupoId = miembro.grupoId || null;
+        if (this.grupoId) {
+          this.cargarRecursos();
+          this.cargarReservas();
+        } else {
+          this.error = true;
+          this.errorMessage = 'No se pudo obtener el ID del grupo';
+          this.loading = false;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar datos del miembro:', error);
+        this.error = true;
+        this.errorMessage = 'Error al cargar los datos del grupo';
+        this.loading = false;
+      }
+    });
   }
 
   private cargarRecursos(): void {
-    this.recursoService.getAll(0, 200).subscribe({
-      next: (data) => {
-        this.recursos = data.items;
+    if (!this.grupoId) return;
+
+    this.grupoService.getRecursos(this.grupoId).subscribe({
+      next: (recursos) => {
+        this.recursos = recursos;
       },
-      error: (err) => {
-        console.warn('No se pudieron cargar recursos:', err);
+      error: (error) => {
+        console.error('Error al cargar recursos:', error);
+      }
+    });
+  }
+
+  cargarReservas(): void {
+    if (!this.miembroId) {
+      this.error = true;
+      this.errorMessage = 'No se ha podido identificar al usuario';
+      this.loading = false;
+      return;
+    }
+
+    this.loading = true;
+    this.error = false;
+
+    this.miembroGrupoService.getReservas(this.miembroId).subscribe({
+      next: (reservas) => {
+        this.reservas = reservas;
+        this.total = reservas.length;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar reservas:', error);
+        this.error = true;
+        this.errorMessage = error.message || 'Error al cargar las reservas';
+        this.loading = false;
       }
     });
   }
@@ -58,83 +124,67 @@ export class MisReservas implements OnInit {
     return recurso?.nombre || ('Recurso #' + recursoId);
   }
 
-  cargarReservas(): void {
-    this.loading = true;
-    this.error = false;
-    
-    // Obtener todas las reservas del usuario actual (filtro por usuarioId se manejará en el backend)
-    this.reservaService.getAll(0, 100).subscribe({
-      next: (data) => {
-        this.reservas = data.items;
-        this.total = data.total;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = true;
-        this.errorMessage = 'Error al cargar las reservas. Por favor, intenta de nuevo.';
-        this.loading = false;
-        console.error('Error al cargar reservas:', err);
-      }
-    });
-  }
-
-  abrirFormularioNuevo(): void {
+  crearReserva(): void {
     this.modoEdicion = false;
-    this.reservaEditando = null;
-    this.mostrarFormulario = true;
+    this.reservaSeleccionada = null;
+    this.mostrarModal = true;
   }
 
-  abrirFormularioEditar(reserva: ReservaResponse): void {
+  editarReserva(reserva: ReservaResponse): void {
+    this.reservaSeleccionada = reserva;
     this.modoEdicion = true;
-    this.reservaEditando = reserva;
-    this.mostrarFormulario = true;
+    this.mostrarModal = true;
   }
 
-  cerrarFormulario(): void {
-    this.mostrarFormulario = false;
+  cerrarModal(): void {
+    this.mostrarModal = false;
     this.modoEdicion = false;
-    this.reservaEditando = null;
+    this.reservaSeleccionada = null;
   }
 
   guardarReserva(formValue: any): void {
-    if (this.modoEdicion && this.reservaEditando?.id) {
-      // Editar reserva existente
-      const payload = {
+    if (this.modoEdicion && this.reservaSeleccionada?.id) {
+      const payload: ReservaUpdate = {
         fecha: formValue.fecha,
         horaInicio: formValue.horaInicio,
         horaFin: formValue.horaFin,
-        recursoId: formValue.recursoId,
       };
       
-      this.reservaService.update(this.reservaEditando.id, payload).subscribe({
+      this.reservaService.update(this.reservaSeleccionada.id, payload).subscribe({
         next: () => {
-          this.cerrarFormulario();
+          this.notificacionService.success('Reserva actualizada correctamente');
+          this.cerrarModal();
           this.cargarReservas();
         },
-        error: (err) => {
-          console.error('Error al actualizar reserva:', err);
-          alert('Error al actualizar la reserva');
+        error: (error) => {
+          console.error('Error al actualizar reserva:', error);
+          this.notificacionService.error(error.mensaje || 'Error al actualizar la reserva');
         }
       });
     } else {
-      // Crear nueva reserva
+      if (!this.miembroId) {
+        this.notificacionService.error('No se pudo identificar al usuario');
+        return;
+      }
+
       const payload: ReservaRequest = {
         fecha: formValue.fecha,
         horaInicio: formValue.horaInicio,
         horaFin: formValue.horaFin,
         recursoId: formValue.recursoId,
-        miembroGrupoId: 1, // TODO: Obtener del contexto del usuario
+        miembroGrupoId: this.miembroId,
         estado: 'PENDIENTE',
       };
       
       this.reservaService.create(payload).subscribe({
         next: () => {
-          this.cerrarFormulario();
+          this.notificacionService.success('Reserva creada correctamente');
+          this.cerrarModal();
           this.cargarReservas();
         },
-        error: (err) => {
-          console.error('Error al crear reserva:', err);
-          alert('Error al crear la reserva');
+        error: (error) => {
+          console.error('Error al crear reserva:', error);
+          this.notificacionService.error(error.mensaje || 'Error al crear la reserva');
         }
       });
     }
@@ -143,14 +193,15 @@ export class MisReservas implements OnInit {
   eliminarReserva(reserva: ReservaResponse): void {
     if (!reserva.id) return;
     
-    if (confirm('¿Estás seguro de que deseas eliminar esta reserva?')) {
+    if (confirm(`¿Estás seguro de que deseas eliminar esta reserva?`)) {
       this.reservaService.delete(reserva.id).subscribe({
         next: () => {
+          this.notificacionService.success('Reserva eliminada correctamente');
           this.cargarReservas();
         },
-        error: (err) => {
-          console.error('Error al eliminar reserva:', err);
-          alert('Error al eliminar la reserva');
+        error: (error) => {
+          console.error('Error al eliminar reserva:', error);
+          this.notificacionService.error(error.mensaje || 'Error al eliminar la reserva');
         }
       });
     }

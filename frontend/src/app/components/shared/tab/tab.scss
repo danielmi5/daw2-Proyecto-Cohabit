@@ -3,7 +3,6 @@
 
 .tab__encabezado {
   @include mixins.display-flex(row, $espaciado-m, center);
-  margin-bottom: $espaciado-l;
 }
 
 .tab__titulo {

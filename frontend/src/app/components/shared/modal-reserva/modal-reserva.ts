@@ -29,14 +29,18 @@ export class ModalReserva implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.inicializarFormulario();
+    // El formulario ya está inicializado en el constructor
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['reserva'] && this.reserva && this.modoEdicion) {
-      this.cargarDatosReserva();
-    } else if (changes['visible'] && this.visible && !this.modoEdicion) {
-      this.resetearFormulario();
+    if (!this.formulario) return; // Asegurar que el formulario existe
+    
+    if (changes['visible'] && this.visible) {
+      if (this.modoEdicion && this.reserva) {
+        this.cargarDatosReserva();
+      } else {
+        this.resetearFormulario();
+      }
     }
   }
 
@@ -44,10 +48,22 @@ export class ModalReserva implements OnInit, OnChanges {
     this.formulario = this.fb.group({
       recursoId: [null, Validators.required],
       repeticion: ['no-repetir', Validators.required],
-      fecha: ['', Validators.required],
+      fecha: ['', [Validators.required, this.validarFechaMinima.bind(this)]],
       horaInicio: ['', Validators.required],
       horaFin: ['', Validators.required],
     });
+  }
+
+  private validarFechaMinima(control: any): { [key: string]: any } | null {
+    if (!control.value) return null;
+    const fechaSeleccionada = new Date(control.value + 'T00:00:00');
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    
+    if (fechaSeleccionada < hoy) {
+      return { fechaPasada: true };
+    }
+    return null;
   }
 
   private cargarDatosReserva(): void {
@@ -82,5 +98,13 @@ export class ModalReserva implements OnInit, OnChanges {
     if (event.target === event.currentTarget) {
       this.onCerrar();
     }
+  }
+
+  getFechaMinima(): string {
+    const hoy = new Date();
+    const año = hoy.getFullYear();
+    const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoy.getDate()).padStart(2, '0');
+    return `${año}-${mes}-${dia}`;
   }
 }

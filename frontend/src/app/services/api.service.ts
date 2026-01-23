@@ -3,11 +3,13 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { handleHttpError } from './error-handler.util';
+import { RUNTIME_CONFIG } from '../../runtime-config';
+
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:8080';
+  private readonly baseUrl = RUNTIME_CONFIG.apiBaseUrl;
 
   /**
    * Normaliza la URL eliminando barras duplicadas

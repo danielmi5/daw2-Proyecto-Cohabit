@@ -3,6 +3,8 @@ import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/fo
 import { Observable, of, timer } from 'rxjs';
 import { switchMap, catchError, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { RUNTIME_CONFIG } from '../../../runtime-config';
+
 
 /**
  * Servicio de validadores asíncronos para formularios.

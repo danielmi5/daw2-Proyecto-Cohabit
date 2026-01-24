@@ -1,1 +1,0 @@
-import{La as t,ab as n,bb as o,rb as i}from"./chunk-SI3GFFU2.js";import"./chunk-C6Q5SG76.js";var r=class a{static \u0275fac=function(e){return new(e||a)};static \u0275cmp=t({type:a,selectors:[["app-calendario"]],decls:2,vars:0,template:function(e,s){e&1&&(n(0,"p"),i(1,"calendario works!"),o())},encapsulation:2})};export{r as Calendario};

@@ -111,3 +111,6 @@ npm start
 
 Abre `http://localhost:4200` en tu navegador. Los cambios en `src/` se recargarán automáticamente.
 
+### Configuración entorno backend
+
+La URL base del backend se lee desde `src/runtime-config.ts` (exporta `RUNTIME_CONFIG.apiBaseUrl`). 

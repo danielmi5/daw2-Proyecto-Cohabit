@@ -73,6 +73,10 @@ He añadido elementos clave que estaban implementados pero no listados, como la 
 
 ## Instalación y ejecución
 
+### Configuración url backend
+ 
+La configuración de la URL base del backend para el frontend ahora se gestiona mediante `src/runtime-config.ts` en el proyecto `frontend`.
+
 ### Con Docker (Recomendado)
 
 #### Modo Producción

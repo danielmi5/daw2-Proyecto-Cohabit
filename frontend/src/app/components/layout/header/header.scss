@@ -2,7 +2,7 @@
 
 .cabecera {
   width: 100%;
-  height: 5vh;
+  height: 10vh;
   position: relative;
   padding: $espaciado-m;
 
@@ -125,6 +125,8 @@
 
   // Responsive: tablet
   @media (max-width: $breakpoint-tablet) {
+    height: 5vh;
+
     &__hamburguesa {
       display: inline-flex;
     }

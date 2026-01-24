@@ -24,12 +24,6 @@
             <span class="barra-lateral__menu-texto">Reservas</span>
           </a>
         </li>
-        <li class="barra-lateral__menu-item">
-          <a routerLink="/dashboard/calendario" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">
-            <span class="barra-lateral__menu-icono"><span [feather]="'calendar'" [tipo]="'submenu'"></span></span>
-            <span class="barra-lateral__menu-texto">Calendario</span>
-          </a>
-        </li>
       } @else if (variante === 'grupo') {
         <li class="barra-lateral__menu-item">
           <a routerLink="/grupo" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">
@@ -38,27 +32,9 @@
           </a>
         </li>
         <li class="barra-lateral__menu-item">
-          <a routerLink="/grupo/config" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">
-            <span class="barra-lateral__menu-icono"><span [feather]="'settings'" [tipo]="'submenu'"></span></span>
-            <span class="barra-lateral__menu-texto">Ajustes</span>
-          </a>
-        </li>
-        <li class="barra-lateral__menu-item">
           <a routerLink="/grupo/recursos" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">
             <span class="barra-lateral__menu-icono"><span [feather]="'layers'" [tipo]="'submenu'"></span></span>
             <span class="barra-lateral__menu-texto">Recursos</span>
-          </a>
-        </li>
-        <li class="barra-lateral__menu-item">
-          <a routerLink="/grupo/miembros" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">
-            <span class="barra-lateral__menu-icono"><span [feather]="'users'" [tipo]="'submenu'"></span></span>
-            <span class="barra-lateral__menu-texto">Miembros</span>
-          </a>
-        </li>
-        <li class="barra-lateral__menu-item">
-          <a routerLink="/grupo/permisos" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">
-            <span class="barra-lateral__menu-icono"><span [feather]="'lock'" [tipo]="'submenu'"></span></span>
-            <span class="barra-lateral__menu-texto">Roles y permisos</span>
           </a>
         </li>
       } @else if (variante === 'perfil') {

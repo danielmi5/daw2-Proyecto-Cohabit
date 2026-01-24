@@ -37,87 +37,24 @@ export class DashboardIndex implements OnInit {
   private authService = inject(AuthService);
 
   // Estado de carga
-  cargando = signal(false); // Desactivado para mostrar datos simulados
+  cargando = signal(true);
   error = signal<string | null>(null);
 
-  // Datos simulados
+  // Datos del dashboard
   estadisticas = signal<EstadisticasDashboard>({
-    totalReservas: 12,
-    recursosOcupados: 5,
-    recursosLibres: 2
+    totalReservas: 0,
+    recursosOcupados: 0,
+    recursosLibres: 0
   });
 
-  recursos = signal<RecursoConReserva[]>([
-    {
-      recurso: { id: 1, nombre: 'BAÑO', tipo: 'ESPACIO' },
-      proximaReserva: { id: 1, fecha: '10/10/2025', horaInicio: '11:00', horaFin: '22:00', estado: 'CONFIRMADA' }
-    },
-    {
-      recurso: { id: 2, nombre: 'SALÓN', tipo: 'ESPACIO' },
-      proximaReserva: null
-    },
-    {
-      recurso: { id: 3, nombre: 'COCINA', tipo: 'ESPACIO' },
-      proximaReserva: null
-    },
-    {
-      recurso: { id: 4, nombre: 'DUCHA', tipo: 'ESPACIO' },
-      proximaReserva: null
-    },
-    {
-      recurso: { id: 5, nombre: 'HABITACIÓN', tipo: 'ESPACIO' },
-      proximaReserva: null
-    }
-  ]);
+  recursos = signal<RecursoConReserva[]>([]);
 
-  ultimasReservas = signal<(ReservaResponse & { autor?: UsuarioResponse; nombreRecurso?: string })[]>([
-    {
-      id: 1,
-      fecha: '10/10/2025',
-      horaInicio: '11:00',
-      horaFin: '13:00',
-      estado: 'CONFIRMADA',
-      recursoId: 1,
-      nombreRecurso: 'Baño',
-      autor: { id: 1, nombre: 'Nombre', apellidos: 'Apellidos' }
-    },
-    {
-      id: 2,
-      fecha: '10/10/2025',
-      horaInicio: '11:00',
-      horaFin: '13:00',
-      estado: 'CONFIRMADA',
-      recursoId: 1,
-      nombreRecurso: 'Baño',
-      autor: { id: 1, nombre: 'Nombre', apellidos: 'Apellidos' }
-    },
-    {
-      id: 3,
-      fecha: '10/10/2025',
-      horaInicio: '11:00',
-      horaFin: '13:00',
-      estado: 'CONFIRMADA',
-      recursoId: 1,
-      nombreRecurso: 'Baño',
-      autor: { id: 1, nombre: 'Nombre', apellidos: 'Apellidos' }
-    },
-    {
-      id: 4,
-      fecha: '10/10/2025',
-      horaInicio: '11:00',
-      horaFin: '13:00',
-      estado: 'CONFIRMADA',
-      recursoId: 1,
-      nombreRecurso: 'Baño',
-      autor: { id: 1, nombre: 'Nombre', apellidos: 'Apellidos' }
-    }
-  ]);
+  ultimasReservas = signal<(ReservaResponse & { autor?: UsuarioResponse; nombreRecurso?: string })[]>([]);
 
   private grupoId: number | null = null;
 
   ngOnInit(): void {
-    // Comentado para mostrar datos simulados
-    // this.cargarDatosUsuario();
+    this.cargarDatosUsuario();
   }
 
   private cargarDatosUsuario(): void {

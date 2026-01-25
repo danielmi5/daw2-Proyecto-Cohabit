@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, effect, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CardRecurso } from '../../components/shared/card-recurso/card-recurso';
@@ -12,12 +12,14 @@ import { AuthService } from '../../services/auth.service';
 import { NotificacionService } from '../../services/notificacion.service';
 import { MiembroGrupoService } from '../../services/miembro-grupo.service';
 import { SubidaArchivosService } from '../../services/subida-archivos.service';
+import { StateService } from '../../services/state.service';
 
 @Component({
   selector: 'app-recursos',
   imports: [CommonModule, CardRecurso, BuscadorFiltros, Button, ModalRecurso],
   templateUrl: './recursos.html',
-  styleUrl: './recursos.scss',
+  styleUrls: ['./recursos.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Recursos implements OnInit {
   private recursoService = inject(RecursoService);
@@ -41,6 +43,13 @@ export class Recursos implements OnInit {
   mostrarModal = false;
   modoEdicion = false;
   recursoSeleccionado: RecursoResponse | null = null;
+
+  /**
+   * TrackBy function para optimizar rendering de lista
+   */
+  trackByRecursoId(_index: number, recurso: RecursoResponse): number | null | undefined {
+    return recurso.id;
+  }
 
   ngOnInit(): void {
     this.cargarDatosUsuario();

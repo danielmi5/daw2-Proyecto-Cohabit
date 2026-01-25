@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from '../button/button';
@@ -11,7 +11,7 @@ import { ReservaResponse, RecursoResponse } from '../../../models';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, Button, FormInput, FormSelect],
   templateUrl: './modal-reserva.html',
-  styleUrl: './modal-reserva.scss',
+  styleUrls: ['./modal-reserva.scss'],
 })
 export class ModalReserva implements OnInit, OnChanges {
   @Input() visible = false;
@@ -24,12 +24,10 @@ export class ModalReserva implements OnInit, OnChanges {
 
   formulario!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-    this.inicializarFormulario();
-  }
+  private fb: FormBuilder = inject(FormBuilder);
 
   ngOnInit(): void {
-    // El formulario ya está inicializado en el constructor
+    this.inicializarFormulario();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

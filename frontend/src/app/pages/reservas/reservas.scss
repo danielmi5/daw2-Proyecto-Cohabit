@@ -6,13 +6,11 @@
   padding: $espaciado-l;
   max-width: 1200px;
   margin: 0 auto;
-
-  // Estados
   &__estado {
     @include mixins.centrar-flex(column);
     min-height: 400px;
-    gap: $espaciado-l;
     text-align: center;
+    gap: $espaciado-l;
 
     &--carga {
       gap: $espaciado-m;
@@ -56,8 +54,8 @@
 
 
   &__vacio {
-    text-align: center;
     padding: $espaciado-xl;
+    text-align: center;
     @include mixins.tipografia(parrafo, var(--texto-primario));
   }
 
@@ -67,17 +65,17 @@
   }
 
   &__cuadricula {
+    margin-top: $espaciado-m;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: $espaciado-l;
-    margin-top: $espaciado-m;
   }
 
   // Tarjetas
   &__tarjeta {
+    padding: $espaciado-m;
     border: $borde-thin solid var(--borde-cards);
     border-radius: $radio-card;
-    padding: $espaciado-m;
     background-color: var(--bg-cards);
     box-shadow: $shadow-sm;
     transition: box-shadow $transicion-base $transicion-suave;
@@ -114,23 +112,23 @@
     font-weight: $font-weight-medium;
 
     &--pendiente {
-      background-color: var(--warning);
       color: var(--texto-secundario);
+      background-color: var(--warning);
     }
 
     &--confirmada {
-      background-color: var(--success);
       color: var(--texto-secundario);
+      background-color: var(--success);
     }
 
     &--cancelada {
-      background-color: var(--error);
       color: var(--texto-secundario);
+      background-color: var(--error);
     }
 
     &--completada {
-      background-color: var(--info);
       color: var(--texto-secundario);
+      background-color: var(--info);
     }
   }
 
@@ -149,9 +147,9 @@
   &__tarjeta-notas {
     margin-top: $espaciado-m !important;
     padding: $espaciado-s;
-    background-color: var(--bg-secundario);
     border-radius: $radio-sm;
     font-style: italic;
+    background-color: var(--bg-secundario);
     @include mixins.tipografia(texto-pequeno, var(--texto-primario));
   }
 
@@ -184,8 +182,8 @@
     }
 
     &__acciones {
-      flex-direction: column;
       width: 100%;
+      flex-direction: column;
     }
 
     &__boton {

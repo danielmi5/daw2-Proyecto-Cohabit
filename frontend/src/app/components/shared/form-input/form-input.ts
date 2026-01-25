@@ -9,7 +9,7 @@ export type EstadoValidacion = 'inicial' | 'advertencia' | 'error' | 'exito';
   standalone: true,
   imports: [ReactiveFormsModule, FeatherIconDirective],
   templateUrl: './form-input.html',
-  styleUrl: './form-input.scss',
+  styleUrls: ['./form-input.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

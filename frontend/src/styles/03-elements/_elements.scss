@@ -124,6 +124,7 @@ input,
 textarea,
 select {
 	padding: $espaciado-s;
+	border-radius: $radio-campo;
 	font-size: $text-sm;
     font-weight: $font-weight-regular;
     letter-spacing: -0.4px;
@@ -132,24 +133,15 @@ select {
 
 	color: $texto-oscuro;
 	background: $fondo-input;
-	border-radius: $radio-campo;
-	
-
-	/*
-	&:focus {
-		outline: none;
-		box-shadow: 0 0 0 3px $color-primario-claro;
-		border-color: $color-info;
-	}*/
 }
 
 label {
 	margin: 0;
+
+	display: inline-block;
 	font-size: $text-sm;
 	font-weight: $font-weight-regular;
     letter-spacing: -0.4px;
-
-	display: inline-block;
 
 	color: $texto-oscuro;
 }
@@ -157,14 +149,14 @@ label {
 /* Botones */
 button {
 	padding: $espaciado-m;
-	font-weight: $font-weight-medium;
 
 	display: inline-block;
+	border: none;
+	border-radius: $radio-boton;
+	font-weight: $font-weight-medium;
 
 	color: $texto-claro;
 	background-color: $btn-primario;
-	border: none;
-	border-radius: $radio-boton;
 
 	transition: background-color $transicion-rapida ease-in-out, transform $transicion-rapida ease-in-out;
 	cursor: pointer;
@@ -189,9 +181,9 @@ table {
 	td {
 		padding: $espaciado-s;
 
-		text-align: left;
-
 		border-bottom: 1px solid $borde;
+
+		text-align: left;
 	}
 
 	th {

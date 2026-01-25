@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from '../button/button';
@@ -10,7 +10,7 @@ import { FormTextarea } from '../form-textarea/form-textarea';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, Button, FormInput, FormTextarea],
   templateUrl: './modal-grupo.html',
-  styleUrl: './modal-grupo.scss',
+  styleUrls: ['./modal-grupo.scss'],
 })
 export class ModalGrupo implements OnInit, OnChanges {
   @Input() visible = false;
@@ -20,9 +20,7 @@ export class ModalGrupo implements OnInit, OnChanges {
 
   formulario!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-    this.inicializarFormulario();
-  }
+  private fb: FormBuilder = inject(FormBuilder);
 
   ngOnInit(): void {
     this.inicializarFormulario();

@@ -11,17 +11,18 @@
   justify-content: space-between;
 
   background-color: var(--bg-header-footer);
+  position: relative;
 
   &__logo {
+    margin-right: $espaciado-l;
     display: flex;
     align-items: center;
     flex: 0 0 auto;
-    margin-right: $espaciado-l;
 
     &-icono {
-      display: block;
       width: auto;
       height: auto;
+      display: block;
 
       display: block;
     }
@@ -35,12 +36,6 @@
     width: 40%;
     display: flex;
     align-items: center;
-
-    @media ((max-width: 1000px)){
-      width: auto;
-      flex: 1 1 auto;
-      min-width: 0;
-    }
   }
   
   &__menu {
@@ -55,9 +50,9 @@
     }
 
     &-enlace {
-      text-decoration: none;
       padding: $espaciado-s $espaciado-m;
       display: inline-block;
+      text-decoration: none;
 
       color: $importante-fondo-primario;
       transition: color $transicion-rapida $transicion-suave;
@@ -73,21 +68,21 @@
 
   &__utilidades {
     width: fit-content;
-    gap: $espaciado-m;
+    margin-left: $espaciado-l;
 
     display: flex;
     justify-content: space-between;
     flex: 0 0 auto;
-    margin-left: $espaciado-l;
+    gap: $espaciado-m;
   }
 
   &__boton {
     width: $iconos-header;
     height: $iconos-header;
     padding: 0;
+    border: none;
 
     background-color: transparent;
-    border: none;
 
     cursor: pointer;
 
@@ -123,10 +118,21 @@
     }
   }
 
-  // Responsive: tablet
-  @media (max-width: $breakpoint-tablet) {
-    height: 5vh;
+  
+}
 
+@media ((max-width: 1000px)) {
+  .cabecera {
+    &__nav {
+      width: auto;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .cabecera {
     &__hamburguesa {
       display: inline-flex;
     }
@@ -136,19 +142,19 @@
       max-height: 0;
       padding: 0;
 
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-
-      overflow: hidden;
-
       background-color: var(--bg-header-footer);
       box-shadow: $shadow-lg;
 
       transition: max-height $transicion-base $transicion-suave,
                   padding $transicion-base $transicion-suave;
+      z-index: 1000;
+
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+
+      overflow: hidden;
 
       &--open {
         max-height: 300px;

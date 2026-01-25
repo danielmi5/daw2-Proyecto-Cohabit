@@ -6,44 +6,44 @@
 }
 
 .tooltip-contenedor {
-  position: relative;
   display: inline-block;
+  position: relative;
 }
 
 .tooltip-texto {
-  visibility: hidden;
   max-width: 12rem;
-  background-color: $negro;
+  padding: $espaciado-xs $espaciado-s;
+  border-radius: $radio-sm;
   color: $texto-claro;
   text-align: center;
-  border-radius: $radio-sm;
-  padding: $espaciado-xs $espaciado-s;
-  position: absolute;
+  background-color: $negro;
+  opacity: 0;
+  box-shadow: $shadow-sm;
+  transition: opacity $transicion-base $transicion-suave, transform $transicion-base $transicion-suave;
+  visibility: hidden;
   z-index: 10;
+  position: absolute;
   top: calc(100% + #{$espaciado-xs});
   left: 50%;
   transform: translateX(-50%) translateY(-0.25rem);
-  opacity: 0;
-  transition: opacity $transicion-base $transicion-suave, transform $transicion-base $transicion-suave;
-  box-shadow: $shadow-sm;
 
   @include mixins.tipografia(texto-pequeno, $texto-claro);
 }
 
 /* Visibilidad controlada mediante la clase `.tooltip--visible` (gestionada desde TS) */
 .tooltip--visible .tooltip-texto {
-  visibility: visible;
   opacity: 1;
+  visibility: visible;
   transform: translateX(-50%) translateY(0);
 }
 
 .tooltip-texto::after {
+  width: $espaciado-s;
+  height: $espaciado-s;
+  background: $negro;
   content: '';
   position: absolute;
   top: -#{$espaciado-xs};
   left: 50%;
   transform: translateX(-50%) rotate(45deg);
-  width: $espaciado-s;
-  height: $espaciado-s;
-  background: $negro;
 }

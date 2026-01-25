@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './form-select.html',
-  styleUrl: './form-select.scss',
+  styleUrls: ['./form-select.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

@@ -9,7 +9,7 @@ import { FeatherIconDirective } from '../../../directives/feather-icon.directive
   standalone: true,
   imports: [CommonModule, Button, FeatherIconDirective],
   templateUrl: './form-archivo.html',
-  styleUrl: './form-archivo.scss',
+  styleUrls: ['./form-archivo.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

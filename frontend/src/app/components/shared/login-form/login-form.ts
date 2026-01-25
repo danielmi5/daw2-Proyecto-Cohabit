@@ -14,7 +14,7 @@ import { RedireccionService } from '../../../services/redireccion.service';
   selector: 'app-login-form',
   imports: [FormInput, FormCheckbox, Button, RouterLink, ReactiveFormsModule],
   templateUrl: './login-form.html',
-  styleUrl: './login-form.scss',
+  styleUrls: ['./login-form.scss'],
 })
 export class LoginForm implements OnInit {
   private constructorFormulario = inject(FormBuilder);

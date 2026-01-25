@@ -3,34 +3,34 @@
 
 
 .modal {
-	position: fixed;
-	inset: 0;
+	padding: $espaciado-m;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: $espaciado-m;
 	z-index: 1000;
+	position: fixed;
+	inset: 0;
 }
 
 .modal::before {
+	background: rgba(0, 0, 0, 0.45);
 	content: '';
 	position: absolute;
 	inset: 0;
-	background: rgba(0, 0, 0, 0.45);
 }
 
 .modal__panel {
-	position: relative;
-	z-index: 1;
 	width: 100%;
 	max-width: 40rem;
-    color: $texto-oscuro;
-	background: var(--bg-cards);
+	padding: $espaciado-l;
     border: 1px solid var(--borde-cards);
     border-radius: $radio-card;
-	padding: $espaciado-l;
+    color: $texto-oscuro;
+	background: var(--bg-cards);
 	box-shadow: $shadow-lg;
 	transition: transform $transicion-base $transicion-suave, opacity $transicion-base $transicion-suave;
+	z-index: 1;
+	position: relative;
 }
 
 .modal__titulo {
@@ -49,10 +49,10 @@
 }
 
 .modal__botones {
-	display: flex;
-	gap: $espaciado-s;
-	justify-content: flex-end;
 	margin-top: $espaciado-m;
+	display: flex;
+	justify-content: flex-end;
+	gap: $espaciado-s;
 }
 
 @media (max-width: $breakpoint-movil-grande) {

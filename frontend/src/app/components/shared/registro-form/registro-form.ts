@@ -15,7 +15,7 @@ import { RedireccionService } from '../../../services/redireccion.service';
   selector: 'app-registro-form',
   imports: [FormInput, FormCheckbox, Button, RouterLink, ReactiveFormsModule],
   templateUrl: './registro-form.html',
-  styleUrl: './registro-form.scss',
+  styleUrls: ['./registro-form.scss'],
 })
 export class RegistroForm implements OnInit {
   private constructorFormulario = inject(FormBuilder);

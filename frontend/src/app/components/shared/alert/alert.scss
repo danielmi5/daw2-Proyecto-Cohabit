@@ -2,10 +2,10 @@
 @use '../../../../styles/01-tools/mixins' as mixins;
 
 .alert {
-  position: relative;
   width: 25rem;
   max-width: 100%;
   padding: $espaciado-m;
+  position: relative;
   
   @include mixins.display-flex(row, $espaciado-m, center, space-between);
   @include mixins.tipografia(parrafo);
@@ -21,20 +21,20 @@
   }
 
   &__content {
-    flex: 1;
     margin: 0;
+    flex: 1;
   }
 
   &__close {
-    flex-shrink: 0;
     padding: $espaciado-xs;
-    
-    background: transparent;
+    flex-shrink: 0;
     border: none;
     border-radius: $radio-sm;
     
-    cursor: pointer;
+    background: transparent;
     transition: background-color $transicion-rapida $transicion-suave;
+    
+    cursor: pointer;
 
     @include mixins.centrar-flex();
 
@@ -71,29 +71,29 @@
 
   // éxito (verde)
   &--exito {
+    border-color: $color-success;
     color: $blanco-puro;
     background-color: $color-success;
-    border-color: $color-success;
   }
 
   // error (rojo)
   &--error {
+    border-color: $color-error;
     color: $blanco-puro;
     background-color: $color-error;
-    border-color: $color-error;
   }
 
   // warning (naranja)
   &--warning {
+    border-color: $color-warning;
     color: $blanco-puro;
     background-color: $color-warning;
-    border-color: $color-warning;
   }
 
   //info (azul)
   &--info {
+    border-color: $color-info;
     color: $blanco-puro;
     background-color: $color-info;
-    border-color: $color-info;
   }
 }

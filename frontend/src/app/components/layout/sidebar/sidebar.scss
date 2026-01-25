@@ -6,14 +6,14 @@
   min-height: 800px;
   height: 100%;
   padding: $espaciado-l $espaciado-l;
-  gap: $espaciado-l;
+  box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   background: var(--bg-sidebar);
-  box-sizing: border-box;
+  gap: $espaciado-l;
 
   overflow-x: hidden;
 
@@ -39,9 +39,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: $radio-circulo;
 
     background: $gris6;
-    border-radius: $radio-circulo;
 
     overflow: hidden;
 
@@ -78,12 +78,12 @@
 
       display: flex;
       align-items: center;
-      text-align: left;
-
-      background: transparent;
       border: none;
       border-bottom: $borde-medium solid var(--borde-cards);
       border-radius: 0%;
+      text-align: left;
+
+      background: transparent;
 
       transition: background $transicion-rapida $transicion-suave;
       cursor: pointer;
@@ -96,8 +96,6 @@
 
       &--activo {
         background-color: var(--hover);
-
-        /* Evita que el :hover del enlace cambie el fondo de la opción activa */
         &:hover {
           background-color: var(--hover);
         }
@@ -119,9 +117,9 @@
       svg {
         width: 100%;
         height: 100%;
+        display: block;
         stroke: currentColor;
         fill: none;
-        display: block;
       }
     }
 

@@ -12,7 +12,7 @@ import { GrupoResponse } from '../../models/grupo.model';
   standalone: true,
   imports: [CommonModule, DataGrupo],
   templateUrl: './datos-grupo.html',
-  styleUrl: './datos-grupo.scss',
+  styleUrls: ['./datos-grupo.scss'],
 })
 export class DatosGrupo implements OnInit {
   private authService = inject(AuthService);

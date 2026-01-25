@@ -6,13 +6,13 @@
 
   &__zona-arrastre {
     @include mixins.display-flex(column, $espaciado-m, center, center);
+    padding: $espaciado-xxl;
     border: 2px dashed var(--borde-cards);
     border-radius: $radio-card;
-    padding: $espaciado-xxl;
     text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
     background-color: var(--bg-secundario);
+    transition: all 0.3s ease;
+    cursor: pointer;
 
     &:hover {
       border-color: var(--btn-primario);
@@ -36,16 +36,16 @@
 
   &__texto-principal {
     @include mixins.tipografia(parrafo, var(--texto-primario));
-    font-weight: $font-weight-medium;
     margin: 0;
+    font-weight: $font-weight-medium;
   }
 
   &__requisitos {
     @include mixins.tipografia(pequeno, var(--texto-primario));
-    list-style: none;
     padding: 0;
     margin: $espaciado-s 0 0 0;
     line-height: 1.6;
+    list-style: none;
 
     li {
       margin: $espaciado-xs 0;
@@ -59,17 +59,17 @@
   &__vista-previa {
     width: 100%;
     border-radius: $radio-card;
-    overflow: hidden;
     border: 2px solid var(--borde-cards);
+    overflow: hidden;
   }
 
   &__imagen-previa {
     width: 100%;
     height: auto;
-    display: block;
     max-height: 300px;
-    object-fit: contain;
+    display: block;
     background-color: var(--bg-secundario);
+    object-fit: contain;
   }
 }
 
@@ -82,14 +82,6 @@
     &__icono {
       width: 40px;
       height: 40px;
-    }
-  }
-}
-
-@media (max-width: $breakpoint-tablet) {
-  .subida-archivo {
-    &__zona-arrastre {
-      padding: $espaciado-l;
     }
   }
 }

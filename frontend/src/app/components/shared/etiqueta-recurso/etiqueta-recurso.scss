@@ -4,30 +4,30 @@
 .etiqueta-recurso {
   @include mixins.tipografia(texto-pequeno, var(--texto-secundario));
   padding: $espaciado-xs $espaciado-s;
-  border-radius: $radio-sm;
-  display: inline-block;
   width: fit-content;
+  display: inline-block;
+  border-radius: $radio-sm;
   font-weight: $font-weight-medium;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
   &--disponible {
-    background-color: rgba($color-success, 0.1);
     color: $color-success;
+    background-color: rgba($color-success, 0.1);
   }
 
   &--ocupado {
-    background-color: rgba($color-error, 0.1);
     color: $color-error;
+    background-color: rgba($color-error, 0.1);
   }
 
   &--mantenimiento {
-    background-color: rgba($color-warning, 0.1);
     color: $color-warning;
+    background-color: rgba($color-warning, 0.1);
   }
 
   &--fuera-servicio {
-    background-color: rgba($gris2, 0.1);
     color: $gris2;
+    background-color: rgba($gris2, 0.1);
   }
 }

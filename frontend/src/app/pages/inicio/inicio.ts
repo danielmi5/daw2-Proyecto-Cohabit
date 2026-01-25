@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-inicio',
   imports: [RouterLink, Accordion, AccordionItem, Paso, Caracteristica],
   templateUrl: './inicio.html',
-  styleUrl: './inicio.scss',
+  styleUrls: ['./inicio.scss'],
 })
 export class Inicio {
   authService = inject(AuthService);

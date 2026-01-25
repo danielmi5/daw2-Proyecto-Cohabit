@@ -5,13 +5,11 @@
   padding: $espaciado-l;
   max-width: 1400px;
   margin: 0 auto;
-
-  // Estados de carga y error
   &__estado {
     @include mixins.centrar-flex(column);
     min-height: 400px;
-    gap: $espaciado-l;
     text-align: center;
+    gap: $espaciado-l;
 
     &--carga {
       gap: $espaciado-m;
@@ -54,24 +52,24 @@
 
   // Estadísticas principales (3 tarjetas)
   &__estadisticas {
+    margin-bottom: $espaciado-xl;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: $espaciado-l;
-    margin-bottom: $espaciado-xl;
   }
 
   &__tarjeta-estadistica {
-    background-color: var(--bg-cards);
-    border-radius: $radio-card;
     padding: $espaciado-l;
+    border-radius: $radio-card;
     border: $borde-thin solid var(--borde-cards);
+    background-color: var(--bg-cards);
     box-shadow: $shadow-md;
     transition: transform $transicion-base $transicion-suave, 
                 box-shadow $transicion-base $transicion-suave;
 
     &:hover {
-      transform: translateY(-2px);
       box-shadow: $shadow-lg;
+      transform: translateY(-2px);
     }
   }
 
@@ -100,12 +98,12 @@
   }
 
   &__vacio {
-    text-align: center;
     padding: $espaciado-xl;
+    text-align: center;
     @include mixins.tipografia(parrafo, var(--texto-primario));
-    background-color: var(--bg-cards);
     border-radius: $radio-card;
     border: $borde-thin solid var(--borde-cards);
+    background-color: var(--bg-cards);
   }
 
   // Recursos (tarjetas de estado)

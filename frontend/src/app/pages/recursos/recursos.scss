@@ -50,8 +50,8 @@
 
   &__mensaje-error {
     @include mixins.tipografia(parrafo, var(--texto-primario));
-    text-align: center;
     max-width: 500px;
+    text-align: center;
   }
 
   &__acciones {
@@ -70,8 +70,8 @@
   &__vacio {
     @include mixins.centrar-flex(column);
     min-height: 300px;
-    gap: $espaciado-m;
     text-align: center;
+    gap: $espaciado-m;
 
     &__titulo {
       margin: 0;
@@ -94,9 +94,9 @@
   }
 
   &__lista {
-    list-style: none;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    list-style: none;
     gap: $espaciado-l;
   }
 

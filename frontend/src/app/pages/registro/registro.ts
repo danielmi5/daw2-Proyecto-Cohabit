@@ -4,7 +4,7 @@ import { RegistroForm } from '../../components/shared/registro-form/registro-for
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.html',
-  styleUrl: './registro.scss',
+  styleUrls: ['./registro.scss'],
   imports: [RegistroForm]
 })
 export class RegistroPage {

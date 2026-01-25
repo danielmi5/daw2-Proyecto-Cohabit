@@ -11,7 +11,7 @@ import { NotificacionService } from '../../services/notificacion.service';
   selector: 'app-mi-grupo',
   imports: [CommonModule, RouterOutlet, Sidebar, ModalGrupo],
   templateUrl: './mi-grupo.html',
-  styleUrl: './mi-grupo.scss',
+  styleUrls: ['./mi-grupo.scss'],
 })
 export class MiGrupo implements OnInit {
   private authService = inject(AuthService);

@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-config-grupo',
   imports: [],
   templateUrl: './config-grupo.html',
-  styleUrl: './config-grupo.scss',
+  styleUrls: ['./config-grupo.scss'],
 })
 export class ConfigGrupo {
 

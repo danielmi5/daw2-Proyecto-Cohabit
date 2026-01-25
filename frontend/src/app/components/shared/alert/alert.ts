@@ -6,7 +6,7 @@ import { FeatherIconDirective } from '../../../directives/feather-icon.directive
   standalone: true,
   imports: [FeatherIconDirective],
   templateUrl: './alert.html',
-  styleUrl: './alert.scss',
+  styleUrls: ['./alert.scss'],
 })
 export class Alert {
   @Input() tipo: 'exito' | 'error' | 'warning' | 'info' = 'info';

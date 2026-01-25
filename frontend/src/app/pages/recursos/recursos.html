@@ -50,7 +50,7 @@
       @if (recursosFiltrados.length > 0) {
         <section class="recursos__seccion">
           <li class="recursos__lista">
-            @for (recurso of recursosFiltrados; track recurso.id) {
+            @for (recurso of recursosFiltrados; track trackByRecursoId($index, recurso)) {
               <li>
                 <app-card-recurso
                   [recurso]="recurso"

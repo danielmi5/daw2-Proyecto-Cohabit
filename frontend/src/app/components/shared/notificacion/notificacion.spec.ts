@@ -29,6 +29,17 @@ describe('Notificacion', () => {
     fixture.detectChanges();
 
     expect(notificacionService.notificaciones().length).toBe(1);
-    expect(notificacionService.notificaciones()[0].message).toBe('Test message');
+    expect(notificacionService.notificaciones()[0].mensaje).toBe('Test message');
+  });
+
+  it('should remove notification', () => {
+    notificacionService.success('Test');
+    fixture.detectChanges();
+
+    const id = notificacionService.notificaciones()[0].id;
+    notificacionService.eliminar(id);
+    fixture.detectChanges();
+
+    expect(notificacionService.notificaciones().length).toBe(0);
   });
 });

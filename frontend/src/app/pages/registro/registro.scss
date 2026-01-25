@@ -13,9 +13,9 @@
     width: 92%;
     max-width: 900px;
     padding: $espaciado-xxl;
-
-    background: var(--bg-ocasional);
     border: 1px solid var(--borde-cards);
     border-radius: $radio-card;
+
+    background: var(--bg-ocasional);
   }
 }

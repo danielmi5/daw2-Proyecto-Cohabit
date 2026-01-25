@@ -15,7 +15,7 @@ import { NotificacionService } from '../../../services/notificacion.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormInput, FormTextarea, Button],
   templateUrl: './data-grupo.html',
-  styleUrl: './data-grupo.scss',
+  styleUrls: ['./data-grupo.scss'],
 })
 export class DataGrupo implements OnChanges {
   @Input() grupo: GrupoResponse | null = null;

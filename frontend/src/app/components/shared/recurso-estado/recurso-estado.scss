@@ -2,10 +2,10 @@
 @use '../../../../styles/01-tools/mixins' as mixins;
 
 .recurso-estado {
-  background-color: var(--bg-cards);
+  padding: $espaciado-m;
   border: $borde-thin solid var(--borde-cards);
   border-radius: $radio-card;
-  padding: $espaciado-m;
+  background-color: var(--bg-cards);
   box-shadow: $shadow-sm;
   transition: box-shadow $transicion-base $transicion-suave;
 
@@ -21,10 +21,10 @@
 
   &__nombre {
     @include mixins.tipografia(h4, var(--titulos));
+    min-width: 0;
+    flex: 1;
     font-weight: $font-weight-bold;
     text-transform: uppercase;
-    flex: 1;
-    min-width: 0;
   }
 
   &__estado {
@@ -35,14 +35,14 @@
     white-space: nowrap;
 
     &--ocupado {
-      background-color: var(--error);
       color: var(--texto-secundario);
+      background-color: var(--error);
       opacity: 0.9;
     }
 
     &--disponible {
-      background-color: var(--success);
       color: var(--texto-secundario);
+      background-color: var(--success);
       opacity: 0.9;
     }
   }

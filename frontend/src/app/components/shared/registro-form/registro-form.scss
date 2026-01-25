@@ -33,19 +33,16 @@
 	}
 
 	&__fila {
+		width: 100%;
 		display: flex;
 		flex-direction: row;
 		gap: $espaciado-m;
-		width: 100%;
-		@media (max-width: 600px) {
-			flex-direction: column;
-			gap: $espaciado-s;
-		}
 	}
+	
 
 	&__input {
-		flex: 1 1 0;
 		min-width: 0;
+		flex: 1 1 0;
 	}
 	
 	&__campo-async {
@@ -85,4 +82,13 @@
 			text-decoration: underline;
 		}
 	}
+}
+
+@media (max-width: 600px) {
+  .registro-form {
+    &__fila {
+      flex-direction: column;
+      gap: $espaciado-s;
+    }
+  }
 }

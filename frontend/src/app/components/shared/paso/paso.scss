@@ -5,8 +5,8 @@
 .paso {
   @include mixins.display-flex(column, $espaciado-m, center, flex-start);
   padding: $espaciado-l;
-  text-align: center;
   height: 100%;
+  text-align: center;
 
   &__numero {
     width: 80px;
@@ -15,29 +15,33 @@
     
     @include mixins.centrar-flex();
     @include mixins.tipografia(h1, $texto-claro);
-    
-    background: linear-gradient(110deg, var(--bg-ocasional) 0%, var(--hover) 100%);
+    flex-shrink: 0;
     border-radius: $radio-circulo;
     font-weight: $font-weight-bold;
+    
+    background: linear-gradient(110deg, var(--bg-ocasional) 0%, var(--hover) 100%);
     box-shadow: $shadow-md;
-    flex-shrink: 0;
   }
 
   &__titulo {
     margin-bottom: $espaciado-s;
     @include mixins.tipografia(h3, var(--titulos));
-    font-weight: $font-weight-semibold;
     min-height: 2.5em;
+    font-weight: $font-weight-semibold;
     @include mixins.centrar-flex();
   }
 
   &__descripcion {
     @include mixins.tipografia(parrafo, var(--texto-primario));
-    line-height: $line-relaxed;
     flex: 1;
+    line-height: $line-relaxed;
   }
 
-  @media (max-width: $breakpoint-tablet) {
+  
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .paso {
     padding: $espaciado-m;
 
     &__numero {

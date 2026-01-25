@@ -2,10 +2,10 @@
 @use '../../../../styles/01-tools/mixins' as mixins;
 
 .tabla-reservas {
-  overflow-x: auto;
   border-radius: $radio-card;
   border: $borde-thin solid var(--borde-cards);
   background-color: var(--bg-cards);
+  overflow-x: auto;
 
   &__tabla {
     width: 100%;
@@ -16,10 +16,10 @@
       
       th {
         @include mixins.tipografia(parrafo, var(--texto-primario));
-        font-weight: $font-weight-bold;
-        text-align: left;
         padding: $espaciado-m;
         border-bottom: $borde-medium solid var(--borde);
+        font-weight: $font-weight-bold;
+        text-align: left;
       }
     }
 

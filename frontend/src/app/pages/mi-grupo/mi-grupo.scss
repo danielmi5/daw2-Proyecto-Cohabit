@@ -22,8 +22,8 @@
   &__estado {
     @include mixins.centrar-flex(column);
     min-height: 100vh;
-    gap: $espaciado-l;
     background-color: var(--bg-secundario);
+    gap: $espaciado-l;
 
     &--carga {
       color: var(--texto-primario);
@@ -47,17 +47,17 @@
   &__vacio {
     @include mixins.centrar-flex(column);
     min-height: 100vh;
-    text-align: center;
     padding: $espaciado-xxl;
+    text-align: center;
     background-color: var(--bg-secundario);
   }
 
   &__vacio-contenido {
     @include mixins.display-flex(column, $espaciado-l, center, center);
     max-width: 600px;
-    background-color: var(--bg-cards);
     padding: $espaciado-xxl;
     border-radius: $radio-card;
+    background-color: var(--bg-cards);
     box-shadow: $shadow-md;
   }
 

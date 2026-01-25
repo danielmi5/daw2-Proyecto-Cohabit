@@ -8,17 +8,17 @@
 
     @include mixins.centrar-flex();
     @include mixins.tipografia(button);
-    text-align: center;
-    text-decoration: none;
-    white-space: nowrap;
-    text-wrap: initial;
-    vertical-align: middle;
 
     border: 1px solid var(--borde);
     border-radius: $radio-boton;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
 
     transition: all $transicion-base $transicion-suave;
     cursor: pointer;
+    text-wrap: initial;
+    vertical-align: middle;
     user-select: none;
 
     &:focus {
@@ -66,10 +66,10 @@
         }
 
         &:active:not([disabled]):not(.boton--deshabilitado) {
-            transform: translateY(1px);
+            border-color: $btn-primario-active;
 
             background-color: $btn-primario-active;
-            border-color: $btn-primario-active;
+            transform: translateY(1px);
         }
     }
 
@@ -84,9 +84,9 @@
         }
 
         &:active:not([disabled]):not(.boton--deshabilitado) {
-            transform: translateY(1px);
 
             background-color: $btn-secundario-active;
+            transform: translateY(1px);
         }
     }
 
@@ -97,15 +97,15 @@
  
 
         &:hover:not([disabled]):not(.boton--deshabilitado) {
+            border-color: $texto-oscuro;
             color: $negro;
             background-color: $fondo-input-hover;
-            border-color: $texto-oscuro;
         }
 
         &:active:not([disabled]):not(.boton--deshabilitado) {
-            transform: translateY(1px);
 
             background-color: $fondo-input-focus;
+            transform: translateY(1px);
         }
     }
 
@@ -119,10 +119,10 @@
         }
 
         &:active:not([disabled]):not(.boton--deshabilitado) {
-            transform: translateY(1px);
+            border-color: $color-error2;
 
             background-color: $color-error2;
-            border-color: $color-error2;
+            transform: translateY(1px);
         }
     }
 

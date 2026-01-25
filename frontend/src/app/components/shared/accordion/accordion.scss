@@ -35,8 +35,8 @@
     cursor: not-allowed;
 
     .accordion-item__header {
-      cursor: not-allowed;
       background-color: $gris1;
+      cursor: not-allowed;
     }
   }
 
@@ -50,13 +50,13 @@
     align-items: center;
     justify-content: space-between;
     @include mixins.tipografia(h4);
+    border: none;
     
     color: $texto-oscuro;
-    background-color: var(--bg-cards);
-    border: none;
-    cursor: pointer;
     text-align: left;
+    background-color: var(--bg-cards);
     transition: background-color $transicion-base $transicion-suave;
+    cursor: pointer;
     user-select: none;
 
     &:hover:not(:disabled) {
@@ -112,10 +112,8 @@
   // Panel del contenido
   &__panel {
     max-height: 0;
-    overflow: hidden;
     transition: max-height $transicion-lenta $transicion-suave;
-
-    // Panel abierto
+    overflow: hidden;
     &--abierto {
       max-height: 2000px;
     }

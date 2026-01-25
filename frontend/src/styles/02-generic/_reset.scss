@@ -41,13 +41,13 @@ html {
   /* Se establecen valores básicos para el body */
   body {
     min-height: 100vh; /* se asegura al menos la altura de la ventana */
-    line-height: 1.5;  /* para lectura cómoda */
+    line-height: 1.5;
   }
 
   /* Se aplica line-height ligeramente menor en encabezados y elementos interactivos */
   h1, h2, h3, h4,
   button, input, label {
-    line-height: 1.1; /* títulos más compactos */
+    line-height: 1.1;
   }
 
   /* Se equilibra el salto de línea en headings en navegadores que lo soportan */
@@ -59,7 +59,7 @@ html {
   /* En enlaces sin clase se mantiene un estilo por defecto */
   a:not([class]) {
     text-decoration-skip-ink: auto; /* se evitan cortes bruscos en subrayado */
-    color: currentColor; /* se hereda el color actual */
+    color: currentColor;
   }
 
   /* Se hace que las imágenes y picture sean más fáciles de manejar (responsivas) */

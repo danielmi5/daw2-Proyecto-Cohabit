@@ -85,10 +85,10 @@
     &__redes-sociales{
         width: 160px;
         height: fit-content;
-        gap: $espaciado-m;
 
         display: flex;
         flex-direction: column;
+        gap: $espaciado-m;
     }
 
     &__redes-titulo{

@@ -6,8 +6,10 @@
   padding: $espaciado-xxl $espaciado-xxl;
 
   @include mixins.display-flex(column, $espaciado-xl, center, center);
+  box-sizing: border-box;
   text-align: center;
 
+  color: var(--texto-primario);
   background-color: var(--bg-secundario);
 
 
@@ -31,24 +33,26 @@
 
   &__boton {
     max-width: 320px;
+    width: auto;
     padding: $espaciado-m 0;
-    @include mixins.tipografia(button);
-    font-size: $text-lg;
+    box-sizing: border-box;
 
     @include mixins.centrar-flex();
     flex: 1 1 220px;
     text-decoration: none;
 
+    @include mixins.tipografia(button);
+
     border-radius: $radio-boton;
-    box-sizing: border-box;
+    font-size: $text-lg;
 
     transition: all $transicion-base $transicion-suave;
     cursor: pointer;
 
     &--primario {
+      border: none;
       color: $texto-claro;
       background-color: $btn-primario;
-      border: none;
 
       &:hover {
         background-color: $btn-primario-hover;
@@ -61,9 +65,9 @@
     }
 
     &--secundario {
+      border: $borde-medium solid $color-primario;
       color: $texto-oscuro;
       background-color: $btn-secundario;
-      border: $borde-medium solid $color-primario;
 
       &:hover {
         background-color: $btn-secundario-hover;
@@ -77,20 +81,7 @@
   }
 
   @media (max-width: $breakpoint-tablet) {
-    padding: $espaciado-xl $espaciado-m;
-
-    &__acciones {
-      width: 100%;
-
-      @include mixins.display-flex(column, $espaciado-s, stretch);
-    }
-
-    &__boton {
-      max-width: none;
-      width: 100%;
-
-      flex-basis: 100%;
-    }
+    
   }
 }
 
@@ -98,9 +89,9 @@
 .como-funciona {
   width: 100%;
   padding: $espaciado-xxl $espaciado-l;
-  
-  background-color: var(--bg-primario);
+
   text-align: center;
+  background-color: var(--bg-primario);
 
   &__titulo {
     margin-bottom: $espaciado-xl;
@@ -108,20 +99,15 @@
   }
 
   &__pasos {
+    max-width: 1200px;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: $espaciado-xl;
-    max-width: 1200px;
-    margin: 0 auto;
   }
 
   @media (max-width: $breakpoint-tablet) {
-    padding: $espaciado-xl $espaciado-m;
-
-    &__pasos {
-      grid-template-columns: 1fr;
-      gap: $espaciado-l;
-    }
+    
   }
 }
 
@@ -129,9 +115,9 @@
 .caracteristicas {
   width: 100%;
   padding: $espaciado-xxl $espaciado-l;
-  
-  background-color: var(--bg-secundario);
+
   text-align: center;
+  background-color: var(--bg-secundario);
 
   &__titulo {
     margin-bottom: $espaciado-xl;
@@ -139,52 +125,43 @@
   }
 
   &__contenido {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: $espaciado-xl;
     max-width: 1200px;
     margin: 0 auto;
     margin-top: $espaciado-l;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: stretch;
     grid-auto-rows: 1fr;
+    gap: $espaciado-xl;
   }
 
   &__imagen {
-    /* Sin padding para que la imagen ocupe todo el espacio de la celda */
-    display: block;
     padding: 0;
-    align-self: stretch;
     width: 100%;
     height: 100%;
+    /* Sin padding para que la imagen ocupe todo el espacio de la celda */
+    display: block;
+    align-self: stretch;
   }
 
   &__ilustracion {
-    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    display: block;
     border-radius: $radio-md;
+    object-fit: cover;
   }
 
   &__lista {
-    list-style: none;
     padding: 0;
     margin: 0;
-    
+    list-style: none;
+
     @include mixins.display-flex(column, $espaciado-m, flex-start, flex-start);
   }
 
   @media (max-width: $breakpoint-tablet) {
-    padding: $espaciado-xl $espaciado-m;
-
-    &__contenido {
-      grid-template-columns: 1fr;
-      gap: $espaciado-l;
-    }
-
-    &__imagen {
-      order: -1;
-    }
+    
   }
 
   app-caracteristica{
@@ -205,5 +182,44 @@
 
   &__descripcion{
     color: var(--texto-primario)
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .inicio {
+    padding: $espaciado-xl $espaciado-m;
+
+    &__acciones {
+      width: 100%;
+      @include mixins.display-flex(column, $espaciado-s, stretch);
+    }
+
+    &__boton {
+      max-width: none;
+      width: 100%;
+      flex-basis: 100%;
+    }
+  }
+
+  .como-funciona {
+    padding: $espaciado-xl $espaciado-m;
+
+    &__pasos {
+      grid-template-columns: 1fr;
+      gap: $espaciado-l;
+    }
+  }
+
+  .caracteristicas {
+    padding: $espaciado-xl $espaciado-m;
+
+    &__contenido {
+      grid-template-columns: 1fr;
+      gap: $espaciado-l;
+    }
+
+    &__imagen {
+      order: -1;
+    }
   }
 }

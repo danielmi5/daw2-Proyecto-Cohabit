@@ -2,14 +2,14 @@
 @use '../../../../styles/01-tools/mixins' as mixins;
 
 .buscador-filtros {
+  padding: $espaciado-m;
   display: flex;
   flex-direction: column;
-  gap: $espaciado-m;
-  padding: $espaciado-m;
-  background-color: var(--bg-cards);
   border-radius: $radio-card;
   border: 1px solid var(--borde-cards);
+  background-color: var(--bg-cards);
   box-shadow: $shadow-sm;
+  gap: $espaciado-m;
   container-type: inline-size;
   container-name: buscador-container;
 
@@ -18,17 +18,17 @@
   }
 
   &__busqueda {
-    position: relative;
+    width: 100%;
     flex: 1;
-    width: 100%;;
+    position: relative;;
   }
 
   &__avanzados {
+    padding-top: $espaciado-m;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(49%, 49%));
-    gap: $espaciado-m;
-    padding-top: $espaciado-m;
     border-top: 1px solid var(--borde-cards);
+    gap: $espaciado-m;
   }
 
   &__grupo {

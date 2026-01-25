@@ -3,36 +3,36 @@
 
 .card-recurso {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   border-radius: $radio-card;
-  background-color: var(--bg-cards);
   border: 1px solid var(--borde-cards);
-  height: 100%;
+  background-color: var(--bg-cards);
   overflow: hidden;
 
   &__imagen-contenedor {
     width: 100%;
     height: 180px;
-    overflow: hidden;
-    background-color: $gris1;
     border-radius: $radio-card $radio-card 0 0;
+    background-color: $gris1;
+    overflow: hidden;
     @include mixins.display-flex(column, $espaciado-s, center, center);
   }
 
   &__imagen {
     width: 100%;
     height: 100%;
-    object-fit: cover;
     display: block;
+    object-fit: cover;
   }
 
   &__imagen-placeholder {
     @include mixins.centrar-flex(column);
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, var(--bg-secundario) 0%, var(--bg-cards) 100%);
     color: var(--texto-terciario);
+    background: linear-gradient(135deg, var(--bg-secundario) 0%, var(--bg-cards) 100%);
 
     svg {
       width: 48px;
@@ -54,9 +54,9 @@
   &__titulo {
     margin: 0;
     @include mixins.tipografia(h4, var(--titulos));
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   /* Estado moved to app-etiqueta-recurso component */
@@ -64,10 +64,10 @@
   &__cuerpo {
     display: flex;
     flex-direction: column;
-    gap: $espaciado-m;
     flex: 1;
 
     color: var(--texto-primario);
+    gap: $espaciado-m;
   }
 
   &__descripcion {
@@ -94,8 +94,8 @@
   &__acciones {
     width: 100%;
     @include mixins.display-flex(row, $espaciado-s, center, space-between);
-    border-top: 1px solid var(--borde-cards);
     padding: $espaciado-m 0;
+    border-top: 1px solid var(--borde-cards);
 
     &--card{
       @include mixins.display-flex(row, $espaciado-xs, center, space-between);

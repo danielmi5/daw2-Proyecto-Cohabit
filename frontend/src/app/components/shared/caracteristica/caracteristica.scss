@@ -7,14 +7,14 @@
   
   display: flex;
   align-items: center;
-  gap: $espaciado-m;
+  border: $borde-medium solid var(--borde);
+  border-radius: $radio-md;
   text-align: left;
   
   background-color: $blanco;
-  border: $borde-medium solid var(--borde);
-  border-radius: $radio-md;
   box-shadow: $shadow-sm;
   transition: all $transicion-base $transicion-suave;
+  gap: $espaciado-m;
 
   &__icono {
     @include mixins.centrar-flex();

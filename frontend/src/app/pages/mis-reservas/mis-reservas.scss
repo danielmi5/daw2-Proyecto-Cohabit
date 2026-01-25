@@ -8,10 +8,6 @@
   margin: 0 auto;
   min-height: calc(100vh - 200px);
   position: relative;
-
-  // Encabezado con navegación
-
-  // Estados de carga y error
   &__estado {
     @include mixins.centrar-flex(column);
     min-height: 400px;
@@ -45,8 +41,8 @@
 
   &__mensaje-error {
     @include mixins.tipografia(parrafo, var(--texto-primario));
-    text-align: center;
     max-width: 500px;
+    text-align: center;
   }
 
   &__acciones {
@@ -68,17 +64,17 @@
 
   // Grid de cards
   &__cuadricula {
+    padding-bottom: $espaciado-xxl;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: $espaciado-l;
-    padding-bottom: $espaciado-xxl;
   }
 
   &__boton{
-    display: inline-flex;
     width: auto;
-    align-self: flex-end;
     padding: $espaciado-s $espaciado-m;
+    display: inline-flex;
+    align-self: flex-end;
   }
 }
 

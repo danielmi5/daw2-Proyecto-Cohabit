@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, signal, effect, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
@@ -19,6 +19,7 @@ export interface FiltrosRecurso {
   imports: [CommonModule, FormsModule, FeatherIconDirective, FormInput, FormSelect, Button],
   templateUrl: './buscador-filtros.html',
   styleUrls: ['./buscador-filtros.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BuscadorFiltros {
   @Input() mostrarFiltros: boolean = true;
@@ -31,6 +32,24 @@ export class BuscadorFiltros {
   };
 
   mostrarFiltrosAvanzados = false;
+
+  // Signal para búsqueda con debounce
+  private busquedaSignal = signal<string>("");
+  private debounceTimer: any;
+
+  constructor() {
+    // Effect para emitir búsqueda con debounce de 300ms
+    effect(() => {
+      const busqueda = this.busquedaSignal();
+      if (this.debounceTimer) {
+        clearTimeout(this.debounceTimer);
+      }
+      this.debounceTimer = setTimeout(() => {
+        this.filtros.busqueda = busqueda;
+        this.emitirFiltros();
+      }, 300);
+    });
+  }
 
   tiposRecurso: { valor: TipoRecurso | "", etiqueta: string }[] = [
     { valor: "", etiqueta: "Todos los tipos" },
@@ -58,7 +77,8 @@ export class BuscadorFiltros {
   }
 
   onBusquedaChange(): void {
-    this.emitirFiltros();
+    // Actualiza el signal, el debounce se maneja en el effect
+    this.busquedaSignal.set(this.filtros.busqueda);
   }
 
   onFiltroChange(): void {

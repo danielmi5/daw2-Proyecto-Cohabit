@@ -7,7 +7,7 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-perfil',
   imports: [Button],
   templateUrl: './perfil.html',
-  styleUrl: './perfil.scss',
+  styleUrls: ['./perfil.scss'],
 })
 export class Perfil {
   private notificationService = inject(NotificacionService);

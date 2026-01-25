@@ -8,7 +8,7 @@ export type EstadoValidacion = "inicial" | "advertencia" | "error" | "exito";
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './form-textarea.html',
-  styleUrl: './form-textarea.scss',
+  styleUrls: ['./form-textarea.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

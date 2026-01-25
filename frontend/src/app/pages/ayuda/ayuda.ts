@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-ayuda',
   imports: [],
   templateUrl: './ayuda.html',
-  styleUrl: './ayuda.scss',
+  styleUrls: ['./ayuda.scss'],
 })
 export class Ayuda {
 

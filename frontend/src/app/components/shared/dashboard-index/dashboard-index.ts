@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, effect, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin, of } from 'rxjs';
 import { ReservaService } from '../../../services/reserva.service';
@@ -6,6 +6,7 @@ import { RecursoService } from '../../../services/recurso.service';
 import { GrupoService } from '../../../services/grupo.service';
 import { MiembroGrupoService } from '../../../services/miembro-grupo.service';
 import { AuthService } from '../../../services/auth.service';
+import { StateService } from '../../../services/state.service';
 import { ReservaResponse, RecursoResponse, UsuarioResponse } from '../../../models';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 import { TablaReservas } from '../tabla-reservas/tabla-reservas';
@@ -27,7 +28,8 @@ interface RecursoConReserva {
   standalone: true,
   imports: [CommonModule, FeatherIconDirective, TablaReservas, RecursoEstado],
   templateUrl: './dashboard-index.html',
-  styleUrls: ['./dashboard-index.scss']
+  styleUrls: ['./dashboard-index.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardIndex implements OnInit {
   private reservaService = inject(ReservaService);
@@ -35,6 +37,7 @@ export class DashboardIndex implements OnInit {
   private grupoService = inject(GrupoService);
   private miembroGrupoService = inject(MiembroGrupoService);
   private authService = inject(AuthService);
+  private stateService = inject(StateService);
 
   // Estado de carga
   cargando = signal(true);
@@ -52,6 +55,23 @@ export class DashboardIndex implements OnInit {
   ultimasReservas = signal<(ReservaResponse & { autor?: UsuarioResponse; nombreRecurso?: string })[]>([]);
 
   private grupoId: number | null = null;
+
+  constructor() {
+    // Effects para actualización reactiva cross-view
+    effect(() => {
+      const recursosTrigger = this.stateService.recursosTrigger();
+      if (recursosTrigger > 0 && this.grupoId) {
+        this.cargarDatosDashboardSinScroll();
+      }
+    });
+
+    effect(() => {
+      const reservasTrigger = this.stateService.reservasTrigger();
+      if (reservasTrigger > 0 && this.grupoId) {
+        this.cargarDatosDashboardSinScroll();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.cargarDatosUsuario();
@@ -229,6 +249,16 @@ export class DashboardIndex implements OnInit {
 
   reintentar(): void {
     this.cargarDatosUsuario();
+  }
+
+  /**
+   * Recarga el dashboard preservando el scroll
+   * Usado por los effects de actualización reactiva
+   */
+  private async cargarDatosDashboardSinScroll(): Promise<void> {
+    if (!this.grupoId) return;
+    // Llama a la lógica de recarga sin util de scroll (util eliminada)
+    this.cargarDatosDashboard();
   }
 }
 

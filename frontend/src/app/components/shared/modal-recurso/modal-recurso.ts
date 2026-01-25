@@ -15,7 +15,7 @@ import { NotificacionService } from '../../../services/notificacion.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, Button, FormInput, FormSelect, FormTextarea, FormArchivo],
   templateUrl: './modal-recurso.html',
-  styleUrl: './modal-recurso.scss',
+  styleUrls: ['./modal-recurso.scss'],
 })
 export class ModalRecurso implements OnInit, OnChanges {
   @Input() visible = false;
@@ -25,8 +25,8 @@ export class ModalRecurso implements OnInit, OnChanges {
   @Output() cerrar = new EventEmitter<void>();
   @Output() guardar = new EventEmitter<any>();
 
-  private subidaArchivosService = inject(SubidaArchivosService);
-  private notificacionService = inject(NotificacionService);
+  private subidaArchivosService: SubidaArchivosService = inject(SubidaArchivosService);
+  private notificacionService: NotificacionService = inject(NotificacionService);
 
   formulario!: FormGroup;
   archivoSeleccionado: File | null = null;
@@ -44,9 +44,7 @@ export class ModalRecurso implements OnInit, OnChanges {
     { valor: 'NO_DISPONIBLE', etiqueta: 'No disponible' }
   ];
 
-  constructor(private fb: FormBuilder) {
-    this.inicializarFormulario();
-  }
+  private fb: FormBuilder = inject(FormBuilder);
 
   ngOnInit(): void {
     this.inicializarFormulario();

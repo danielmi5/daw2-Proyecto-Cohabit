@@ -8,7 +8,7 @@ import { Alert } from '../alert/alert';
   standalone: true,
   imports: [Alert],
   templateUrl: './notificacion.html',
-  styleUrl: './notificacion.scss',
+  styleUrls: ['./notificacion.scss'],
   animations: [
     trigger('notificacionAnim', [
       transition(':enter', [

@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-grupo',
   imports: [],
   templateUrl: './grupo.html',
-  styleUrl: './grupo.scss',
+  styleUrls: ['./grupo.scss'],
 })
 export class Grupo {
 

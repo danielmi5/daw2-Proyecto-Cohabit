@@ -17,7 +17,7 @@ import { forkJoin } from 'rxjs';
   selector: 'app-reservas',
   imports: [CommonModule, Button, TabComponent, ModalReserva],
   templateUrl: './reservas.html',
-  styleUrl: './reservas.scss',
+  styleUrls: ['./reservas.scss'],
 })
 export class Reservas implements OnInit {
   private recursoService = inject(RecursoService);

@@ -5,7 +5,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
   selector: 'app-form-checkbox',
   imports: [ReactiveFormsModule],
   templateUrl: './form-checkbox.html',
-  styleUrl: './form-checkbox.scss',
+  styleUrls: ['./form-checkbox.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, effect, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Button } from '../../components/shared/button/button';
@@ -11,21 +11,23 @@ import { GrupoService } from '../../services/grupo.service';
 import { AuthService } from '../../services/auth.service';
 import { NotificacionService } from '../../services/notificacion.service';
 import { MiembroGrupoService } from '../../services/miembro-grupo.service';
+import { StateService } from '../../services/state.service';
 import { RecursoResponse, ReservaResponse, ReservaRequest, ReservaUpdate } from '../../models';
 
 @Component({
   selector: 'app-mis-reservas',
   imports: [CommonModule, Button, Card, ModalReserva, TabComponent],
   templateUrl: './mis-reservas.html',
-  styleUrl: './mis-reservas.scss',
+  styleUrls: ['./mis-reservas.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MisReservas implements OnInit {
   private reservaService = inject(ReservaService);
-  private recursoService = inject(RecursoService);
   private grupoService = inject(GrupoService);
   private authService = inject(AuthService);
   private notificacionService = inject(NotificacionService);
   private miembroGrupoService = inject(MiembroGrupoService);
+  private stateService = inject(StateService);
   private router = inject(Router);
 
   reservas: ReservaResponse[] = [];
@@ -41,6 +43,13 @@ export class MisReservas implements OnInit {
   mostrarModal = false;
   modoEdicion = false;
   reservaSeleccionada: ReservaResponse | null = null;
+   
+  /**
+   * TrackBy function para optimizar rendering de lista
+   */
+  trackByReservaId(_index: number, reserva: ReservaResponse): number | null | undefined {
+    return reserva.id;
+  }
 
   ngOnInit(): void {
     this.cargarDatosUsuario();

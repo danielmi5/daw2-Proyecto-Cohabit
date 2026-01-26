@@ -1,3 +1,4 @@
+// Respuesta con datos de un usuario
 export interface UsuarioResponse {
   id?: number;
   nombre?: string;
@@ -7,6 +8,6 @@ export interface UsuarioResponse {
   pais?: string;
   ciudad?: string;
   telefono?: string;
-  fechaRegistro?: string;
+  fechaRegistro?: string; // ISO 8601
   miembroGrupoId?: number;
 }

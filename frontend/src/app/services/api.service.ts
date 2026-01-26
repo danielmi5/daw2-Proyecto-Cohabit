@@ -5,26 +5,19 @@ import { catchError } from 'rxjs/operators';
 import { handleHttpError } from './error-handler.util';
 import { RUNTIME_CONFIG } from '../../runtime-config';
 
-
+// Servicio para hacer peticiones HTTP a la API del backend
+// Métodos genéricos para CRUD y subida de archivos
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private http = inject(HttpClient);
   private readonly baseUrl = RUNTIME_CONFIG.apiBaseUrl;
 
-  /**
-   * Normaliza la URL eliminando barras duplicadas
-   */
+  // Construye la URL completa y normaliza (elimina barras duplicadas)
   private construirUrl(endpoint: string): string {
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
     return `${this.baseUrl}/${cleanEndpoint}`;
   }
 
-  /**
-   * Realiza una petición GET al endpoint especificado.
-   * @param endpoint - Ruta relativa del recurso en la API
-   * @param options - Opciones opcionales (params, headers, etc.)
-   * @returns Observable con la respuesta tipada
-   */
   get<T>(endpoint: string, options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T> {
     return this.http.get<T>(this.construirUrl(endpoint), options)
       .pipe(catchError(error => this.handleError(error)));
@@ -54,26 +47,12 @@ export class ApiService {
       .pipe(catchError(error => this.handleError(error)));
   }
 
-  /**
-   * Realiza una petición DELETE al endpoint especificado.
-   * @param endpoint - Ruta relativa del recurso en la API
-   *   (por ejemplo 'usuarios/123')
-   * @param options - Opciones opcionales (params, headers, etc.)
-   * @returns Observable con la respuesta tipada
-   */
   delete<T>(endpoint: string, options?: { params?: HttpParams; headers?: HttpHeaders; [key: string]: any }): Observable<T> {
     return this.http.delete<T>(this.construirUrl(endpoint), options)
       .pipe(catchError(error => this.handleError(error)));
   }
 
-  /**
-   * Método para subir archivos al servidor usando FormData
-   * @param endpoint - El endpoint de la API
-   * @param archivo - El archivo a subir
-   * @param camposAdicionales - Campos adicionales opcionales para incluir en el FormData
-   * @param metodo - El método HTTP a usar ('POST' o 'PUT'). Por defecto 'POST'
-   * @returns Observable con la respuesta del servidor
-   */
+  // Sube un archivo usando FormData (POST o PUT)
   subirArchivo<T>(
     endpoint: string,
     archivo: File,
@@ -98,14 +77,7 @@ export class ApiService {
     return peticion.pipe(catchError(error => this.handleError(error)));
   }
 
-  /**
-   * Método para subir múltiples archivos al servidor usando FormData
-   * @param endpoint - El endpoint de la API
-   * @param archivos - Array de archivos a subir
-   * @param camposAdicionales - Campos adicionales opcionales para incluir en el FormData
-   * @param metodo - El método HTTP a usar ('POST' o 'PUT'). Por defecto 'POST'
-   * @returns Observable con la respuesta del servidor
-   */
+  // Sube múltiples archivos usando FormData
   subirMultiplesArchivos<T>(
     endpoint: string,
     archivos: File[],

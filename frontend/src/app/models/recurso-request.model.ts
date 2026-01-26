@@ -1,5 +1,6 @@
 import { TipoRecurso, EstadoRecurso } from './backend-types';
 
+// Datos para crear un recurso
 export interface RecursoRequest {
   nombre: string;
   descripcion?: string;

@@ -1,3 +1,4 @@
+// Update parcial de usuario (todos opcionales)
 export interface UsuarioUpdate {
   nombre?: string;
   apellidos?: string;

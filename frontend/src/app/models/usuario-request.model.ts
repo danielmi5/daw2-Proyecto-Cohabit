@@ -1,3 +1,4 @@
+// Datos para crear un usuario
 export interface UsuarioRequest {
   nombre: string;
   apellidos: string;

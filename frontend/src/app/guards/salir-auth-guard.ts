@@ -3,14 +3,17 @@ import { inject } from '@angular/core';
 import { ModalService } from '../services/modal.service';
 
 /**
- * Guard funcional para confirmar la salida desde páginas de autenticación
- * (por ejemplo `login` y `registro`).
- *
- * - Si el componente de la página expone `hayCambiosAuth()` y devuelve true,
- *   se muestra un modal de confirmación llamando a `modalService.confirmarSalir()`.
- * - Si el formulario no tiene cambios, permite la navegación devolviendo true.
- *
- * Este guard se utiliza como `canDeactivate` en las rutas de autenticación.
+ * Guard funcional para confirmar la salida desde páginas de autenticación (login, registro).
+ * Implementa la interfaz CanDeactivateFn de Angular Router.
+ * 
+ * @param component - Componente desde el cual se intenta salir
+ * @returns Promise<boolean> o boolean indicando si se permite la navegación
+ * 
+ * @remarks
+ * Comportamiento:
+ * - Si el componente expone el método `hayCambiosAuth()` y retorna true, muestra modal de confirmación
+ * - Si no hay cambios, permite la navegación directamente
+ * - Utilizado como canDeactivate en rutas de autenticación para evitar pérdida de datos
  */
 export const salirAuthGuard: CanDeactivateFn<unknown> = (component: any) => {
   const modalService = inject(ModalService);

@@ -6,8 +6,17 @@ import { RedireccionService } from "../services/redireccion.service";
 
 /**
  * Guard funcional para proteger rutas que requieren autenticación.
- * Si el usuario no está autenticado, redirige a la página de login.
- * Se utiliza canActivate
+ * Implementa la interfaz CanActivateFn de Angular Router.
+ * 
+ * @param route - Información de la ruta activada
+ * @param state - Estado actual del router
+ * @returns true si el usuario está autenticado, false en caso contrario
+ * 
+ * @remarks
+ * Si el usuario no está autenticado:
+ * - Guarda la URL actual para redirección posterior
+ * - Muestra un modal solicitando autenticación
+ * - Impide el acceso a la ruta
  */
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);

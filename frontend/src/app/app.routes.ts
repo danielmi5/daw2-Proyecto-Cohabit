@@ -6,14 +6,22 @@ import { RegistroPage } from "./pages/registro/registro";
 import { salirAuthGuard } from './guards/salir-auth-guard';
 import { authGuard } from "./guards/auth-guard";
 
-/**
- * Configuración de rutas de la aplicación
- * 
- * Estructura:
- * - Rutas públicas: inicio, login, registro
- * - Rutas privadas (protegidas con authGuard): dashboard, mi-grupo, perfil
- * - Lazy loading: dashboard y mi-grupo cargan sus hijos dinámicamente
- */
+// Configuración de rutas de la aplicación.
+// Utiliza lazy loading para optimizar la carga inicial.
+//
+// Estructura de rutas:
+// - Públicas: inicio, login, registro, ayuda, style-guide (acceso sin autenticación)
+// - Privadas: dashboard, grupo, perfil (protegidas con authGuard)
+// - Lazy loading en rutas complejas (dashboard, grupo, perfil) para cargar módulos bajo demanda
+// - Wildcard (**) para ruta 404 no encontrada
+//
+// Guards:
+// - authGuard: Protege rutas que requieren autenticación
+// - salirAuthGuard: Confirma salida de páginas de autenticación con cambios sin guardar
+//
+// Data:
+// - breadcrumb: Título para el componente de breadcrumbs
+// - title: Título de la página para SEO
 export const routes: Routes = [
   // RUTAS PÚBLICAS (sin autenticación)
   {

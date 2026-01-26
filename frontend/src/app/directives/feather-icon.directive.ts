@@ -1,49 +1,44 @@
 import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges, OnDestroy } from '@angular/core';
 import * as feather from 'feather-icons';
 
-/**
- * Directiva para renderizar iconos de Feather como SVG.
- * Uso: <span [feather]="'sun'" [ancho]="24" [alto]="24"></span>
- *
- * Nota: el selector de entrada se mantiene como 'feather' para
- * conservar compatibilidad con los templates existentes.
- */
+// Directiva standalone para renderizar iconos de Feather Icons como SVG inline.
+// Proporciona opciones de personalización de tamaño, color y variantes predefinidas.
+//
+// Ejemplo:
+// <!-- Uso básico -->
+// <span [feather]="'sun'"></span>
+//
+// <!-- Con personalización -->
+// <span [feather]="'moon'" [ancho]="24" [alto]="24" [trazo]="'#fff'"></span>
+//
+// <!-- Con variante predefinida -->
+// <span [feather]="'menu'" tipo="header"></span>
+//
+// Implementa OnChanges para actualización dinámica y OnDestroy para limpieza de recursos.
 @Directive({
   selector: '[feather]',
   standalone: true
 })
 export class FeatherIconDirective implements OnChanges, OnDestroy {
-  /** Nombre del icono (alias de la entrada 'feather'). Ej: 'sun', 'moon' */
-  @Input('feather') nombre!: string;
-
-  /** Ancho del SVG en píxeles o en texto (opcional). */
+  @Input('feather') nombre!: string; // Nombre del icono (ej: 'sun', 'moon', 'menu')
   @Input() ancho?: string | number;
-
-  /** Alto del SVG en píxeles o en texto (opcional). */
   @Input() alto?: string | number;
-
-  /** Color del trazo del icono (opcional). */
-  @Input() trazo?: string;
-
-  /**
-   * Tipo del icono para aplicar estilos y tamaños por defecto.
-   * Valores admitidos: 'header' | 'submenu' | 'botones'.
-   * Si no se pasa, no se aplica variante.
-   */
-  @Input() tipo?: 'header' | 'submenu' | 'botones';
+  @Input() trazo?: string; // Color del stroke
+  @Input() tipo?: 'header' | 'submenu' | 'botones'; // Variante de estilos
 
   constructor(private elemento: ElementRef<HTMLElement>, private renderer: Renderer2) {}
 
-  /** Referencia al contenedor SVG insertado por Renderer2 */
-  private appendedNode: HTMLElement | null = null;
+  private appendedNode: HTMLElement | null = null; // Nodo SVG insertado
 
-  /** Se ejecuta cuando cambian las entradas y vuelve a renderizar el SVG. */
   ngOnChanges(_: SimpleChanges): void {
     this.aplicarTipo();
     this.renderizar();
   }
 
-  /** Aplica la clase y tamaños por defecto según la variante `tipo`. */
+  /**
+   * Aplica la clase CSS y tamaños por defecto según la variante de tipo especificada
+   * @private
+   */
   private aplicarTipo(): void {
     // Elimina clases anteriores relacionadas con la directiva
     const tipos = ['header', 'submenu', 'botones'];

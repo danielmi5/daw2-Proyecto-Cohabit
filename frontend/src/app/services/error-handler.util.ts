@@ -1,19 +1,51 @@
 import { Observable, throwError } from 'rxjs';
 
+/**
+ * Tipo de error HTTP clasificado
+ */
 export type TipoError = 'red' | 'servidor' | 'validacion' | 'cliente' | 'desconocido';
 
+/**
+ * Interfaz para detalles de error HTTP estructurado
+ */
 export interface ErrorDetalle {
+  /**
+   * Tipo de error clasificado
+   */
   tipo: TipoError;
+  
+  /**
+   * Código de estado HTTP
+   */
   status?: number;
+  
+  /**
+   * Mensaje de error legible
+   */
   mensaje: string;
+  
+  /**
+   * Detalles adicionales del error
+   */
   detalles?: any;
 }
 
+/**
+ * Maneja errores HTTP clasificando el tipo de error y retornando un Observable de error estructurado.
+ * @param error - Error HTTP capturado
+ * @returns Observable que lanza el error clasificado
+ */
 export function handleHttpError(error: any): Observable<never> {
   const detalle = clasificarErrorHttp(error);
   return throwError(() => detalle);
 }
 
+/**
+ * Clasifica un error HTTP en categorías manejables.
+ * Distingue entre errores de red, servidor, validación, cliente y desconocidos.
+ * @param error - Error HTTP a clasificar
+ * @returns Objeto ErrorDetalle con información estructurada del error
+ */
 export function clasificarErrorHttp(error: any): ErrorDetalle {
   let tipo: TipoError = 'desconocido';
   let mensaje = 'Se ha producido un error.';

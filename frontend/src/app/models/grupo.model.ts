@@ -1,3 +1,4 @@
+// Respuesta con datos de un grupo
 export interface GrupoResponse {
   id?: number;
   nombre?: string;
@@ -5,8 +6,8 @@ export interface GrupoResponse {
   descripcion?: string;
   fotoGrupo?: string;
   codigoInvitacion?: string;
-  fechaCreacion?: string;
-  fechaActualizacion?: string;
+  fechaCreacion?: string; // ISO 8601
+  fechaActualizacion?: string; // ISO 8601
   miembrosIds?: number[];
   recursosIds?: number[];
   creadorId?: number;

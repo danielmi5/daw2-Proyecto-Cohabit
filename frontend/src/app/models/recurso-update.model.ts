@@ -1,5 +1,6 @@
 import { TipoRecurso, EstadoRecurso } from './backend-types';
 
+// Update parcial de un recurso
 export interface RecursoUpdate {
   nombre?: string;
   descripcion?: string;

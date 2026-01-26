@@ -1,10 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+// Pipe standalone que transforma una fecha en una representación relativa legible.
+// Calcula el tiempo transcurrido desde la fecha proporcionada hasta el momento actual.
+//
+// Ejemplo:
+// <span>{{ fechaCreacion | fechaRelativa }}</span>
+// <!-- Salida: "hace 2 horas" -->
 @Pipe({
   name: 'fechaRelativa',
   standalone: true
 })
 export class FechaRelativaPipe implements PipeTransform {
+  // Transforma una fecha a texto relativo ("hace 3 días", "hace un momento", etc.)
   transform(value: Date | string | null): string {
     if (!value) return '';
 

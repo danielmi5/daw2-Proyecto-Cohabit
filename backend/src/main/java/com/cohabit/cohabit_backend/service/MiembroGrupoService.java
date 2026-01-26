@@ -100,10 +100,10 @@ public class MiembroGrupoService {
 
     @Transactional(readOnly = true)
     public List<ReservaResponseDTO> obtenerReservasPorMiembro(Long miembroId) {
-        if (!miembroRepo.existsById(miembroId)) {
-            throw new EntidadNoEncontradaException("Miembro no encontrado: " + miembroId);
-        }
-        return reservaRepo.findByMiembroGrupoId(miembroId).stream()
+        // Usa findByIdWithReservas para cargar reservas en una sola query (optimización N+1)
+        MiembroGrupo miembro = miembroRepo.findByIdWithReservas(miembroId)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Miembro no encontrado: " + miembroId));
+        return miembro.getReservas().stream()
                 .map(ReservaMapper::reservaEntidadAReservaDto)
                 .toList();
     }

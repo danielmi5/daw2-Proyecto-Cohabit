@@ -160,7 +160,8 @@ public class GrupoService {
 
     @Transactional(readOnly = true)
     public List<RecursoResponseDTO> obtenerRecursosPorGrupo(Long grupoId) {
-        Grupo grupo = grupoRepository.findById(grupoId)
+        // Usa findByIdWithRecursos para cargar recursos en una sola query (optimización N+1)
+        Grupo grupo = grupoRepository.findByIdWithRecursos(grupoId)
                 .orElseThrow(() -> new EntidadNoEncontradaException("Grupo no encontrado: " + grupoId));
         return grupo.getRecursos().stream()
                 .map(RecursoMapper::recursoEntidadARecursoDto)

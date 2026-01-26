@@ -113,10 +113,10 @@ public class RecursoService {
 
     @Transactional(readOnly = true)
     public List<ReservaResponseDTO> obtenerReservasPorRecurso(Long recursoId) {
-        if (!recursoRepo.existsById(recursoId)) {
-            throw new EntidadNoEncontradaException("Recurso no encontrado: " + recursoId);
-        }
-        return reservaRepo.findByRecursoId(recursoId).stream()
+        // Usa findByIdWithReservas para cargar reservas en una sola query (optimización N+1)
+        Recurso recurso = recursoRepo.findByIdWithReservas(recursoId)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Recurso no encontrado: " + recursoId));
+        return recurso.getReservas().stream()
                 .map(ReservaMapper::reservaEntidadAReservaDto)
                 .toList();
     }

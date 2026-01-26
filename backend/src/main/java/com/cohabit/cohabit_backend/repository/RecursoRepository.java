@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.query.Param;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -54,4 +55,12 @@ public interface RecursoRepository extends JpaRepository<Recurso, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT r FROM Recurso r WHERE r.id = :id")
     Optional<Recurso> findByIdWithLock(@Param("id") Long id);
+
+    /**
+     * Busca un recurso por ID cargando sus reservas de forma eager para evitar problema N+1.
+     * Usa @EntityGraph para hacer un JOIN FETCH en una sola query.
+     */
+    @EntityGraph(attributePaths = {"reservas"})
+    @Query("SELECT r FROM Recurso r WHERE r.id = :id")
+    Optional<Recurso> findByIdWithReservas(@Param("id") Long id);
 }

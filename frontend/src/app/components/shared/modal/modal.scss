@@ -25,7 +25,7 @@
 	padding: $espaciado-l;
     border: 1px solid var(--borde-cards);
     border-radius: $radio-card;
-    color: $texto-oscuro;
+    color: var(--texto-primario);
 	background: var(--bg-cards);
 	box-shadow: $shadow-lg;
 	transition: transform $transicion-base $transicion-suave, opacity $transicion-base $transicion-suave;
@@ -38,12 +38,12 @@
 	font-family: $font-secondary;
 	font-size: $escala-h3;
 	font-weight: $peso-h3;
-	color: $titulos;
+	color: var(--titulos);
 }
 
 .modal__info {
 	margin: 0;
-	color: $gris6;
+	color: var(--texto-primario);
 	font-size: $escala-parrafo;
 	line-height: $altura-linea-parrafo;
 }

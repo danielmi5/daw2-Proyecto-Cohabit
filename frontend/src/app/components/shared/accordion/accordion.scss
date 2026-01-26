@@ -8,7 +8,7 @@
 }
 
 .accordion-item {
-  border: $borde-thin solid $borde-input;
+  border: $borde-thin solid var(--borde);
   border-bottom: none;
 
   &:first-child {
@@ -17,7 +17,7 @@
   }
 
   &:last-child {
-    border-bottom: $borde-thin solid $borde-input;
+    border-bottom: $borde-thin solid var(--borde);
     border-bottom-left-radius: $radio-md;
     border-bottom-right-radius: $radio-md;
   }
@@ -25,7 +25,7 @@
   // Estado abierto
   &--abierto {
     .accordion-item__header {
-      border-bottom: $borde-thin solid $borde-input;
+      border-bottom: $borde-thin solid var(--borde);
     }
   }
 
@@ -35,7 +35,7 @@
     cursor: not-allowed;
 
     .accordion-item__header {
-      background-color: $gris1;
+      background-color: var(--bg-ocasional);
       cursor: not-allowed;
     }
   }
@@ -52,7 +52,7 @@
     @include mixins.tipografia(h4);
     border: none;
     
-    color: $texto-oscuro;
+    color: var(--texto-primario);
     text-align: left;
     background-color: var(--bg-cards);
     transition: background-color $transicion-base $transicion-suave;
@@ -64,7 +64,7 @@
     }
 
     &:focus {
-      outline: 2px solid $color-primario;
+      outline: 2px solid var(--borde-cards);
       outline-offset: -2px;
       z-index: 1;
     }
@@ -74,13 +74,13 @@
     }
 
     &:focus-visible {
-      outline: 2px solid $color-primario;
+      outline: 2px solid var(--borde-cards);
       outline-offset: -2px;
       z-index: 1;
     }
 
     &:active:not(:disabled) {
-      background-color: $fondo-input-focus;
+      background-color: var(--hover);
     }
 
     &:disabled {

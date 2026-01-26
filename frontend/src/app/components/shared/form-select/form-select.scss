@@ -31,10 +31,10 @@
 
 		@include mixins.display-flex(row, $espaciado-s, center);
 		box-sizing: border-box;
-		border: $borde-thin solid $borde-input;
+		border: $borde-thin solid var(--borde);
 		border-radius: $radio-campo;
 
-		background: $fondo-input;
+		background: var(--bg-primario);
 
 		transition: box-shadow $transicion-rapida ease-in-out, border-color $transicion-rapida ease-in-out;
 
@@ -44,15 +44,15 @@
 		}
 
 		&:hover {
-			background-color: $fondo-input-hover;
+			background-color: var(--hover-enlaces-sidebar);
 
 			cursor: pointer;
 		}
 
 		&:focus-within {
 			border: 1.8px solid var(--info);
-			color: $negro;
-			background-color: $fondo-input-focus;
+			color: var(--texto-primario);
+			background-color: var(--hover);
 		}
 	}
 
@@ -60,7 +60,7 @@
 		width: 100%;
 		height: 100%;
 		padding-right: $espaciado-l;
-		@include mixins.tipografia(parrafo, $negro);
+		@include mixins.tipografia(parrafo, var(--texto-primario));
 		border: none;
 
 		background: transparent;
@@ -86,7 +86,8 @@
 
 		@include mixins.centrar-flex();
 
-		color: $gris5;
+		color: var(--texto-primario);
+		opacity: 0.6;
 
 		pointer-events: none;
 	}
@@ -121,11 +122,13 @@
 		@include mixins.desactivado();
 
 		.form-select__label-texto {
-			color: $gris4;
+			color: var(--texto-primario);
+			opacity: 0.5;
 		}
 
 		.form-select__mensaje {
-			color: $gris4;
+			color: var(--texto-primario);
+			opacity: 0.5;
 		}
 	}
 }

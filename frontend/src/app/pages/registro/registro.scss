@@ -7,7 +7,7 @@
 
   @include mixins.centrar-flex();
 
-  background-color: var(--bg-page, #efefef);
+  background-color: var(--bg-secundario);
 
   &__panel {
     width: 92%;
@@ -17,5 +17,16 @@
     border-radius: $radio-card;
 
     background: var(--bg-ocasional);
+  }
+}
+
+@media (max-width: $breakpoint-movil-grande) {
+  .page-registro {
+    padding: $espaciado-m;
+
+    &__panel {
+      width: 100%;
+      padding: $espaciado-l;
+    }
   }
 }

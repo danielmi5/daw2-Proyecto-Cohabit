@@ -16,11 +16,11 @@
 
   &__item {
     @include mixins.display-flex(row, $espaciado-s, center);
-    @include mixins.tipografia(texto-pequeno, $texto-oscuro);
+    @include mixins.tipografia(texto-pequeno, var(--texto-primario));
   }
 
   &__enlace {
-    @include mixins.tipografia(texto-pequeno, $color-info);
+    @include mixins.tipografia(texto-pequeno, var(--info));
     transition: color $transicion-base $transicion-suave;
     
     &:focus {
@@ -31,13 +31,14 @@
   }
 
   &__separador {
-    color: $gris4;
+    color: var(--texto-primario);
+    opacity: 0.5;
     font-weight: $font-weight-light;
     user-select: none;
   }
 
   &__activo {
-    color: $texto-oscuro;
+    color: var(--texto-primario);
     font-weight: $font-weight-medium;
   }
 }

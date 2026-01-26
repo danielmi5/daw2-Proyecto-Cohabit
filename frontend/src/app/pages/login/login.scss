@@ -6,7 +6,7 @@
 
   @include mixins.centrar-flex();
 
-  background-color: var(--bg-page, #f9e9ea);
+  background-color: var(--bg-secundario);
 
   &__panel {
     width: 100%;

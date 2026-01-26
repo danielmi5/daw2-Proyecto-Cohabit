@@ -1,6 +1,6 @@
 <main class="reservas">
   <!-- Estado de carga -->
-  @if (loading) {
+  @if (loading()) {
     <section class="reservas__estado reservas__estado--carga">
       <div class="reservas__cargador"></div>
       <p>Cargando reservas...</p>
@@ -8,7 +8,7 @@
   }
 
   <!-- Estado de error -->
-  @if (!loading && error) {
+  @if (!loading() && error) {
     <section class="reservas__estado reservas__estado--error">
       <h2>Error al cargar las reservas</h2>
       <p class="reservas__mensaje-error">{{ errorMessage }}</p>
@@ -20,7 +20,7 @@
   }
 
   <!-- Estado con datos -->
-  @if (!loading && !error) {
+  @if (!loading() && !error) {
     <section class="reservas__contenido">
       <app-tab tipo="reservas"></app-tab>
       

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, effect, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, effect, ChangeDetectionStrategy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CardRecurso } from '../../components/shared/card-recurso/card-recurso';
@@ -33,7 +33,7 @@ export class Recursos implements OnInit {
   recursos: RecursoResponse[] = [];
   recursosFiltrados: RecursoResponse[] = [];
   total = 0;
-  loading = true;
+  loading = signal(true);
   error = false;
   errorMessage = '';
   
@@ -61,7 +61,7 @@ export class Recursos implements OnInit {
     if (!usuario?.miembroGrupoId) {
       this.error = true;
       this.errorMessage = 'No perteneces a ningún grupo';
-      this.loading = false;
+      this.loading.set(false);
       return;
     }
 
@@ -75,14 +75,14 @@ export class Recursos implements OnInit {
         } else {
           this.error = true;
           this.errorMessage = 'No se pudo obtener el ID del grupo';
-          this.loading = false;
+          this.loading.set(false);
         }
       },
       error: (error) => {
         console.error('Error al cargar datos del miembro:', error);
         this.error = true;
         this.errorMessage = 'Error al cargar los datos del grupo';
-        this.loading = false;
+        this.loading.set(false);
       }
     });
   }
@@ -91,11 +91,11 @@ export class Recursos implements OnInit {
     if (!this.grupoId) {
       this.error = true;
       this.errorMessage = 'No se ha podido identificar el grupo';
-      this.loading = false;
+      this.loading.set(false);
       return;
     }
 
-    this.loading = true;
+    this.loading.set(true);
     this.error = false;
 
     this.grupoService.getRecursos(this.grupoId).subscribe({
@@ -103,13 +103,13 @@ export class Recursos implements OnInit {
         this.recursos = recursos;
         this.recursosFiltrados = [...this.recursos];
         this.total = recursos.length;
-        this.loading = false;
+        this.loading.set(false);
       },
       error: (error) => {
         console.error('Error al cargar recursos:', error);
         this.error = true;
         this.errorMessage = error.message || 'Error al cargar los recursos';
-        this.loading = false;
+        this.loading.set(false);
       }
     });
   }

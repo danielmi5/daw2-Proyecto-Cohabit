@@ -2,7 +2,7 @@
   <h2 class="recursos__titulo">RECURSOS DISPONIBLES</h2>
 
   <!-- Estado de carga -->
-  @if (loading) {
+  @if (loading()) {
     <section class="recursos__estado recursos__estado--carga">
       <div class="recursos__cargador"></div>
       <p>Cargando recursos...</p>
@@ -10,7 +10,7 @@
   }
 
   <!-- Estado de error -->
-  @if (!loading && error) {
+  @if (!loading() && error) {
     <section class="recursos__estado recursos__estado--error">
       <h2>Error al cargar los recursos</h2>
       <p class="recursos__mensaje-error">{{ errorMessage }}</p>
@@ -22,7 +22,7 @@
   }
 
   <!-- Estado con datos -->
-  @if (!loading && !error) {
+  @if (!loading() && !error) {
     <section class="recursos__contenido">
       <!-- Buscador y filtros -->
       <app-buscador-filtros

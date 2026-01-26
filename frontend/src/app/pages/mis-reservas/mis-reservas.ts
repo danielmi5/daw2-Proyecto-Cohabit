@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, effect, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, inject, effect, ChangeDetectionStrategy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Button } from '../../components/shared/button/button';
@@ -33,7 +33,7 @@ export class MisReservas implements OnInit {
   reservas: ReservaResponse[] = [];
   recursos: RecursoResponse[] = [];
   total = 0;
-  loading = true;
+  loading = signal(true);
   error = false;
   errorMessage = '';
   
@@ -61,7 +61,7 @@ export class MisReservas implements OnInit {
     if (!usuario?.miembroGrupoId) {
       this.error = true;
       this.errorMessage = 'No perteneces a ningún grupo';
-      this.loading = false;
+      this.loading.set(false);
       return;
     }
 
@@ -76,14 +76,14 @@ export class MisReservas implements OnInit {
         } else {
           this.error = true;
           this.errorMessage = 'No se pudo obtener el ID del grupo';
-          this.loading = false;
+          this.loading.set(false);
         }
       },
       error: (error) => {
         console.error('Error al cargar datos del miembro:', error);
         this.error = true;
         this.errorMessage = 'Error al cargar los datos del grupo';
-        this.loading = false;
+        this.loading.set(false);
       }
     });
   }
@@ -105,24 +105,24 @@ export class MisReservas implements OnInit {
     if (!this.miembroId) {
       this.error = true;
       this.errorMessage = 'No se ha podido identificar al usuario';
-      this.loading = false;
+      this.loading.set(false);
       return;
     }
 
-    this.loading = true;
+    this.loading.set(true);
     this.error = false;
 
     this.miembroGrupoService.getReservas(this.miembroId).subscribe({
       next: (reservas) => {
         this.reservas = reservas;
         this.total = reservas.length;
-        this.loading = false;
+        this.loading.set(false);
       },
       error: (error) => {
         console.error('Error al cargar reservas:', error);
         this.error = true;
         this.errorMessage = error.message || 'Error al cargar las reservas';
-        this.loading = false;
+        this.loading.set(false);
       }
     });
   }

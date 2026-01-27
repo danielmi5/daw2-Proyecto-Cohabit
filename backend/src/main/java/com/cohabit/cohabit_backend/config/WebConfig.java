@@ -25,7 +25,7 @@ public class WebConfig {
 	public CorsFilter corsFilter() {
 		CorsConfiguration cors = new CorsConfiguration();
         cors.addAllowedOrigin("http://localhost:4200");
-        cors.addAllowedOrigin("https://danielmi5.github.io");
+        cors.addAllowedOrigin("https://cohabit-front-xjlup.ondigitalocean.app");
 		cors.addAllowedHeader("*");
         cors.addAllowedMethod("*");
 		cors.setAllowCredentials(true);

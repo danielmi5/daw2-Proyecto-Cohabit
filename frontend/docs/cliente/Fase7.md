@@ -519,7 +519,7 @@ du -sh dist/frontend/browser/*.js | sort -h
 
 ```bash
 npm install -g lighthouse
-lighthouse https://danielmi5.github.io/daw2-Proyecto-Cohabit/ --output=html --output-path=./lighthouse-report.html
+lighthouse https://cohabit-front-xjlup.ondigitalocean.app/ --output=html --output-path=./lighthouse-report.html
 ```
 
 **Métricas Esperadas** (basado en optimizaciones implementadas):
@@ -693,22 +693,6 @@ Para habilitar source maps en producción (útil para debugging):
 ng build --source-map
 ```
 
-### 4.4 Base-href
-
-#### 4.4.1 Configuración de base-href
-
-El proyecto está configurado para desplegarse en GitHub Pages en la ruta:
-`https://danielmi5.github.io/daw2-Proyecto-Cohabit/`
-
-**Base-href en Build**:
-```bash
-ng build --base-href /daw2-Proyecto-Cohabit/
-```
-
-**Justificación**:
-- Permite desplegar la aplicación en un subdirectorio
-- GitHub Pages requiere base-href cuando el proyecto no está en el root
-- Asegura que las rutas de assets y navegación funcionen correctamente
 
 #### 4.4.2 Configuración en dockerfile
 
@@ -820,10 +804,14 @@ daw2-Proyecto-Cohabit/
 docker-compose up --build
 ```
 
-**Despliegue en GitHub Pages** (Frontend):
+**Despliegue del Frontend (DigitalOcean / Docker)**:
 ```bash
-ng build --base-href /daw2-Proyecto-Cohabit/
-# Subir dist/ a rama gh-pages
+# Build y publicar imagen en Docker Hub
+docker build -t TU_USUARIO/tu-repo-frontend:latest ./frontend
+docker push TU_USUARIO/tu-repo-frontend:latest
+
+# En DigitalOcean App Platform: crear una App de tipo Container
+# apuntando a la imagen en Docker Hub y establecer puerto 80.
 ```
 
 **Servicios Expuestos**:
@@ -1112,3 +1100,25 @@ Desplegar el frontend en GitHub Pages en:
   - Solo contenido estático
   - Requiere backend separado
   - Requiere configuración de base-href
+
+### 7.11 Despliegue del frontend en DigitalOcean (App Platform)
+
+**Fecha**: Enero 2026
+
+**Estado**: Aceptado
+
+**Contexto**:
+Se necesita un hosting de fácil despliegue y con soporte de contenedores para producción/demos. Además, debido a errores con los estilos se ha tenido que migrar a este despliegue.
+
+**Decisión**:
+Desplegar el frontend en DigitalOcean App Platform usando la imagen publicada en Docker Hub; la URL pública será:
+`https://cohabit-front-xjlup.ondigitalocean.app/`
+
+**Consecuencias**:
+- **Positivas**:
+  - Integración con imágenes Docker y variables de entorno
+  - HTTPS gestionado por la plataforma
+  - Fácil redeploy al actualizar imagen
+- **Negativas**:
+  - No es gratuito indefinidamente (a diferencia de GitHub Pages)
+  - Requiere configurar CORS en el backend si el frontend y backend usan distintos dominios

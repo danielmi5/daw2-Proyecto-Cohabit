@@ -2000,7 +2000,7 @@ La aplicación Cohabit ha sido implementada con las siguientes funcionalidades y
 
 ## 7.2 Despliegue
 
-La aplicación está desplegada en github pages y esta es su url: [https://danielmi5.github.io/daw2-Proyecto-Cohabit/](https://danielmi5.github.io/daw2-Proyecto-Cohabit/). Para la base de datos se usa Render y para el backend se utiliza Digital Ocean.
+La aplicación está desplegada en DigitalOcean y esta es su url: [https://cohabit-front-xjlup.ondigitalocean.app/](https://cohabit-front-xjlup.ondigitalocean.app/). Para la base de datos se usa Render y para el backend se utiliza Digital Ocean.
 
 ## 7.3 Problemas conocidos y mejoras futuras
 

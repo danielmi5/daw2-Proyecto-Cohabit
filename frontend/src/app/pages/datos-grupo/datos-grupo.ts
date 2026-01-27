@@ -15,6 +15,7 @@ import { GrupoResponse } from '../../models/grupo.model';
   styleUrls: ['./datos-grupo.scss'],
 })
 export class DatosGrupo implements OnInit {
+  // Página de edición de datos del grupo. Carga grupo y miembro actual, muestra DataGrupo para editar campos y foto.
   private authService = inject(AuthService);
   private grupoService = inject(GrupoService);
   private miembroGrupoService = inject(MiembroGrupoService);

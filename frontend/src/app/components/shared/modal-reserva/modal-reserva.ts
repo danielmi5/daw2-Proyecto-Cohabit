@@ -6,6 +6,7 @@ import { FormInput } from '../form-input/form-input';
 import { FormSelect } from '../form-select/form-select';
 import { ReservaResponse, RecursoResponse } from '../../../models';
 
+// Modal crear/editar reserva. Validación fecha mínima (no fechas pasadas)
 @Component({
   selector: 'app-modal-reserva',
   standalone: true,
@@ -26,10 +27,18 @@ export class ModalReserva implements OnInit, OnChanges {
 
   private fb: FormBuilder = inject(FormBuilder);
 
+  /**
+   * Inicializa el formulario.
+   */
   ngOnInit(): void {
     this.inicializarFormulario();
   }
 
+  /**
+   * Carga datos de la reserva o resetea formulario según modo y cambios.
+   * 
+   * @param changes - Cambios detectados en las propiedades Input
+   */
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.formulario) return; // Asegurar que el formulario existe
     
@@ -42,6 +51,9 @@ export class ModalReserva implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Crea el formulario con sus validadores.
+   */
   private inicializarFormulario(): void {
     this.formulario = this.fb.group({
       recursoId: [null, Validators.required],
@@ -52,6 +64,12 @@ export class ModalReserva implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * Validador personalizado para evitar fechas pasadas.
+   * 
+   * @param control - FormControl a validar
+   * @returns Objeto con error o null si es válido
+   */
   private validarFechaMinima(control: any): { [key: string]: any } | null {
     if (!control.value) return null;
     const fechaSeleccionada = new Date(control.value + 'T00:00:00');
@@ -64,6 +82,9 @@ export class ModalReserva implements OnInit, OnChanges {
     return null;
   }
 
+  /**
+   * Carga los datos de la reserva en el formulario para edición.
+   */
   private cargarDatosReserva(): void {
     if (this.reserva) {
       this.formulario.patchValue({
@@ -76,28 +97,47 @@ export class ModalReserva implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Resetea el formulario a valores por defecto.
+   */
   private resetearFormulario(): void {
     this.formulario.reset({
       repeticion: 'no-repetir'
     });
   }
 
+  /**
+   * Emite evento de cierre.
+   */
   onCerrar(): void {
     this.cerrar.emit();
   }
 
+  /**
+   * Valida y emite los datos del formulario.
+   */
   onGuardar(): void {
     if (this.formulario.valid) {
       this.guardar.emit(this.formulario.value);
     }
   }
 
+  /**
+   * Cierra el modal al hacer clic en el fondo (backdrop).
+   * 
+   * @param event - Evento click del mouse
+   */
   onClickFondo(event: MouseEvent): void {
     if (event.target === event.currentTarget) {
       this.onCerrar();
     }
   }
 
+  /**
+   * Obtiene la fecha mínima permitida en formato YYYY-MM-DD.
+   * 
+   * @returns Fecha de hoy en formato ISO
+   */
   getFechaMinima(): string {
     const hoy = new Date();
     const año = hoy.getFullYear();

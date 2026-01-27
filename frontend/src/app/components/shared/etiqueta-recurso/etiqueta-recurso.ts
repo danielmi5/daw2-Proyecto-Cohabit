@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EstadoRecurso } from '../../../models/backend-types';
 
+// Badge visual para estado del recurso (disponible, ocupado, en mantenimiento, fuera de servicio)
 @Component({
   selector: 'app-etiqueta-recurso',
   standalone: true,
@@ -27,6 +28,20 @@ export class EtiquetaRecurso {
     }
   }
 
+  /**
+   * Obtiene el texto legible para mostrar en la etiqueta.
+   * 
+   * @returns El texto formateado del estado en español.
+   * 
+   * @remarks
+   * Mapeo de textos:
+   * - DISPONIBLE → "Disponible"
+   * - OCUPADO → "Ocupado"
+   * - EN_MANTENIMIENTO → "En mantenimiento"
+   * - FUERA_DE_SERVICIO → "Fuera de servicio"
+   * 
+   * Si el estado no es reconocido, retorna "Disponible" como texto por defecto.
+   */
   obtenerTexto(): string {
     switch (this.estado) {
       case 'DISPONIBLE':

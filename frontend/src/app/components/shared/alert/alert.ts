@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 
+// Componente de alerta con 4 tipos (exito, error, warning, info) y opción de cierre
 @Component({
   selector: 'app-alert',
   standalone: true,

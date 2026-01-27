@@ -11,6 +11,7 @@ import { FeatherIconDirective } from '../../directives/feather-icon.directive';
 import { LoginForm } from "../../components/shared/login-form/login-form";
 import { RegistroForm } from "../../components/shared/registro-form/registro-form";
 
+// Guía de estilo con todos los componentes UI disponibles (para desarrollo y diseño)
 @Component({
   selector: 'app-style-guide',
   templateUrl: './style-guide.html',

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// Muestra un paso numerado con título y texto (para secciones "Cómo funciona")
 @Component({
   selector: 'app-paso',
   standalone: true,

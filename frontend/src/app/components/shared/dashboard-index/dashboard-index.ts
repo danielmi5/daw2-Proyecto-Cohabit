@@ -32,6 +32,7 @@ interface RecursoConReserva {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardIndex implements OnInit {
+  // Dashboard resumen: estadísticas grupo (reservas, recursos ocupados/libres), próximas reservas. OnPush
   private reservaService = inject(ReservaService);
   private recursoService = inject(RecursoService);
   private grupoService = inject(GrupoService);

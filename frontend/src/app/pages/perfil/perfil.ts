@@ -3,6 +3,7 @@ import { Button } from '../../components/shared/button/button';
 import { NotificacionService } from '../../services/notificacion.service';
 import { AuthService } from '../../services/auth.service';
 
+// Página principal del perfil (entrada a sección perfil con navegación a subpáginas)
 @Component({
   selector: 'app-perfil',
   imports: [Button],

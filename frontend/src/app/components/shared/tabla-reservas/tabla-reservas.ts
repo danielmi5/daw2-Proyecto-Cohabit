@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReservaResponse, UsuarioResponse } from '../../../models';
 
+// Tabla de reservas con info de autor y recurso. Formatea horas a HH:MM
 @Component({
   selector: 'app-tabla-reservas',
   standalone: true,

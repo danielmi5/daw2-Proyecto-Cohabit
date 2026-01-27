@@ -1,8 +1,10 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, AfterContentInit, ContentChildren, QueryList, forwardRef, inject, Renderer2 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 
+// Checkbox con proyección de contenido (ng-content) para etiquetas con enlaces. ControlValueAccessor
 @Component({
   selector: 'app-form-checkbox',
+  standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './form-checkbox.html',
   styleUrls: ['./form-checkbox.scss'],
@@ -28,21 +30,25 @@ export class FormCheckbox implements ControlValueAccessor, AfterContentInit {
 
   private renderer = inject(Renderer2);
 
-  /* Lógica de proyección de contenido:
-  - `elementosProyectados` recoge los nodos que el componente padre proyecta dentro de este componente (<ng-content>).
-  - `tieneProyectado` se usa para saber si mostrar el `etiqueta` por defecto (cuando no hay contenido proyectado) o mostrar lo que haya sido proyectado (por ejemplo enlaces con `routerLink`). */
   @ContentChildren('*', { read: ElementRef }) elementosProyectados?: QueryList<ElementRef>;
 
   tieneProyectado: boolean = false;
 
-  // ControlValueAccessor
   onChange: (value: boolean) => void = () => {};
   onTouched: () => void = () => {};
 
+  /**
+   * Verifica si hay contenido proyectado después de inicializar la vista.
+   */
   ngAfterContentInit() {
     this.tieneProyectado = !!(this.elementosProyectados && this.elementosProyectados.length > 0);
   }
 
+  /**
+   * Escribe un valor en el checkbox (parte de ControlValueAccessor).
+   * 
+   * @param value - Valor booleano a establecer
+   */
   writeValue(value: boolean): void {
     this.checked = !!value;
     if (this.checkboxInput?.nativeElement) {
@@ -54,18 +60,38 @@ export class FormCheckbox implements ControlValueAccessor, AfterContentInit {
     }
   }
 
+  /**
+   * Registra la función callback para cambios de valor.
+   * 
+   * @param fn - Función a llamar cuando el valor cambie
+   */
   registerOnChange(fn: (value: boolean) => void): void {
     this.onChange = fn;
   }
 
+  /**
+   * Registra la función callback para el evento touched.
+   * 
+   * @param fn - Función a llamar cuando el campo sea tocado
+   */
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
+  /**
+   * Establece el estado de deshabilitación del checkbox.
+   * 
+   * @param isDisabled - true para deshabilitar, false para habilitar
+   */
   setDisabledState(isDisabled: boolean): void {
     this.desactivado = isDisabled;
   }
 
+  /**
+   * Maneja el cambio del checkbox nativo.
+   * 
+   * @param evento - Evento change del input checkbox
+   */
   onNativeChange(evento: Event) {
     const casilla = evento.target as HTMLInputElement;
     this.checked = !!casilla.checked;
@@ -74,6 +100,14 @@ export class FormCheckbox implements ControlValueAccessor, AfterContentInit {
     this.checkedChange.emit(this.checked);
   }
 
+  /**
+   * Maneja el clic en la etiqueta visual del checkbox.
+   * 
+   * @param evento - Evento click del mouse
+   * 
+   * @remarks
+   * Previene el comportamiento por defecto y sincroniza manualmente el estado.
+   */
   onVisualClick(evento: MouseEvent) {
     if (this.desactivado) {
       evento.preventDefault();

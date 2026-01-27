@@ -14,7 +14,5 @@ export class Sidebar {
   @Input() nombreUsuario: string = 'COHABIT';
   @Input() imagenPerfil: string = 'img/icono-perfil.svg';
   @Input() mostrarOpcionesPerfil: boolean = false;
-
-  /** Variante: 'dashboard' | 'grupo' | 'perfil' */
   @Input() variante: 'dashboard' | 'grupo' | 'perfil' = 'dashboard';
 }

@@ -13,6 +13,7 @@ import { MiembroGrupoService } from '../../services/miembro-grupo.service';
 import { ReservaService } from '../../services/reserva.service';
 import { forkJoin } from 'rxjs';
 
+// Reservas del grupo. Carga recursos y autores en paralelo (forkJoin). Permite crear reservas.
 @Component({
   selector: 'app-reservas',
   imports: [CommonModule, Button, TabComponent, ModalReserva],

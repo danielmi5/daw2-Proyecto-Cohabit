@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GrupoResponse } from '../../../models/grupo.model';
 import { MiembroGrupoResponse } from '../../../models/miembro-grupo.model';
@@ -10,6 +10,8 @@ import { GrupoService } from '../../../services/grupo.service';
 import { SubidaArchivosService } from '../../../services/subida-archivos.service';
 import { NotificacionService } from '../../../services/notificacion.service';
 
+// Formulario para editar datos del grupo (nombre, dirección, descripción, foto)
+// Solo CREADOR/ADMIN pueden editar. Incluye preview de foto y subida automática
 @Component({
   selector: 'app-data-grupo',
   standalone: true,
@@ -28,12 +30,12 @@ export class DataGrupo implements OnChanges {
   formulario: FormGroup;
   previewUrl: string | undefined = undefined;
 
-  constructor(
-    private fb: FormBuilder,
-    private grupoService: GrupoService,
-    private subidaArchivosService: SubidaArchivosService,
-    private notificacionService: NotificacionService
-  ) {
+  private fb = inject(FormBuilder);
+  private grupoService = inject(GrupoService);
+  private subidaArchivosService = inject(SubidaArchivosService);
+  private notificacionService = inject(NotificacionService);
+
+  constructor() {
     this.formulario = this.fb.group({
       nombre: [''],
       direccion: [''],
@@ -94,7 +96,7 @@ export class DataGrupo implements OnChanges {
     }
   }
 
-  /** Método que crea un input file temporal para seleccionar archivo sin mantenerlo en el template */
+  // Crea input file temporal para seleccionar archivo sin mantenerlo en template
   openFileSelector(): void {
     if (!this.puedeEditar()) {
       this.notificacionService.error('Solo el creador o administradores del grupo pueden cambiar la foto');
@@ -118,6 +120,30 @@ export class DataGrupo implements OnChanges {
   }
 
   /** Maneja el archivo seleccionado: previsualiza y lo sube usando el servicio */
+  /**
+   * Maneja el archivo de imagen seleccionado.
+   * 
+   * @param file - Archivo de imagen seleccionado por el usuario.
+   * 
+   * @remarks
+   * Proceso de manejo:
+   * 1. Genera una previsualización local inmediata usando FileReader.
+   * 2. Actualiza `previewUrl` con la URL generada en base64.
+   * 
+   * Si el grupo tiene ID (grupo existente):
+   * - Sube la foto al backend usando `SubidaArchivosService.subirFotoGrupo()`.
+   * - Actualiza el objeto `grupo` con la respuesta del servidor.
+   * - Emite el evento `subirFoto` para notificar al componente padre.
+   * - Muestra notificación de éxito.
+   * - Maneja errores específicos:
+   *   - 413: Archivo supera 5 MB
+   *   - 403: Sin permisos
+   *   - Otros: Error genérico
+   * - En caso de error, revierte la preview a la foto original del grupo.
+   * 
+   * Si el grupo no tiene ID (modo creación):
+   * - Solo previsualiza y emite el evento `subirFoto` sin persistir en el backend.
+   */
   handleFile(file: File): void {
     // Crea preview local inmediato
     const reader = new FileReader();
@@ -154,6 +180,16 @@ export class DataGrupo implements OnChanges {
     }
   }
 
+  /**
+   * Elimina la foto del grupo.
+   * 
+   * @remarks
+   * Validación:
+   * - Verifica que el usuario tenga permisos usando `puedeEditar()`.
+   * 
+   * Emite el evento `eliminarFoto` para que el componente padre maneje
+   * la eliminación de la foto en el backend.
+   */
   onEliminarFoto(): void {
     if (!this.puedeEditar()) {
       this.notificacionService.error('Solo el creador o administradores del grupo pueden eliminar la foto');

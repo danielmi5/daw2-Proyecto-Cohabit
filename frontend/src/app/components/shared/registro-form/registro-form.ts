@@ -11,6 +11,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { RedireccionService } from '../../../services/redireccion.service';
 
+// Formulario registro con validación sincrónica + asincrónica (email único). FormBuilder + Reactive Forms
 @Component({
   selector: 'app-registro-form',
   imports: [FormInput, FormCheckbox, Button, RouterLink, ReactiveFormsModule],
@@ -27,7 +28,7 @@ export class RegistroForm implements OnInit {
   
   formularioRegistro!: FormGroup;
 
-  // Mensajes por campo (warnings, errors, success)
+  // Mensajes de validación por campo (warning, error, success)
   private mensajes = {
     warning: {
       nombre: 'El nombre es obligatorio',
@@ -51,6 +52,18 @@ export class RegistroForm implements OnInit {
     }
   } as const;
 
+  /**
+   * Inicializa el formulario reactivo con validadores sincrónicos y asincrónicos.
+   * 
+   * @remarks
+   * Validaciones:
+   * - nombre/apellidos: requerido + mínimo 2 caracteres
+   * - email: requerido + formato TLD + unicidad (asincrónico)
+   * - password: requerido + mínimo 8 + fortaleza (letra, número, símbolo)
+   * - passwordConfirm: requerido
+   * - terminos: requiredTrue
+   * - Validador de formulario: contraseñas coincidentes
+   */
   ngOnInit(): void {
     this.formularioRegistro = this.constructorFormulario.group({
       nombre: ['', [Validators.required, Validators.minLength(2)]],
@@ -70,10 +83,16 @@ export class RegistroForm implements OnInit {
 
   /**
    * Determina el estado de validación de un campo.
-   * Estado 1: INICIAL - sin interacción (!touched && !dirty)
-   * Estado 2: ADVERTENCIA - campo obligatorio vacío tras interacción  
-   * Estado 3: ERROR - valor incorrecto
-   * Estado 4: ÉXITO - valor válido
+   * 
+   * @param controlName - Nombre del FormControl
+   * @returns Estado de validación (inicial, advertencia, error, exito)
+   * 
+   * @remarks
+   * Lógica de estados:
+   * 1. INICIAL: sin interacción o validación pendiente (pending)
+   * 2. ADVERTENCIA: campo obligatorio vacío tras interacción
+   * 3. ERROR: valor incorrecto
+   * 4. ÉXITO: valor válido
    */
   obtenerEstadoValidacion(controlName: string): EstadoValidacion {
     const control = this.formularioRegistro.get(controlName);
@@ -108,14 +127,23 @@ export class RegistroForm implements OnInit {
   }
 
   /**
-   * Obtiene el mensaje de advertencia (campo obligatorio vacío)
+   * Obtiene el mensaje de advertencia (campo obligatorio vacío).
+   * 
+   * @param controlName - Nombre del FormControl
+   * @returns Mensaje de advertencia
    */
   obtenerMensajeAdvertencia(controlName: string): string {
     return (this.mensajes.warning as any)[controlName] || `${controlName} es obligatorio`;
   }
 
   /**
-   * Obtiene el mensaje de error (valor incorrecto)
+   * Obtiene el mensaje de error (valor incorrecto).
+   * 
+   * @param controlName - Nombre del FormControl
+   * @returns Mensaje de error específico o genérico
+   * 
+   * @remarks
+   * Maneja errores de: email, emailTaken, minlength, passwordStrength, passwordMatch.
    */
   obtenerMensajeError(controlName: string): string {
     const control = this.formularioRegistro.get(controlName);
@@ -158,14 +186,23 @@ export class RegistroForm implements OnInit {
   }
 
   /**
-   * Obtiene el mensaje de éxito
+   * Obtiene el mensaje de éxito.
+   * 
+   * @param controlName - Nombre del FormControl
+   * @returns Mensaje de éxito
    */
   obtenerMensajeExito(controlName: string): string {
     return (this.mensajes.success as any)[controlName] || `${controlName} es correcto`;
   }
 
   /**
-   * Verifica si un campo debe mostrar error (para checkbox de términos)
+   * Verifica si un campo debe mostrar error visual.
+   * 
+   * @param controlName - Nombre del FormControl
+   * @returns true si el campo tiene error y fue interactuado
+   * 
+   * @remarks
+   * Usado principalmente para checkbox de términos.
    */
   debeMostrarError(controlName: string): boolean {
     const control = this.formularioRegistro.get(controlName);
@@ -195,7 +232,10 @@ export class RegistroForm implements OnInit {
   }
 
   /**
-   * Maneja el envío del formulario
+   * Maneja el envío del formulario.
+   * 
+   * @remarks
+   * Valida el formulario, llama al servicio de autenticación y redirige al perfil o URL guardada.
    */
   onSubmit(): void {
     if (this.formularioRegistro.invalid) {
@@ -226,7 +266,10 @@ export class RegistroForm implements OnInit {
   }
 
   /**
-   * Maneja el registro con Google
+   * Maneja el registro con Google OAuth.
+   * 
+   * @remarks
+   * TODO: Implementar integración con Google OAuth 2.0
    */
   iniciarRegistroGoogle(): void {
     console.log('Google register clicked');
@@ -234,6 +277,14 @@ export class RegistroForm implements OnInit {
     this.notificationService.info("Iniciando registro con Google...");
   }
 
+  /**
+   * Indica si hay cambios en el formulario.
+   * 
+   * @returns true si el formulario fue modificado o tocado
+   * 
+   * @remarks
+   * Usado por el guard salir-auth-guard para prevenir pérdida de datos.
+   */
   hayCambiosAuth(): boolean {
     if (!this.formularioRegistro) return false;
     return this.formularioRegistro.dirty || this.formularioRegistro.touched;

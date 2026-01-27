@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+// Página de calendario de reservas (ruta: /dashboard/calendario)
 @Component({
   selector: 'app-calendario',
   imports: [],

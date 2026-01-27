@@ -6,6 +6,7 @@ import { Paso } from '../../components/shared/paso/paso';
 import { Caracteristica } from '../../components/shared/caracteristica/caracteristica';
 import { AuthService } from '../../services/auth.service';
 
+// Página de inicio (landing page): FAQ, características, pasos para empezar
 @Component({
   selector: 'app-inicio',
   imports: [RouterLink, Accordion, AccordionItem, Paso, Caracteristica],

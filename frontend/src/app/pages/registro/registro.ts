@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { RegistroForm } from '../../components/shared/registro-form/registro-form';
 
+// Página de registro (protegida con salirAuthGuard)
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.html',

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+// Configuración del grupo (ajustes avanzados)
 @Component({
   selector: 'app-config-grupo',
   imports: [],

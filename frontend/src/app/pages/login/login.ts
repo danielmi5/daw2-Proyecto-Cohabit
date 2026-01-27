@@ -1,10 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { LoginForm } from '../../components/shared/login-form/login-form';
 
+// Página de login (protegida con salirAuthGuard para confirmar salida con cambios sin guardar)
 @Component({
   selector: 'app-login',
   templateUrl: './login.html',
-  styleUrls: ['./login.scss'],
+  styleUrls: ['./login.scss',
   imports: [LoginForm]
 })
 export class LoginPage {

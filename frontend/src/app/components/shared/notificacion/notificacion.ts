@@ -3,6 +3,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { NotificacionService } from '../../../services/notificacion.service';
 import { Alert } from '../alert/alert';
 
+// Contenedor de notificaciones toast. Renderiza alertas del NotificacionService con animaciones
+// Se coloca en el layout principal (app.component) con posicionamiento absoluto (esquina superior derecha)
 @Component({
   selector: 'app-notificacion',
   standalone: true,

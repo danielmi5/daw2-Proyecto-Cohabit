@@ -5,6 +5,7 @@ import { Tooltip } from '../../shared/tooltip/tooltip';
 import { ThemeSwitcherService } from '../../../services/theme-switcher.service';
 import { Subscription } from 'rxjs';
 
+// Header con navegación, alternador de tema y menú responsive para móviles
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -17,7 +18,7 @@ export class Header implements OnInit, OnDestroy {
   modoTitle = 'Cambiar a modo oscuro';
   menuAbierto = false;
   private themeSub?: Subscription;
-  private readonly breakpointTablet = 768; // px
+  private readonly breakpointTablet = 768;
 
   constructor(private themeSwitcher: ThemeSwitcherService) {}
 

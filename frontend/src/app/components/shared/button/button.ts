@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 
+// Botón con variantes (primario/secundario/fantasma/peligro), tamaños y soporte de iconos
 @Component({
   selector: 'app-button',
   standalone: true,

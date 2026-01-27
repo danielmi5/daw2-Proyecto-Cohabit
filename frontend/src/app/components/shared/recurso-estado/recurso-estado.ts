@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RecursoResponse, ReservaResponse } from '../../../models';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 
+// Interfaz recurso + próxima reserva
 interface RecursoConReserva {
   recurso: RecursoResponse;
   proximaReserva: ReservaResponse | null;
 }
 
+// Muestra estado actual del recurso (ocupado/disponible) y hora de disponibilidad
 @Component({
   selector: 'app-recurso-estado',
   standalone: true,
@@ -22,6 +24,11 @@ export class RecursoEstado {
     return this.recursoInfo.proximaReserva ? 'Ocupado' : 'Disponible';
   }
 
+  /**
+   * Obtiene el texto descriptivo de la próxima reserva.
+   * 
+   * @returns Mensaje indicando disponibilidad o ausencia de reservas
+   */
   getTextoProximaReserva(): string {
     if (!this.recursoInfo.proximaReserva) {
       return 'No hay reservas hoy';
@@ -30,6 +37,12 @@ export class RecursoEstado {
     return `Disponible a las ${this.formatHora(reserva.horaFin || '')}`;
   }
 
+  /**
+   * Formatea una hora al formato HH:MM.
+   * 
+   * @param hora - Hora en formato string
+   * @returns Hora formateada o mensaje por defecto
+   */
   private formatHora(hora: string): string {
     if (!hora || hora === '-') return 'Sin especificar';
     // Asegurar formato HH:MM

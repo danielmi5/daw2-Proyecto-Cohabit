@@ -10,6 +10,7 @@ import { RecursoResponse } from '../../../models';
 import { SubidaArchivosService } from '../../../services/subida-archivos.service';
 import { NotificacionService } from '../../../services/notificacion.service';
 
+// Modal crear/editar recurso. Modos: creación (vacío) y edición (precargado). Con upload de imagen
 @Component({
   selector: 'app-modal-recurso',
   standalone: true,
@@ -31,6 +32,7 @@ export class ModalRecurso implements OnInit, OnChanges {
   formulario!: FormGroup;
   archivoSeleccionado: File | null = null;
 
+  /** Opciones de tipo de recurso para el select */
   tiposRecurso = [
     { valor: 'ESPACIO', etiqueta: 'Espacio' },
     { valor: 'OBJETO', etiqueta: 'Objeto' },
@@ -38,6 +40,7 @@ export class ModalRecurso implements OnInit, OnChanges {
     { valor: 'OTRO', etiqueta: 'Otro' }
   ];
 
+  /** Opciones de estado del recurso para el select */
   estadosRecurso = [
     { valor: 'DISPONIBLE', etiqueta: 'Disponible' },
     { valor: 'EN_MANTENIMIENTO', etiqueta: 'En mantenimiento' },
@@ -46,10 +49,18 @@ export class ModalRecurso implements OnInit, OnChanges {
 
   private fb: FormBuilder = inject(FormBuilder);
 
+  /**
+   * Inicializa el formulario.
+   */
   ngOnInit(): void {
     this.inicializarFormulario();
   }
 
+  /**
+   * Carga datos del recurso o resetea formulario según modo y cambios.
+   * 
+   * @param changes - Cambios detectados en las propiedades Input
+   */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['recurso'] && this.recurso && this.modoEdicion) {
       this.cargarDatosRecurso();
@@ -58,6 +69,9 @@ export class ModalRecurso implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Crea el formulario con sus validadores.
+   */
   private inicializarFormulario(): void {
     this.formulario = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(100)]],
@@ -69,6 +83,9 @@ export class ModalRecurso implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * Carga los datos del recurso en el formulario para edición.
+   */
   private cargarDatosRecurso(): void {
     if (this.recurso) {
       this.formulario.patchValue({
@@ -83,6 +100,9 @@ export class ModalRecurso implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Resetea el formulario a valores por defecto.
+   */
   private resetearFormulario(): void {
     this.formulario.reset({
       tipo: 'ESPACIO',
@@ -91,14 +111,28 @@ export class ModalRecurso implements OnInit, OnChanges {
     this.archivoSeleccionado = null;
   }
 
+  /**
+   * Maneja la selección de un archivo de imagen.
+   * 
+   * @param file - Archivo seleccionado
+   */
   onArchivoSeleccionado(file: File): void {
     this.archivoSeleccionado = file;
   }
 
+  /**
+   * Emite evento de cierre.
+   */
   onCerrar(): void {
     this.cerrar.emit();
   }
 
+  /**
+   * Valida y emite los datos del formulario.
+   * 
+   * @remarks
+   * Elimina campos vacíos opcionales y adjunta el archivo si existe.
+   */
   onGuardar(): void {
     if (this.formulario.valid) {
       const datos = this.formulario.value;
@@ -114,6 +148,11 @@ export class ModalRecurso implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Cierra el modal al hacer clic en el fondo (backdrop).
+   * 
+   * @param event - Evento click del mouse
+   */
   onClickFondo(event: MouseEvent): void {
     if (event.target === event.currentTarget) {
       this.onCerrar();

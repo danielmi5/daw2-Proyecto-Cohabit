@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 
+// Tarjeta reutilizable con 2 layouts (vertical/horizontal). Muestra título, estado, fecha, hora, autor, imagen
 @Component({
   selector: 'app-card',
   standalone: true,
@@ -23,19 +24,32 @@ export class Card {
   @Output() editar = new EventEmitter<void>();
   @Output() eliminar = new EventEmitter<void>();
 
+  /**
+   * Emite el evento de edición
+   * @public
+   */
   onEditar(): void {
     this.editar.emit();
   }
 
+  /**
+   * Emite el evento de eliminación
+   * @public
+   */
   onEliminar(): void {
     this.eliminar.emit();
   }
 
   /**
-   * Formatea una cadena de hora o un rango de horas para mostrar solo HH:MM
-   * Ejemplos:
-   * - "19:00:00.000" -> "19:00"
-   * - "19:00:00.000 - 23:45:00.000" -> "19:00 - 23:45"
+   * Formatea una cadena de hora o rango de horas a formato HH:MM.
+   * 
+   * @param value - Hora en formato extendido (HH:MM:SS.mmm) o rango
+   * @returns Hora formateada o "Sin especificar" si no hay valor
+   * 
+   * @example
+   * formatHora("19:00:00.000") // "19:00"
+   * formatHora("19:00:00.000 - 23:45:00.000") // "19:00 - 23:45"
+   * @public
    */
   formatHora(value: string | null | undefined): string {
     if (!value || value.trim() === '' || value.trim() === '-') return 'Sin especificar';

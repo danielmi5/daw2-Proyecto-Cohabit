@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 
+// Pestañas (tabs) con navegación teclado (arrow keys, home/end, enter/space) y accesibilidad ARIA
 @Component({
   selector: 'app-tab',
   standalone: true,
@@ -13,22 +14,27 @@ import { FeatherIconDirective } from '../../../directives/feather-icon.directive
 export class TabComponent implements AfterViewInit, OnChanges {
   @Input() tipo: 'reservas' | 'mis-reservas' = 'reservas';
 
-  // Referencias a los elementos que actúan como pestañas en la plantilla
   @ViewChildren('pestana', { read: ElementRef }) elementosPestana!: QueryList<ElementRef>;
 
   constructor(private renderer: Renderer2) {}
 
   /**
    * Se ejecuta después de que la vista se inicializa.
-   * Actualiza los `tabindex` para que solo la pestaña seleccionada sea tabbable.
+   * 
+   * @remarks
+   * Actualiza los tabindex para que solo la pestaña seleccionada sea tabbable.
    */
   ngAfterViewInit(): void {
     this.actualizarTabindex();
   }
 
   /**
-   * Detecta cambios en las entradas del componente (`@Input`).
-   * Si cambia `tipo`, se actualizan los `tabindex` tras la actualización de la vista.
+   * Detecta cambios en las propiedades Input del componente.
+   * 
+   * @param changes - Cambios detectados
+   * 
+   * @remarks
+   * Si cambia tipo, actualiza los tabindex tras la actualización de la vista.
    */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['tipo']) {
@@ -37,8 +43,10 @@ export class TabComponent implements AfterViewInit, OnChanges {
   }
 
   /**
-   * Recorre las pestañas y asigna `tabindex="0"` a la seleccionada
-   * y `tabindex="-1"` al resto para mantener un comportamiento accesible.
+   * Recorre las pestañas y asigna tabindex apropiados.
+   * 
+   * @remarks
+   * Asigna tabindex="0" a la seleccionada y tabindex="-1" al resto para accesibilidad.
    */
   private actualizarTabindex(): void {
     const elementos = this.elementosPestana.toArray();
@@ -54,8 +62,14 @@ export class TabComponent implements AfterViewInit, OnChanges {
 
   /**
    * Maneja eventos de teclado sobre una pestaña.
-   * Soporta ArrowRight/ArrowLeft/Home/End para mover el foco,
-   * y Enter/Space para activar (simular click) la pestaña.
+   * 
+   * @param event - Evento de teclado
+   * 
+   * @remarks
+   * Soporta:
+   * - ArrowRight/ArrowLeft: navegar entre pestañas
+   * - Home/End: ir a primera/última pestaña
+   * - Enter/Space: activar pestaña (simular click)
    */
   manejarTecla(event: KeyboardEvent): void {
     const elementos = this.elementosPestana.toArray();
@@ -97,7 +111,9 @@ export class TabComponent implements AfterViewInit, OnChanges {
   }
 
   /**
-   * Establece `tabindex` apropiados y mueve el foco a la pestaña indicada.
+   * Establece tabindex apropiados y mueve el foco a la pestaña indicada.
+   * 
+   * @param indice - Índice de la pestaña a enfocar
    */
   private enfocarPestana(indice: number): void {
     const elementos = this.elementosPestana.toArray();

@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 
+// Item de accordion con contenido proyectado
+// Genera IDs únicos para ARIA, emite evento al abrir/cerrar
 @Component({
   selector: 'app-accordion-item',
   standalone: true,
@@ -36,6 +38,12 @@ export class AccordionItem {
     this.estaAbierto = false;
   }
 
+  /**
+   * Abre el item.
+   * 
+   * @remarks
+   * No hace nada si el item está deshabilitado.
+   */
   abrir() {
     if (!this.deshabilitado) {
       this.estaAbierto = true;

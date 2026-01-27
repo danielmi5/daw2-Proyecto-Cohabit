@@ -14,6 +14,7 @@ import { NotificacionService } from '../../services/notificacion.service';
   styleUrls: ['./mi-grupo.scss'],
 })
 export class MiGrupo implements OnInit {
+  // Página Mi Grupo: verifica pertenencia a grupo, permite crear uno con modal si no existe
   private authService = inject(AuthService);
   private grupoService = inject(GrupoService);
   private notificacionService = inject(NotificacionService);

@@ -10,6 +10,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
 import { RedireccionService } from '../../../services/redireccion.service';
 
+// Formulario login con validación tiempo real. FormBuilder + Reactive Forms
 @Component({
   selector: 'app-login-form',
   imports: [FormInput, FormCheckbox, Button, RouterLink, ReactiveFormsModule],
@@ -25,7 +26,7 @@ export class LoginForm implements OnInit {
   
   formularioLogin!: FormGroup;
 
-  // Mensajes por campo (warnings, errors, success)
+  // Mensajes de validación por campo (warning, error, success)
   private mensajes = {
     warning: {
       email: 'El correo electrónico es obligatorio',
@@ -41,6 +42,14 @@ export class LoginForm implements OnInit {
     }
   } as const;
 
+  /**
+   * Inicializa el formulario reactivo con validadores.
+   * 
+   * @remarks
+   * - email: requerido + formato con TLD
+   * - password: requerido + mínimo 8 caracteres
+   * - recordar: checkbox sin validación
+   */
   ngOnInit(): void {
     this.formularioLogin = this.constructorFormulario.group({
       email: ['', {
@@ -54,10 +63,16 @@ export class LoginForm implements OnInit {
 
   /**
    * Determina el estado de validación de un campo.
-   * Estado 1: INICIAL - sin interacción (!touched && !dirty)
-   * Estado 2: ADVERTENCIA - campo obligatorio vacío tras interacción  
-   * Estado 3: ERROR - valor incorrecto
-   * Estado 4: ÉXITO - valor válido
+   * 
+   * @param controlName - Nombre del FormControl
+   * @returns Estado de validación (inicial, advertencia, error, exito)
+   * 
+   * @remarks
+   * Lógica de estados:
+   * 1. INICIAL: sin interacción (!touched && !dirty)
+   * 2. ADVERTENCIA: campo obligatorio vacío tras interacción
+   * 3. ERROR: valor incorrecto (formato inválido, longitud insuficiente)
+   * 4. ÉXITO: valor válido
    */
   obtenerEstadoValidacion(controlName: string): EstadoValidacion {
     const control = this.formularioLogin.get(controlName);
@@ -87,14 +102,20 @@ export class LoginForm implements OnInit {
   }
 
   /**
-   * Obtiene el mensaje de advertencia (campo obligatorio vacío)
+   * Obtiene el mensaje de advertencia (campo obligatorio vacío).
+   * 
+   * @param controlName - Nombre del FormControl
+   * @returns Mensaje de advertencia
    */
   obtenerMensajeAdvertencia(controlName: string): string {
     return (this.mensajes.warning as any)[controlName] || `${controlName} es obligatorio`;
   }
 
   /**
-   * Obtiene el mensaje de error (valor incorrecto)
+   * Obtiene el mensaje de error (valor incorrecto).
+   * 
+   * @param controlName - Nombre del FormControl
+   * @returns Mensaje de error específico o genérico
    */
   obtenerMensajeError(controlName: string): string {
     const control = this.formularioLogin.get(controlName);
@@ -117,14 +138,20 @@ export class LoginForm implements OnInit {
   }
 
   /**
-   * Obtiene el mensaje de éxito
+   * Obtiene el mensaje de éxito.
+   * 
+   * @param controlName - Nombre del FormControl
+   * @returns Mensaje de éxito
    */
   obtenerMensajeExito(controlName: string): string {
     return (this.mensajes.success as any)[controlName] || `${controlName} es correcto`;
   }
 
   /**
-   * Maneja el envío del formulario
+   * Maneja el envío del formulario.
+   * 
+   * @remarks
+   * Valida el formulario, llama al servicio de autenticación y redirige al dashboard o URL guardada.
    */
   onSubmit(): void {
     if (this.formularioLogin.invalid) {
@@ -151,13 +178,24 @@ export class LoginForm implements OnInit {
     });
   }
 
+  /**
+   * Indica si hay cambios en el formulario.
+   * 
+   * @returns true si el formulario fue modificado o tocado
+   * 
+   * @remarks
+   * Usado por el guard salir-auth-guard para prevenir pérdida de datos.
+   */
   hayCambiosAuth(): boolean {
     if (!this.formularioLogin) return false;
     return this.formularioLogin.dirty || this.formularioLogin.touched;
   }
 
   /**
-   * Maneja el inicio de sesión con Google
+   * Maneja el inicio de sesión con Google OAuth.
+   * 
+   * @remarks
+   * TODO: Implementar integración con Google OAuth 2.0
    */
   iniciarSesionGoogle(): void {
     // TODO: Implementar OAuth con Google

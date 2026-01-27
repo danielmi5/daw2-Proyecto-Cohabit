@@ -22,6 +22,7 @@ import { RecursoResponse, ReservaResponse, ReservaRequest, ReservaUpdate } from 
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MisReservas implements OnInit {
+  // Mis Reservas: muestra reservas del miembro actual con CRUD básico (OnPush)
   private reservaService = inject(ReservaService);
   private grupoService = inject(GrupoService);
   private authService = inject(AuthService);

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+// Gestión de permisos del usuario
 @Component({
   selector: 'app-permisos',
   imports: [],

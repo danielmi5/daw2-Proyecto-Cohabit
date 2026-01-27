@@ -14,6 +14,7 @@ import { MiembroGrupoService } from '../../services/miembro-grupo.service';
 import { SubidaArchivosService } from '../../services/subida-archivos.service';
 import { StateService } from '../../services/state.service';
 
+// Página CRUD de recursos del grupo con búsqueda/filtrado
 @Component({
   selector: 'app-recursos',
   imports: [CommonModule, CardRecurso, BuscadorFiltros, Button, ModalRecurso],
@@ -22,30 +23,52 @@ import { StateService } from '../../services/state.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Recursos implements OnInit {
+  /** Servicio de gestión de recursos */
   private recursoService = inject(RecursoService);
+  /** Servicio de gestión de grupos */
   private grupoService = inject(GrupoService);
+  /** Servicio de autenticación */
   private authService = inject(AuthService);
+  /** Servicio de notificaciones */
   private notificacionService = inject(NotificacionService);
+  /** Servicio de gestión de miembros */
   private miembroGrupoService = inject(MiembroGrupoService);
+  /** Servicio de subida de archivos */
   private subidaArchivosService = inject(SubidaArchivosService);
+  /** Router de Angular */
   private router = inject(Router);
 
+  /** Lista completa de recursos del grupo */
   recursos: RecursoResponse[] = [];
+  /** Lista de recursos filtrados según criterios de búsqueda */
   recursosFiltrados: RecursoResponse[] = [];
+  /** Total de recursos */
   total = 0;
+  /** Signal que indica si se están cargando datos */
   loading = signal(true);
+  /** Indica si hubo error al cargar */
   error = false;
+  /** Mensaje de error */
   errorMessage = '';
   
+  /** ID del grupo actual */
   grupoId: number | null = null;
+  /** ID del usuario creador */
   creadorId: number | null = null;
 
+  /** Controla visibilidad del modal */
   mostrarModal = false;
+  /** Indica si el modal está en modo edición */
   modoEdicion = false;
+  /** Recurso seleccionado para edición */
   recursoSeleccionado: RecursoResponse | null = null;
 
   /**
-   * TrackBy function para optimizar rendering de lista
+   * TrackBy function para optimizar rendering de lista.
+   * 
+   * @param _index - Índice del elemento (no usado)
+   * @param recurso - Recurso de la lista
+   * @returns ID del recurso
    */
   trackByRecursoId(_index: number, recurso: RecursoResponse): number | null | undefined {
     return recurso.id;

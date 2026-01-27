@@ -53,6 +53,24 @@ public class MiembroGrupoService {
     }
 
     @Transactional
+    public MiembroGrupoResponseDTO unirsePorCodigo(String codigoInvitacion, String usuarioEmail) {
+        if (codigoInvitacion == null || codigoInvitacion.isBlank()) throw new ParametroNuloException("codigoInvitacion es obligatorio");
+
+        Grupo grupo = grupoRepo.findByCodigoInvitacion(codigoInvitacion)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Grupo no encontrado con el código proporcionado"));
+
+        Usuario usuario = usuarioRepo.findByEmail(usuarioEmail);
+        if (usuario == null) throw new EntidadNoEncontradaException("Usuario no encontrado");
+
+        MiembroGrupoRequestDTO dto = MiembroGrupoRequestDTO.builder()
+                .usuarioId(usuario.getId())
+                .grupoId(grupo.getId())
+                .build();
+
+        return crear(dto);
+    }
+
+    @Transactional
     public MiembroGrupoResponseDTO crear(MiembroGrupoRequestDTO dto) {
         if (dto == null) throw new ParametroNuloException("MiembroGrupoRequestDTO es null");
 

@@ -17,6 +17,10 @@
     overflow-x: hidden;
   }
 
+  &__unirse{
+    @include mixins.display-flex(column, $espaciado-m, center, center);
+  }
+
 
   // Estados de carga
   &__estado {

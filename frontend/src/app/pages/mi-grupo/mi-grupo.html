@@ -15,7 +15,12 @@
     <div class="mi-grupo__vacio-contenido">
       <h2 class="mi-grupo__vacio-titulo">No perteneces a ningún grupo</h2>
       <p class="mi-grupo__vacio-texto">Crea un grupo para empezar a gestionar recursos compartidos</p>
-      <button class="mi-grupo__vacio-boton" (click)="abrirModal()">Crear Grupo</button>
+      <app-button tipo="button" [variante]="'primario'" (click)="abrirModal()">Crear Grupo</app-button>
+      <section class="mi-grupo__unirse">
+        <p class="mi-grupo__vacio-texto">También puedes unirte a un grupo mediante su código de invitación.</p>
+        <app-form-input id="codigoUnirse" placeholder="Código de invitación" #codigoInput></app-form-input>
+        <app-button tipo="button" [variante]="'primario'" (click)="unirGrupo(codigoInput.valor)">Unirse</app-button>
+      </section>
     </div>
   </section>
 }

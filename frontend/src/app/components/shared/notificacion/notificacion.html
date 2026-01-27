@@ -1,10 +1,10 @@
 <div class="toast-container">
   @for (notificacion of notificacionService.notificaciones(); track notificacion.id) {
-    <div class="toast-wrapper" @notificacionAnim>
+    <div class="toast-wrapper" #wrapper>
       <app-alert 
         [tipo]="notificacion.type"
         [cerrable]="true"
-        (cerrar)="notificacionService.eliminar(notificacion.id)">
+        (cerrar)="onCerrar(notificacion.id, wrapper)">
         {{ notificacion.mensaje }}
       </app-alert>
     </div>

@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { trigger, transition, style, animate } from '@angular/animations';
 import { NotificacionService } from '../../../services/notificacion.service';
 import { Alert } from '../alert/alert';
 
@@ -11,18 +10,23 @@ import { Alert } from '../alert/alert';
   imports: [Alert],
   templateUrl: './notificacion.html',
   styleUrls: ['./notificacion.scss'],
-  animations: [
-    trigger('notificacionAnim', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-0.5rem)' }),
-        animate('200ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
-      ]),
-      transition(':leave', [
-        animate('150ms ease-in', style({ opacity: 0, transform: 'translateY(-0.25rem)' }))
-      ])
-    ])
-  ]
 })
 export class Notificacion {
   protected notificacionService = inject(NotificacionService);
+
+  onCerrar(id: number, elementoWrapper: HTMLElement | any): void {
+    const elementoHTML: HTMLElement | null = elementoWrapper && elementoWrapper instanceof HTMLElement ? elementoWrapper : (elementoWrapper?.nativeElement ?? null);
+    if (!elementoHTML) {
+      this.notificacionService.eliminar(id);
+      return;
+    }
+
+    // Añade clase que inicia la animación de salida
+    elementoHTML.classList.add('salida');
+
+    // Cuando termine la animación, se elimina la notificación
+    elementoHTML.addEventListener('animationend', () => {
+      this.notificacionService.eliminar(id);
+    }, { once: true });
+  }
 }

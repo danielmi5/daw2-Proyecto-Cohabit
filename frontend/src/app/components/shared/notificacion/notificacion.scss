@@ -20,6 +20,37 @@
   
 }
 
+/* Animaciones por CSS: entrada / salida (nombres solicitados) */
+.toast-wrapper {
+  animation: entrada 200ms ease-out;
+}
+
+.toast-wrapper.salida {
+  animation: salida 150ms ease-in forwards;
+}
+
+@keyframes entrada {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes salida {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+}
+
 @media (max-width: 768px) {
   .toast-container {
     top: $espaciado-m;

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Button } from "../button/button";
@@ -30,6 +30,8 @@ export class FormArchivo implements ControlValueAccessor {
 
   private onChange: (file: File | null) => void = () => {};
   private onTouched: () => void = () => {};
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   /**
    * Escribe un valor en el componente (parte de ControlValueAccessor).
@@ -136,6 +138,7 @@ export class FormArchivo implements ControlValueAccessor {
       const reader = new FileReader();
       reader.onload = () => {
         this.previewUrl = reader.result as string;
+        this.cdr.detectChanges();
       };
       reader.readAsDataURL(file);
     }

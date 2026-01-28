@@ -187,15 +187,21 @@ export class Recursos implements OnInit {
     // Usar el endpoint de grupo/recursos con paginación
     this.grupoService.getRecursos(this.grupoId, this.paginaActual(), this.tamanoPagina, filtros).subscribe({
       next: (respuesta) => {
-        this.totalRecursos.set(respuesta.total);
+        const items = Array.isArray(respuesta?.items)
+          ? respuesta.items
+          : respuesta && respuesta.items
+            ? [respuesta.items]
+            : [];
+
+        this.totalRecursos.set(typeof respuesta?.total === 'number' ? respuesta.total : items.length);
 
         if (this.estrategiaPaginacion === 'scroll-infinito') {
           // Acumular resultados
           const recursosActuales = this.recursos();
-          this.recursos.set([...recursosActuales, ...respuesta.items]);
+          this.recursos.set([...recursosActuales, ...items]);
         } else {
           // Reemplazar resultados
-          this.recursos.set(respuesta.items);
+          this.recursos.set(items);
         }
 
         this.loading.set(false);

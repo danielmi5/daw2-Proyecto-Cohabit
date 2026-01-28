@@ -1,12 +1,10 @@
-import { Component, OnInit, inject, effect, ChangeDetectionStrategy, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, effect, ChangeDetectionStrategy, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CardRecurso } from '../../components/shared/card-recurso/card-recurso';
 import { BuscadorFiltros, FiltrosRecurso } from '../../components/shared/buscador-filtros/buscador-filtros';
 import { Button } from '../../components/shared/button/button';
 import { ModalRecurso } from '../../components/shared/modal-recurso/modal-recurso';
-import { Paginador } from '../../components/shared/paginador/paginador';
-import { ScrollInfinitoDirective } from '../../directives/scroll-infinito.directive';
 import { RecursoResponse, RecursoRequest, RecursoUpdate } from '../../models';
 import { RecursoService } from '../../services/recurso.service';
 import { GrupoService } from '../../services/grupo.service';
@@ -16,17 +14,10 @@ import { MiembroGrupoService } from '../../services/miembro-grupo.service';
 import { SubidaArchivosService } from '../../services/subida-archivos.service';
 import { StateService } from '../../services/state.service';
 
-/**
- * Estrategia de paginación a utilizar:
- * - 'scroll-infinito': Acumula resultados al hacer scroll
- * - 'paginador': Navegación clásica con números de página
- */
-type EstrategiaPaginacion = 'scroll-infinito' | 'paginador';
-
-// Página CRUD de recursos del grupo con búsqueda/filtrado y paginación
+// Página CRUD de recursos del grupo con búsqueda/filtrado
 @Component({
   selector: 'app-recursos',
-  imports: [CommonModule, CardRecurso, BuscadorFiltros, Button, ModalRecurso, Paginador, ScrollInfinitoDirective],
+  imports: [CommonModule, CardRecurso, BuscadorFiltros, Button, ModalRecurso],
   templateUrl: './recursos.html',
   styleUrls: ['./recursos.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -47,35 +38,18 @@ export class Recursos implements OnInit {
   /** Router de Angular */
   private router = inject(Router);
 
-  /** Estrategia de paginación activa (cambiar a 'paginador' si se prefiere navegación clásica) */
-  readonly estrategiaPaginacion: EstrategiaPaginacion = 'scroll-infinito';
-
-  /** Lista de recursos cargados (se acumula en scroll infinito, se reemplaza en paginador) */
-  recursos = signal<RecursoResponse[]>([]);
-  
-  /** Total de recursos disponibles en el backend */
-  totalRecursos = signal<number>(0);
-  
-  /** Página actual (base 0) */
-  paginaActual = signal<number>(0);
-  
-  /** Tamaño de página */
-  readonly tamanoPagina = 10;
-  
-  /** Signal que indica si se están cargando datos iniciales */
+  /** Lista completa de recursos del grupo */
+  recursos: RecursoResponse[] = [];
+  /** Lista de recursos filtrados según criterios de búsqueda */
+  recursosFiltrados: RecursoResponse[] = [];
+  /** Total de recursos */
+  total = 0;
+  /** Signal que indica si se están cargando datos */
   loading = signal(true);
-  
-  /** Signal que indica si se están cargando más datos (scroll infinito) */
-  cargandoMas = signal(false);
-  
   /** Indica si hubo error al cargar */
-  error = signal(false);
-  
+  error = false;
   /** Mensaje de error */
-  errorMessage = signal('');
-  
-  /** Filtros actuales aplicados */
-  filtrosActuales = signal<FiltrosRecurso>({ busqueda: '', tipo: '', estado: '' });
+  errorMessage = '';
   
   /** ID del grupo actual */
   grupoId: number | null = null;
@@ -88,27 +62,6 @@ export class Recursos implements OnInit {
   modoEdicion = false;
   /** Recurso seleccionado para edición */
   recursoSeleccionado: RecursoResponse | null = null;
-
-  /** Calcula si hay más páginas disponibles para cargar */
-  hayMasPaginas = computed(() => {
-    const total = this.totalRecursos();
-    const pagina = this.paginaActual();
-    const tamano = this.tamanoPagina;
-    return (pagina + 1) * tamano < total;
-  });
-
-  /** Indica si debe mostrarse el elemento de scroll infinito */
-  mostrarScrollInfinito = computed(() => {
-    return this.estrategiaPaginacion === 'scroll-infinito' && 
-           this.hayMasPaginas() && 
-           !this.cargandoMas() &&
-           !this.loading();
-  });
-
-  /** Indica si debe mostrarse el paginador clásico */
-  mostrarPaginador = computed(() => {
-    return this.estrategiaPaginacion === 'paginador' && this.totalRecursos() > this.tamanoPagina;
-  });
 
   /**
    * TrackBy function para optimizar rendering de lista.
@@ -129,8 +82,8 @@ export class Recursos implements OnInit {
     const usuario = this.authService.usuarioDetalles();
     
     if (!usuario?.miembroGrupoId) {
-      this.error.set(true);
-      this.errorMessage.set('No perteneces a ningún grupo');
+      this.error = true;
+      this.errorMessage = 'No perteneces a ningún grupo';
       this.loading.set(false);
       return;
     }
@@ -143,131 +96,69 @@ export class Recursos implements OnInit {
         if (this.grupoId) {
           this.cargarRecursos();
         } else {
-          this.error.set(true);
-          this.errorMessage.set('No se pudo obtener el ID del grupo');
+          this.error = true;
+          this.errorMessage = 'No se pudo obtener el ID del grupo';
           this.loading.set(false);
         }
       },
       error: (error) => {
         console.error('Error al cargar datos del miembro:', error);
-        this.error.set(true);
-        this.errorMessage.set('Error al cargar los datos del grupo');
+        this.error = true;
+        this.errorMessage = 'Error al cargar los datos del grupo';
         this.loading.set(false);
       }
     });
   }
 
-  /**
-   * Carga los recursos del grupo usando paginación.
-   * En modo scroll-infinito: acumula resultados.
-   * En modo paginador: reemplaza resultados.
-   */
-  private cargarRecursos(): void {
+  cargarRecursos(): void {
     if (!this.grupoId) {
-      this.error.set(true);
-      this.errorMessage.set('No se ha podido identificar el grupo');
+      this.error = true;
+      this.errorMessage = 'No se ha podido identificar el grupo';
       this.loading.set(false);
       return;
     }
 
-    // Si es la primera carga
-    const esPrimeraCarga = this.paginaActual() === 0 && this.recursos().length === 0;
-    
-    if (esPrimeraCarga) {
-      this.loading.set(true);
-    } else {
-      this.cargandoMas.set(true);
-    }
+    this.loading.set(true);
+    this.error = false;
 
-    this.error.set(false);
-
-    // Preparar filtros para el backend
-    const filtros = this.prepararFiltros();
-
-    // Usar el endpoint de grupo/recursos con paginación
-    this.grupoService.getRecursos(this.grupoId, this.paginaActual(), this.tamanoPagina, filtros).subscribe({
-      next: (respuesta) => {
-        const items = Array.isArray(respuesta?.items)
-          ? respuesta.items
-          : respuesta && respuesta.items
-            ? [respuesta.items]
-            : [];
-
-        this.totalRecursos.set(typeof respuesta?.total === 'number' ? respuesta.total : items.length);
-
-        if (this.estrategiaPaginacion === 'scroll-infinito') {
-          // Acumular resultados
-          const recursosActuales = this.recursos();
-          this.recursos.set([...recursosActuales, ...items]);
-        } else {
-          // Reemplazar resultados
-          this.recursos.set(items);
-        }
-
+    this.grupoService.getRecursos(this.grupoId).subscribe({
+      next: (recursos) => {
+        // ApiListResponse<T> has the shape { items: T[], total: number }
+        this.recursos = recursos.items || [];
+        this.recursosFiltrados = [...this.recursos];
+        this.total = typeof recursos.total === 'number' ? recursos.total : this.recursos.length;
         this.loading.set(false);
-        this.cargandoMas.set(false);
       },
       error: (error) => {
         console.error('Error al cargar recursos:', error);
-        this.error.set(true);
-        this.errorMessage.set(error.message || 'Error al cargar los recursos');
+        this.error = true;
+        this.errorMessage = error.message || 'Error al cargar los recursos';
         this.loading.set(false);
-        this.cargandoMas.set(false);
       }
     });
   }
 
-  /**
-   * Prepara los filtros para enviar al backend
-   */
-  private prepararFiltros(): { tipo?: string; estado?: string } {
-    const filtros = this.filtrosActuales();
-    const resultado: { tipo?: string; estado?: string } = {};
+  onFiltrosChange(filtros: FiltrosRecurso): void {
+    let resultados = [...this.recursos];
+
+    if (filtros.busqueda.trim()) {
+      const busquedaLower = filtros.busqueda.toLowerCase();
+      resultados = resultados.filter(recurso =>
+        recurso.nombre?.toLowerCase().includes(busquedaLower) ||
+        recurso.descripcion?.toLowerCase().includes(busquedaLower) ||
+        recurso.ubicacion?.toLowerCase().includes(busquedaLower)
+      );
+    }
 
     if (filtros.tipo) {
-      resultado.tipo = filtros.tipo;
+      resultados = resultados.filter(recurso => recurso.tipo === filtros.tipo);
     }
 
     if (filtros.estado) {
-      resultado.estado = filtros.estado;
+      resultados = resultados.filter(recurso => recurso.estadoActual === filtros.estado);
     }
 
-    // Nota: Para búsqueda textual local, se filtrarían después en el cliente
-    // Si el backend soporta búsqueda por texto, agregar aquí
-
-    return resultado;
-  }
-
-  /**
-   * Maneja el cambio de filtros desde el buscador.
-   * Reinicia la paginación y recarga datos.
-   */
-  onFiltrosChange(filtros: FiltrosRecurso): void {
-    this.filtrosActuales.set(filtros);
-    this.paginaActual.set(0);
-    this.recursos.set([]);
-    this.cargarRecursos();
-  }
-
-  /**
-   * Carga la siguiente página de recursos (scroll infinito)
-   */
-  cargarMasRecursos(): void {
-    if (!this.hayMasPaginas() || this.cargandoMas()) {
-      return;
-    }
-
-    this.paginaActual.update(p => p + 1);
-    this.cargarRecursos();
-  }
-
-  /**
-   * Maneja el cambio de página desde el paginador clásico
-   */
-  alCambiarPagina(nuevaPagina: number): void {
-    this.paginaActual.set(nuevaPagina);
-    this.recursos.set([]); // Limpia antes de cargar nueva página
-    this.cargarRecursos();
+    this.recursosFiltrados = resultados;
   }
 
   verRecurso(recurso: RecursoResponse): void {
@@ -287,9 +178,6 @@ export class Recursos implements OnInit {
       this.recursoService.delete(recurso.id).subscribe({
         next: () => {
           this.notificacionService.success('Recurso eliminado correctamente');
-          // Reiniciar y recargar desde el principio
-          this.paginaActual.set(0);
-          this.recursos.set([]);
           this.cargarRecursos();
         },
         error: (error) => {
@@ -330,9 +218,6 @@ export class Recursos implements OnInit {
           } else {
             this.notificacionService.success('Recurso actualizado correctamente');
             this.cerrarModal();
-            // Reiniciar y recargar desde el principio
-            this.paginaActual.set(0);
-            this.recursos.set([]);
             this.cargarRecursos();
           }
         },
@@ -365,9 +250,6 @@ export class Recursos implements OnInit {
           } else {
             this.notificacionService.success('Recurso creado correctamente');
             this.cerrarModal();
-            // Reiniciar y recargar desde el principio
-            this.paginaActual.set(0);
-            this.recursos.set([]);
             this.cargarRecursos();
           }
         },
@@ -384,18 +266,12 @@ export class Recursos implements OnInit {
       next: () => {
         this.notificacionService.success(this.modoEdicion ? 'Recurso actualizado correctamente' : 'Recurso creado correctamente');
         this.cerrarModal();
-        // Reiniciar y recargar desde el principio
-        this.paginaActual.set(0);
-        this.recursos.set([]);
         this.cargarRecursos();
       },
       error: (error) => {
         console.error('Error al subir foto del recurso:', error);
         this.notificacionService.warning('Recurso guardado pero hubo un error al subir la foto');
         this.cerrarModal();
-        // Reiniciar y recargar desde el principio
-        this.paginaActual.set(0);
-        this.recursos.set([]);
         this.cargarRecursos();
       }
     });

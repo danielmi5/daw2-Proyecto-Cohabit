@@ -45,6 +45,7 @@ export class FormArchivo implements ControlValueAccessor {
     } else {
       this.previewUrl = null;
     }
+    this.cdr.detectChanges();
   }
 
   /**
@@ -126,6 +127,7 @@ export class FormArchivo implements ControlValueAccessor {
     this.onChange(file);
     this.onTouched();
     this.archivoSeleccionado.emit(file);
+    this.cdr.detectChanges();
   }
 
   /**
@@ -142,6 +144,7 @@ export class FormArchivo implements ControlValueAccessor {
       };
       reader.readAsDataURL(file);
     }
+    this.cdr.detectChanges();
   }
 
   /**
@@ -152,6 +155,7 @@ export class FormArchivo implements ControlValueAccessor {
     this.previewUrl = null;
     this.onChange(null);
     this.onTouched();
+    this.cdr.detectChanges();
   }
 
   /**

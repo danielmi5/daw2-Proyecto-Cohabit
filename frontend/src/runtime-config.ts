@@ -14,5 +14,5 @@ export const RUNTIME_CONFIG = {
    * URL base de la API REST del backend.
    * Por defecto apunta al entorno de producción.
    */
-  apiBaseUrl: 'http://localhost:8080'
+  apiBaseUrl: 'https://cohabit-backend-n6k7o.ondigitalocean.app'
 };

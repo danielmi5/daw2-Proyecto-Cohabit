@@ -1,8 +1,4 @@
 import { Routes } from "@angular/router";
-import { Inicio } from "./pages/inicio/inicio";
-import { StyleGuidePage } from "./pages/style-guide/style-guide";
-import { LoginPage } from "./pages/login/login";
-import { RegistroPage } from "./pages/registro/registro";
 import { salirAuthGuard } from './guards/salir-auth-guard';
 import { authGuard } from "./guards/auth-guard";
 
@@ -26,7 +22,7 @@ export const routes: Routes = [
   // RUTAS PÚBLICAS (sin autenticación)
   {
     path: "",
-    component: Inicio,
+    loadComponent: () => import("./pages/inicio/inicio").then(m => m.Inicio),
     title: "Inicio",
     data: { breadcrumb: "Inicio" }
   },
@@ -37,21 +33,21 @@ export const routes: Routes = [
   },
   {
     path: "login",
-    component: LoginPage,
+    loadComponent: () => import("./pages/login/login").then(m => m.LoginPage),
     title: "Inicio Sesión",
     data: { breadcrumb: "Login" },
     canDeactivate: [salirAuthGuard]
   },
   {
     path: "registro",
-    component: RegistroPage,
+    loadComponent: () => import("./pages/registro/registro").then(m => m.RegistroPage),
     title: "Registro",
     data: { breadcrumb: "Registro" },
     canDeactivate: [salirAuthGuard]
   },
   {
     path: "style-guide",
-    component: StyleGuidePage,
+    loadComponent: () => import("./pages/style-guide/style-guide").then(m => m.StyleGuidePage),
     title: "Guía de Estilos",
     data: { breadcrumb: "Style Guide" }
   },

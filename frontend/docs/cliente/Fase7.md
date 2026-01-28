@@ -57,7 +57,7 @@ El proyecto utiliza únicamente el polyfill esencial para el funcionamiento de A
 ]
 ```
 
-**Justificación**: Zone.js es el único polyfill requerido por Angular para la detección de cambios y el manejo del ciclo de vida de los componentes. No se requieren polyfills adicionales dado que:
+Se utiliza zone.js es el único polyfill requerido por Angular para la detección de cambios y el manejo del ciclo de vida de los componentes. No se requieren polyfills adicionales dado que:
 
 - El target ES2022 es soportado nativamente por los navegadores especificados
 - Las características utilizadas (Signals, Standalone Components) son implementaciones de Angular que no requieren polyfills del navegador
@@ -77,15 +77,13 @@ La compatibilidad se puede verificar mediante:
 npx browserslist
 ```
 
-Aunque el proyecto no incluye un archivo `.browserslistrc`, la configuración por defecto de Angular cubre los navegadores mencionados.
-
 ---
 
 ## 2. Testing
 
 ### 2.1 Framework de testing
 
-El proyecto utiliza el stack de testing estándar de Angular:
+En el proyecto se utiliza el stack de testing estándar de Angular:
 
 - **Jasmine**: Framework de testing (versión 5.1)
 - **Karma**: Test runner (versión 6.4)
@@ -110,7 +108,7 @@ Configuración en `package.json`:
 
 #### 2.2.1 Componentes testeados
 
-El proyecto cuenta con tests unitarios para todos los componentes, incluyendo:
+Se utilizan tests unitarios para todos los componentes, incluyendo:
 
 **Componentes de Layout**:
 - `Header` - Barra de navegación principal
@@ -152,8 +150,6 @@ El proyecto cuenta con tests unitarios para todos los componentes, incluyendo:
 - `NotFound` - Página 404
 - `StyleGuidePage` - Guía de estilos
 
-**Total**: Más de 30 componentes con tests unitarios básicos.
-
 #### 2.2.2 Servicios testeados
 
 **Servicios con Tests Implementados**:
@@ -188,8 +184,6 @@ El proyecto cuenta con tests unitarios para todos los componentes, incluyendo:
 - `theme-switcher.service.ts` - Modo claro/oscuro
 - `usuario.service.ts` - Gestión de usuarios
 
-**Total**: Más de 6 servicios con tests unitarios implementados y verificables.
-
 #### 2.2.3 Guards testeados
 
 - `authGuard` (`auth-guard.spec.ts`) - Protección de rutas privadas
@@ -214,8 +208,6 @@ El proyecto implementa 3 pipes personalizados con tests completos:
    - Tests: 6 casos de prueba para diferentes escenarios
    - Casos: nulos, textos cortos, límites personalizados, sufijos custom
 
-**Total**: 3 pipes personalizados con 20 tests unitarios verificables.
-
 ### 2.3 Testing de integración
 
 #### 2.3.1 Flujos completos
@@ -224,7 +216,7 @@ El proyecto implementa 3 pipes personalizados con tests completos:
 1. Usuario accede a página de login
 2. Completa formulario con credenciales
 3. AuthService envía petición POST a `/api/auth/login`
-4. Backend valida y retorna JWT
+4. Backend valida y devuelve JWT
 5. Token se almacena en localStorage
 6. Usuario es redirigido a dashboard
 
@@ -471,49 +463,48 @@ cd frontend
 ng build --configuration production
 ```
 
-**Resultado de Build Real**:
+**Resultado de Build**:
 
 ```
-Application bundle generation complete. [2.026 seconds]
+Initial chunk files   | Names           |  Raw size | Estimated transfer size
+chunk-S7DJ2APC.js     | -               | 144.00 kB |                42.67 kB
+chunk-ELTZRURL.js     | -               | 107.19 kB |                27.16 kB
+chunk-65Q7YFMP.js     | -               |  90.47 kB |                19.34 kB
+main-FU5XRK6N.js      | main            |  88.28 kB |                22.89 kB
+polyfills-5CFQRCPP.js | polyfills       |  34.59 kB |                11.33 kB
+styles-MAFIM3XM.css   | styles          |   5.48 kB |                 1.39 kB
+chunk-UBKXC43S.js     | -               |   4.60 kB |                 1.44 kB
+chunk-3CPRN5VM.js     | -               |   3.29 kB |                 1.19 kB
+chunk-NXZJWVQH.js     | -               |   2.79 kB |                 1.03 kB
+chunk-42O3F2DO.js     | -               |   2.61 kB |               929 bytes
+chunk-EQDQRRRY.js     | -               |   1.28 kB |               564 bytes
+chunk-II7JO62A.js     | -               |   1.05 kB |               517 bytes
+chunk-7I5M5O2K.js     | -               | 319 bytes |               319 bytes
 
-Build at: 2025-01-XX
+                      | Initial total   | 485.95 kB |               130.78 kB
 
-Output                                       Size      Budget
-dist/frontend/browser/main-HASH.js           143 kB    500 kB (warning: 143 kB over)
-dist/frontend/browser/polyfills-HASH.js      32 kB
-dist/frontend/browser/styles-HASH.css        45 kB
+Lazy chunk files      | Names           |  Raw size | Estimated transfer size
+chunk-ZIPXTKIS.js     | -               |  54.56 kB |                11.54 kB
+chunk-LIQON227.js     | recursos        |  37.78 kB |                 8.00 kB
+chunk-JOM5VH4N.js     | style-guide     |  27.26 kB |                 5.54 kB
+chunk-XMTQG6G6.js     | inicio          |  21.39 kB |                 4.45 kB
+chunk-DE2NE67R.js     | dashboard-index |  16.33 kB |                 3.82 kB
+chunk-RRLY2BXI.js     | datos-grupo     |  13.55 kB |                 3.52 kB
+chunk-UG5X2K3G.js     | -               |  12.72 kB |                 3.50 kB
+chunk-MMYRZRAJ.js     | reservas        |  12.21 kB |                 3.15 kB
+chunk-CTZBGJKK.js     | -               |  11.15 kB |                 3.14 kB
+chunk-6WI775GN.js     | mi-grupo        |  10.27 kB |                 2.95 kB
+chunk-N4SQSFHO.js     | mis-reservas    |   9.20 kB |                 2.67 kB
+chunk-I5HTGRCZ.js     | -               |   9.13 kB |                 2.19 kB
+chunk-LQD5G4U4.js     | -               |   7.31 kB |                 1.71 kB
+chunk-G5VJNRWL.js     | -               |   6.84 kB |                 2.13 kB
+chunk-7TZXJOYX.js     | -               |   6.75 kB |                 2.06 kB
+...and 25 more lazy chunks files. Use "--verbose" to show all the files.
 
-Total bundle size:                           643.46 kB
+Application bundle generation complete. [4.922 seconds] - 2026-01-28T07:50:55.420Z
 ```
-
-**Análisis por Chunk**:
-- **Bundle inicial**: 643.46 KB total (143 KB sobre el warning de 500KB, pero bajo el límite de error de 1MB)
-- **Lazy chunks**: dashboard, grupo, perfil, ayuda (generados bajo demanda)
-- **Polyfills**: 32 KB (optimizados para ES2022)
-- **Estilos globales**: 45 KB
-
-**Estado del Budget**:
-- Warning: Bundle inicial supera 500KB por 143KB
-- No errors: Está bajo el límite de error de 1MB
-- 3 archivos SCSS ligeramente sobre 4KB (no crítico)
-
-**Verificación del Tamaño**:
-
-```bash
-du -sh dist/frontend/browser/*.js | sort -h
-```
-
-#### 3.3.3 Optimizaciones aplicadas
-
-1. **Minificación**: Código JavaScript minificado automáticamente
-2. **Compresión**: Servidor nginx configurado con gzip
-3. **Output Hashing**: Cache busting con hashes en nombres de archivos
-4. **CSS Optimization**: Estilos optimizados y minimizados
-5. **Image Optimization**: Imágenes en formato AVIF para mejor compresión
 
 ### 3.4 Lighthouse
-
-#### 3.4.1 Métricas de rendimiento
 
 **Comando para ejecutar Lighthouse**:
 
@@ -522,36 +513,8 @@ npm install -g lighthouse
 lighthouse https://cohabit-front-xjlup.ondigitalocean.app/ --output=html --output-path=./lighthouse-report.html
 ```
 
-**Métricas Esperadas** (basado en optimizaciones implementadas):
+![Lighthouse resumen](./img/lighthouse.png)
 
-- **Performance**: >80
-  - First Contentful Paint: <2s
-  - Largest Contentful Paint: <3s
-  - Time to Interactive: <4s
-  
-- **Best Practices**: >90
-  - HTTPS habilitado
-  - No errores de consola
-  - Imágenes optimizadas
-  
-- **Accessibility**: >85
-  - Contraste adecuado
-  - Labels en formularios
-  - Navegación por teclado
-  
-- **SEO**: >80
-  - Meta tags configurados
-  - Títulos descriptivos
-  - Responsive design
-
-#### 3.4.2 Optimizaciones para lighthouse
-
-1. **Lazy Loading de Imágenes**: Implementado con `loading="lazy"`
-2. **Imágenes en Formatos Modernos**: AVIF para mejor compresión
-3. **Responsive Images**: Picture element con múltiples resoluciones
-4. **Preconnect**: Configurado para conexiones anticipadas
-5. **Caching**: Headers de cache configurados en nginx
-6. **Minificación**: CSS y JS minificados en producción
 
 ---
 
@@ -597,77 +560,59 @@ Este comando ejecuta el build con la configuración de producción definida en `
 
 ### 4.2 Verificación del build
 
+```bash
+ng build --configuration production
+```
+
 #### 4.2.1 Build sin errores
 
 **Resultado Real del Build**:
 
-```bash
-cd frontend
-ng build --configuration production
-```
-
 **Output Exitoso**:
 
 ```
-Initial chunk files   | Names         |  Raw size | Estimated transfer size
-main-HASH.js          | main          | 143.00 kB |                  32.5 kB
-polyfills-HASH.js     | polyfills     |  32.00 kB |                  10.2 kB
-styles-HASH.css       | styles        |  45.00 kB |                   7.8 kB
+Initial chunk files   | Names           |  Raw size | Estimated transfer size
+chunk-S7DJ2APC.js     | -               | 144.00 kB |                42.67 kB
+chunk-ELTZRURL.js     | -               | 107.19 kB |                27.16 kB
+chunk-65Q7YFMP.js     | -               |  90.47 kB |                19.34 kB
+main-FU5XRK6N.js      | main            |  88.28 kB |                22.89 kB
+polyfills-5CFQRCPP.js | polyfills       |  34.59 kB |                11.33 kB
+styles-MAFIM3XM.css   | styles          |   5.48 kB |                 1.39 kB
+chunk-UBKXC43S.js     | -               |   4.60 kB |                 1.44 kB
+chunk-3CPRN5VM.js     | -               |   3.29 kB |                 1.19 kB
+chunk-NXZJWVQH.js     | -               |   2.79 kB |                 1.03 kB
+chunk-42O3F2DO.js     | -               |   2.61 kB |               929 bytes
+chunk-EQDQRRRY.js     | -               |   1.28 kB |               564 bytes
+chunk-II7JO62A.js     | -               |   1.05 kB |               517 bytes
+chunk-7I5M5O2K.js     | -               | 319 bytes |               319 bytes
 
-Lazy chunk files      | Names         |  Raw size | Estimated transfer size
-dashboard-HASH.js     | dashboard     |  65.00 kB |                  15.2 kB
-grupo-HASH.js         | grupo         |  48.00 kB |                  11.4 kB
-perfil-HASH.js        | perfil        |  38.00 kB |                   8.9 kB
-ayuda-HASH.js         | ayuda         |  22.00 kB |                   5.1 kB
+                      | Initial total   | 485.95 kB |               130.78 kB
 
-                      | Initial total | 220.00 kB |                  50.5 kB
+Lazy chunk files      | Names           |  Raw size | Estimated transfer size
+chunk-ZIPXTKIS.js     | -               |  54.56 kB |                11.54 kB
+chunk-LIQON227.js     | recursos        |  37.78 kB |                 8.00 kB
+chunk-JOM5VH4N.js     | style-guide     |  27.26 kB |                 5.54 kB
+chunk-XMTQG6G6.js     | inicio          |  21.39 kB |                 4.45 kB
+chunk-DE2NE67R.js     | dashboard-index |  16.33 kB |                 3.82 kB
+chunk-RRLY2BXI.js     | datos-grupo     |  13.55 kB |                 3.52 kB
+chunk-UG5X2K3G.js     | -               |  12.72 kB |                 3.50 kB
+chunk-MMYRZRAJ.js     | reservas        |  12.21 kB |                 3.15 kB
+chunk-CTZBGJKK.js     | -               |  11.15 kB |                 3.14 kB
+chunk-6WI775GN.js     | mi-grupo        |  10.27 kB |                 2.95 kB
+chunk-N4SQSFHO.js     | mis-reservas    |   9.20 kB |                 2.67 kB
+chunk-I5HTGRCZ.js     | -               |   9.13 kB |                 2.19 kB
+chunk-LQD5G4U4.js     | -               |   7.31 kB |                 1.71 kB
+chunk-G5VJNRWL.js     | -               |   6.84 kB |                 2.13 kB
+chunk-7TZXJOYX.js     | -               |   6.75 kB |                 2.06 kB
+...and 25 more lazy chunks files. Use "--verbose" to show all the files.
 
-Application bundle generation complete. [2.026 seconds]
-
-Advertencia: Budgets: 143 kB over warning limit for main bundle (500 kB)
-Advertencia: Budgets: 3 component stylesheets slightly over 4 kB
+Application bundle generation complete. [4.922 seconds] - 2026-01-28T07:50:55.420Z
 
 Built successfully
 No compilation errors
 TypeScript validation passed
 ```
 
-**Estado del Build**:
-- Build completado sin errores
-- Lazy loading funcionando (4 chunks lazy)
-- Tree-shaking aplicado automáticamente
-- Minificación y optimización activas
-- Advertencia: Bundle principal 143 KB sobre 500 KB (no crítico, bajo 1 MB limit)
-
-**Salida Esperada**:
-```
-Building...
-Browser application bundle generation complete.
-Copying assets complete.
-Index html generation complete.
-
-Initial chunk files   | Names         | Size
-main-XXXXXXXX.js      | main          | 280.5 kB
-polyfills-XXXXXXXX.js | polyfills     | 32.5 kB
-styles-XXXXXXXX.css   | styles        | 25.0 kB
-
-Build at: 2026-01-26...
-```
-
-#### 4.2.2 Verificación de artefactos
-
-Después del build, verificar la estructura en `dist/frontend/browser/`:
-
-```
-dist/frontend/browser/
-├── index.html
-├── main-[hash].js
-├── polyfills-[hash].js
-├── styles-[hash].css
-├── [lazy-chunk]-[hash].js (múltiples)
-└── assets/
-    └── (imágenes, fuentes, etc.)
-```
 
 ### 4.3 Source maps
 
@@ -693,18 +638,9 @@ Para habilitar source maps en producción (útil para debugging):
 ng build --source-map
 ```
 
+### 4.4 Build con docker
 
-#### 4.4.2 Configuración en dockerfile
-
-```dockerfile
-RUN npm run build
-```
-
-El build en Docker no requiere `--base-href` porque se sirve desde el root del contenedor nginx.
-
-### 4.5 Build con docker
-
-#### 4.5.1 Dockerfile multi-stage
+#### 4.4.1 Dockerfile multi-stage
 
 ```dockerfile
 # Etapa 1: Build
@@ -729,7 +665,7 @@ CMD ["nginx", "-g", "daemon off;"]
 - Solo incluye artefactos de producción
 - Mayor seguridad (menos superficie de ataque)
 
-#### 4.5.2 Build con docker compose
+#### 4.4.2 Build con docker compose
 
 ```bash
 docker-compose build frontend
@@ -740,12 +676,31 @@ docker-compose up frontend
 
 ## 5. Despliegue
 
-### 5.1 Despliegue
+Se desplegó la interfaz en DigitalOcean. Configurando el `router` de Angular para usar HTML5 pushState (rutas sin `#`).
+Se configuró Nginx para servir la build y manejar fallback SPA. La imagen Docker del frontend está construida con un Dockerfile multi-stage con `nginx:alpine`.
 
-- URL de despliegue en entorno DIW.
-- Configuración de rutas.
-- Configuración HTTP para producción.
-- Redirecciones SPA correctamente configuradas.
+- **URL del despliegue**:
+  - Producción (DigitalOcean): https://cohabit-front-xjlup.ondigitalocean.app/
+  - Desarrollo (local): http://localhost:4200/
+
+- **Archivos relevantes**:
+  - `frontend/nginx.conf` — configuración de Nginx con fallback a `index.html` y cache para assets.
+  - `frontend/Dockerfile` — multi-stage build: compila con Node y copia `dist` a `/usr/share/nginx/html`.
+  - `frontend/Dockerfile.dev` — Dockerfile de desarrollo (opcional para debug).
+  - `frontend/src/index.html` — `base href` usado (`/`) y punto donde actualizar si se despliega en subruta.
+  - `docker-compose.yml` — orquestación local de frontend y backend.
+
+**Configuración de rutas**: Las rutas de la aplicación están definidas en [frontend/src/app/app.routes.ts](frontend/src/app/app.routes.ts). En el proyecto se usa:
+- `loadComponent` y `loadChildren` para lazy loading en rutas pesadas (`dashboard`, `grupo`, `perfil`).
+- Guards funcionales para proteger y controlar navegación: `authGuard` y `salirAuthGuard` en [frontend/src/app/guards](frontend/src/app/guards) — ver [frontend/src/app/guards/auth-guard.ts](frontend/src/app/guards/auth-guard.ts) y [frontend/src/app/guards/salir-auth-guard.ts](frontend/src/app/guards/salir-auth-guard.ts).
+
+**Configuración HTTP para producción**: La imagen de producción se construye con un Docker multi-stage definido en [frontend/Dockerfile](frontend/Dockerfile). El flujo es:
+- Etapa `builder`: usa `node:20-alpine`, instala dependencias y ejecuta `npm run build`.
+- Etapa final: copia `dist/frontend/browser` dentro de una imagen `nginx:alpine` y sustituye la configuración por defecto con [frontend/nginx.conf](frontend/nginx.conf).
+
+
+**Redirecciones SPA correctamente configuradas**: Gracias a la configuración anterior en `nginx.conf` y a la copia del build en la imagen nginx (ver [frontend/Dockerfile](frontend/Dockerfile)), las URLs profundas (por ejemplo `/dashboard/mi-ruta`) funcionan al recargar o al abrir directamente la URL.
+
 
 ## 6. Documentación del proyecto
 
@@ -753,81 +708,17 @@ docker-compose up frontend
 
 El archivo `README.md` en la raíz del proyecto contiene:
 
-#### 6.1.1 Setup del Proyecto
+- Estructura
+- Características
+- Tecnologías
+- Requisitos
+- Instalación y ejecución
+- Despliegue
 
-```markdown
-## Instalación y ejecución
-
-### Con Docker (Recomendado)
-
-1. Clona el repositorio
-2. docker-compose up --build
-
-### Sin Docker
-
-Backend:
-cd backend
-mvn spring-boot:run
-
-Frontend:
-cd frontend
-npm install
-npm start
-```
-
-#### 6.1.2 Arquitectura
-
-**Estructura del Proyecto**:
-```
-daw2-Proyecto-Cohabit/
-├── backend/        # Spring Boot 3, Java 21
-├── frontend/       # Angular 20, TypeScript
-├── docker-compose.yml
-└── README.md
-```
-
-**Stack Tecnológico**:
-- Backend: Java 21, Spring Boot 3, PostgreSQL, JWT
-- Frontend: Angular 20, TypeScript, SCSS, Signals
-- Infraestructura: Docker, Nginx, GitHub Actions
-
-**Arquitectura de Capas**:
-- Presentación: Angular SPA
-- API: REST con Spring Boot
-- Persistencia: PostgreSQL
-- Autenticación: JWT con Spring Security
-
-#### 6.1.3 Proceso de Despliegue
-
-**Despliegue en Docker**:
-```bash
-docker-compose up --build
-```
-
-**Despliegue del Frontend (DigitalOcean / Docker)**:
-```bash
-# Build y publicar imagen en Docker Hub
-docker build -t TU_USUARIO/tu-repo-frontend:latest ./frontend
-docker push TU_USUARIO/tu-repo-frontend:latest
-
-# En DigitalOcean App Platform: crear una App de tipo Container
-# apuntando a la imagen en Docker Hub y establecer puerto 80.
-```
-
-**Servicios Expuestos**:
-- Frontend: http://localhost:4200
-- Backend: http://localhost:8080
-- PostgreSQL: localhost:5432
-
-
-
-### 6.2 Changelog
-
-**Changelog Implícito** (basado en commits y features):
+### 6.2 Estado del proyecto
 
 #### Version 1.0.0 (2026-01)
 
-**Features**:
 - Sistema completo de autenticación con JWT
 - Gestión de grupos con códigos de invitación
 - CRUD de recursos con reglas personalizadas
@@ -837,17 +728,10 @@ docker push TU_USUARIO/tu-repo-frontend:latest
 - Dashboard con métricas del grupo
 - Gestión de permisos por roles
 
-**Technical**:
-- Migración a Angular 20 Standalone Components
-- Implementación de Signals para estado reactivo
-- Lazy loading en todas las rutas principales
-- Docker compose para desarrollo y producción
-- CI/CD con GitHub Actions
-- Lighthouse score >80 en Performance
 
 ### 6.3 Documentación de fases
 
-El proyecto incluye documentación detallada de cada fase de desarrollo de cliente:
+Documentación detallada de cada fase de desarrollo de cliente:
 
 - [Fase 1](./Fase1.md): Diseño y prototipado
 - [Fase 2](./Fase2.md): Estructura HTML y componentes base
@@ -861,264 +745,46 @@ El proyecto incluye documentación detallada de cada fase de desarrollo de clien
 
 ## 7. Registro de decisiones técnicas
 
-### 7.1 Adopción de Angular 20 con standalone components
+### 7.1 Angular 20 y Standalone Components
 
-**Fecha**: Enero 2026
+Se utiliza Angular 20 con Standalone Components, lo que permite importar únicamente las dependencias necesarias y así reducir el tamaño del bundle, mejorar el tree-shaking y evitar arrastrar código de NgModules; además, los imports son más explícitos y la configuración de rutas resulta menos compleja, lo que simplifica el mantenimiento.
 
-**Estado**: Aceptado
+### 7.2 Signals para reactividad local
 
-**Contexto**:
-Angular 20 introduce Standalone Components como el enfoque recomendado, deprecando NgModules. El proyecto requiere una arquitectura moderna y mantenible.
+Se emplean Signals para la reactividad de estado local, reduciendo la necesidad de suscripciones manuales y el riesgo de memory leaks, y simplificando el código de actualización en componentes pequeños y servicios locales (por ejemplo, tema y notificaciones), lo que hace el comportamiento más predecible y más fácil de mantener.
 
-**Decisión**:
-Utilizar Standalone Components en toda la aplicación, eliminando la necesidad de NgModules.
+### 7.3 Lazy loading en rutas principales
 
-**Consecuencias**:
-- **Positivas**:
-  - Tree-shaking más efectivo
-  - Menos boilerplate
-  - Imports más explícitos
-  - Mejor DX (Developer Experience)
-- **Negativas**:
-  - Menor cantidad de documentación legacy aplicable
-  - Curva de aprendizaje para desarrolladores acostumbrados a NgModules
+Se aplicó lazy loading en las rutas principales (Dashboard, Mi Grupo, Perfil, etc.) para reducir el bundle inicial y acelerar el arranque; la descarga de código bajo demanda mejora el rendimiento percibido y ayuda a cumplir los budgets de tamaño del bundle.
 
-### 7.2 Uso de signals para estado reactivo
+### 7.4 Docker multi-stage
 
-**Fecha**: Enero 2026
+Se utiliza un Docker multi-stage (compilar con Node y servir con Nginx) para generar una imagen final mucho más ligera y segura que no incluye dependencias de desarrollo ni Node, reduciendo el tamaño del despliegue, acelerando los redeploys y disminuyendo la superficie de ataque.
 
-**Estado**: Aceptado
+### 7.5 TypeScript en modo estricto
 
-**Contexto**:
-Angular 20 introduce Signals como primitiva de reactividad, ofreciendo mejor rendimiento que RxJS para ciertos casos de uso.
+Se activó `strict` en TypeScript para detectar errores en tiempo de compilación y mejorar la seguridad de tipos, lo que reduce fallos en tiempo de ejecución, facilita el mantenimiento y eleva la calidad del código a largo plazo.
 
-**Decisión**:
-Implementar Signals para el estado local de componentes y servicios (theme-switcher, notificaciones).
+### 7.6 Organización de estilos (ITCSS)
 
-**Consecuencias**:
-- **Positivas**:
-  - Mejor rendimiento (detección de cambios más granular)
-  - Código más simple y legible
-  - Menos subscripciones manuales
-- **Negativas**:
-  - Coexistencia con RxJS en algunas partes
-  - Necesidad de migrar código existente
+La carpeta `styles/` se organiza siguiendo ITCSS (settings, tools, generic, elements, layout) para localizar y modificar reglas con facilidad, reducir colisiones entre selectores y hacer los estilos más previsibles y escalables.
 
-### 7.3 Lazy loading en todas las rutas principales
+### 7.7 Autenticación con JWT
 
-**Fecha**: Enero 2026
+Se utiliza JWT para la autenticación y se almacena el token en `localStorage` con controles complementarios en backend para proporcionar persistencia entre recargas, un flujo de autenticación sencillo y compatible con APIs REST, y validaciones que mitigan riesgos operativos.
 
-**Estado**: Aceptado
+### 7.8 PostgreSQL como BD principal
 
-**Contexto**:
-El proyecto tiene múltiples páginas y funcionalidades. El bundle inicial sin lazy loading supera 1 MB.
+Se utiliza PostgreSQL (v14) como base de datos principal por su soporte de transacciones y tipos avanzados (JSON), ofreciendo mayor fiabilidad, consistencia y control en operaciones críticas, lo que la hace adecuada para entornos de producción con datos reales.
 
-**Decisión**:
-Implementar lazy loading para Dashboard, Mi Grupo, Perfil y otras rutas no críticas.
+### 7.9 Tests: Karma + Jasmine
 
-**Consecuencias**:
-- **Positivas**:
-  - Bundle inicial reducido en ~60%
-  - Mejor Time to Interactive
-  - Lighthouse score mejorado
-- **Negativas**:
-  - Pequeño delay al navegar a rutas lazy-loaded
-  - Mayor complejidad en configuración de rutas
+Conservé Karma + Jasmine porque viene listo con Angular CLI y me permitió hacer los tests sin configurar demasiado
 
-### 7.4 Docker multi-stage build
+### 7.10 Despliegue en GitHub Pages
 
-**Fecha**: Enero 2026
+Subí una demo a GitHub Pages para tener algo accesible y gratis. Fue útil para mostrar el proyecto, aunque tuve que ajustar el `base-href` y la configuración para que la SPA no rompiera en rutas profundas.
 
-**Estado**: Aceptado
+### 7.11 Despliegue en DigitalOcean
 
-**Contexto**:
-El despliegue requiere una imagen ligera y segura. Las imágenes Docker tradicionales con Node.js incluyen ~1 GB de dependencias innecesarias.
-
-**Decisión**:
-Utilizar multi-stage build: Node.js para compilar, Nginx para servir.
-
-**Consecuencias**:
-- **Positivas**:
-  - Imagen final ~30 MB (vs ~1 GB)
-  - Mayor seguridad (menos superficie de ataque)
-  - Despliegue más rápido
-- **Negativas**:
-  - Build time ligeramente mayor
-  - Dos etapas en Dockerfile
-
-### 7.5 TypeScript strict mode
-
-**Fecha**: Enero 2026
-
-**Estado**: Aceptado
-
-**Contexto**:
-TypeScript ofrece varios niveles de strictness. El proyecto busca maximizar la seguridad de tipos.
-
-**Decisión**:
-Habilitar strict mode y todas las opciones estrictas:
-
-```json
-{
-  "strict": true,
-  "noImplicitOverride": true,
-  "noPropertyAccessFromIndexSignature": true,
-  "noImplicitReturns": true,
-  "noFallthroughCasesInSwitch": true
-}
-```
-
-**Consecuencias**:
-- **Positivas**:
-  - Detección temprana de errores
-  - Mejor IntelliSense
-  - Código más robusto
-- **Negativas**:
-  - Mayor tiempo de desarrollo inicial
-  - Necesidad de types para librerías externas
-
-### 7.6 Arquitectura ITCSS para estilos
-
-**Fecha**: Diciembre 2025
-
-**Estado**: Aceptado
-
-**Contexto**:
-Los estilos CSS sin estructura tienden a generar conflictos y duplicaciones. El proyecto requiere un sistema escalable.
-
-**Decisión**:
-Adoptar ITCSS (Inverted Triangle CSS) con la siguiente estructura:
-
-```
-styles/
-├── 00-settings/  # Variables, configuración
-├── 01-tools/     # Mixins, funciones
-├── 02-generic/   # Reset, normalize
-├── 03-elements/  # Elementos HTML base
-└── 04-layout/    # Layout principal
-```
-
-**Consecuencias**:
-- **Positivas**:
-  - Estilos ordenados por especificidad
-  - Menor conflicto de selectores
-  - Mejor reutilización
-- **Negativas**:
-  - Curva de aprendizaje
-  - Requiere disciplina del equipo
-
-### 7.7 JWT para autenticación
-
-**Fecha**: Diciembre 2025
-
-**Estado**: Aceptado
-
-**Contexto**:
-El backend y frontend están desacoplados. Se necesita un mecanismo de autenticación stateless.
-
-**Decisión**:
-Implementar autenticación basada en JWT:
-- Backend genera token JWT al login
-- Frontend almacena token en localStorage
-- Token se envía en header Authorization en cada request
-- Backend valida token en cada endpoint protegido
-
-**Consecuencias**:
-- **Positivas**:
-  - Stateless (escalable)
-  - Compatible con arquitectura REST
-  - No requiere sesiones en servidor
-- **Negativas**:
-  - Tokens no pueden revocarse fácilmente
-  - Requiere manejo cuidadoso en frontend
-  - Vulnerable a XSS si no se protege localStorage
-
-### 7.8 PostgreSQL como base de datos
-
-**Fecha**: Diciembre 2025
-
-**Estado**: Aceptado
-
-**Contexto**:
-El proyecto requiere una base de datos relacional robusta con soporte para transacciones.
-
-**Decisión**:
-Utilizar PostgreSQL 14 como base de datos principal.
-
-**Consecuencias**:
-- **Positivas**:
-  - ACID compliant
-  - Excelente rendimiento
-  - Funcionalidades avanzadas (JSON, arrays)
-  - Open source y bien soportado
-- **Negativas**:
-  - Mayor complejidad que MySQL
-  - Requiere más recursos que bases de datos ligeras
-
-### 7.9 Karma + Jasmine para testing
-
-**Fecha**: Enero 2026
-
-**Estado**: Aceptado
-
-**Contexto**:
-Angular CLI genera proyectos con Karma + Jasmine por defecto. Jest es una alternativa popular.
-
-**Decisión**:
-Mantener Karma + Jasmine como framework de testing.
-
-**Consecuencias**:
-- **Positivas**:
-  - Integración nativa con Angular
-  - Documentación oficial extensa
-  - Menos configuración inicial
-- **Negativas**:
-  - Karma está en mantenimiento (no desarrollo activo)
-  - Jest ofrece mejor rendimiento
-  - Migración futura a Jest podría ser necesaria
-
-### 7.10 GitHub Pages para despliegue del frontend
-
-**Fecha**: Enero 2026
-
-**Estado**: Aceptado
-
-**Contexto**:
-Se necesita una solución de hosting gratuita para demo del proyecto.
-
-**Decisión**:
-Desplegar el frontend en GitHub Pages en:
-`https://danielmi5.github.io/daw2-Proyecto-Cohabit/`
-
-**Consecuencias**:
-- **Positivas**:
-  - Gratuito y fácil de configurar
-  - Integración con GitHub
-  - HTTPS automático
-  - CDN global
-- **Negativas**:
-  - Solo contenido estático
-  - Requiere backend separado
-  - Requiere configuración de base-href
-
-### 7.11 Despliegue del frontend en DigitalOcean (App Platform)
-
-**Fecha**: Enero 2026
-
-**Estado**: Aceptado
-
-**Contexto**:
-Se necesita un hosting de fácil despliegue y con soporte de contenedores para producción/demos. Además, debido a errores con los estilos se ha tenido que migrar a este despliegue.
-
-**Decisión**:
-Desplegar el frontend en DigitalOcean App Platform usando la imagen publicada en Docker Hub; la URL pública será:
-`https://cohabit-front-xjlup.ondigitalocean.app/`
-
-**Consecuencias**:
-- **Positivas**:
-  - Integración con imágenes Docker y variables de entorno
-  - HTTPS gestionado por la plataforma
-  - Fácil redeploy al actualizar imagen
-- **Negativas**:
-  - No es gratuito indefinidamente (a diferencia de GitHub Pages)
-  - Requiere configurar CORS en el backend si el frontend y backend usan distintos dominios
+Tras problemas puntuales con estilos en GitHub Pages, la desplegué en DigitalOcean App Platform usando la imagen en Docker Hub. Es más fácil de redesplegar y admite variables de entorno.

@@ -1,1 +1,0 @@
-import{N as t}from"./chunk-S7DJ2APC.js";var i=class r{urlAVolver;setUrlAVolver(e){this.urlAVolver=e}obtenerUrlAVolver(){return this.urlAVolver}limpiarUrlAVolver(){this.urlAVolver=void 0}static \u0275fac=function(o){return new(o||r)};static \u0275prov=t({token:r,factory:r.\u0275fac,providedIn:"root"})};export{i as a};

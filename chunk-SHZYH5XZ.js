@@ -1,1 +1,0 @@
-import{La as t,bb as n,cb as o,sb as s}from"./chunk-S7DJ2APC.js";import"./chunk-EQDQRRRY.js";var i=class a{static \u0275fac=function(e){return new(e||a)};static \u0275cmp=t({type:a,selectors:[["app-ayuda"]],decls:2,vars:0,template:function(e,d){e&1&&(n(0,"p"),s(1,"ayuda works!"),o())},encapsulation:2})};export{i as Ayuda};

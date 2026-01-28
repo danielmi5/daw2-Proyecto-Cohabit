@@ -161,6 +161,26 @@ Notas:
 - (3) Tras éxito, el servicio llama a `notify*` en `StateService`.
 - (4) `StateService` actualiza los `signal`-triggers; componentes con `effect()` reaccionan y recargan selectivamente.
 
+## Paginación y Scroll Infinito
+
+Para listas grandes (recursos, reservas) se implementó soporte dual: paginación clásica y scroll infinito.
+
+- Backend: los endpoints relevantes devuelven `Page<T>` (Spring Page). Esto permite solicitar páginas concretas con `page` y `size` y evita traer todo en memoria.
+- Frontend: el `GrupoService.getRecursos(page, size, filtros)` mapea la respuesta `Page` a `ApiListResponse<T>` con `{ items, total }`.
+- Componente `app-paginador`: navegación numerada, accesible y con rango inteligente (`1 ... 4 [5] 6 ... 20`). Inputs: `totalElementos`, `tamanoPagina`, `paginaActual`. Output: `cambioPagina`.
+- Directiva `appScrollInfinito`: usa `IntersectionObserver` para emitir `alHacerScroll` cuando el trigger invisible entra en viewport; desconecta en `ngOnDestroy`.
+- Página `Recursos`: soporta estrategias mediante `estrategiaPaginacion` (`'scroll-infinito'` por defecto). Estado con Signals: `recursos`, `paginaActual`, `totalRecursos`, `cargandoMas`.
+
+Patrón de uso:
+
+- Scroll infinito: carga la página 0 y al detectar el trigger incrementa `paginaActual` y *acumula* (`append`) los `items` recibidos.
+- Paginador clásico: solicita página N y *reemplaza* los `items` (no acumula).
+
+Beneficios:
+
+- Menor uso de memoria en backend y mayor control de tráfico (paginación).
+- UX suave con scroll infinito para usuarios (carga incremental) y alternativa clásica cuando se necesita control exacto.
+
 
 
 

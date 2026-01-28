@@ -92,9 +92,9 @@ export class MisReservas implements OnInit {
   private cargarRecursos(): void {
     if (!this.grupoId) return;
 
-    this.grupoService.getRecursos(this.grupoId).subscribe({
-      next: (recursos) => {
-        this.recursos = recursos;
+    this.grupoService.getRecursos(this.grupoId, 0, 1000).subscribe({
+      next: (respuesta) => {
+        this.recursos = respuesta.items;
       },
       error: (error) => {
         console.error('Error al cargar recursos:', error);

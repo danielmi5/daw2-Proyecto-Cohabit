@@ -89,8 +89,9 @@ export class Reservas implements OnInit {
     this.loading.set(true);
     this.error = false;
 
-    this.grupoService.getRecursos(this.grupoId).subscribe({
-      next: (recursos) => {
+    this.grupoService.getRecursos(this.grupoId, 0, 1000).subscribe({
+      next: (respuesta) => {
+        const recursos = respuesta.items;
         this.recursos = recursos;
         
         if (recursos.length === 0) {
@@ -101,11 +102,11 @@ export class Reservas implements OnInit {
         }
 
         const reservasObservables = recursos
-          .filter(recurso => recurso.id !== null && recurso.id !== undefined)
-          .map(recurso => this.recursoService.getReservas(recurso.id!));
+          .filter((recurso: RecursoResponse) => recurso.id !== null && recurso.id !== undefined)
+          .map((recurso: RecursoResponse) => this.recursoService.getReservas(recurso.id!));
 
         forkJoin(reservasObservables).subscribe({
-          next: (reservasArrays) => {
+          next: (reservasArrays: ReservaResponse[][]) => {
             this.reservas = reservasArrays.flat();
             this.total = this.reservas.length;
             this.cargarAutoresReservas(this.reservas);

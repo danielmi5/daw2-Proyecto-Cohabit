@@ -10,10 +10,10 @@
   }
 
   <!-- Estado de error -->
-  @if (!loading() && error) {
+  @if (!loading() && error()) {
     <section class="recursos__estado recursos__estado--error">
       <h2>Error al cargar los recursos</h2>
-      <p class="recursos__mensaje-error">{{ errorMessage }}</p>
+      <p class="recursos__mensaje-error">{{ errorMessage() }}</p>
       <nav class="recursos__acciones">
         <app-button [variante]="'primario'" (click)="retry()">Reintentar</app-button>
         <app-button [variante]="'secundario'" (click)="goToDashboard()">Volver al Dashboard</app-button>
@@ -22,7 +22,7 @@
   }
 
   <!-- Estado con datos -->
-  @if (!loading() && !error) {
+  @if (!loading() && !error()) {
     <section class="recursos__contenido">
       <!-- Buscador y filtros -->
       <app-buscador-filtros
@@ -31,26 +31,18 @@
       </app-buscador-filtros>
 
       <!-- Estado vacío -->
-      @if (recursos.length === 0) {
+      @if (totalRecursos() === 0) {
         <aside class="recursos__vacio">
           <h3 class="recursos__vacio__titulo">No hay recursos disponibles</h3>
           <p class="recursos__vacio__texto">Comienza creando tu primer recurso</p>
         </aside>
       }
 
-      <!-- Sin resultados de búsqueda/filtros -->
-      @if (recursos.length > 0 && recursosFiltrados.length === 0) {
-        <aside class="recursos__vacio">
-          <h3>No se encontraron resultados</h3>
-          <p>Intenta ajustar tus filtros de búsqueda</p>
-        </aside>
-      }
-
       <!-- Lista de recursos -->
-      @if (recursosFiltrados.length > 0) {
+      @if (recursos().length > 0) {
         <section class="recursos__seccion">
-          <li class="recursos__lista">
-            @for (recurso of recursosFiltrados; track trackByRecursoId($index, recurso)) {
+          <ul class="recursos__lista">
+            @for (recurso of recursos(); track trackByRecursoId($index, recurso)) {
               <li>
                 <app-card-recurso
                   [recurso]="recurso"
@@ -61,7 +53,34 @@
                 </app-card-recurso>
               </li>
             }
-          </li>
+          </ul>
+
+          <!-- Indicador de carga para scroll infinito -->
+          @if (cargandoMas()) {
+            <div class="recursos__cargando-mas">
+              <div class="recursos__cargador"></div>
+              <p>Cargando más recursos...</p>
+            </div>
+          }
+
+          <!-- Elemento observador para scroll infinito -->
+          @if (mostrarScrollInfinito()) {
+            <div 
+              class="recursos__scroll-trigger" 
+              appScrollInfinito 
+              (alHacerScroll)="cargarMasRecursos()">
+            </div>
+          }
+
+          <!-- Paginador clásico -->
+          @if (mostrarPaginador()) {
+            <app-paginador
+              [totalElementos]="totalRecursos()"
+              [tamanoPagina]="tamanoPagina"
+              [paginaActual]="paginaActual()"
+              (cambioPagina)="alCambiarPagina($event)">
+            </app-paginador>
+          }
         </section>
       }
 

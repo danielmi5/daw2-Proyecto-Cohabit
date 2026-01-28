@@ -167,4 +167,21 @@ public class GrupoService {
                 .map(RecursoMapper::recursoEntidadARecursoDto)
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public Page<RecursoResponseDTO> obtenerRecursosPorGrupoPaginado(Long grupoId, String tipo, String estado, Pageable pageable) {
+        // Verificar que el grupo existe
+        if (!grupoRepository.existsById(grupoId)) {
+            throw new EntidadNoEncontradaException("Grupo no encontrado: " + grupoId);
+        }
+        
+        Page<com.cohabit.cohabit_backend.entity.Recurso> paginaRecursos = 
+            grupoRepository.findRecursosPorGrupo(grupoId, tipo, estado, pageable);
+        
+        List<RecursoResponseDTO> dtos = paginaRecursos.getContent().stream()
+                .map(RecursoMapper::recursoEntidadARecursoDto)
+                .collect(Collectors.toList());
+        
+        return new PageImpl<>(dtos, pageable, paginaRecursos.getTotalElements());
+    }
 }

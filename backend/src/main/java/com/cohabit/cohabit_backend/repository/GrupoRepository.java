@@ -1,6 +1,8 @@
 package com.cohabit.cohabit_backend.repository;
 
 import com.cohabit.cohabit_backend.entity.Grupo;
+import com.cohabit.cohabit_backend.entity.Recurso;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -37,4 +39,20 @@ public interface GrupoRepository extends JpaRepository<Grupo, Long> {
     @EntityGraph(attributePaths = {"recursos"})
     @Query("SELECT g FROM Grupo g WHERE g.id = :id")
     Optional<Grupo> findByIdWithRecursos(@Param("id") Long id);
+
+    /**
+     * Obtiene los recursos de un grupo de forma paginada con filtros opcionales.
+     */
+    @Query("""
+            SELECT r FROM Recurso r
+            WHERE r.grupo.id = :grupoId
+            AND (:tipo IS NULL OR r.tipo = :tipo)
+            AND (:estado IS NULL OR r.estadoActual = :estado)
+            ORDER BY r.id DESC
+            """)
+    Page<Recurso> findRecursosPorGrupo(
+        @Param("grupoId") Long grupoId,
+        @Param("tipo") String tipo,
+        @Param("estado") String estado,
+        Pageable pageable);
 }

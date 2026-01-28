@@ -123,15 +123,18 @@ public class GrupoController {
     }
 
     @GetMapping("/{id}/recursos")
-    @Operation(summary = "Obtener recursos del grupo", description = "Obtener todos los recursos asociados a un grupo")
+    @Operation(summary = "Obtener recursos del grupo", description = "Obtener recursos asociados a un grupo de forma paginada con filtros opcionales")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Recursos obtenidos exitosamente"),
         @ApiResponse(responseCode = "404", description = "Grupo no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
         @ApiResponse(responseCode = "403", description = "No eres miembro de este grupo", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembro(#id)")
-    public ResponseEntity<List<RecursoResponseDTO>> obtenerRecursos(
-        @Parameter(description = "ID del grupo") @PathVariable Long id) {
-        return ResponseEntity.ok(grupoService.obtenerRecursosPorGrupo(id));
+    public ResponseEntity<Page<RecursoResponseDTO>> obtenerRecursos(
+        @Parameter(description = "ID del grupo") @PathVariable Long id,
+        @Parameter(description = "Filtro por tipo de recurso") @RequestParam(name = "tipo", required = false) String tipo,
+        @Parameter(description = "Filtro por estado del recurso") @RequestParam(name = "estado", required = false) String estado,
+        Pageable pageable) {
+        return ResponseEntity.ok(grupoService.obtenerRecursosPorGrupoPaginado(id, tipo, estado, pageable));
     }
 }

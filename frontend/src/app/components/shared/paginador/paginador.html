@@ -1,0 +1,50 @@
+<nav class="paginador" aria-label="Navegación de páginas">
+  <div class="paginador__contenedor">
+    <!-- Botón Anterior -->
+    <button
+      class="paginador__boton paginador__boton--navegacion"
+      [class.paginador__boton--deshabilitado]="!tienePaginaAnterior()"
+      [disabled]="!tienePaginaAnterior()"
+      (click)="paginaAnterior()"
+      aria-label="Página anterior">
+      <span [feather]="'chevron-left'" class="paginador__icono"></span>
+      <span class="paginador__texto">Anterior</span>
+    </button>
+
+    <!-- Números de página -->
+    <div class="paginador__numeros">
+      @for (pagina of paginasVisibles(); track pagina) {
+        @if (pagina === 'ellipsis') {
+          <span class="paginador__puntos" aria-hidden="true">...</span>
+        } @else {
+          <button
+            class="paginador__boton paginador__boton--numero"
+            [class.paginador__boton--activo]="esPaginaActual(pagina)"
+            [attr.aria-current]="esPaginaActual(pagina) ? 'page' : null"
+            [attr.aria-label]="'Página ' + (pagina + 1)"
+            (click)="irAPagina(pagina)">
+            {{ pagina + 1 }}
+          </button>
+        }
+      }
+    </div>
+
+    <!-- Botón Siguiente -->
+    <button
+      class="paginador__boton paginador__boton--navegacion"
+      [class.paginador__boton--deshabilitado]="!tienePaginaSiguiente()"
+      [disabled]="!tienePaginaSiguiente()"
+      (click)="paginaSiguiente()"
+      aria-label="Página siguiente">
+      <span class="paginador__texto">Siguiente</span>
+      <span [feather]="'chevron-right'" class="paginador__icono"></span>
+    </button>
+  </div>
+
+  <!-- Información de páginas -->
+  <div class="paginador__info">
+    <span class="paginador__info-texto">
+      Página {{ paginaActual() + 1 }} de {{ totalPaginas() }}
+    </span>
+  </div>
+</nav>

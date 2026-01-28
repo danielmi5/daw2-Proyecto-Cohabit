@@ -105,6 +105,26 @@
     height: 53px;
     align-self: flex-end;
   }
+
+  // Indicador de carga adicional (scroll infinito)
+  &__cargando-mas {
+    @include mixins.centrar-flex(column);
+    padding: $espaciado-xl 0;
+    gap: $espaciado-m;
+    color: var(--texto-secundario);
+    
+    p {
+      margin: 0;
+      @include mixins.tipografia(parrafo, var(--texto-secundario));
+    }
+  }
+
+  // Elemento trigger para scroll infinito (invisible)
+  &__scroll-trigger {
+    height: 1px;
+    width: 100%;
+    visibility: hidden;
+  }
 }
 
 // Responsive

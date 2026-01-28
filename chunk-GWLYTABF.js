@@ -1,1 +1,0 @@
-import{La as n,cb as r,db as a,tb as s}from"./chunk-43BQWFJ6.js";import"./chunk-EQDQRRRY.js";var i=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=n({type:t,selectors:[["app-preferencias"]],decls:2,vars:0,template:function(e,o){e&1&&(r(0,"p"),s(1,"preferencias works!"),a())},encapsulation:2})};export{i as Preferencias};

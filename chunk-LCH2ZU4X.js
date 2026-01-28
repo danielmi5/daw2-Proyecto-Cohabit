@@ -1,0 +1,1 @@
+import{La as a,bb as i,cb as d,sb as s}from"./chunk-S7DJ2APC.js";import"./chunk-EQDQRRRY.js";var n=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=a({type:t,selectors:[["app-seguridad"]],decls:2,vars:0,template:function(e,r){e&1&&(i(0,"p"),s(1,"seguridad works!"),d())},encapsulation:2})};export{n as Seguridad};

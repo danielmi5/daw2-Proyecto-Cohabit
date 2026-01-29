@@ -115,11 +115,9 @@ export class DashboardIndex implements OnInit {
     this.cargando.set(true);
     this.error.set(null);
 
-    // Cargar recursos del grupo (sin paginación, todos los recursos)
-    this.grupoService.getRecursos(this.grupoId, 0, 1000).subscribe({
-      next: (respuesta) => {
-        const recursos = respuesta.items;
-        
+    // Cargar recursos del grupo usando el mismo método que la página de recursos
+    this.grupoService.getRecursos(this.grupoId).subscribe({
+      next: (recursos) => {
         if (recursos.length === 0) {
           this.estadisticas.set({
             totalReservas: 0,
@@ -134,11 +132,11 @@ export class DashboardIndex implements OnInit {
 
         // Cargar todas las reservas de todos los recursos (mismo patrón que página reservas)
         const reservasObservables = recursos
-          .filter((recurso: RecursoResponse) => recurso.id !== null && recurso.id !== undefined)
-          .map((recurso: RecursoResponse) => this.recursoService.getReservas(recurso.id!));
+          .filter(recurso => recurso.id !== null && recurso.id !== undefined)
+          .map(recurso => this.recursoService.getReservas(recurso.id!));
 
         forkJoin(reservasObservables).subscribe({
-          next: (reservasArrays: ReservaResponse[][]) => {
+          next: (reservasArrays) => {
             const todasReservas = reservasArrays.flat();
             
             // Calcular estadísticas

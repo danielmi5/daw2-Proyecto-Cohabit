@@ -123,10 +123,9 @@ export class Recursos implements OnInit {
 
     this.grupoService.getRecursos(this.grupoId).subscribe({
       next: (recursos) => {
-        // ApiListResponse<T> has the shape { items: T[], total: number }
-        this.recursos = recursos.items || [];
+        this.recursos = recursos;
         this.recursosFiltrados = [...this.recursos];
-        this.total = typeof recursos.total === 'number' ? recursos.total : this.recursos.length;
+        this.total = recursos.length;
         this.loading.set(false);
       },
       error: (error) => {

@@ -11,8 +11,7 @@
     width: 100%;
     border-collapse: collapse;
 
-    thead {
-      background-color: var(--bg-tabla-th);
+    thead {      
       
       th {
         @include mixins.tipografia(parrafo, var(--texto-primario));
@@ -20,6 +19,8 @@
         border-bottom: $borde-medium solid var(--borde);
         font-weight: $font-weight-bold;
         text-align: left;
+        background-color: var(--bg-tabla-th);
+        color: $negro;
       }
     }
 

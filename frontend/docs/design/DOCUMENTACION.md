@@ -1612,13 +1612,18 @@ Imagen de la página de inicio
 ```html
 <picture>
   <!-- AVIF si el navegador lo soporta -->
-  <source type="image/avif" srcset="/public/img/inicio-sm.avif 400w, /public/img/inicio-md.avif 800w, /public/img/inicio-lg.avif 1200w" sizes="(max-width: 768px) 100vw, 1200px">
+  <source type="image/avif" media="(max-width: 400px)" srcset="img_optimizadas/inicio-sm.avif">
+  <source type="image/avif" media="(max-width: 800px)" srcset="img_optimizadas/inicio-md.avif">
+  <source type="image/avif" media="(min-width: 801px)" srcset="img_optimizadas/inicio-lg.avif">
+
   <!-- WebP como alternativa -->
-  <source type="image/webp" srcset="/public/img/inicio-sm.webp 400w, /public/img/inicio-md.webp 800w, /public/img/inicio-lg.webp 1200w" sizes="(max-width: 768px) 100vw, 1200px">
+  <source type="image/webp" media="(max-width: 400px)" srcset="img_optimizadas/inicio-sm.webp">
+  <source type="image/webp" media="(max-width: 800px)" srcset="img_optimizadas/inicio-md.webp">
+  <source type="image/webp" media="(min-width: 801px)" srcset="img_optimizadas/inicio-lg.webp">
+
   <!-- Fallback JPG -->
-  <img src="/public/img/inicio-800.jpg"
-       srcset="/public/img/inicio-sm.jpg 400w, /public/img/inicio-8mdjpg 800w, /public/img/inicio-12lgpg 1200w"
-       sizes="(max-width: 768px) 100vw, 1200px"
+  <img src="img_optimizadas/inicio-lg.jpg"
+       srcset="img_optimizadas/inicio-sm.jpg 400w, img_optimizadas/inicio-md.jpg 800w, img_optimizadas/inicio-lg.jpg 1200w"
        alt="Vista general de la aplicación Cohabit" width="1200" height="500">
 </picture>
 ```

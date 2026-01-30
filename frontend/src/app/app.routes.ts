@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 import { salirAuthGuard } from './guards/salir-auth-guard';
 import { authGuard } from "./guards/auth-guard";
+import { usuarioResolver } from './resolvers/usuario.resolver';
 
 // Configuración de rutas de la aplicación.
 // Utiliza lazy loading para optimizar la carga inicial.
@@ -63,6 +64,7 @@ export const routes: Routes = [
     path: "dashboard",
     loadComponent: () => import("./pages/dashboard/dashboard").then(m => m.Dashboard),
     canActivate: [authGuard],
+    resolve: { usuario: usuarioResolver },
     title: "Dashboard",
     data: { breadcrumb: "Dashboard" },
     children: [
@@ -76,6 +78,7 @@ export const routes: Routes = [
     path: "grupo",
     loadComponent: () => import("./pages/mi-grupo/mi-grupo").then(m => m.MiGrupo),
     canActivate: [authGuard],
+    resolve: { usuario: usuarioResolver },
     title: "Grupo",
     data: { breadcrumb: "Grupo" },
     children: [
@@ -89,6 +92,7 @@ export const routes: Routes = [
     path: "perfil",
     loadComponent: () => import("./pages/perfil/perfil").then(m => m.Perfil),
     canActivate: [authGuard],
+    resolve: { usuario: usuarioResolver },
     title: "Mi Perfil",
     data: { breadcrumb: "Perfil" },
     children: [

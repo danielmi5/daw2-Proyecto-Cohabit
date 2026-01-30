@@ -98,7 +98,16 @@ export class GrupoService {
    * @public
    */
   getRecursos(id: number): Observable<RecursoResponse[]> {
-    return this.api.get<RecursoResponse[]>(`${this.base}/${id}/recursos`).pipe(retry(2), catchError(error => this.handleError(error)));
+    return this.api.get<any>(`${this.base}/${id}/recursos`).pipe(
+      retry(2),
+      // La API puede devolver una página (con `content`) o directamente un array.
+      map(res => {
+        if (Array.isArray(res)) return res as RecursoResponse[];
+        if (res && Array.isArray(res.content)) return res.content as RecursoResponse[];
+        return [] as RecursoResponse[];
+      }),
+      catchError(error => this.handleError(error))
+    );
   }
 
   /**

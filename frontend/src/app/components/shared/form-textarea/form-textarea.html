@@ -51,7 +51,11 @@
 		<small class="form-textarea__mensaje" [id]="`${id}-ayuda`">{{ mensajeExito }}</small>
 	}
 
-	@if (!textoAyuda && !mensajeExito && exito && !hayError) {
+	@if (!textoAyuda && mensajeExito && mostrarMensajeExito && !hayError) {
+		<small class="form-textarea__mensaje" [id]="`${id}-ayuda`">{{ mensajeExito }}</small>
+	}
+
+	@if (!textoAyuda && !mensajeExito && exito && mostrarMensajeExito && !hayError) {
 		<small class="form-textarea__mensaje" [id]="`${id}-ayuda`">Correcto</small>
 	}
 

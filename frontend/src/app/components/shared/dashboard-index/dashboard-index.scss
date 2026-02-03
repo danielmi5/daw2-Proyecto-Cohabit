@@ -26,14 +26,6 @@
     }
   }
 
-  &__cargador {
-    width: 50px;
-    height: 50px;
-    border: $borde-thick solid var(--borde);
-    border-top: $borde-thick solid var(--info);
-    border-radius: $radio-circulo;
-    animation: girar 1s linear infinite;
-  }
 
   &__icono-error {
     font-size: $text-5xl;
@@ -111,16 +103,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: $espaciado-m;
-  }
-}
-
-// Animación del cargador
-@keyframes girar {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }
 

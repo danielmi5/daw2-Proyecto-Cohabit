@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataGrupo } from '../../components/pages/data-grupo/data-grupo';
+import { Spinner } from '../../components/shared/spinner/spinner';
 import { AuthService } from '../../services/auth.service';
 import { GrupoService } from '../../services/grupo.service';
 import { NotificacionService } from '../../services/notificacion.service';
@@ -10,7 +11,7 @@ import { GrupoResponse } from '../../models/grupo.model';
 @Component({
   selector: 'app-datos-grupo',
   standalone: true,
-  imports: [CommonModule, DataGrupo],
+  imports: [CommonModule, DataGrupo, Spinner],
   templateUrl: './datos-grupo.html',
   styleUrls: ['./datos-grupo.scss'],
 })

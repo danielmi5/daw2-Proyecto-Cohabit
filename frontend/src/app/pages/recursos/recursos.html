@@ -4,8 +4,7 @@
   <!-- Estado de carga -->
   @if (loading()) {
     <section class="recursos__estado recursos__estado--carga">
-      <div class="recursos__cargador"></div>
-      <p>Cargando recursos...</p>
+      <app-spinner [texto]="'Cargando recursos...'" [tamanio]="'mediano'"></app-spinner>
     </section>
   }
 
@@ -68,8 +67,7 @@
       <!-- Indicador y trigger para scroll infinito -->
       @if (cargandoMas) {
         <div class="recursos__cargando-mas">
-          <div class="recursos__cargador"></div>
-          <p>Cargando más recursos...</p>
+          <app-spinner [texto]="'Cargando más recursos...'" [tamanio]="'pequeno'"></app-spinner>
         </div>
       }
 

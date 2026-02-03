@@ -3,6 +3,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Sidebar } from "../../components/layout/sidebar/sidebar";
 import { ModalGrupo } from '../../components/shared/modal-grupo/modal-grupo';
+import { Spinner } from '../../components/shared/spinner/spinner';
 import { AuthService } from '../../services/auth.service';
 import { GrupoService } from '../../services/grupo.service';
 import { NotificacionService } from '../../services/notificacion.service';
@@ -12,7 +13,7 @@ import { FormInput } from "../../components/shared/form-input/form-input";
 
 @Component({
   selector: 'app-mi-grupo',
-  imports: [CommonModule, RouterOutlet, Sidebar, ModalGrupo, Button, FormInput],
+  imports: [CommonModule, RouterOutlet, Sidebar, ModalGrupo, Button, FormInput, Spinner],
   templateUrl: './mi-grupo.html',
   styleUrls: ['./mi-grupo.scss'],
 })

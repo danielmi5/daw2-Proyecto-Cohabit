@@ -1,7 +1,6 @@
 @if (cargando()) {
   <section class="mi-grupo__estado mi-grupo__estado--carga">
-    <div class="mi-grupo__cargador"></div>
-    <p>Cargando...</p>
+    <app-spinner [texto]="'Cargando...'" [tamanio]="'mediano'"></app-spinner>
   </section>
 } @else if (tieneGrupo()) {
   <div class="mi-grupo">

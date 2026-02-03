@@ -1,0 +1,45 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.spinner {
+    @include mixins.centrar-flex(column);
+    gap: $espaciado-m
+}
+
+.spinner__icono {
+  width: $iconos-header;
+  height: $iconos-header;
+  border-radius: $radio-circulo;
+  border: $borde-medium solid $gris1;
+  border-top-color: var(--info);
+  animation: girar 1s linear infinite;
+}
+
+.spinner__texto {
+  color: var(--texto-primario);
+  font-size: $text-sm;
+}
+
+.spinner--pequeno .spinner__icono {
+  width: $iconos-redes;
+  height: $iconos-redes;
+  border-width: $borde-thin;
+}
+
+.spinner--mediano .spinner__icono {
+  width: $iconos-header;
+  height: $iconos-header;
+  border-width: $borde-medium;
+}
+
+.spinner--grande .spinner__icono {
+  width: $text-4xl;
+  height: $text-4xl;
+  border-width: $borde-thick;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}

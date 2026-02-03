@@ -1,7 +1,6 @@
 @if (cargando()) {
   <section class="datos-grupo__estado datos-grupo__estado--carga">
-    <div class="datos-grupo__cargador"></div>
-    <p>Cargando datos del grupo...</p>
+    <app-spinner [texto]="'Cargando datos del grupo...'" [tamanio]="'mediano'"></app-spinner>
   </section>
 } @else {
   <section class="datos-grupo">

@@ -16,6 +16,7 @@
 				[mensajeAdvertencia]="obtenerMensajeAdvertencia('nombre')"
 				[mensajeError]="obtenerMensajeError('nombre')"
 				[mensajeExito]="obtenerMensajeExito('nombre')"
+				[mostrarMensajeExito]="true"
 			></app-form-input>
 
 			<app-form-input 
@@ -30,6 +31,7 @@
 				[mensajeAdvertencia]="obtenerMensajeAdvertencia('apellidos')"
 				[mensajeError]="obtenerMensajeError('apellidos')"
 				[mensajeExito]="obtenerMensajeExito('apellidos')"
+				[mostrarMensajeExito]="true"
 			></app-form-input>
 		</div>
 	</fieldset>
@@ -50,6 +52,7 @@
 				[mensajeAdvertencia]="obtenerMensajeAdvertencia('email')"
 				[mensajeError]="obtenerMensajeError('email')"
 				[mensajeExito]="obtenerMensajeExito('email')"
+				[mostrarMensajeExito]="true"
 			></app-form-input>
 			@if (emailPendiente()) {
 					<p class="registro-form__validando">Verificando disponibilidad...</p>
@@ -68,6 +71,7 @@
 			[mensajeAdvertencia]="obtenerMensajeAdvertencia('password')"
 			[mensajeError]="obtenerMensajeError('password')"
 			[mensajeExito]="obtenerMensajeExito('password')"
+			[mostrarMensajeExito]="true"
 			textoAyuda="Debe ser una combinación mínima de 8 letras, números, y símbolos."
 		></app-form-input>
 
@@ -83,6 +87,7 @@
 			[mensajeAdvertencia]="obtenerMensajeAdvertencia('passwordConfirm')"
 			[mensajeError]="obtenerMensajeError('passwordConfirm')"
 			[mensajeExito]="obtenerMensajeExito('passwordConfirm')"
+			[mostrarMensajeExito]="true"
 			textoAyuda="Deben coincidir las contraseñas."
 		></app-form-input>
 

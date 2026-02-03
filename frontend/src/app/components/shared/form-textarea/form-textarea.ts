@@ -27,6 +27,7 @@ export class FormTextarea implements ControlValueAccessor {
   @Input() textoAyuda?: string;
   @Input() mensajeError?: string;
   @Input() mensajeExito?: string;
+  @Input() mostrarMensajeExito: boolean = false;
   @Input() mensajeAdvertencia?: string;
   @Input() estadoValidacion: EstadoValidacion = "inicial";
   @Input() hayError: boolean = false;

@@ -38,6 +38,7 @@ export class FormSelect implements ControlValueAccessor {
   @Input() mensajeExito?: string;
   /** Indica si la validación fue exitosa */
   @Input() exito: boolean = false;
+  @Input() mostrarMensajeExito: boolean = false;
   /** Array de opciones con value y label */
   @Input() opciones?: Array<{ value: string; label: string }>;
 

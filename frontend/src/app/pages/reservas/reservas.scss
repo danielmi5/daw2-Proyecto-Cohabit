@@ -27,15 +27,7 @@
     }
   }
 
-  // Cargador
-  &__cargador {
-    width: 50px;
-    height: 50px;
-    border: $borde-thick solid var(--borde);
-    border-top: $borde-thick solid var(--info);
-    border-radius: $radio-circulo;
-    animation: girar 1s linear infinite;
-  }
+  
 
   // Error
   &__icono-error {
@@ -166,11 +158,7 @@
   }
 }
 
-// Animación
-@keyframes girar {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+ 
 
 // Responsive
 @media (max-width: $breakpoint-tablet) {

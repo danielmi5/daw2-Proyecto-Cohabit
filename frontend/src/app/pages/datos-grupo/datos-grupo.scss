@@ -14,16 +14,5 @@
     }
   }
 
-  &__cargador {
-    width: 48px;
-    height: 48px;
-    border: 4px solid var(--borde-cards);
-    border-top-color: var(--btn-primario);
-    border-radius: $radio-circulo;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
+  
 }

@@ -1,9 +1,8 @@
 <section class="mis-reservas">
   <!-- Estado de carga -->
   @if (loading()) {
-    <section class="mis-reservas__estado mis-reservas__estado--carga">
-      <div class="mis-reservas__cargador"></div>
-      <p>Cargando reservas...</p>
+      <section class="mis-reservas__estado mis-reservas__estado--carga">
+      <app-spinner [texto]="'Cargando reservas...'" [tamanio]="'mediano'"></app-spinner>
     </section>
   }
 

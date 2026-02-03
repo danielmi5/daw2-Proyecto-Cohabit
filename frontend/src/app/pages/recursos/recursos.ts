@@ -6,6 +6,7 @@ import { BuscadorFiltros, FiltrosRecurso } from '../../components/shared/buscado
 import { Button } from '../../components/shared/button/button';
 import { ModalRecurso } from '../../components/shared/modal-recurso/modal-recurso';
 import { ScrollInfinitoDirective } from '../../directives/scroll-infinito.directive';
+import { Spinner } from '../../components/shared/spinner/spinner';
 import { RecursoResponse, RecursoRequest, RecursoUpdate } from '../../models';
 import { RecursoService } from '../../services/recurso.service';
 import { GrupoService } from '../../services/grupo.service';
@@ -18,7 +19,7 @@ import { StateService } from '../../services/state.service';
 // Página CRUD de recursos del grupo con búsqueda/filtrado
 @Component({
   selector: 'app-recursos',
-  imports: [CommonModule, CardRecurso, BuscadorFiltros, Button, ModalRecurso, ScrollInfinitoDirective],
+  imports: [CommonModule, CardRecurso, BuscadorFiltros, Button, ModalRecurso, ScrollInfinitoDirective, Spinner],
   templateUrl: './recursos.html',
   styleUrls: ['./recursos.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

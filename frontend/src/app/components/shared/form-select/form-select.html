@@ -35,7 +35,8 @@
 			</svg>
 		</span>
 	</div>
-	@if (mensajeExito && !hayError) {
+	
+	@if (mensajeExito && !hayError && mostrarMensajeExito) {
 		<small class="form-select__mensaje" [id]="id + '-mensaje'">{{ mensajeExito }}</small>
 	}
 

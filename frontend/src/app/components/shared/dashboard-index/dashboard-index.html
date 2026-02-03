@@ -1,8 +1,7 @@
 <main class="dashboard-inicio">
   @if (cargando()) {
     <section class="dashboard-inicio__estado dashboard-inicio__estado--carga">
-      <div class="dashboard-inicio__cargador"></div>
-      <p>Cargando datos del dashboard...</p>
+      <app-spinner [texto]="'Cargando datos del dashboard...'" [tamanio]="'mediano'"></app-spinner>
     </section>
   } @else if (error()) {
     <section class="dashboard-inicio__estado dashboard-inicio__estado--error">

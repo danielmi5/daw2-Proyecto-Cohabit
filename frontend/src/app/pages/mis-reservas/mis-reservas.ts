@@ -13,10 +13,11 @@ import { NotificacionService } from '../../services/notificacion.service';
 import { MiembroGrupoService } from '../../services/miembro-grupo.service';
 import { StateService } from '../../services/state.service';
 import { RecursoResponse, ReservaResponse, ReservaRequest, ReservaUpdate } from '../../models';
+import { Spinner } from '../../components/shared/spinner/spinner';
 
 @Component({
   selector: 'app-mis-reservas',
-  imports: [CommonModule, Button, Card, ModalReserva, TabComponent],
+  imports: [CommonModule, Button, Card, ModalReserva, TabComponent, Spinner],
   templateUrl: './mis-reservas.html',
   styleUrls: ['./mis-reservas.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

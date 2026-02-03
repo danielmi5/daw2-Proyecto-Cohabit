@@ -1,5 +1,5 @@
 @if (visible) {
-  <div class="modal-reserva" (click)="onClickFondo($event)">
+  <section class="modal-reserva" (click)="onClickFondo($event)">
     <div class="modal-reserva__contenido">
       <form class="modal-reserva__formulario" [formGroup]="formulario" (ngSubmit)="onGuardar()">
         <h2 class="modal-reserva__titulo">{{ modoEdicion ? 'Editar reserva' : 'Hacer reserva' }}</h2>
@@ -10,7 +10,8 @@
             name="recurso"
             etiqueta="Recurso"
             formControlName="recursoId"
-            [requerido]="true">
+            [requerido]="true"
+            [mensajeError]="formulario.get('recursoId')?.invalid && (formulario.get('recursoId')?.touched || formulario.get('recursoId')?.dirty) ? 'Selecciona un recurso' : ''">
             <option value="">Seleccionar recurso</option>
             @for (recurso of recursos; track recurso.id) {
               <option [value]="recurso.id">{{ recurso.nombre }}</option>
@@ -57,7 +58,9 @@
             etiqueta="Fecha"
             formControlName="fecha"
             [requerido]="true"
-            [min]="getFechaMinima()">
+            [min]="getFechaMinima()"
+            [estadoValidacion]="obtenerEstadoValidacionFecha()"
+            [mensajeError]="obtenerMensajeErrorFecha()">
           </app-form-input>
 
           <div class="modal-reserva__horas">
@@ -97,5 +100,5 @@
         </footer>
       </form>
     </div>
-  </div>
+  </section>
 }

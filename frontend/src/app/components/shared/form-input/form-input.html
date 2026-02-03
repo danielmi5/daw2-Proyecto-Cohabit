@@ -73,8 +73,8 @@
     </small>
   }
 
-  <!-- Estado ÉXITO: muestra mensaje de éxito -->
-  @if (getEstadoEfectivo() === 'exito') {
+  <!-- Estado ÉXITO -->
+  @if (getEstadoEfectivo() === 'exito' && mostrarMensajeExito) {
     <small class="form-input__mensaje form-input__mensaje--exito" [id]="id + '-mensaje'">
       {{ mensajeExito || 'Correcto' }}
     </small>

@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChange
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from '../button/button';
-import { FormInput } from '../form-input/form-input';
+import { FormInput, EstadoValidacion } from '../form-input/form-input';
 import { FormSelect } from '../form-select/form-select';
 import { ReservaResponse, RecursoResponse } from '../../../models';
 
@@ -117,9 +117,12 @@ export class ModalReserva implements OnInit, OnChanges {
    * Valida y emite los datos del formulario.
    */
   onGuardar(): void {
-    if (this.formulario.valid) {
-      this.guardar.emit(this.formulario.value);
+    if (this.formulario.invalid) {
+      this.formulario.markAllAsTouched();
+      return;
     }
+
+    this.guardar.emit(this.formulario.value);
   }
 
   /**
@@ -144,5 +147,37 @@ export class ModalReserva implements OnInit, OnChanges {
     const mes = String(hoy.getMonth() + 1).padStart(2, '0');
     const dia = String(hoy.getDate()).padStart(2, '0');
     return `${año}-${mes}-${dia}`;
+  }
+
+  /**
+   * Determina el estado de validación del campo `fecha` para `app-form-input`.
+   */
+  obtenerEstadoValidacionFecha(): EstadoValidacion {
+    const control = this.formulario.get('fecha');
+    if (!control) return 'inicial';
+
+    if (!control.touched && !control.dirty) return 'inicial';
+    if (control.pending) return 'inicial';
+    if (control.valid) return 'exito';
+
+    if (control.errors) {
+      if (control.errors['required'] && !control.value) return 'advertencia';
+      return 'error';
+    }
+
+    return 'inicial';
+  }
+
+  /**
+   * Obtiene el mensaje de error concreto para `fecha`.
+   */
+  obtenerMensajeErrorFecha(): string {
+    const control = this.formulario.get('fecha');
+    if (!control || !control.errors) return '';
+
+    if (control.errors['required'] && !control.value) return '';
+    if (control.errors['fechaPasada']) return 'La fecha no puede ser pasada';
+
+    return 'Fecha no válida';
   }
 }

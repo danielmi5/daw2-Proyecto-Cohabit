@@ -11,6 +11,7 @@ import { ReservaResponse, RecursoResponse, UsuarioResponse } from '../../../mode
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 import { TablaReservas } from '../tabla-reservas/tabla-reservas';
 import { RecursoEstado } from '../recurso-estado/recurso-estado';
+import { Spinner } from '../spinner/spinner';
 
 interface EstadisticasDashboard {
   totalReservas: number;
@@ -26,7 +27,7 @@ interface RecursoConReserva {
 @Component({
   selector: 'app-dashboard-index',
   standalone: true,
-  imports: [CommonModule, FeatherIconDirective, TablaReservas, RecursoEstado],
+  imports: [CommonModule, FeatherIconDirective, TablaReservas, RecursoEstado, Spinner],
   templateUrl: './dashboard-index.html',
   styleUrls: ['./dashboard-index.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -258,7 +259,7 @@ export class DashboardIndex implements OnInit {
    */
   private async cargarDatosDashboardSinScroll(): Promise<void> {
     if (!this.grupoId) return;
-    // Llama a la lógica de recarga sin util de scroll (util eliminada)
+    
     this.cargarDatosDashboard();
   }
 }

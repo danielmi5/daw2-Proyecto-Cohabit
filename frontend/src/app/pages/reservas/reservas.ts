@@ -5,6 +5,7 @@ import { ReservaResponse, RecursoResponse, ReservaRequest, UsuarioResponse } fro
 import { Button } from '../../components/shared/button/button';
 import { TabComponent } from '../../components/shared/tab/tab';
 import { ModalReserva } from '../../components/shared/modal-reserva/modal-reserva';
+import { Spinner } from '../../components/shared/spinner/spinner';
 import { RecursoService } from '../../services/recurso.service';
 import { GrupoService } from '../../services/grupo.service';
 import { AuthService } from '../../services/auth.service';
@@ -16,7 +17,7 @@ import { forkJoin } from 'rxjs';
 // Reservas del grupo. Carga recursos y autores en paralelo (forkJoin). Permite crear reservas.
 @Component({
   selector: 'app-reservas',
-  imports: [CommonModule, Button, TabComponent, ModalReserva],
+  imports: [CommonModule, Button, TabComponent, ModalReserva, Spinner],
   templateUrl: './reservas.html',
   styleUrls: ['./reservas.scss'],
 })

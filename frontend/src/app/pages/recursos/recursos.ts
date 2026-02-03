@@ -5,6 +5,7 @@ import { CardRecurso } from '../../components/shared/card-recurso/card-recurso';
 import { BuscadorFiltros, FiltrosRecurso } from '../../components/shared/buscador-filtros/buscador-filtros';
 import { Button } from '../../components/shared/button/button';
 import { ModalRecurso } from '../../components/shared/modal-recurso/modal-recurso';
+import { ScrollInfinitoDirective } from '../../directives/scroll-infinito.directive';
 import { RecursoResponse, RecursoRequest, RecursoUpdate } from '../../models';
 import { RecursoService } from '../../services/recurso.service';
 import { GrupoService } from '../../services/grupo.service';
@@ -17,7 +18,7 @@ import { StateService } from '../../services/state.service';
 // Página CRUD de recursos del grupo con búsqueda/filtrado
 @Component({
   selector: 'app-recursos',
-  imports: [CommonModule, CardRecurso, BuscadorFiltros, Button, ModalRecurso],
+  imports: [CommonModule, CardRecurso, BuscadorFiltros, Button, ModalRecurso, ScrollInfinitoDirective],
   templateUrl: './recursos.html',
   styleUrls: ['./recursos.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -42,6 +43,14 @@ export class Recursos implements OnInit {
   recursos: RecursoResponse[] = [];
   /** Lista de recursos filtrados según criterios de búsqueda */
   recursosFiltrados: RecursoResponse[] = [];
+  /** Paginación: página actual (base 0) */
+  pagina = 0;
+  /** Tamaño de página para paginación/infinite scroll */
+  tamanioPagina = 10;
+  /** Indica si se están cargando más elementos por scroll infinito */
+  cargandoMas = false;
+  /** Indica si hay más elementos para cargar */
+  hayMasElementos = true;
   /** Total de recursos */
   total = 0;
   /** Signal que indica si se están cargando datos */
@@ -117,15 +126,19 @@ export class Recursos implements OnInit {
       this.loading.set(false);
       return;
     }
-
+    // Inicializa paginación
+    this.pagina = 0;
+    this.hayMasElementos = true;
     this.loading.set(true);
     this.error = false;
 
-    this.grupoService.getRecursos(this.grupoId).subscribe({
-      next: (recursos) => {
-        this.recursos = recursos;
+    this.recursoService.getAll(this.pagina, this.tamanioPagina, { grupoId: this.grupoId }).subscribe({
+      next: (res) => {
+        this.recursos = res.items || [];
         this.recursosFiltrados = [...this.recursos];
-        this.total = recursos.length;
+        this.total = res.total || this.recursos.length;
+        // Si ya ha cargado todo
+        this.hayMasElementos = this.recursos.length < this.total;
         this.loading.set(false);
       },
       error: (error) => {
@@ -133,6 +146,34 @@ export class Recursos implements OnInit {
         this.error = true;
         this.errorMessage = error.message || 'Error al cargar los recursos';
         this.loading.set(false);
+      }
+    });
+  }
+
+  /** Carga la siguiente página de recursos y la añade a la lista (scroll infinito) */
+  cargarMasRecursos(): void {
+    if (this.cargandoMas || !this.hayMasElementos || this.loading()) return;
+
+    // Si no hay grupo, no hacemos nada
+    if (!this.grupoId) return;
+
+    this.cargandoMas = true;
+    this.pagina += 1;
+
+    this.recursoService.getAll(this.pagina, this.tamanioPagina, { grupoId: this.grupoId }).subscribe({
+      next: (res) => {
+        const nuevos = res.items || [];
+        this.recursos = [...this.recursos, ...nuevos];
+        this.recursosFiltrados = [...this.recursos];
+        this.total = res.total || this.total;
+        if (this.recursos.length >= this.total || nuevos.length === 0) {
+          this.hayMasElementos = false;
+        }
+        this.cargandoMas = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar más recursos:', error);
+        this.cargandoMas = false;
       }
     });
   }

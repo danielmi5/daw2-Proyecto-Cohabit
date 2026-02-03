@@ -65,6 +65,16 @@
         </section>
       }
 
+      <!-- Indicador y trigger para scroll infinito -->
+      @if (cargandoMas) {
+        <div class="recursos__cargando-mas">
+          <div class="recursos__cargador"></div>
+          <p>Cargando más recursos...</p>
+        </div>
+      }
+
+      <div class="recursos__scroll-trigger" appScrollInfinito (alHacerScroll)="cargarMasRecursos()"></div>
+
       <div class="recursos__contenedor-boton">
         <!-- Botón para crear nuevo recurso -->
         <app-button

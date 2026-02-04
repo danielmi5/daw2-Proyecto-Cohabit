@@ -130,6 +130,7 @@ public class RecursoController {
         return ResponseEntity.ok(recursoService.subirFoto(id, archivo));
     }
 
+    /*
     @GetMapping("/buscar")
     @Operation(summary = "Buscar recursos", description = "Buscar recursos por filtros opcionales: grupo, tipo, estado y disponibilidad")
     @ApiResponse(responseCode = "200", description = "Búsqueda de recursos realizada exitosamente")
@@ -137,10 +138,11 @@ public class RecursoController {
         @Parameter(description = "ID del grupo") @RequestParam(name = "grupoId", required = false) Long grupoId,
         @Parameter(description = "Tipo de recurso") @RequestParam(name = "tipo", required = false) TipoRecurso tipo,
         @Parameter(description = "Estado del recurso") @RequestParam(name = "estado", required = false) EstadoRecurso estado,
-        @Parameter(description = "Fecha para filtrar disponibilidad (formato yyyy-MM-dd)") @RequestParam(name = "fecha", required = false) LocalDate fecha,
-        @Parameter(description = "Hora de inicio para filtrar disponibilidad (formato HH:mm:ss)") @RequestParam(name = "horaInicio", required = false) LocalTime horaInicio,
-        @Parameter(description = "Hora de fin para filtrar disponibilidad (formato HH:mm:ss)") @RequestParam(name = "horaFin", required = false) LocalTime horaFin,
+        @Parameter(description = "Fecha para filtrar disponibilidad (formato yyyy-MM-dd") @RequestParam(name = "fecha", required = false) LocalDate fecha,
+        @Parameter(description = "Hora de inicio para filtrar disponibilidad (formato HH:mm:ss") @RequestParam(name = "horaInicio", required = false) LocalTime horaInicio,
+        @Parameter(description = "Hora de fin para filtrar disponibilidad (formato HH:mm:ss") @RequestParam(name = "horaFin", required = false) LocalTime horaFin,
         Pageable pageable) {
         return ResponseEntity.ok(recursoService.buscarPorFiltros(grupoId, tipo, estado, fecha, horaInicio, horaFin, pageable));
     }
+    */
 }

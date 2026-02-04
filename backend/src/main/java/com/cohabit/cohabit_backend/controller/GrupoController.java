@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.access.prepost.PreAuthorize;
+import com.cohabit.cohabit_backend.entity.TipoRecurso;
 
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -132,9 +133,8 @@ public class GrupoController {
     @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembro(#id)")
     public ResponseEntity<Page<RecursoResponseDTO>> obtenerRecursos(
         @Parameter(description = "ID del grupo") @PathVariable Long id,
-        @Parameter(description = "Filtro por tipo de recurso") @RequestParam(name = "tipo", required = false) String tipo,
-        @Parameter(description = "Filtro por estado del recurso") @RequestParam(name = "estado", required = false) String estado,
+        @Parameter(description = "Filtro por tipo de recurso") @RequestParam(name = "tipo", required = false) TipoRecurso tipo,
         Pageable pageable) {
-        return ResponseEntity.ok(grupoService.obtenerRecursosPorGrupoPaginado(id, tipo, estado, pageable));
+        return ResponseEntity.ok(grupoService.obtenerRecursosInventario(id, tipo, pageable));
     }
 }

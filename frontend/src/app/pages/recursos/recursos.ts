@@ -133,7 +133,7 @@ export class Recursos implements OnInit {
     this.loading.set(true);
     this.error = false;
 
-    this.recursoService.getAll(this.pagina, this.tamanioPagina, { grupoId: this.grupoId }).subscribe({
+    this.grupoService.obtenerRecursos(this.grupoId, this.pagina, this.tamanioPagina).subscribe({
       next: (res) => {
         this.recursos = res.items || [];
         this.recursosFiltrados = [...this.recursos];
@@ -161,7 +161,7 @@ export class Recursos implements OnInit {
     this.cargandoMas = true;
     this.pagina += 1;
 
-    this.recursoService.getAll(this.pagina, this.tamanioPagina, { grupoId: this.grupoId }).subscribe({
+    this.grupoService.obtenerRecursos(this.grupoId, this.pagina, this.tamanioPagina).subscribe({
       next: (res) => {
         const nuevos = res.items || [];
         this.recursos = [...this.recursos, ...nuevos];

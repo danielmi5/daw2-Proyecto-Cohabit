@@ -2,6 +2,7 @@ package com.cohabit.cohabit_backend.repository;
 
 import com.cohabit.cohabit_backend.entity.Grupo;
 import com.cohabit.cohabit_backend.entity.Recurso;
+import com.cohabit.cohabit_backend.entity.TipoRecurso;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +53,10 @@ public interface GrupoRepository extends JpaRepository<Grupo, Long> {
             """)
     Page<Recurso> findRecursosPorGrupo(
         @Param("grupoId") Long grupoId,
-        @Param("tipo") String tipo,
-        @Param("estado") String estado,
+                @Param("tipo") String tipo,
+                @Param("estado") String estado,
         Pageable pageable);
+
+        @Query("SELECT r FROM Recurso r WHERE r.grupo.id = :grupoId AND (:tipo IS NULL OR r.tipo = :tipo) ORDER BY r.id DESC")
+        Page<Recurso> findRecursosInventario(@Param("grupoId") Long grupoId, @Param("tipo") TipoRecurso tipo, Pageable pageable);
 }

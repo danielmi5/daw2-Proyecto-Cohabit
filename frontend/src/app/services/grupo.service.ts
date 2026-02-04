@@ -111,6 +111,25 @@ export class GrupoService {
   }
 
   /**
+   * Obtiene recursos paginados de un grupo (nueva API)
+   * @param grupoId - ID del grupo
+   * @param page - número de página (base 0)
+   * @param size - tamaño de página
+   * @param tipo - filtro opcional por tipo de recurso
+   * @returns Observable con lista paginada (items + total)
+   */
+  obtenerRecursos(grupoId: number, page = 0, size = 10, tipo?: string): Observable<ApiListResponse<RecursoResponse>> {
+    let params = new HttpParams().set('page', String(page)).set('size', String(size));
+    if (tipo) params = params.set('tipo', tipo);
+
+    return this.api.get<import('../models').BackendPage<RecursoResponse>>(`${this.base}/${grupoId}/recursos`, { params }).pipe(
+      retry(2),
+      map(res => ({ items: res.content || [], total: res.totalElements || 0 })),
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  /**
    * Maneja errores HTTP
    * @param error - Error capturado
    * @returns Observable que lanza el error procesado

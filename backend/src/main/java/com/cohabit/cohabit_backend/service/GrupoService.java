@@ -11,6 +11,7 @@ import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.exception.UsuarioYaPerteneceAUnGrupoException;
 import com.cohabit.cohabit_backend.mapper.GrupoMapper;
 import com.cohabit.cohabit_backend.mapper.RecursoMapper;
+import com.cohabit.cohabit_backend.entity.TipoRecurso;
 import com.cohabit.cohabit_backend.entity.RolGrupo;
 import com.cohabit.cohabit_backend.entity.Usuario;
 import com.cohabit.cohabit_backend.repository.GrupoRepository;
@@ -182,6 +183,23 @@ public class GrupoService {
                 .map(RecursoMapper::recursoEntidadARecursoDto)
                 .collect(Collectors.toList());
         
+        return new PageImpl<>(dtos, pageable, paginaRecursos.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<RecursoResponseDTO> obtenerRecursosInventario(Long grupoId, TipoRecurso tipo, Pageable pageable) {
+        // Verificar que el grupo existe
+        if (!grupoRepository.existsById(grupoId)) {
+            throw new EntidadNoEncontradaException("Grupo no encontrado: " + grupoId);
+        }
+
+        Page<com.cohabit.cohabit_backend.entity.Recurso> paginaRecursos =
+                grupoRepository.findRecursosInventario(grupoId, tipo, pageable);
+
+        List<RecursoResponseDTO> dtos = paginaRecursos.getContent().stream()
+                .map(RecursoMapper::recursoEntidadARecursoDto)
+                .collect(Collectors.toList());
+
         return new PageImpl<>(dtos, pageable, paginaRecursos.getTotalElements());
     }
 }

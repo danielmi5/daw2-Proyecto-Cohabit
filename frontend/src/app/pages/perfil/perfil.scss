@@ -1,20 +1,38 @@
 @use '../../../styles/00-settings/variables' as *;
 @use '../../../styles/01-tools/mixins' as mixins;
 
+.perfil {
+  @include mixins.display-flex(row, 0, stretch, flex-start);
+  background-color: var(--bg-secundario);
 
-.perfil{
-    padding: $espaciado-xl;
-    display: flex;
+  &__sidebar {
+    width: 250px;
+    height: 100vh;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+  }
+
+  &__contenido {
+    padding: $espaciado-xxl;
+    height: fit-content;
+    flex: 1;
+    overflow-x: hidden;
+  }
+}
+
+// Responsive
+@media (max-width: $breakpoint-tablet) {
+  .perfil {
     flex-direction: column;
-    gap: $espaciado-xxl;
-    &__titulo{
-        @include mixins.tipografia(h2, var(--titulos));
-    }
 
-    &__botones{
-        width: 30%;
-        align-self: flex-end;
+    &__sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
     }
+  }
 }
 
 

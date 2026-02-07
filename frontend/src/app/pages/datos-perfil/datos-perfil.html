@@ -1,0 +1,14 @@
+@if (cargando()) {
+  <section class="datos-perfil__estado datos-perfil__estado--carga">
+    <app-spinner [texto]="'Cargando datos del perfil...'" [tamanio]="'mediano'"></app-spinner>
+  </section>
+} @else {
+  <section class="datos-perfil">
+    <app-data-perfil 
+      [usuario]="usuarioActual()"
+      (actualizar)="actualizarPerfil($event)"
+      (subirFoto)="subirFotoPerfil($event)"
+      (eliminarFoto)="eliminarFotoPerfil()">
+    </app-data-perfil>
+  </section>
+}

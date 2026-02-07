@@ -1,0 +1,18 @@
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as mixins;
+
+.datos-perfil {
+  display: block;
+
+  &__estado {
+    @include mixins.centrar-flex(column);
+    min-height: 400px;
+    gap: $espaciado-l;
+
+    &--carga {
+      color: var(--texto-primario);
+    }
+  }
+
+  
+}

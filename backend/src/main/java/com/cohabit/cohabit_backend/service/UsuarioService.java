@@ -14,7 +14,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -85,6 +88,24 @@ public class UsuarioService {
     public void eliminar(Long id) {
         if (!usuarioRepo.existsById(id)) throw new EntidadNoEncontradaException("Usuario no encontrado: " + id);
         usuarioRepo.deleteById(id);
+    }
+
+    @Transactional
+    public UsuarioResponseDTO subirFoto(Long id, MultipartFile archivo) {
+        Usuario usuarioExistente = usuarioRepo.findById(id)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Usuario no encontrado: " + id));
+
+        try {
+            // Convierte el archivo a base64
+            byte[] bytes = archivo.getBytes();
+            String base64 = "data:" + archivo.getContentType() + ";base64," + Base64.getEncoder().encodeToString(bytes);
+            
+            usuarioExistente.setFotoPerfil(base64);
+            Usuario usuarioGuardado = usuarioRepo.save(usuarioExistente);
+            return UsuarioMapper.usuarioEntidadAUsuarioDto(usuarioGuardado);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al procesar el archivo: " + e.getMessage());
+        }
     }
 
     public boolean existePorEmail(String email) {

@@ -43,8 +43,9 @@ export class ModalRecurso implements OnInit, OnChanges {
   /** Opciones de estado del recurso para el select */
   estadosRecurso = [
     { valor: 'DISPONIBLE', etiqueta: 'Disponible' },
+    { valor: 'OCUPADO', etiqueta: 'Ocupado' },
     { valor: 'EN_MANTENIMIENTO', etiqueta: 'En mantenimiento' },
-    { valor: 'NO_DISPONIBLE', etiqueta: 'No disponible' }
+    { valor: 'FUERA_DE_SERVICIO', etiqueta: 'Fuera de servicio' }
   ];
 
   private fb: FormBuilder = inject(FormBuilder);

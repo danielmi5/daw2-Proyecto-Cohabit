@@ -76,9 +76,11 @@
             </app-form-textarea>
 
             <section class="data-grupo__stats">
-                <p><strong>Número de miembros:</strong> {{ grupo?.miembrosIds?.length ?? 0 }}</p>
-                <p><strong>Número de recursos:</strong> {{ grupo?.recursosIds?.length ?? 0 }}</p>
-                <p><strong>Código del grupo:</strong> {{ grupo?.codigoInvitacion ?? '—' }}</p>
+                <ul>
+                    <li><strong>Número de miembros:</strong> {{ grupo?.miembrosIds?.length ?? 0 }}</li>
+                    <li><strong>Número de recursos:</strong> {{ grupo?.recursosIds?.length ?? 0 }}</li>
+                    <li><strong>Código del grupo:</strong> {{ grupo?.codigoInvitacion ?? '—' }}</li>
+                </ul>
             </section>
 
             <footer class="data-grupo__footer">

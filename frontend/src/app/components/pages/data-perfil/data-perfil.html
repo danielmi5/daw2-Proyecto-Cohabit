@@ -82,11 +82,11 @@
             </app-form-input>
 
             <section class="data-perfil__stats">
-                <p><strong>Email:</strong> {{ usuario?.email ?? '—' }}</p>
-                <p><strong>Fecha de registro:</strong> {{ usuario?.fechaRegistro ? (usuario?.fechaRegistro | date: 'dd/MM/yyyy') : '—' }}</p>
-                @if (usuario?.miembroGrupoId) {
-                <p><strong>Miembro de grupo ID:</strong> {{ usuario?.miembroGrupoId }}</p>
-                }
+                <ul>
+                    <li><strong>Email:</strong> {{ usuario?.email ?? '—' }}</li>
+                    <li><strong>Fecha de registro:</strong> {{ usuario?.fechaRegistro ? (usuario?.fechaRegistro | date: 'dd/MM/yyyy') : '—' }}</li>
+                </ul>
+                
             </section>
 
             <footer class="data-perfil__footer">

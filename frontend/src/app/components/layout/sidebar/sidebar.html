@@ -44,39 +44,15 @@
             <span class="barra-lateral__menu-texto">Datos personales</span>
           </a>
         </li>
-        <li class="barra-lateral__menu-item">
-          <a routerLink="/perfil/preferencias" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">
-            <span class="barra-lateral__menu-icono"><span [feather]="'settings'" [tipo]="'submenu'"></span></span>
-            <span class="barra-lateral__menu-texto">Preferencias</span>
-          </a>
-        </li>
-        <li class="barra-lateral__menu-item">
-          <a routerLink="/perfil/mi-grupo" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">
-            <span class="barra-lateral__menu-icono"><span [feather]="'users'" [tipo]="'submenu'"></span></span>
-            <span class="barra-lateral__menu-texto">Grupo</span>
-          </a>
-        </li>
-        <li class="barra-lateral__menu-item">
-          <a routerLink="/perfil/seguridad" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">
-            <span class="barra-lateral__menu-icono"><span [feather]="'lock'" [tipo]="'submenu'"></span></span>
-            <span class="barra-lateral__menu-texto">Seguridad</span>
-          </a>
-        </li>
       }
     </ul>
   </nav>
 
-  @if (mostrarOpcionesPerfil) {
+  @if (mostrarOpcionesPerfil()) {
     <footer class="barra-lateral__pie">
       <ul class="barra-lateral__menu barra-lateral__menu--secundario">
         <li class="barra-lateral__menu-item">
-          <a routerLink="/ayuda" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">
-            <span class="barra-lateral__menu-icono"><span [feather]="'info'" [tipo]="'submenu'"></span></span>
-            <span class="barra-lateral__menu-texto">Ayuda</span>
-          </a>
-        </li>
-        <li class="barra-lateral__menu-item">
-          <button type="button" id="btn-cerrar-sesion" class="barra-lateral__menu-enlace">
+          <button type="button" id="btn-cerrar-sesion" class="barra-lateral__menu-enlace" (click)="cerrarSesion()">
             <span class="barra-lateral__menu-icono"><span [feather]="'log-out'" [tipo]="'submenu'"></span></span>
             <span class="barra-lateral__menu-texto">Cerrar sesión</span>
           </button>

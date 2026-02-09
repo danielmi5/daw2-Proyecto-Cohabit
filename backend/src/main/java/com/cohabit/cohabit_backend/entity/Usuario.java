@@ -30,8 +30,7 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
-    @Lob
-    @Column(name = "foto_perfil", columnDefinition = "text")
+    @Column(name = "foto_perfil", columnDefinition = "TEXT")
     private String fotoPerfil;
 
     private String pais;

@@ -1,26 +1,34 @@
 -- Script de inicialización de la base de datos Cohabit
 -- Se insertan datos de prueba para todas las tablas del sistema
 
--- Limpia las tablas en orden correcto respetando las foreign keys
-TRUNCATE TABLE reglas_recurso RESTART IDENTITY CASCADE;
-TRUNCATE TABLE reservas RESTART IDENTITY CASCADE;
-TRUNCATE TABLE recursos RESTART IDENTITY CASCADE;
-TRUNCATE TABLE miembros_grupo RESTART IDENTITY CASCADE;
-TRUNCATE TABLE grupos RESTART IDENTITY CASCADE;
-TRUNCATE TABLE usuarios RESTART IDENTITY CASCADE;
+-- Limpia datos existentes de forma segura
+DELETE FROM reglas_recurso;
+DELETE FROM reservas;
+DELETE FROM recursos;
+DELETE FROM miembros_grupo;
+DELETE FROM grupos;
+DELETE FROM usuarios;
+
+-- Reinicia secuencias solo si existen
+ALTER SEQUENCE IF EXISTS reglas_recurso_id_seq RESTART WITH 1;
+ALTER SEQUENCE IF EXISTS reservas_id_seq RESTART WITH 1;
+ALTER SEQUENCE IF EXISTS recursos_id_seq RESTART WITH 1;
+ALTER SEQUENCE IF EXISTS miembros_grupo_id_seq RESTART WITH 1;
+ALTER SEQUENCE IF EXISTS grupos_id_seq RESTART WITH 1;
+ALTER SEQUENCE IF EXISTS usuarios_id_seq RESTART WITH 1;
 
 -- Inserta usuarios de prueba (añadida columna `role`)
 INSERT INTO usuarios (nombre, apellidos, email, password, foto_perfil, pais, ciudad, telefono, fecha_registro, role) VALUES
-('admin', 'admin', 'admin@admin.com', '$2a$12$jMLw5JBR6WyIuBwN27clN.hp5bka3t0tBtN0ZetBB7Xc.uhgfdybW', 'https://randomuser.me/api/portraits/men/1.jpg', 'España', 'Madrid', '+34600123456', NOW() - INTERVAL '120 days', 'ADMIN'),
-('María', 'Fernández Ruiz', 'maria.fernandez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/2.jpg', 'España', 'Barcelona', '+34600234567', NOW() - INTERVAL '90 days', 'USUARIO'),
-('José', 'Martínez Sánchez', 'jose.martinez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/3.jpg', 'España', 'Valencia', '+34600345678', NOW() - INTERVAL '75 days', 'USUARIO'),
-('Ana', 'López Torres', 'ana.lopez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/4.jpg', 'España', 'Madrid', '+34600456789', NOW() - INTERVAL '60 days', 'USUARIO'),
-('David', 'González Díaz', 'david.gonzalez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/5.jpg', 'España', 'Sevilla', '+34600567890', NOW() - INTERVAL '45 days', 'USUARIO'),
-('Laura', 'Pérez Moreno', 'laura.perez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/6.jpg', 'España', 'Bilbao', '+34600678901', NOW() - INTERVAL '30 days', 'USUARIO'),
-('Miguel', 'Rodríguez Vargas', 'miguel.rodriguez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/7.jpg', 'España', 'Granada', '+34600789012', NOW() - INTERVAL '20 days', 'USUARIO'),
-('Elena', 'Sánchez Herrera', 'elena.sanchez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/8.jpg', 'España', 'Málaga', '+34600890123', NOW() - INTERVAL '15 days', 'USUARIO'),
-('Pablo', 'Jiménez Castro', 'pablo.jimenez@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/men/9.jpg', 'España', 'Zaragoza', '+34600901234', NOW() - INTERVAL '10 days', 'USUARIO'),
-('Carmen', 'Romero Gil', 'carmen.romero@email.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'https://randomuser.me/api/portraits/women/10.jpg', 'España', 'Murcia', '+34600012345', NOW() - INTERVAL '5 days', 'USUARIO');
+('admin', 'admin', 'admin@admin.com', '$2a$12$n4caOSl.C8szskByh.q94OMDbkWYXNtUTcfQAutBvlQd3ce5pgkum', 'https://randomuser.me/api/portraits/men/1.jpg', 'España', 'Madrid', '+34600123456', NOW() - INTERVAL '120 days', 'ADMIN'),
+('María', 'Fernández Ruiz', 'maria.fernandez@email.com', '$2a$12$n4caOSl.C8szskByh.q94OMDbkWYXNtUTcfQAutBvlQd3ce5pgkum', 'https://randomuser.me/api/portraits/women/2.jpg', 'España', 'Barcelona', '+34600234567', NOW() - INTERVAL '90 days', 'USUARIO'),
+('José', 'Martínez Sánchez', 'jose.martinez@email.com', '$2a$12$n4caOSl.C8szskByh.q94OMDbkWYXNtUTcfQAutBvlQd3ce5pgkum', 'https://randomuser.me/api/portraits/men/3.jpg', 'España', 'Valencia', '+34600345678', NOW() - INTERVAL '75 days', 'USUARIO'),
+('Ana', 'López Torres', 'ana.lopez@email.com', '$2a$12$n4caOSl.C8szskByh.q94OMDbkWYXNtUTcfQAutBvlQd3ce5pgkum', 'https://randomuser.me/api/portraits/women/4.jpg', 'España', 'Madrid', '+34600456789', NOW() - INTERVAL '60 days', 'USUARIO'),
+('David', 'González Díaz', 'david.gonzalez@email.com', '$2a$12$n4caOSl.C8szskByh.q94OMDbkWYXNtUTcfQAutBvlQd3ce5pgkum', 'https://randomuser.me/api/portraits/men/5.jpg', 'España', 'Sevilla', '+34600567890', NOW() - INTERVAL '45 days', 'USUARIO'),
+('Laura', 'Pérez Moreno', 'laura.perez@email.com', '$2a$12$n4caOSl.C8szskByh.q94OMDbkWYXNtUTcfQAutBvlQd3ce5pgkum', 'https://randomuser.me/api/portraits/women/6.jpg', 'España', 'Bilbao', '+34600678901', NOW() - INTERVAL '30 days', 'USUARIO'),
+('Miguel', 'Rodríguez Vargas', 'miguel.rodriguez@email.com', '$2a$12$n4caOSl.C8szskByh.q94OMDbkWYXNtUTcfQAutBvlQd3ce5pgkum', 'https://randomuser.me/api/portraits/men/7.jpg', 'España', 'Granada', '+34600789012', NOW() - INTERVAL '20 days', 'USUARIO'),
+('Elena', 'Sánchez Herrera', 'elena.sanchez@email.com', '$2a$12$n4caOSl.C8szskByh.q94OMDbkWYXNtUTcfQAutBvlQd3ce5pgkum', 'https://randomuser.me/api/portraits/women/8.jpg', 'España', 'Málaga', '+34600890123', NOW() - INTERVAL '15 days', 'USUARIO'),
+('Pablo', 'Jiménez Castro', 'pablo.jimenez@email.com', '$2a$12$n4caOSl.C8szskByh.q94OMDbkWYXNtUTcfQAutBvlQd3ce5pgkum', 'https://randomuser.me/api/portraits/men/9.jpg', 'España', 'Zaragoza', '+34600901234', NOW() - INTERVAL '10 days', 'USUARIO'),
+('Carmen', 'Romero Gil', 'carmen.romero@email.com', '$2a$12$n4caOSl.C8szskByh.q94OMDbkWYXNtUTcfQAutBvlQd3ce5pgkum', 'https://randomuser.me/api/portraits/women/10.jpg', 'España', 'Murcia', '+34600012345', NOW() - INTERVAL '5 days', 'USUARIO');
 
 -- Inserta grupos de prueba
 
@@ -53,7 +61,7 @@ INSERT INTO recursos (nombre, descripcion, foto_recurso, capacidad, ubicacion, t
 ('Cocina Moderna', 'Cocina de diseño con isla central. Electrodomésticos de última generación y amplio espacio de almacenamiento.', 'https://images.unsplash.com/photo-1565538810643-b5bdb714032a', 6, 'Planta principal', 'ESPACIO', 'DISPONIBLE', 2, 4, 2, NOW() - INTERVAL '90 days', NOW()),
 ('Proyector HD', 'Proyector Full HD con pantalla de 120 pulgadas. Sistema de sonido integrado. Perfecto para cine en casa.', 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1', 8, 'Sala común', 'OBJETO', 'DISPONIBLE', 2, 5, 3, NOW() - INTERVAL '80 days', NOW()),
 ('Habitación Doble', 'Habitación con dos camas individuales. Escritorio compartido y estanterías para libros.', 'https://images.unsplash.com/photo-1505693314120-0d443867891c', 2, 'Segunda planta', 'ESPACIO', 'OCUPADO', 3, 7, 1, NOW() - INTERVAL '75 days', NOW()),
-('Baño Compartido', 'Baño equipado con ducha y bañera. Zona de almacenamiento para productos de higiene personal.', 'https://images.unsplash.com/photo-1604709177225-055f99402ea3', 2, 'Segunda planta', 'ESPACIO', 'MANTENIMIENTO', 3, 7, 2, NOW() - INTERVAL '75 days', NOW()),
+('Baño Compartido', 'Baño equipado con ducha y bañera. Zona de almacenamiento para productos de higiene personal.', 'https://images.unsplash.com/photo-1604709177225-055f99402ea3', 2, 'Segunda planta', 'ESPACIO', 'EN_MANTENIMIENTO', 3, 7, 2, NOW() - INTERVAL '75 days', NOW()),
 ('Bicicleta Montaña', 'Bicicleta de montaña con 21 velocidades. Incluye casco y candado. En excelente estado.', 'https://images.unsplash.com/photo-1485965120184-e220f721d03e', 1, 'Garaje', 'OBJETO', 'DISPONIBLE', 3, 8, 3, NOW() - INTERVAL '60 days', NOW()),
 ('Cocina Industrial', 'Cocina equipada con fogones industriales y horno profesional. Ideal para cocinar en grupo.', 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f', 10, 'Planta baja', 'ESPACIO', 'DISPONIBLE', 3, 7, 4, NOW() - INTERVAL '75 days', NOW());
 
@@ -82,17 +90,3 @@ INSERT INTO reservas (fecha, hora_inicio, hora_fin, notas, num_personas, estado,
 (CURRENT_DATE + 5, '07:00:00', '08:00:00', 'Ducha antes del trabajo.', 1, 'PENDIENTE', 9, 10, 1, NOW(), NOW()),
 (CURRENT_DATE - 7, '20:00:00', '22:00:00', 'Cena que finalmente no se realizó por enfermedad.', 3, 'CANCELADA', 3, 3, 2, NOW() - INTERVAL '8 days', NOW() - INTERVAL '7 days'),
 (CURRENT_DATE - 1, '15:00:00', '16:00:00', 'Limpieza cancelada por falta de tiempo.', 1, 'CANCELADA', 6, 5, 2, NOW() - INTERVAL '2 days', NOW() - INTERVAL '1 day');
-
--- Ajusta columnas de imagen a tipo TEXT para permitir almacenar cadenas grandes
-ALTER TABLE usuarios ALTER COLUMN foto_perfil TYPE text;
-ALTER TABLE grupos ALTER COLUMN foto_grupo TYPE text;
-ALTER TABLE recursos ALTER COLUMN foto_recurso TYPE text;
-
--- Muestra resumen de los datos insertados
-SELECT 'Datos insertados correctamente:' AS status;
-SELECT COUNT(*) AS total_usuarios FROM usuarios;
-SELECT COUNT(*) AS total_grupos FROM grupos;
-SELECT COUNT(*) AS total_miembros FROM miembros_grupo;
-SELECT COUNT(*) AS total_recursos FROM recursos;
-SELECT COUNT(*) AS total_reglas FROM reglas_recurso;
-SELECT COUNT(*) AS total_reservas FROM reservas;

@@ -26,8 +26,7 @@ public class Recurso {
     @Column(length = 1000)
     private String descripcion;
 
-    @Lob
-    @Column(name = "foto_recurso", columnDefinition = "text")
+    @Column(name = "foto_recurso", columnDefinition = "TEXT")
     private String fotoRecurso;
 
     private Integer capacidad;

@@ -48,19 +48,6 @@ public class RecursoController {
         return ResponseEntity.ok(recursoService.obtenerTodos(pageable));
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Obtener recurso", description = "Obtener información detallada de un recurso por ID")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Recurso encontrado"),
-        @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
-        @ApiResponse(responseCode = "403", description = "No tienes acceso a este recurso", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
-    })
-    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esRecursoEnGrupoMiembro(#id)")
-    public ResponseEntity<RecursoResponseDTO> get(
-        @Parameter(description = "ID del recurso") @PathVariable Long id) {
-        return ResponseEntity.ok(recursoService.obtenerPorId(id));
-    }
-
     @GetMapping("/{id}/reservas")
     @Operation(summary = "Obtener reservas del recurso", description = "Obtener todas las reservas de un recurso específico")
     @ApiResponses(value = {
@@ -72,6 +59,19 @@ public class RecursoController {
     public ResponseEntity<List<ReservaResponseDTO>> getReservas(
         @Parameter(description = "ID del recurso") @PathVariable Long id) {
         return ResponseEntity.ok(recursoService.obtenerReservasPorRecurso(id));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtener recurso", description = "Obtener información detallada de un recurso por ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Recurso encontrado"),
+        @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes acceso a este recurso", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esRecursoEnGrupoMiembro(#id)")
+    public ResponseEntity<RecursoResponseDTO> get(
+        @Parameter(description = "ID del recurso") @PathVariable Long id) {
+        return ResponseEntity.ok(recursoService.obtenerPorId(id));
     }
 
     @PostMapping

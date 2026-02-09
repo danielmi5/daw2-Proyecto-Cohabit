@@ -44,17 +44,16 @@ public class ReservaController {
         return ResponseEntity.ok(reservaService.obtenerTodos(pageable));
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Obtener reserva", description = "Obtener información detallada de una reserva por ID")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Reserva encontrada"),
-        @ApiResponse(responseCode = "404", description = "Reserva no encontrada", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
-        @ApiResponse(responseCode = "403", description = "No tienes acceso a esta reserva", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
-    })
-    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esPropietarioReserva(#id) or @grupoSecurity.esReservaEnGrupoMiembro(#id)")
-    public ResponseEntity<ReservaResponseDTO> get(
-        @Parameter(description = "ID de la reserva") @PathVariable Long id) {
-        return ResponseEntity.ok(reservaService.obtenerPorId(id));
+    @GetMapping("/buscar")
+    @Operation(summary = "Buscar reservas", description = "Buscar reservas por filtros opcionales: recurso, usuario, fecha y estado")
+    @ApiResponse(responseCode = "200", description = "Búsqueda de reservas realizada exitosamente")
+    public ResponseEntity<Page<ReservaResponseDTO>> buscarPorFiltros(
+        @Parameter(description = "ID del recurso") @RequestParam(name = "recursoId", required = false) Long recursoId,
+        @Parameter(description = "ID del usuario") @RequestParam(name = "usuarioId", required = false) Long usuarioId,
+        @Parameter(description = "Fecha de la reserva (formato yyyy-MM-dd)") @RequestParam(name = "fecha", required = false) LocalDate fecha,
+        @Parameter(description = "Estado de la reserva") @RequestParam(name = "estado", required = false) EstadoReserva estado,
+        Pageable pageable) {
+        return ResponseEntity.ok(reservaService.buscarPorFiltros(recursoId, usuarioId, fecha, estado, pageable));
     }
 
     @GetMapping("/{id}/autor")
@@ -68,6 +67,19 @@ public class ReservaController {
     public ResponseEntity<UsuarioResponseDTO> getAutor(
         @Parameter(description = "ID de la reserva") @PathVariable Long id) {
         return ResponseEntity.ok(reservaService.obtenerAutorReserva(id));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtener reserva", description = "Obtener información detallada de una reserva por ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Reserva encontrada"),
+        @ApiResponse(responseCode = "404", description = "Reserva no encontrada", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes acceso a esta reserva", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esPropietarioReserva(#id) or @grupoSecurity.esReservaEnGrupoMiembro(#id)")
+    public ResponseEntity<ReservaResponseDTO> get(
+        @Parameter(description = "ID de la reserva") @PathVariable Long id) {
+        return ResponseEntity.ok(reservaService.obtenerPorId(id));
     }
 
     @PostMapping
@@ -110,17 +122,5 @@ public class ReservaController {
         @Parameter(description = "ID de la reserva") @PathVariable Long id) {
         reservaService.eliminar(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/buscar")
-    @Operation(summary = "Buscar reservas", description = "Buscar reservas por filtros opcionales: recurso, usuario, fecha y estado")
-    @ApiResponse(responseCode = "200", description = "Búsqueda de reservas realizada exitosamente")
-    public ResponseEntity<Page<ReservaResponseDTO>> buscarPorFiltros(
-        @Parameter(description = "ID del recurso") @RequestParam(name = "recursoId", required = false) Long recursoId,
-        @Parameter(description = "ID del usuario") @RequestParam(name = "usuarioId", required = false) Long usuarioId,
-        @Parameter(description = "Fecha de la reserva (formato yyyy-MM-dd)") @RequestParam(name = "fecha", required = false) LocalDate fecha,
-        @Parameter(description = "Estado de la reserva") @RequestParam(name = "estado", required = false) EstadoReserva estado,
-        Pageable pageable) {
-        return ResponseEntity.ok(reservaService.buscarPorFiltros(recursoId, usuarioId, fecha, estado, pageable));
     }
 }

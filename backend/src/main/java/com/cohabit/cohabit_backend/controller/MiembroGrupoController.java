@@ -48,17 +48,22 @@ public class MiembroGrupoController {
         return ResponseEntity.ok(miembroService.obtenerTodos(pageable));
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Obtener miembro", description = "Obtener información detallada de un miembro por ID")
+    @PostMapping("/unirse")
+    @Operation(summary = "Unirse a grupo por código", description = "Permite al usuario autenticado unirse a un grupo mediante código de invitación")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Miembro encontrado"),
-        @ApiResponse(responseCode = "404", description = "Miembro no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
-        @ApiResponse(responseCode = "403", description = "No tienes acceso a este miembro", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+        @ApiResponse(responseCode = "201", description = "Usuario unido al grupo exitosamente"),
+        @ApiResponse(responseCode = "400", description = "Código inválido", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Grupo o usuario no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
     })
-    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembroIdActual(#id) or @grupoSecurity.esCreadorOAdminMiembro(#id)")
-    public ResponseEntity<MiembroGrupoResponseDTO> get(
-        @Parameter(description = "ID del miembro") @PathVariable Long id) {
-        return ResponseEntity.ok(miembroService.obtenerPorId(id));
+    public ResponseEntity<MiembroGrupoResponseDTO> unirse(@RequestBody Map<String, String> payload) {
+        String codigo = payload != null ? payload.get("codigoInvitacion") : null;
+        if (codigo == null || codigo.isBlank()) throw new ParametroNuloException("El código de invitacion es obligatorio");
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth.getName() == null) throw new EntidadNoEncontradaException("Usuario autenticado no encontrado");
+
+        MiembroGrupoResponseDTO creado = miembroService.unirsePorCodigo(codigo, auth.getName());
+        return ResponseEntity.created(URI.create("/api/miembros/" + creado.getId())).body(creado);
     }
 
     @GetMapping("/{id}/reservas")
@@ -72,6 +77,19 @@ public class MiembroGrupoController {
     public ResponseEntity<List<ReservaResponseDTO>> getReservas(
         @Parameter(description = "ID del miembro") @PathVariable Long id) {
         return ResponseEntity.ok(miembroService.obtenerReservasPorMiembro(id));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtener miembro", description = "Obtener información detallada de un miembro por ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Miembro encontrado"),
+        @ApiResponse(responseCode = "404", description = "Miembro no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No tienes acceso a este miembro", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembroIdActual(#id) or @grupoSecurity.esCreadorOAdminMiembro(#id)")
+    public ResponseEntity<MiembroGrupoResponseDTO> get(
+        @Parameter(description = "ID del miembro") @PathVariable Long id) {
+        return ResponseEntity.ok(miembroService.obtenerPorId(id));
     }
 
     @PostMapping
@@ -114,23 +132,5 @@ public class MiembroGrupoController {
         @Parameter(description = "ID del miembro") @PathVariable Long id) {
         miembroService.eliminar(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/unirse")
-    @Operation(summary = "Unirse a grupo por código", description = "Permite al usuario autenticado unirse a un grupo mediante código de invitación")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Usuario unido al grupo exitosamente"),
-        @ApiResponse(responseCode = "400", description = "Código inválido", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
-        @ApiResponse(responseCode = "404", description = "Grupo o usuario no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
-    })
-    public ResponseEntity<MiembroGrupoResponseDTO> unirse(@RequestBody Map<String, String> payload) {
-        String codigo = payload != null ? payload.get("codigoInvitacion") : null;
-        if (codigo == null || codigo.isBlank()) throw new ParametroNuloException("El código de invitacion es obligatorio");
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth.getName() == null) throw new EntidadNoEncontradaException("Usuario autenticado no encontrado");
-
-        MiembroGrupoResponseDTO creado = miembroService.unirsePorCodigo(codigo, auth.getName());
-        return ResponseEntity.created(URI.create("/api/miembros/" + creado.getId())).body(creado);
     }
 }

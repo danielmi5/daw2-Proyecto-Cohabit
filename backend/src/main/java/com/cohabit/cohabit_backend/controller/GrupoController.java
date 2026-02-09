@@ -45,6 +45,32 @@ public class GrupoController {
         return ResponseEntity.ok(grupoService.obtenerTodos(pageable));
     }
 
+    @GetMapping("/buscar")
+    @Operation(summary = "Buscar grupos", description = "Buscar grupos por filtros opcionales")
+    @ApiResponse(responseCode = "200", description = "Búsqueda realizada exitosamente")
+    public ResponseEntity<Page<GrupoResponseDTO>> buscarPorFiltros(
+        @Parameter(description = "Nombre del grupo") @RequestParam(name = "nombre", required = false) String nombre,
+        @Parameter(description = "Descripción del grupo") @RequestParam(name = "descripcion", required = false) String descripcion,
+        @Parameter(description = "ID del creador") @RequestParam(name = "creadorId", required = false) Long creadorId,
+        Pageable pageable) {
+        return ResponseEntity.ok(grupoService.buscarPorFiltros(nombre, descripcion, creadorId, pageable));
+    }
+
+    @GetMapping("/{id}/recursos")
+    @Operation(summary = "Obtener recursos del grupo", description = "Obtener recursos asociados a un grupo de forma paginada con filtros opcionales")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Recursos obtenidos exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Grupo no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No eres miembro de este grupo", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembro(#id)")
+    public ResponseEntity<Page<RecursoResponseDTO>> obtenerRecursos(
+        @Parameter(description = "ID del grupo") @PathVariable Long id,
+        @Parameter(description = "Filtro por tipo de recurso") @RequestParam(name = "tipo", required = false) TipoRecurso tipo,
+        Pageable pageable) {
+        return ResponseEntity.ok(grupoService.obtenerRecursosInventario(id, tipo, pageable));
+    }
+
     @GetMapping("/{id}")
     @Operation(summary = "Obtener grupo", description = "Obtener información detallada de un grupo por ID")
     @ApiResponses(value = {
@@ -98,17 +124,6 @@ public class GrupoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/buscar")
-    @Operation(summary = "Buscar grupos", description = "Buscar grupos por filtros opcionales")
-    @ApiResponse(responseCode = "200", description = "Búsqueda realizada exitosamente")
-    public ResponseEntity<Page<GrupoResponseDTO>> buscarPorFiltros(
-        @Parameter(description = "Nombre del grupo") @RequestParam(name = "nombre", required = false) String nombre,
-        @Parameter(description = "Descripción del grupo") @RequestParam(name = "descripcion", required = false) String descripcion,
-        @Parameter(description = "ID del creador") @RequestParam(name = "creadorId", required = false) Long creadorId,
-        Pageable pageable) {
-        return ResponseEntity.ok(grupoService.buscarPorFiltros(nombre, descripcion, creadorId, pageable));
-    }
-
     @PutMapping("/{id}/foto")
     @Operation(summary = "Subir foto del grupo", description = "Subir o actualizar la foto de un grupo")
     @ApiResponses(value = {
@@ -121,20 +136,5 @@ public class GrupoController {
         @Parameter(description = "ID del grupo") @PathVariable Long id,
         @Parameter(description = "Archivo de imagen") @RequestParam("archivo") MultipartFile archivo) {
         return ResponseEntity.ok(grupoService.subirFoto(id, archivo));
-    }
-
-    @GetMapping("/{id}/recursos")
-    @Operation(summary = "Obtener recursos del grupo", description = "Obtener recursos asociados a un grupo de forma paginada con filtros opcionales")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Recursos obtenidos exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Grupo no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
-        @ApiResponse(responseCode = "403", description = "No eres miembro de este grupo", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
-    })
-    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembro(#id)")
-    public ResponseEntity<Page<RecursoResponseDTO>> obtenerRecursos(
-        @Parameter(description = "ID del grupo") @PathVariable Long id,
-        @Parameter(description = "Filtro por tipo de recurso") @RequestParam(name = "tipo", required = false) TipoRecurso tipo,
-        Pageable pageable) {
-        return ResponseEntity.ok(grupoService.obtenerRecursosInventario(id, tipo, pageable));
     }
 }

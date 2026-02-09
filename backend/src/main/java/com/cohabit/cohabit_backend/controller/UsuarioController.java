@@ -43,6 +43,13 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioService.obtenerTodos(pageable));
     }
 
+    @GetMapping("/existe")
+    @Operation(summary = "Comprobar email", description = "Verifica si un email ya está registrado (público)")
+    public ResponseEntity<Map<String, Boolean>> existePorEmail(@RequestParam("email") String email) {
+        boolean existe = usuarioService.existePorEmail(email);
+        return ResponseEntity.ok(Map.of("exists", existe));
+    }
+
     @GetMapping("/{id}")
     @Operation(summary = "Obtener usuario", description = "Obtener información detallada de un usuario por ID")
     @ApiResponses(value = {
@@ -109,12 +116,5 @@ public class UsuarioController {
         @Parameter(description = "ID del usuario") @PathVariable Long id,
         @Parameter(description = "Archivo de imagen") @RequestParam("archivo") MultipartFile archivo) {
         return ResponseEntity.ok(usuarioService.subirFoto(id, archivo));
-    }
-
-    @GetMapping("/existe")
-    @Operation(summary = "Comprobar email", description = "Verifica si un email ya está registrado (público)")
-    public ResponseEntity<Map<String, Boolean>> existePorEmail(@RequestParam("email") String email) {
-        boolean existe = usuarioService.existePorEmail(email);
-        return ResponseEntity.ok(Map.of("exists", existe));
     }
 }

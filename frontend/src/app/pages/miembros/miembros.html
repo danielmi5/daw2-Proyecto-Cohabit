@@ -35,7 +35,6 @@
               <li>
                 <app-card-miembro
                     [miembro]="miembro"
-                    [usuario]="usuario"
                 >
                 </app-card-miembro>
               </li>
@@ -43,26 +42,6 @@
           </li>
         </section>
       }
-
-      <!-- Indicador y trigger para scroll infinito -->
-      @if (cargandoMas) {
-        <div class="miembros__cargando-mas">
-          <app-spinner [texto]="'Cargando más miembros...'" [tamanio]="'pequeno'"></app-spinner>
-        </div>
-      }
-
-      <div class="miembros__scroll-trigger" appScrollInfinito (alHacerScroll)="cargarMasmiembros()"></div>
-
-      <div class="miembros__contenedor-boton">
-        <!-- Botón para crear nuevo recurso -->
-        <app-button
-          class="miembros__boton"
-          [variante]="'primario'"
-          [ariaLabel]="'Crear Recurso'"
-          (click)="crearRecurso()">
-          Crear Recurso
-        </app-button>
-      </div>
     </section>
   }
 </section>

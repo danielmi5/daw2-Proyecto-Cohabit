@@ -10,7 +10,8 @@ import { MiembroGrupoResponse, UsuarioResponse } from '../../../models';
 })
 export class CardMiembro {
   @Input() miembro!: MiembroGrupoResponse;
-  @Input() usuario!: UsuarioResponse;
+  //@Input() usuario!: UsuarioResponse;
+
 
 }
 

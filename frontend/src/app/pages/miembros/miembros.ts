@@ -20,6 +20,8 @@ import { CardMiembro } from "../../components/shared/card-miembro/card-miembro";
 export class Miembros implements OnInit{
   private authService = inject(AuthService);
   private miembroService = inject(MiembroGrupoService);
+  private usuarioService = inject(UsuarioService);
+  private notificacionService = inject(NotificacionService);
   private grupoService = inject(GrupoService);
   private router = inject(Router);
 
@@ -97,6 +99,24 @@ export class Miembros implements OnInit{
       }
     });
   }
+
+  /*
+  obtenerUsuario(id: number): UsuarioResponse{
+    
+    this.usuarioService.get(id).subscribe({
+        next: (user) => {
+          usuario = user;
+          this.cargando.set(false);
+        },
+        error: (error) => {
+          console.error('Error al cargar usuario:', error);
+          this.notificacionService.error('Error al cargar los datos del usuario');
+          this.cargando.set(false);
+        }
+      });
+    return usuario;
+    
+  }*/
 
   retry(): void {
     this.cargarDatosUsuario();

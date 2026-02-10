@@ -37,6 +37,12 @@
             <span class="barra-lateral__menu-texto">Recursos</span>
           </a>
         </li>
+        <li class="barra-lateral__menu-item">
+          <a routerLink="/grupo/miembros" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">
+            <span class="barra-lateral__menu-icono"><span [feather]="'users'" [tipo]="'submenu'"></span></span>
+            <span class="barra-lateral__menu-texto">Miembros</span>
+          </a>
+        </li>
       } @else if (variante === 'perfil') {
         <li class="barra-lateral__menu-item">
           <a routerLink="/perfil" routerLinkActive="barra-lateral__menu-enlace--activo" [routerLinkActiveOptions]="{ exact: true }" class="barra-lateral__menu-enlace">

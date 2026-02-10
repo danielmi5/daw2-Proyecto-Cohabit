@@ -16,7 +16,10 @@ Para los estados interactivos, como no hice muchos elementos interactivos para l
 
 ## Componente card-miembro
 
-Para este componente, no conseguí hacer que funcione la obtención de los datos (imagen y nombre de usuario) y la imagen no se muestra como debería, por lo que no se ve como debería ser el diseño, pero los estilos que debe tener están definidos. Este componente sigue el display flex y su componente padre utiliza grid, siendo este responsive y cambiando el número de columnas, según se pide (3, 2 y 1). 
+Para este componente, no conseguí hacer que funcione la obtención de los datos (imagen y nombre de usuario) y la imagen no se muestra como debería, por lo que no se ve como debería ser el diseño, pero los estilos que debe tener están definidos. Este componente sigue el display flex siendo responsive.
 
+## Componente lista-miembros
+
+Este componente utiliza display grid para su layout, siendo este responsive y cambiando el número de columnas, según se pide (3 para escritorio, 2 tablet y 1 móvil). 
 
 He utilizado lenguajehtml.com, saas-lang.com y lenguajecss.com.

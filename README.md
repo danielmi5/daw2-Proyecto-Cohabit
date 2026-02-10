@@ -1,5 +1,7 @@
 # Proyecto Cohabit
 
+**URL DEL VIDEO EN DRIVE** --> [https://drive.google.com/file/d/122-00QDZdCghlCZI2qy_NssVFWK5tSjQ/view?usp=sharing](https://drive.google.com/file/d/122-00QDZdCghlCZI2qy_NssVFWK5tSjQ/view?usp=sharing) 
+
 Proyecto Cohabit es una aplicación web para gestionar recursos compartidos en viviendas y espacios colectivos. Permite a los residentes reservar recursos (cocina, lavadora, salón, etc.), ver calendarios de uso y administrar usuarios para mejorar la convivencia.
 
 Para poder ver la aplicación puedes acceder a este enlace [https://cohabit-front-xjlup.ondigitalocean.app/](https://cohabit-front-xjlup.ondigitalocean.app/).

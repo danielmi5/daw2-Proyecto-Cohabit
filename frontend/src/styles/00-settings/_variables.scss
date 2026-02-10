@@ -16,6 +16,7 @@ $color-apoyo2: hsl(330, 81%, 60%); //color añadido para trazo botones
 $color-nuevo1: hsl(313, 91%, 79%);
 $color-nuevo2: hsl(313, 79%, 58%);
 
+
 //Escala de grises  (NEUTROS)
 $blanco-puro: hsl(0, 0%, 100%);
 $blanco: hsl(0, 0%, 98%);
@@ -41,15 +42,25 @@ $color-info2: hsl(210, 100%, 46%);
 
 
 //COLORES POR USO
-
 // Botones
-$btn-primario: $color-primario-claro; // Botón primario
-$btn-primario-hover: $color-primario; // Hover primario
-$btn-primario-active: $color-primario-oscuro; // Click primario
+//$btn-primario: $color-primario-claro; // Botón primario
+//$btn-primario-hover: $color-primario; // Hover primario
+//$btn-primario-active: $color-primario-oscuro; // Click primario
 
-$btn-secundario: $blanco; // Botón secundario
-$btn-secundario-hover: $gris1; // Hover secundario
-$btn-secundario-active: $color-complementario1; // Click secundario
+//$btn-secundario: $blanco; // Botón secundario
+//$btn-secundario-hover: $gris1; // Hover secundario
+//$btn-secundario-active: $color-complementario1; // Click secundario
+
+//CAMBIADO PARA LOS ESTADOS ESTÁTICOS DE LA PRUEBA PRÁCTICA
+// Botones
+$btn-primario: $color-nuevo2; // Botón primario
+$btn-primario-hover: hsl(313, 64%, 65%);
+; // Hover primario
+$btn-primario-active: hsl(313, 78%, 44%); // Click primario
+
+$btn-secundario: $color-nuevo1; // Botón secundario
+$btn-secundario-hover: hsl(313, 84%, 81%); // Hover secundario
+$btn-secundario-active: hsl(313, 98%, 50%); // Click secundario
 
 // Inputs y bordes
 $fondo-input: $blanco; // Fondo input

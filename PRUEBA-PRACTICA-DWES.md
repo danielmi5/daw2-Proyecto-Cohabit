@@ -31,7 +31,7 @@ Método en grupoSecurityService para comprobar si es miembro:
 
 ## Capturas o comandos para probarlo.
 
-He realizado pruebas para verificar el correcto funcionamiento del endpoint. 
+He realizado pruebas para verificar el correcto funcionamiento del endpoint mediante Insomnia. 
 
 1. Accediendo al endpoint con un usuario admin.
 

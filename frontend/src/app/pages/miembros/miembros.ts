@@ -7,22 +7,25 @@ import { CommonModule } from '@angular/common';
 import { MiembroGrupoResponse, UsuarioResponse } from '../../models';
 import { MiembroGrupoService } from '../../services/miembro-grupo.service';
 import { Router } from '@angular/router';
+import { GrupoService } from '../../services/grupo.service';
+import { Button } from "../../components/shared/button/button";
+import { CardMiembro } from "../../components/shared/card-miembro/card-miembro";
 
 @Component({
   selector: 'app-miembros',
-  imports: [CommonModule, Spinner],
+  imports: [CommonModule, Spinner, Button, CardMiembro],
   templateUrl: './miembros.html',
   styleUrl: './miembros.scss',
 })
 export class Miembros implements OnInit{
   private authService = inject(AuthService);
-  private usuarioService = inject(UsuarioService);
   private miembroService = inject(MiembroGrupoService);
-  private notificacionService = inject(NotificacionService);
+  private grupoService = inject(GrupoService);
   private router = inject(Router);
 
   usuarioActual = signal<UsuarioResponse | null>(null);
   miembroActual = signal<MiembroGrupoResponse | null>(null);
+  miembros: MiembroGrupoResponse[] = [];
   total = 0;
   error = false;
   mensajeError = "";
@@ -32,10 +35,10 @@ export class Miembros implements OnInit{
   miembroId: number | null = null;
   
   ngOnInit(): void {
-    this.cargarMiembros();
+    this.cargarDatosUsuario();
   }
 
-  private cargarMiembros(){
+  private cargarDatosUsuario(){
     const usuario = this.authService.usuarioDetalles();
     
     if (!usuario?.miembroGrupoId) {
@@ -68,4 +71,39 @@ export class Miembros implements OnInit{
       }
     });
   }
+
+  cargarMiembros(): void{
+    if (!this.grupoId) {
+      this.error = true;
+      this.mensajeError = 'No se ha podido identificar el grupo';
+      this.cargando.set(false);
+      return;
+    }
+
+    this.cargando.set(true);
+    this.error = false;
+
+    this.grupoService.obtenerMiembros(this.grupoId).subscribe({
+      next: (res) => {
+        this.miembros = res.items || [];
+        this.total = res.total || this.miembros.length;
+        this.cargando.set(false);
+      },
+      error: (error: any) => {
+        console.error('Error al cargar miembros:', error);
+        this.error = true;
+        this.mensajeError = error.message || 'Error al cargar los miembros';
+        this.cargando.set(false);
+      }
+    });
+  }
+
+  retry(): void {
+    this.cargarDatosUsuario();
+  }
+
+  goToMyGroup():void {
+    this.router.navigate(['/grupo']);
+  }
 }
+

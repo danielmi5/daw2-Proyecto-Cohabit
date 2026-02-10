@@ -56,6 +56,7 @@ export class Miembros implements OnInit{
 
     this.miembroService.get(usuario.miembroGrupoId).subscribe({
       next: (miembro) => {
+        this.grupoId = miembro.grupoId || null;
         this.miembroActual.set(miembro);
         if (this.grupoId) {
           this.cargarMiembros();

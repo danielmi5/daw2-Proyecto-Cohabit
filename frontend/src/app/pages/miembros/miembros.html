@@ -20,7 +20,7 @@
 
   <!-- Estado con datos -->
   @if (!cargando() && !error) {
-    <section class="miembros__contenido">
+    <div class="miembros__contenido">
       <!-- Estado vacío -->
       @if (miembros.length === 0) {
         <aside class="miembros__vacio">
@@ -29,8 +29,7 @@
         </aside>
       }
       @else {
-        <section class="miembros__seccion">
-          <li class="miembros__lista">
+        <li class="miembros__lista">
             @for (miembro of miembros; track miembro.id) {
               <li>
                 <app-card-miembro
@@ -39,9 +38,8 @@
                 </app-card-miembro>
               </li>
             }
-          </li>
-        </section>
+        </li>
       }
-    </section>
+    </div>
   }
 </section>

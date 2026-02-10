@@ -10,10 +10,11 @@ import { Router } from '@angular/router';
 import { GrupoService } from '../../services/grupo.service';
 import { Button } from "../../components/shared/button/button";
 import { CardMiembro } from "../../components/shared/card-miembro/card-miembro";
+import { ListaMiembros } from "../../components/shared/lista-miembros/lista-miembros";
 
 @Component({
   selector: 'app-miembros',
-  imports: [CommonModule, Spinner, Button, CardMiembro],
+  imports: [CommonModule, Spinner, Button, CardMiembro, ListaMiembros],
   templateUrl: './miembros.html',
   styleUrl: './miembros.scss',
 })

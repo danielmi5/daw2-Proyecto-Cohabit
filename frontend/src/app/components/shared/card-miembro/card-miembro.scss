@@ -16,4 +16,17 @@
     &:hover{
         background-color: $color-nuevo1;
     }
+
+    &__encabezado{
+        width: 100%;
+        padding-bottom: $espaciado-m;
+        border-bottom: 1px solid var(--borde-cards);
+
+        @include mixins.centrar-flex(column);
+    }
+
+    &__detalles{
+        width: 100%;
+        @include mixins.centrar-flex(column);
+    }
 }

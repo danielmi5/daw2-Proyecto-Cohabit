@@ -29,7 +29,7 @@
         </aside>
       }
       @else {
-        <li class="miembros__lista">
+        <app-lista-miembros>
             @for (miembro of miembros; track miembro.id) {
               <li>
                 <app-card-miembro
@@ -38,7 +38,7 @@
                 </app-card-miembro>
               </li>
             }
-        </li>
+        </app-lista-miembros>
       }
     </div>
   }

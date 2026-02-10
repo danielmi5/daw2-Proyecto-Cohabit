@@ -1,6 +1,6 @@
 <article class="card-miembro">
     <header class="card-miembro__encabezado">
-        <ul>
+        <ul class ="card-miembro__lista">
             <li><img class="card-miembro__encabeza__foto" src="" alt="Foto de perfil del usuario"></li>
             <li>Nombre usuario</li>
             <li>{{miembro.rol}}</li>
@@ -8,7 +8,7 @@
     </header>
 
     <section class="card-miembro__detalles">
-        <ul>
+        <ul class="card-miembro__lista">
             <li>Unido el {{miembro.fechaUnion}}</li>
             <li>Ha creado {{miembro.recursosIds?.length || 0}} recursos</li>
             <li>Ha realizado {{miembro.reservasIds?.length || 0}} reservas</li>

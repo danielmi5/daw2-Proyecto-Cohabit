@@ -74,21 +74,11 @@
   &__seccion {
     width: 100%;
   }
-
-  &__lista {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    list-style: none;
-    gap: $espaciado-l;
-  }
 }
 
 // Responsive
 @media (max-width: $breakpoint-escritorio) {
   .miembros {
-    &__lista {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 }
 
@@ -99,25 +89,12 @@
     &__titulo {
         font-size: $text-2xl;
     }
-
-    &__lista {
-        width: fit-content;
-        
-        grid-template-columns: 1fr;
-        gap: $espaciado-m;
-
-        align-self: center;
-    }
   }
 }
 
 @media (max-width: $breakpoint-movil-grande) {
   .miembros {
     padding: $espaciado-xl $espaciado-l;
-
-    &__lista {
-      grid-template-columns: 1fr;
-    }
   }
 }
 

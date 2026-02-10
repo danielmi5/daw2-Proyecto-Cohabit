@@ -1,6 +1,7 @@
 package com.cohabit.cohabit_backend.repository;
 
 import com.cohabit.cohabit_backend.entity.Grupo;
+import com.cohabit.cohabit_backend.entity.MiembroGrupo;
 import com.cohabit.cohabit_backend.entity.Recurso;
 import com.cohabit.cohabit_backend.entity.TipoRecurso;
 
@@ -59,4 +60,7 @@ public interface GrupoRepository extends JpaRepository<Grupo, Long> {
 
         @Query("SELECT r FROM Recurso r WHERE r.grupo.id = :grupoId AND (:tipo IS NULL OR r.tipo = :tipo) ORDER BY r.id DESC")
         Page<Recurso> findRecursosInventario(@Param("grupoId") Long grupoId, @Param("tipo") TipoRecurso tipo, Pageable pageable);
+
+        @Query("SELECT m FROM MiembroGrupo m WHERE m.grupo.id = :grupoId ORDER BY m.id DESC")
+        Page<MiembroGrupo> findMiembros(@Param("grupoId") Long grupoId, Pageable pageable);
 }

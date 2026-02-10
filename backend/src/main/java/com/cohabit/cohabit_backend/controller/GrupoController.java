@@ -2,6 +2,7 @@ package com.cohabit.cohabit_backend.controller;
 
 import com.cohabit.cohabit_backend.dto.GrupoRequestDTO;
 import com.cohabit.cohabit_backend.dto.GrupoUpdateDTO;
+import com.cohabit.cohabit_backend.dto.MiembroGrupoResponseDTO;
 import com.cohabit.cohabit_backend.dto.GrupoResponseDTO;
 import com.cohabit.cohabit_backend.dto.RecursoResponseDTO;
 import com.cohabit.cohabit_backend.service.GrupoService;
@@ -70,6 +71,21 @@ public class GrupoController {
         Pageable pageable) {
         return ResponseEntity.ok(grupoService.obtenerRecursosInventario(id, tipo, pageable));
     }
+
+    @GetMapping("/{id}/miembros")
+    @Operation(summary = "Obtener miembros del grupo", description = "Obtener miembros asociados a un grupo de forma paginada con filtros opcionales")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Miembros obtenidos exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Grupo no encontrado", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class))),
+        @ApiResponse(responseCode = "403", description = "No eres miembro de este grupo", content = @Content(schema = @Schema(implementation = ApiErrorDTO.class)))
+    })
+    @PreAuthorize("hasRole('ADMIN') or @grupoSecurity.esMiembro(#id)")
+    public ResponseEntity<Page<MiembroGrupoResponseDTO>> obtenerRecursos(
+        @Parameter(description = "ID del grupo") @PathVariable Long id,
+        Pageable pageable) {
+        return ResponseEntity.ok(grupoService.obtenerMiembros(id, pageable));
+    }
+
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener grupo", description = "Obtener información detallada de un grupo por ID")

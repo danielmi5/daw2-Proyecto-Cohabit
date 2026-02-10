@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { MiembroGrupo } from '../../../models';
+import { Component, inject, Input, signal } from '@angular/core';
+import { MiembroGrupoResponse, UsuarioResponse } from '../../../models';
 
 @Component({
   selector: 'app-card-miembro',
@@ -9,5 +9,9 @@ import { MiembroGrupo } from '../../../models';
   styleUrl: './card-miembro.scss',
 })
 export class CardMiembro {
-  @Input() miembro: MiembroGrupo;
+  @Input() miembro!: MiembroGrupoResponse;
+  @Input() usuario!: UsuarioResponse;
+
 }
+
+

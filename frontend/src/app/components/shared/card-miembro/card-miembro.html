@@ -2,14 +2,22 @@
     <header class="card-miembro__encabezado">
         <ul>
             <li><img class="card-miembro__encabeza__foto" src="" alt="Foto de perfil del usuario"></li>
-            <li>{usuario.nombre}</li>
-            <li>miembro.rol</li>
-        </ul>
-        
+            <li>{{usuario.nombre}}</li>
+            <li>{{miembro.rol}}</li>
+        </ul>   
     </header>
+    
     <section class="card-miembro__detalles">
         <ul>
-            li*5
+            <li>Unido el {{miembro.fechaUnion}}</li>
+            <li>Ha creado {{miembro.recursosIds?.length || 0}} recursos</li>
+            <li>Ha realizado {{miembro.reservasIds?.length || 0}} reservas</li>
+            @if (miembro.activo) {
+                <li>Este usuario sigue activo</li>
+            }
+            @else {
+                <li>Este usuario ya no pertenece el grupo</li>
+            }
         </ul>
     </section>
 </article>

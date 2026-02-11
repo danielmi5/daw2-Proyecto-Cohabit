@@ -1,0 +1,38 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+
+.lista-miembros {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    list-style: none;
+    gap: $espaciado-l;
+}
+
+
+// Responsive
+@media (max-width: $breakpoint-escritorio) {
+    .lista-miembros {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: $breakpoint-tablet) {
+
+    .lista-miembros {
+        width: fit-content;
+        
+        grid-template-columns: 1fr;
+        gap: $espaciado-m;
+
+        align-self: center;
+    }
+  
+}
+
+@media (max-width: $breakpoint-movil-grande) {
+    .lista-miembros {
+        grid-template-columns: 1fr;
+    }
+}

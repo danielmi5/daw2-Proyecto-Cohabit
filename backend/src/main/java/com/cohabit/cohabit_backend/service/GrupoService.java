@@ -5,11 +5,13 @@ import com.cohabit.cohabit_backend.dto.GrupoUpdateDTO;
 import com.cohabit.cohabit_backend.dto.GrupoResponseDTO;
 import com.cohabit.cohabit_backend.dto.RecursoResponseDTO;
 import com.cohabit.cohabit_backend.entity.Grupo;
+import com.cohabit.cohabit_backend.entity.MiembroGrupo;
 import com.cohabit.cohabit_backend.exception.EntidadNoEncontradaException;
 import com.cohabit.cohabit_backend.exception.EntidadYaExisteException;
 import com.cohabit.cohabit_backend.exception.ParametroNuloException;
 import com.cohabit.cohabit_backend.exception.UsuarioYaPerteneceAUnGrupoException;
 import com.cohabit.cohabit_backend.mapper.GrupoMapper;
+import com.cohabit.cohabit_backend.mapper.MiembroGrupoMapper;
 import com.cohabit.cohabit_backend.mapper.RecursoMapper;
 import com.cohabit.cohabit_backend.entity.TipoRecurso;
 import com.cohabit.cohabit_backend.entity.RolGrupo;
@@ -17,6 +19,8 @@ import com.cohabit.cohabit_backend.entity.Usuario;
 import com.cohabit.cohabit_backend.repository.GrupoRepository;
 import com.cohabit.cohabit_backend.repository.UsuarioRepository;
 import com.cohabit.cohabit_backend.dto.MiembroGrupoRequestDTO;
+import com.cohabit.cohabit_backend.dto.MiembroGrupoResponseDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -201,5 +205,21 @@ public class GrupoService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(dtos, pageable, paginaRecursos.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<MiembroGrupoResponseDTO> obtenerMiembros(Long grupoId, Pageable pageable) {
+        // Verifica que el grupo existe
+        if (!grupoRepository.existsById(grupoId)) {
+            throw new EntidadNoEncontradaException("Grupo no encontrado: " + grupoId);
+        }
+
+        Page<MiembroGrupo> paginaMiembros = grupoRepository.findMiembros(grupoId, pageable);
+
+        List<MiembroGrupoResponseDTO> dtos = paginaMiembros.getContent().stream()
+                .map(MiembroGrupoMapper::miembroGrupoEntidadAMiembroGrupoDto)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(dtos, pageable, paginaMiembros.getTotalElements());
     }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError, retry } from 'rxjs/operators';
-import { ApiListResponse, GrupoResponse, GrupoRequest, GrupoUpdate, RecursoResponse } from '../models';
+import { ApiListResponse, GrupoResponse, GrupoRequest, GrupoUpdate, RecursoResponse, MiembroGrupoResponse } from '../models';
 import { ApiService } from './api.service';
 import { handleHttpError } from './error-handler.util';
 
@@ -123,6 +123,23 @@ export class GrupoService {
     if (tipo) params = params.set('tipo', tipo);
 
     return this.api.get<import('../models').BackendPage<RecursoResponse>>(`${this.base}/${grupoId}/recursos`, { params }).pipe(
+      retry(2),
+      map(res => ({ items: res.content || [], total: res.totalElements || 0 })),
+      catchError(error => this.handleError(error))
+    );
+  }
+
+  /**
+   * Obtiene miembros paginados de un grupo (nueva API)
+   * @param grupoId - ID del grupo
+   * @param page - número de página (base 0)
+   * @param size - tamaño de página
+   * @returns Observable con lista paginada (items + total)
+   */
+  obtenerMiembros(grupoId: number, page = 0, size = 10): Observable<ApiListResponse<MiembroGrupoResponse>> {
+    let params = new HttpParams().set('page', String(page)).set('size', String(size));
+
+    return this.api.get<import('../models').BackendPage<MiembroGrupoResponse>>(`${this.base}/${grupoId}/miembros`, { params }).pipe(
       retry(2),
       map(res => ({ items: res.content || [], total: res.totalElements || 0 })),
       catchError(error => this.handleError(error))

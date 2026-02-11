@@ -1,0 +1,105 @@
+@use '../../../styles/00-settings/variables' as *;
+@use '../../../styles/01-tools/mixins' as mixins;
+
+.miembros {
+  width: 100%;
+  min-height: calc(100vh - 200px);
+  @include mixins.display-flex(column, $espaciado-l, center, flex-start);
+  position: relative;
+
+  &__titulo {
+    width: 100%;
+    margin: 0 0 $espaciado-l 0;
+    @include mixins.tipografia(h2, var(--titulos));
+    font-weight: $font-weight-bold;
+    letter-spacing: 0.5px;
+    text-align: start;
+  }
+
+  &__estado {
+    @include mixins.centrar-flex(column);
+    min-height: 400px;
+    gap: $espaciado-l;
+
+    &--carga {
+      color: var(--texto-primario);
+    }
+
+    &--error {
+      color: var(--color-error);
+    }
+  }
+
+    
+
+  &__icono-error {
+    font-size: $text-5xl;
+  }
+
+  &__mensaje-error {
+    @include mixins.tipografia(parrafo, var(--texto-primario));
+    max-width: 500px;
+    text-align: center;
+  }
+
+  &__acciones {
+    @include mixins.display-flex(row, $espaciado-m, center, center);
+
+  }
+
+  &__contenido {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $espaciado-l;
+  }
+
+  &__vacio {
+    @include mixins.centrar-flex(column);
+    min-height: 300px;
+    text-align: center;
+    gap: $espaciado-m;
+
+    &__titulo {
+      margin: 0;
+      @include mixins.tipografia(h3, var(--titulos));
+    }
+
+    &__texto {
+      margin: 0;
+      @include mixins.tipografia(parrafo, var(--texto-primario));
+    }
+  }
+
+  &__seccion {
+    width: 100%;
+  }
+}
+
+// Responsive
+@media (max-width: $breakpoint-escritorio) {
+  .miembros {
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .miembros {
+    padding: $espaciado-m;
+
+    &__titulo {
+        font-size: $text-2xl;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-movil-grande) {
+  .miembros {
+    padding: $espaciado-xl $espaciado-l;
+  }
+}
+
+@media (max-width: $breakpoint-movil-pequeno) {
+  .miembros {
+    padding: $espaciado-xl 0;
+  }
+}

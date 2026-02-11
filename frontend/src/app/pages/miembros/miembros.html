@@ -1,1 +1,45 @@
-<p>miembros works!</p>
+<section class="miembros">
+  <h1 class="miembros__titulo">Miembros disponibles</h1>
+
+  <!-- Estado de carga -->
+  @if (cargando()) {
+    <app-spinner [texto]="'Cargando miembros...'" [tamanio]="'mediano'"></app-spinner>
+  }
+
+  <!-- Estado de error -->
+  @if (!cargando() && error) {
+    <section class="miembros__estado miembros__estado--error">
+      <h2>Error al cargar los miembros</h2>
+      <p class="miembros__mensaje-error">{{ mensajeError }}</p>
+      <nav class="miembros__acciones">
+        <app-button [variante]="'primario'" (click)="retry()">Reintentar</app-button>
+        <app-button [variante]="'secundario'" (click)="goToMyGroup()">Volver a datos grupo</app-button>
+      </nav>
+    </section>
+  }
+
+  <!-- Estado con datos -->
+  @if (!cargando() && !error) {
+    <div class="miembros__contenido">
+      <!-- Estado vacío -->
+      @if (miembros.length === 0) {
+        <aside class="miembros__vacio">
+          <h2 class="miembros__vacio__titulo">No hay miembros disponibles</h2>
+          <p class="miembros__vacio__texto">Comienza creando tu primer recurso</p>
+        </aside>
+      }
+      @else {
+        <app-lista-miembros>
+            @for (miembro of miembros; track miembro.id) {
+              <li>
+                <app-card-miembro
+                    [miembro]="miembro"
+                >
+                </app-card-miembro>
+              </li>
+            }
+        </app-lista-miembros>
+      }
+    </div>
+  }
+</section>

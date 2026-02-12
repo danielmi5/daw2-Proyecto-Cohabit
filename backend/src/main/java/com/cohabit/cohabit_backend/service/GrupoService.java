@@ -217,7 +217,12 @@ public class GrupoService {
         Page<MiembroGrupo> paginaMiembros = grupoRepository.findMiembros(grupoId, pageable);
 
         List<MiembroGrupoResponseDTO> dtos = paginaMiembros.getContent().stream()
-                .map(MiembroGrupoMapper::miembroGrupoEntidadAMiembroGrupoDto)
+                .map(miembro -> {
+                    // Inicializa las colecciones para que se carguen los IDs
+                    org.hibernate.Hibernate.initialize(miembro.getRecursos());
+                    org.hibernate.Hibernate.initialize(miembro.getReservas());
+                    return MiembroGrupoMapper.miembroGrupoEntidadAMiembroGrupoDto(miembro);
+                })
                 .collect(Collectors.toList());
 
         return new PageImpl<>(dtos, pageable, paginaMiembros.getTotalElements());

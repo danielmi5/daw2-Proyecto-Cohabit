@@ -26,4 +26,12 @@ public interface MiembroGrupoRepository extends JpaRepository<MiembroGrupo, Long
     @EntityGraph(attributePaths = {"reservas"})
     @Query("SELECT m FROM MiembroGrupo m WHERE m.id = :id")
     Optional<MiembroGrupo> findByIdWithReservas(@Param("id") Long id);
+
+    /**
+     * Busca un miembro por ID cargando sus recursos de forma eager.
+     * Usa @EntityGraph para hacer un JOIN FETCH en una sola query.
+     */
+    @EntityGraph(attributePaths = {"recursos"})
+    @Query("SELECT m FROM MiembroGrupo m WHERE m.id = :id")
+    Optional<MiembroGrupo> findByIdWithRecursos(@Param("id") Long id);
 }

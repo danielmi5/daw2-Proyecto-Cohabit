@@ -17,6 +17,8 @@ import com.cohabit.cohabit_backend.repository.GrupoRepository;
 import com.cohabit.cohabit_backend.repository.MiembroGrupoRepository;
 import com.cohabit.cohabit_backend.repository.ReservaRepository;
 import com.cohabit.cohabit_backend.repository.UsuarioRepository;
+
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,24 +33,36 @@ public class MiembroGrupoService {
     private final MiembroGrupoRepository miembroRepo;
     private final GrupoRepository grupoRepo;
     private final UsuarioRepository usuarioRepo;
-    private final ReservaRepository reservaRepo;
 
     public MiembroGrupoService(MiembroGrupoRepository miembroRepo, GrupoRepository grupoRepo, UsuarioRepository usuarioRepo, ReservaRepository reservaRepo) {
         this.miembroRepo = miembroRepo;
         this.grupoRepo = grupoRepo;
         this.usuarioRepo = usuarioRepo;
-        this.reservaRepo = reservaRepo;
     }
 
     @Transactional(readOnly = true)
     public MiembroGrupoResponseDTO obtenerPorId(Long id) {
-        MiembroGrupo miembro = miembroRepo.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("Miembro no encontrado: " + id));
+        MiembroGrupo miembro = miembroRepo.findById(id)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Miembro no encontrado: " + id));
+        
+        // Hibernate.initialize() fuerza la carga de las colecciones
+        Hibernate.initialize(miembro.getRecursos());
+        Hibernate.initialize(miembro.getReservas());
+        
         return MiembroGrupoMapper.miembroGrupoEntidadAMiembroGrupoDto(miembro);
     }
 
+    @Transactional(readOnly = true)
     public Page<MiembroGrupoResponseDTO> obtenerTodos(Pageable pageable) {
         var paginaMiembros = miembroRepo.findAll(pageable);
-        List<MiembroGrupoResponseDTO> dtos = paginaMiembros.getContent().stream().map(miembroEntidad -> MiembroGrupoMapper.miembroGrupoEntidadAMiembroGrupoDto(miembroEntidad)).toList();
+        List<MiembroGrupoResponseDTO> dtos = paginaMiembros.getContent().stream()
+                .map(miembroEntidad -> {
+                    // Inicializa las colecciones para que se carguen los IDs
+                    Hibernate.initialize(miembroEntidad.getRecursos());
+                    Hibernate.initialize(miembroEntidad.getReservas());
+                    return MiembroGrupoMapper.miembroGrupoEntidadAMiembroGrupoDto(miembroEntidad);
+                })
+                .toList();
         return new PageImpl<>(dtos, pageable, paginaMiembros.getTotalElements());
     }
 

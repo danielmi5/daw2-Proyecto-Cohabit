@@ -11,6 +11,7 @@ import { GrupoService } from '../../services/grupo.service';
 import { Button } from "../../components/shared/button/button";
 import { CardMiembro } from "../../components/shared/card-miembro/card-miembro";
 import { ListaMiembros } from "../../components/shared/lista-miembros/lista-miembros";
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-miembros',
@@ -29,6 +30,7 @@ export class Miembros implements OnInit{
   usuarioActual = signal<UsuarioResponse | null>(null);
   miembroActual = signal<MiembroGrupoResponse | null>(null);
   miembros: MiembroGrupoResponse[] = [];
+  usuarios = new Map<number, UsuarioResponse>();
   total = 0;
   error = false;
   mensajeError = "";
@@ -91,7 +93,7 @@ export class Miembros implements OnInit{
       next: (res) => {
         this.miembros = res.items || [];
         this.total = res.total || this.miembros.length;
-        this.cargando.set(false);
+        this.cargarUsuariosDeMiembros(this.miembros);
       },
       error: (error: any) => {
         console.error('Error al cargar miembros:', error);
@@ -102,29 +104,39 @@ export class Miembros implements OnInit{
     });
   }
 
-  /*
-  obtenerUsuario(id: number): UsuarioResponse{
-    
-    this.usuarioService.get(id).subscribe({
-        next: (user) => {
-          usuario = user;
-          this.cargando.set(false);
-        },
-        error: (error) => {
-          console.error('Error al cargar usuario:', error);
-          this.notificacionService.error('Error al cargar los datos del usuario');
-          this.cargando.set(false);
-        }
-      });
-    return usuario;
-    
-  }*/
+  private cargarUsuariosDeMiembros(miembros: MiembroGrupoResponse[]): void {
+    if (miembros.length === 0) {
+      this.cargando.set(false);
+      return;
+    }
+
+    const usuariosObservables = miembros
+      .filter(m => m.usuarioId != null)
+      .map(m => this.usuarioService.get(m.usuarioId!));
+
+    forkJoin(usuariosObservables).subscribe({
+      next: (usuarios) => {
+        usuarios.forEach((usuario, index) => {
+          const usuarioId = miembros[index].usuarioId;
+          if (usuarioId) {
+            this.usuarios.set(usuarioId, usuario);
+          }
+        });
+        this.cargando.set(false);
+      },
+      error: (error) => {
+        console.error('Error al cargar usuarios:', error);
+        this.notificacionService.error('Error al cargar los datos de los usuarios');
+        this.cargando.set(false);
+      }
+    });
+  }
 
   retry(): void {
     this.cargarDatosUsuario();
   }
 
-  goToMyGroup():void {
+  goToMyGroup(): void {
     this.router.navigate(['/grupo']);
   }
 }

@@ -22,10 +22,41 @@
         color: var(--texto-primario);
     }
 
+    &__lista{
+        width: 100%;
+        @include mixins.display-flex(column, $espaciado-s, center, center);
+        gap: $espaciado-s;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    &__foto{
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--borde-cards);
+        align-self: center;
+
+        &--placeholder{
+            @include mixins.centrar-flex(row);
+            background-color: var(--fondo-secundario);
+            color: var(--texto-primario);
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    }
+
     &__detalles{
         width: 100%;
         @include mixins.centrar-flex(column);
 
         color: var(--texto-primario);
+
+        &__lista{
+            width: fit-content;
+            align-items: flex-start;
+        }
     }
 }

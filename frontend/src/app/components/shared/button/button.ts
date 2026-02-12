@@ -10,7 +10,7 @@ import { FeatherIconDirective } from '../../../directives/feather-icon.directive
   styleUrls: ['./button.scss'],
 })
 export class Button {
-  @Input() variante: 'primario' | 'secundario' | 'fantasma' | 'peligro' = 'primario';
+  @Input() variante: 'primario' | 'secundario' | 'fantasma' | 'peligro' | 'carrusel' = 'primario';
   @Input() tamanio: 'pequeno' | 'mediano' | 'grande' = 'mediano';
   @Input() deshabilitado: boolean = false;
   @Input() tipo: 'button' | 'submit' | 'reset' = 'button';

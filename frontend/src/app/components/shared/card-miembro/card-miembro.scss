@@ -13,10 +13,6 @@
     
     transition: all $transicion-base $transicion-suave;
 
-    &:hover{
-        background-color: $color-nuevo1;
-    }
-
     &__encabezado{
         width: 100%;
         padding-bottom: $espaciado-m;

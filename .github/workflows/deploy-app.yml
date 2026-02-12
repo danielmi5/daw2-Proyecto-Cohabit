@@ -1,0 +1,28 @@
+name: Deploy to DigitalOcean
+
+# Se activa cuando 'hub.yml' termina correctamente
+on:
+  workflow_run:
+    workflows: ["Build and Publish"]
+    branches: [main]
+    types: 
+      - completed
+
+jobs:
+  deploy:
+    # Solo ejecuta si el workflow anterior fue exitoso
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_TOKEN }}
+
+      # Redesplegar Backend
+      - name: Deploy Backend
+        run: doctl apps create-deployment 5684a7b2-30ae-46a8-aec8-251a6755292f --force-rebuild
+
+      # Redesplegar Frontend
+      - name: Deploy Frontend
+        run: doctl apps create-deployment 7e42274f-4366-417a-b620-3328e428f00e --force-rebuild

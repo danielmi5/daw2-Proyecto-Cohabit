@@ -19,10 +19,13 @@
         border-bottom: 1px solid var(--borde-cards);
 
         @include mixins.centrar-flex(column);
+        color: var(--texto-primario);
     }
 
     &__detalles{
         width: 100%;
         @include mixins.centrar-flex(column);
+
+        color: var(--texto-primario);
     }
 }

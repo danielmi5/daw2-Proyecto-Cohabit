@@ -254,7 +254,7 @@ $negro: hsl(0, 0%, 13%);
 
 **Problema:** Tengo varias imágenes con descripciones genéricas que no aportan contexto. TAW encontró 6 casos así y WAVE también me avisó. Por ejemplo, en las cards de recursos uso `alt="Recurso"` cuando no hay nombre, y en algunos componentes uso `alt="Foto de perfil"` o `alt="Vista previa"` sin más detalles.
 
-**Impacto:** Un usuario con lector de pantalla no tiene ni idea de qué hay en la imagen. Escucha algo genérico como "Recurso" o "Foto de perfil" sin más contexto. Es como si te describieran una película diciendo solo "hay una escena" sin decir qué pasa en ella.
+**Impacto:** Un usuario con lector de pantalla no tiene ni idea de qué hay en la imagen. Escucha algo genérico como "Recurso" o "Foto de perfil" sin más contexto.
 
 **Criterio WCAG:** 1.1.1 - Contenido no textual (Nivel A)
 
@@ -288,5 +288,52 @@ $negro: hsl(0, 0%, 13%);
 ```html
 <!-- Código corregido -->
 ```
+
+## Sección 5: Análisis de estructura semántica
+
+### Landmarks HTML5 utilizados
+
+- [x] `<header>` - Cabecera principal del sitio con logo, navegación y botones. Además de encabezados para algunas cards.
+- [x] `<nav>` - Menú de navegación.
+- [x] `<main>` - Contenido principal.
+- [x] `<article>` - Usado principalmente para las cards.
+- [x] `<section>` - Usado para dividir múltiples secciones de contenido en todas las páginas.
+- [x] `<aside>` - Sidebar principalmente y elementos que aportan información al contenido principal. 
+- [x] `<footer>` - Pie de página principal del sitio.
+
+### Jerarquía de encabezados
+
+```
+H1: [Título principal]
+  H2: [Sección 1]
+    H3: [Subsección 1.1]
+    H3: [Subsección 1.2]
+  H2: [Sección 2]
+    H3: [Subsección 2.1]
+```
+
+### Análisis de imágenes
+
+- **Total de imágenes:** 13
+- **Con texto alternativo:** 13
+- **Decorativas (alt=""):** 0
+- **Sin alt (corregidas):** 0 (todas tienen `alt`, pero varios son genéricos)
+
+**Detalle de imágenes encontradas (por archivo y estado del `alt`):**
+1. `src/app/components/layout/header/header.html` - `header/logo.svg` - `alt="Cohabit"` — OK (marca)
+2. `src/app/pages/inicio/inicio.html` - `img_optimizadas/inicio-lg.jpg` - `alt="Vista general de la aplicación Cohabit"` — OK (descriptiva)
+3. `src/app/components/layout/footer/footer.html` - `footer/youtube.svg` - `alt="YouTube"` — OK
+4. `src/app/components/layout/footer/footer.html` - `footer/facebook.svg` - `alt="Facebook"` — OK
+5. `src/app/components/layout/footer/footer.html` - `footer/x.svg` - `alt="Twitter/X"` — OK
+6. `src/app/components/layout/footer/footer.html` - `footer/instagram.svg` - `alt="Instagram"` — OK
+7. `src/app/components/pages/data-perfil/data-perfil.html` - `usuario?.fotoPerfil` - `alt="Foto de perfil"` — genérico
+8. `src/app/components/pages/data-grupo/data-grupo.html` - `grupo?.fotoGrupo` - `alt="Foto del grupo"` — genérico
+9. `src/app/components/shared/form-archivo/form-archivo.html` - `previewUrl` - `alt="Vista previa"` — genérico
+10. `src/app/components/shared/card-recurso/card-recurso.html` - `recurso.fotoRecurso` - `[alt]="recurso.nombre || 'Recurso'"` — dinámico con fallback genérico
+11. `src/app/components/shared/card/card.html` - `[alt]="imagenAlt || titulo"` — dinámico (fallback depende de `titulo`)
+12. `src/app/components/shared/card-miembro/card-miembro.html` - `[alt]="'Foto de perfil de ' + (usuario?.nombre || 'usuario')"` — dinámico (fallback `'usuario'` es genérico)
+13. `src/app/components/layout/sidebar/sidebar.html` - `[alt]="nombreUsuario()"` — dinámico (puede devolver valor genérico/vacío)
+
+Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requisito básico. Sin embargo, TAW detectó 6 advertencias porque algunos textos alternativos son demasiado genéricos y no proporcionan suficiente contexto. Las imágenes estáticas (logo, redes sociales, hero) tienen descripciones adecuadas. Las imágenes dinámicas (perfiles, recursos, grupos) necesitan descripciones más específicas que incluyan el nombre del usuario/recurso/grupo para ser verdaderamente descriptivas.
 
 

@@ -34,18 +34,14 @@
       </article>
     </section>
 
-    <!-- Estado de recursos -->
+    <!-- Estado de recursos con carrusel -->
     <section class="dashboard-inicio__seccion">
       <h2 class="dashboard-inicio__titulo-seccion">ESTADO</h2>
       
       @if (recursos().length === 0) {
         <p class="dashboard-inicio__vacio">No hay recursos disponibles</p>
       } @else {
-        <section class="dashboard-inicio__recursos">
-          @for (recursoInfo of recursos(); track recursoInfo.recurso.id) {
-            <app-recurso-estado [recursoInfo]="recursoInfo" />
-          }
-        </section>
+        <app-carrusel [recursos]="recursos()" />
       }
     </section>
 

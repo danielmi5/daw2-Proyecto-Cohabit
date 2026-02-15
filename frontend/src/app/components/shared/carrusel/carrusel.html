@@ -1,0 +1,48 @@
+<!-- Región principal del carrusel con semántica y accesibilidad -->
+<section
+  class="carrusel"
+  role="region"
+  aria-label="Carrusel de estado de recursos"
+  tabindex="0">
+
+  <!-- Botón anterior: solo visible si se puede retroceder -->
+  @if (puedeRetroceder) {
+      <app-button variante="carrusel" ariaLabel="Ver recursos anteriores" (click)="navegarAnterior()">
+      <span [feather]="'chevron-left'" [tipo]="'botones'" aria-hidden="true"></span>
+      <small class="solo-lectores">Anterior</small>
+    </app-button>
+  }
+
+  <!-- Grupo de cards visibles -->
+  <div
+    class="carrusel__contenido"
+    role="group"
+    [attr.aria-label]="ariaLabelGrupo">
+
+    @for (recursoInfo of recursosVisibles; track recursoInfo.recurso.id ?? $index) {
+      <app-recurso-estado
+        class="carrusel__item"
+        [recursoInfo]="recursoInfo"
+        [ariaLabel]="obtenerAriaLabel(recursoInfo)">
+      </app-recurso-estado>
+    } @empty {
+      <p class="carrusel__vacio">No hay recursos disponibles.</p>
+    }
+  </div>
+
+  <!-- Botón siguiente: solo visible si se puede avanzar -->
+  @if (puedeAvanzar) {
+    <app-button variante="carrusel" ariaLabel="Ver recursos siguientes" (click)="navegarSiguiente()">
+      <span [feather]="'chevron-right'" [tipo]="'botones'" aria-hidden="true"></span>
+      <small class="solo-lectores">Siguiente</small>
+    </app-button>
+  }
+
+  <!-- Región aria-live para anunciar cambios de página a lectores de pantalla -->
+  <div
+    class="solo-lectores"
+    aria-live="polite"
+    aria-atomic="true">
+    {{ mensajeAccesible }}
+  </div>
+</section>

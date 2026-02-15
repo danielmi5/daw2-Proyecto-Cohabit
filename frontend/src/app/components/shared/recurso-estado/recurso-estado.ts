@@ -19,6 +19,7 @@ interface RecursoConReserva {
 })
 export class RecursoEstado {
   @Input() recursoInfo!: RecursoConReserva;
+  @Input() ariaLabel?: string;
 
   getEstadoRecurso(): 'Ocupado' | 'Disponible' {
     return this.recursoInfo.proximaReserva ? 'Ocupado' : 'Disponible';

@@ -1,0 +1,78 @@
+@use '../../../../styles/00-settings/variables' as *;
+@use '../../../../styles/01-tools/mixins' as mixins;
+
+.carrusel {
+  @include mixins.display-flex(row, $espaciado-m, center, center);
+  width: 100%;
+  position: relative;
+  padding: $espaciado-m 0;
+
+  // Se elimina outline por defecto al hacer focus en el contenedor (se gestiona en &:focus-visible)
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: $borde-medium solid var(--titulos);
+    outline-offset: 4px;
+    border-radius: $radio-md;
+  }
+
+  &__contenido {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__contenido {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: $espaciado-m;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__item {
+    min-width: 0;
+  }
+
+  &__vacio {
+    grid-column: 1 / -1;
+    text-align: center;
+    @include mixins.tipografia(parrafo, var(--texto-primario));
+    padding: $espaciado-l;
+  }
+
+}
+
+.solo-lectores {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: ($breakpoint-escritorio - 1)) {
+  .carrusel {
+    &__contenido {
+      grid-template-columns: repeat(3, 1fr);
+      gap: $espaciado-s;
+    }
+  }
+}
+
+@media (max-width: ($breakpoint-tablet - 1)) {
+  .carrusel {
+    gap: $espaciado-s;
+    &__contenido {
+      grid-template-columns: repeat(2, 1fr);
+      gap: $espaciado-s;
+    }
+  }
+}

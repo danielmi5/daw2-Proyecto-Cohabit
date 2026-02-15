@@ -10,8 +10,8 @@ import { StateService } from '../../../services/state.service';
 import { ReservaResponse, RecursoResponse, UsuarioResponse } from '../../../models';
 import { FeatherIconDirective } from '../../../directives/feather-icon.directive';
 import { TablaReservas } from '../tabla-reservas/tabla-reservas';
-import { RecursoEstado } from '../recurso-estado/recurso-estado';
 import { Spinner } from '../spinner/spinner';
+import { Carrusel } from '../carrusel/carrusel';
 
 interface EstadisticasDashboard {
   totalReservas: number;
@@ -27,7 +27,7 @@ interface RecursoConReserva {
 @Component({
   selector: 'app-dashboard-index',
   standalone: true,
-  imports: [CommonModule, FeatherIconDirective, TablaReservas, RecursoEstado, Spinner],
+  imports: [CommonModule, FeatherIconDirective, TablaReservas, Spinner, Carrusel],
   templateUrl: './dashboard-index.html',
   styleUrls: ['./dashboard-index.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -188,7 +188,7 @@ export class DashboardIndex implements OnInit {
     const ahora = new Date();
     const horaActual = `${ahora.getHours().toString().padStart(2, '0')}:${ahora.getMinutes().toString().padStart(2, '0')}`;
 
-    const recursosConInfo: RecursoConReserva[] = recursos.slice(0, 5).map(recurso => {
+    const recursosConInfo: RecursoConReserva[] = recursos.map(recurso => {
       // Buscar reserva activa de hoy para este recurso
       const reservasRecurso = todasReservas.filter(r => r.recursoId === recurso.id);
       const reservaHoy = reservasRecurso.find(r => 

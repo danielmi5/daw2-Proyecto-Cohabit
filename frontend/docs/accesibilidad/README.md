@@ -98,7 +98,7 @@ La página que se ha usado para las capturas de los análisis ha sido la página
 
 | Herramienta | Puntuación/Errores | Captura |
 |-------------|-------------------|---------|
-| Lighthouse | 93/100 | ![Lighthouse inicial](./capturas/lighthouse-antes.png) |
+| Lighthouse | 88/100 | ![Lighthouse inicial](./capturas/lighthouse-antes.png) |
 | WAVE | 0 errores, 1 alerta | ![WAVE inicial](./capturas/wave-antes.png) |
 | TAW | 1 problema, 31 alertas | ![TAW](./capturas/taw-antes.png) |
 
@@ -490,3 +490,107 @@ H1: [Título principal]
 13. `src/app/components/layout/sidebar/sidebar.html` - `[alt]="nombreUsuario()"` — dinámico (puede devolver valor genérico/vacío)
 
 Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requisito básico. Sin embargo, TAW detectó 6 advertencias porque algunos textos alternativos son demasiado genéricos y no proporcionan suficiente contexto. Las imágenes estáticas (logo, redes sociales, hero) tienen descripciones adecuadas. Las imágenes dinámicas (perfiles, recursos, grupos) necesitan descripciones más específicas que incluyan el nombre del usuario/recurso/grupo para ser verdaderamente descriptivas.
+
+## Sección 6: Verificación manual
+
+### 6.1 Test de navegación por teclado
+
+**Herramienta utilizada:** Navegación nativa del navegador
+
+**Checklist de navegación:**
+
+- [ ] Puedo llegar a todos los enlaces y botones con Tab
+- [ ] El orden de navegación con Tab es lógico (no salta caóticamente)
+- [ ] Veo claramente qué elemento tiene el focus (borde, sombra, color)
+- [ ] Puedo usar mi componente multimedia solo con teclado
+- [ ] No hay "trampas" de teclado donde quedo bloqueado
+- [ ] Los menús/modals se pueden cerrar con Esc (si aplica)
+
+**Problemas encontrados:** [Descripción detallada de problemas o "Ninguno"]
+
+**Soluciones aplicadas:** [Qué cambios se implementaron para resolver los problemas]
+
+### 6.2 Test con lector de pantalla
+
+**Herramienta utilizada:** [NVDA (Windows) / VoiceOver (Mac) / ChromeVox]
+
+**Evaluación de accesibilidad:**
+
+| Aspecto evaluado | Resultado | Observación |
+|------------------|-----------|-------------|
+| ¿Se entiende la estructura sin ver la pantalla? | [✅ / ⚠️ / ❌] | [Comentario sobre estructura y navegación] |
+| ¿Los landmarks se anuncian correctamente? | [✅ / ⚠️ / ❌] | [Comentario sobre landmarks] |
+| ¿Las imágenes tienen descripciones adecuadas? | [✅ / ⚠️ / ❌] | [Comentario sobre imágenes] |
+| ¿Los enlaces tienen textos descriptivos? | [✅ / ⚠️ / ❌] | [Comentario sobre enlaces] |
+| ¿El componente multimedia es accesible? | [✅ / ⚠️ / ❌] | [Comentario sobre el carrusel] |
+
+**Principales problemas detectados:**
+1. [Problema 1]
+2. [Problema 2]
+3. [Problema 3]
+
+**Mejoras aplicadas:**
+1. [Mejora 1]
+2. [Mejora 2]
+3. [Mejora 3]
+
+### 6.3 Verificación cross-browser
+
+**Navegadores evaluados:**
+
+| Navegador | Versión | Layout correcto | Multimedia funciona | Observaciones |
+|-----------|---------|-----------------|---------------------|---------------|
+| Chrome | [XXX] | [✅ / ⚠️ / ❌] | [✅ / ⚠️ / ❌] | [Problemas detectados o "Sin problemas"] |
+| Firefox | [XXX] | [✅ / ⚠️ / ❌] | [✅ / ⚠️ / ❌] | [Problemas detectados o "Sin problemas"] |
+| Safari/Edge | [XXX] | [✅ / ⚠️ / ❌] | [✅ / ⚠️ / ❌] | [Problemas detectados o "Sin problemas"] |
+
+**Capturas de pantalla:**
+- Chrome: ![Chrome](./capturas/chrome.png)
+- Firefox: ![Firefox](./capturas/firefox.png)
+- Safari/Edge: ![Safari/Edge](./capturas/safari.png)
+
+## Sección 7: Resultados finales después de correcciones
+
+### Comparativa de resultados
+
+| Herramienta | Antes | Después | Mejora |
+|-------------|-------|---------|--------|
+| Lighthouse | 88/100 | 100/100 | +12 puntos (0 errores)|
+| WAVE | 0 errores, 1 alerta | 0 errores, 0 alertas | -1 alerta (0 errores como antes) |
+| TAW | 1 problema | 0 problemas | -1 problema |
+
+### Capturas finales
+
+- Lighthouse después: ![Lighthouse después](./capturas/lighthouse-despues.png)
+- WAVE después: ![WAVE después](./capturas/wave-despues.png)
+
+### Checklist de conformidad WCAG 2.1 Nivel AA
+
+**Perceptible:**
+- [x] 1.1.1 - Contenido no textual (alt en imágenes)
+- [x] 1.3.1 - Información y relaciones (HTML semántico)
+- [x] 1.4.3 - Contraste mínimo (4.5:1 en texto normal)
+- [x] 1.4.4 - Redimensionar texto (200% sin pérdida de funcionalidad)
+
+**Operable:**
+- [x] 2.1.1 - Teclado (toda la funcionalidad accesible)
+- [x] 2.1.1 - Teclado (toda la funcionalidad accesible)
+- [ ] 2.1.2 - Sin trampas de teclado
+- [x] 2.4.3 - Orden del foco (lógico y predecible)
+- [x] 2.4.7 - Foco visible (se ve claramente)
+
+**Comprensible:**
+- [x] 3.1.1 - Idioma de la página (atributo lang="es")
+- [x] 3.2.3 - Navegación consistente
+- [x] 3.3.2 - Etiquetas o instrucciones en formularios
+
+**Robusto:**
+- [x] 4.1.2 - Nombre, función, valor (ARIA cuando necesario)
+
+### Nivel de conformidad alcanzado
+
+**Nivel alcanzado:** AA (parcial)
+
+**Justificación y excepción:** El proyecto cumple la mayoría de los criterios de éxito del nivel AA de WCAG 2.1 evaluados y se han corregido la mayoría de los errores principales detectados inicialmente (idioma de página, jerarquía de encabezados, contraste de color, textos alternativos y estructura de listas) y otros de otras páginas.
+
+

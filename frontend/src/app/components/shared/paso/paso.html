@@ -1,5 +1,5 @@
-<article class="paso">
-  <div class="paso__numero">{{ numero }}</div>
+<article class="paso" [attr.aria-label]="'Paso ' + numero + ': ' + titulo">
+  <div class="paso__numero" aria-hidden="true">{{ numero }}</div>
   <h3 class="paso__titulo">{{ titulo }}</h3>
   <p class="paso__descripcion">{{ texto }}</p>
 </article>

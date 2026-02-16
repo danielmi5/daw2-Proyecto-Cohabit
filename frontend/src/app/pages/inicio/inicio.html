@@ -14,15 +14,15 @@
 <section class="como-funciona">
   <h2 class="como-funciona__titulo">¿Cómo funciona?</h2>
   
-  <div class="como-funciona__pasos">
-    <app-paso [numero]="1" titulo="Regístrate" texto="Crea tu cuenta con unos pocos datos básicos. Esto te permitirá acceder al sistema completo y comenzar a gestionar las reservas de forma segura."></app-paso>
+  <ol class="como-funciona__pasos" role="list">
+    <li><app-paso [numero]="1" titulo="Regístrate" texto="Crea tu cuenta con unos pocos datos básicos. Esto te permitirá acceder al sistema completo y comenzar a gestionar las reservas de forma segura."></app-paso></li>
 
-    <app-paso [numero]="2" titulo="Crea un grupo e invita" texto="Crea un grupo y añade a las personas con las que compartes los recursos. Puedes invitarlas por correo electrónico para que se unan fácilmente."></app-paso>
+    <li><app-paso [numero]="2" titulo="Crea un grupo e invita" texto="Crea un grupo y añade a las personas con las que compartes los recursos. Puedes invitarlas por correo electrónico para que se unan fácilmente."></app-paso></li>
 
-    <app-paso [numero]="3" titulo="Configura el grupo" texto="Añade recursos que estén disponibles para todos los miembros. Define sus características y reglas de uso para mantener un control claro."></app-paso>
+    <li><app-paso [numero]="3" titulo="Configura el grupo" texto="Añade recursos que estén disponibles para todos los miembros. Define sus características y reglas de uso para mantener un control claro."></app-paso></li>
 
-    <app-paso [numero]="4" titulo="Realiza y gestiona tus reservas" texto="Selecciona el recurso que necesitas, elige fecha y horario, y confirma tu reserva. Podrás ver la disponibilidad en tiempo real y gestionar tus usos desde un mismo lugar."></app-paso>
-  </div>
+    <li><app-paso [numero]="4" titulo="Realiza y gestiona tus reservas" texto="Selecciona el recurso que necesitas, elige fecha y horario, y confirma tu reserva. Podrás ver la disponibilidad en tiempo real y gestionar tus usos desde un mismo lugar."></app-paso></li>
+  </ol>
 </section>
 
 <section class="caracteristicas">
@@ -41,9 +41,9 @@
       <source type="image/webp" media="(min-width: 801px)" srcset="img_optimizadas/inicio-lg.webp">
 
       <!-- Fallback JPG -->
-      <img src="img_optimizadas/inicio-lg.jpg"
-           srcset="img_optimizadas/inicio-sm.jpg 400w, img_optimizadas/inicio-md.jpg 800w, img_optimizadas/inicio-lg.jpg 1200w"
-           alt="Vista general de la aplicación Cohabit" width="1200" height="500">
+       <img class="caracteristicas__ilustracion" src="img_optimizadas/inicio-lg.jpg"
+         srcset="img_optimizadas/inicio-sm.jpg 400w, img_optimizadas/inicio-md.jpg 800w, img_optimizadas/inicio-lg.jpg 1200w"
+         alt="Vista general de la aplicación Cohabit">
     </picture>
     
     <ul class="caracteristicas__lista">

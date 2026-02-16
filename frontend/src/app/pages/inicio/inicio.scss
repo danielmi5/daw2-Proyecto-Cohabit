@@ -16,29 +16,32 @@
   &__titulo {
     margin-bottom: $espaciado-l;
     @include mixins.tipografia(h1, var(--titulos));
+    line-height: 1.2;
   }
 
   &__descripcion {
     margin-bottom: $espaciado-xl;
     @include mixins.tipografia(h3, var(--texto-primario));
+    line-height: 1.5;
+    font-weight: $font-weight-medium;
   }
 
   &__acciones {
     width: 100%;
-    min-height: 63px;
+    min-height: 3.9375rem;
 
     @include mixins.display-flex(row, $espaciado-m, stretch, center);
     flex-wrap: wrap;
   }
 
   &__boton {
-    max-width: 320px;
+    max-width: 20rem;
     width: auto;
     padding: $espaciado-m 0;
     box-sizing: border-box;
 
     @include mixins.centrar-flex();
-    flex: 1 1 220px;
+    flex: 1 1 13.75rem;
     text-decoration: none;
 
     @include mixins.tipografia(button);
@@ -99,11 +102,17 @@
   }
 
   &__pasos {
-    max-width: 1200px;
+    max-width: 75rem;
     margin: 0 auto;
+    padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: $espaciado-xl;
+    list-style: none;
+
+    > li {
+      display: contents;
+    }
   }
 
   @media (max-width: $breakpoint-tablet) {
@@ -125,7 +134,7 @@
   }
 
   &__contenido {
-    max-width: 1200px;
+    max-width: 75rem;
     margin: 0 auto;
     margin-top: $espaciado-l;
     display: grid;
@@ -151,6 +160,8 @@
     display: block;
     border-radius: $radio-md;
     object-fit: cover;
+    max-width: 100%;
+    height: auto;
   }
 
   &__lista {
@@ -178,11 +189,13 @@
   text-align: center;
 
   &__titulo{
-    color: var(--titulos)
+    color: var(--titulos);
+    font-weight: $font-weight-bold;
   }
 
   &__descripcion{
-    color: var(--texto-primario)
+    color: var(--texto-primario);
+    line-height: 1.6;
   }
 }
 

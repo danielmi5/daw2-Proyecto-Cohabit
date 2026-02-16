@@ -18,6 +18,16 @@
     border-radius: $radio-md;
   }
 
+  &__indicador {
+    text-align: center;
+    margin-top: $espaciado-s;
+    @include mixins.tipografia(parrafo-s, var(--texto-primario));
+    padding: $espaciado-xs $espaciado-s;
+    background-color: var(--fondo-secundario);
+    border-radius: $radio-sm;
+    font-weight: 600;
+  }
+
   &__contenido {
     flex: 1;
     min-width: 0;
@@ -73,6 +83,15 @@
     &__contenido {
       grid-template-columns: repeat(2, 1fr);
       gap: $espaciado-s;
+    }
+  }
+}
+
+@media (max-width: ($breakpoint-movil-pequeno - 1)) {
+  .carrusel {
+    &__contenido {
+      grid-template-columns: repeat(1, 1fr);
+      gap: $espaciado-xs;
     }
   }
 }

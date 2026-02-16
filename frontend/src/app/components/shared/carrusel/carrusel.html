@@ -46,3 +46,10 @@
     {{ mensajeAccesible }}
   </div>
 </section>
+
+<!-- Indicador visual de posición -->
+@if (mostrarBotones) {
+  <div class="carrusel__indicador" aria-hidden="true">
+    {{ paginaActual }}/{{ totalPaginas }}
+  </div>
+}

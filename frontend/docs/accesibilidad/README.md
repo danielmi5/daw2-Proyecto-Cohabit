@@ -499,16 +499,24 @@ Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requ
 
 **Checklist de navegación:**
 
-- [ ] Puedo llegar a todos los enlaces y botones con Tab
-- [ ] El orden de navegación con Tab es lógico (no salta caóticamente)
-- [ ] Veo claramente qué elemento tiene el focus (borde, sombra, color)
-- [ ] Puedo usar mi componente multimedia solo con teclado
-- [ ] No hay "trampas" de teclado donde quedo bloqueado
-- [ ] Los menús/modals se pueden cerrar con Esc (si aplica)
+- [x] Puedo llegar a todos los enlaces y botones con Tab
+- [x] El orden de navegación con Tab es lógico (no salta caóticamente)
+- [x] Veo claramente qué elemento tiene el focus (borde, sombra, color)
+- [x] Puedo usar mi componente multimedia solo con teclado
+- [x] No hay "trampas" de teclado donde quedo bloqueado
+- [x] Los menús/modals se pueden cerrar con Esc
 
-**Problemas encontrados:** [Descripción detallada de problemas o "Ninguno"]
+**Problemas encontrados:**
 
-**Soluciones aplicadas:** [Qué cambios se implementaron para resolver los problemas]
+1. **Carrusel sin navegación por flechas**: Inicialmente el carrusel solo era navegable con Tab + Enter en los botones de anterior/siguiente, pero no respondía a las teclas de flecha izquierda/derecha que son intuitivas para este tipo de componente.
+
+2. **Falta de indicador visual de posición**: No existía un indicador que mostrara al usuario en qué página del carrusel se encontraba (ej: "1/2", "2/2").
+
+**Soluciones aplicadas:**
+
+1. **Navegación con flechas de teclado**: Implementé un `@HostListener('keydown')` en el componente del carrusel que captura las teclas `ArrowLeft` y `ArrowRight`, ejecutando `navegarAnterior()` y `navegarSiguiente()` respectivamente. Esto permite navegar por el carrusel usando las flechas del teclado de forma sencilla.
+
+2. **Indicador visual de posición implementado**: Añadí un elemento `<div class="carrusel__indicador">` que muestra dinámicamente "X/Y" (página actual / total páginas) fuera de la sección principal del carrusel para que aparezca debajo de las cards sin superponerse. Con estilos que usan `var(--texto-primario)` para garantizar contraste en modo claro y oscuro.
 
 ### 6.2 Test con lector de pantalla
 
@@ -518,11 +526,11 @@ Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requ
 
 | Aspecto evaluado | Resultado | Observación |
 |------------------|-----------|-------------|
-| ¿Se entiende la estructura sin ver la pantalla? | [✅ / ⚠️ / ❌] | [Comentario sobre estructura y navegación] |
-| ¿Los landmarks se anuncian correctamente? | [✅ / ⚠️ / ❌] | [Comentario sobre landmarks] |
-| ¿Las imágenes tienen descripciones adecuadas? | [✅ / ⚠️ / ❌] | [Comentario sobre imágenes] |
-| ¿Los enlaces tienen textos descriptivos? | [✅ / ⚠️ / ❌] | [Comentario sobre enlaces] |
-| ¿El componente multimedia es accesible? | [✅ / ⚠️ / ❌] | [Comentario sobre el carrusel] |
+| ¿Se entiende la estructura sin ver la pantalla? | ✅ | La estructura de landmarks y encabezados permite navegar eficientemente entre secciones. |
+| ¿Los landmarks se anuncian correctamente? | ✅ | Los landmarks se identifican correctamente. |
+| ¿Las imágenes tienen descripciones adecuadas? | ✅ | Las imágenes estáticas tienen alt descriptivos. Las dinámicas tienen descripciones mejoradas con bindings que incluyen el nombre respectivo cuando está disponible. |
+| ¿Los enlaces tienen textos descriptivos? | ✅ | La mayoría de enlaces tienen textos claros. Los iconos de navegación incluyen `aria-label` descriptivos. Los iconos decorativos están marcados con `aria-hidden="true"`. |
+| ¿El componente multimedia es accesible? | ✅ | El carrusel es accesible, sus colores cumplen los contrastes y la navegación por teclado funciona con Tab, Enter y flechas. Los botones tienen labels claros y los cambios se anuncian automáticamente. |
 
 **Principales problemas detectados:**
 1. [Problema 1]
@@ -540,14 +548,14 @@ Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requ
 
 | Navegador | Versión | Layout correcto | Multimedia funciona | Observaciones |
 |-----------|---------|-----------------|---------------------|---------------|
-| Chrome | [XXX] | [✅ / ⚠️ / ❌] | [✅ / ⚠️ / ❌] | [Problemas detectados o "Sin problemas"] |
-| Firefox | [XXX] | [✅ / ⚠️ / ❌] | [✅ / ⚠️ / ❌] | [Problemas detectados o "Sin problemas"] |
-| Safari/Edge | [XXX] | [✅ / ⚠️ / ❌] | [✅ / ⚠️ / ❌] | [Problemas detectados o "Sin problemas"] |
+| Chrome | 145+ | ✅ | ✅ | No hubo problemas |
+| Firefox | 147+ | ✅ | ✅ | No hubo problemas |
+| Edge | 145+ | ✅ | ✅ | No hubo problemas |
 
 **Capturas de pantalla:**
 - Chrome: ![Chrome](./capturas/chrome.png)
 - Firefox: ![Firefox](./capturas/firefox.png)
-- Safari/Edge: ![Safari/Edge](./capturas/safari.png)
+- Edge: ![Edge](./capturas/edge.png)
 
 ## Sección 7: Resultados finales después de correcciones
 
@@ -563,6 +571,7 @@ Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requ
 
 - Lighthouse después: ![Lighthouse después](./capturas/lighthouse-despues.png)
 - WAVE después: ![WAVE después](./capturas/wave-despues.png)
+- TAW después: ![TAW después](./capturas/taw-despues.png)
 
 ### Checklist de conformidad WCAG 2.1 Nivel AA
 

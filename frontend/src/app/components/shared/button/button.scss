@@ -148,85 +148,85 @@
         pointer-events: auto;
     }
 
-        // variante para botones del carrusel (círculo con icono)
-        &--carrusel {
-            width: 48px;
-            height: 48px;
-            min-width: 48px;
-            min-height: 48px;
-            padding: 0;
-            border-radius: $radio-circulo;
-            border: $borde-medium solid var(--borde-btn-2);
-            background-color: var(--bg-primario);
-            color: var(--texto-primario);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+    // variante para botones del carrusel (círculo con icono)
+    &--carrusel {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        min-height: 48px;
+        padding: 0;
+        border-radius: $radio-circulo;
+        border: $borde-medium solid var(--borde-cards);
+        background-color: var(--bg-primario);
+        color: var(--texto-primario);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
 
-            // icono dentro
-            .boton__contenedor {
-                padding: 0;
-                gap: 0;
-            }
+        // icono dentro
+        .boton__contenedor {
+            padding: 0;
+            gap: 0;
+        }
+
+        svg, .boton-icono {
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+        }
+
+        &:hover:not([disabled]):not(.boton--deshabilitado) {
+            background-color: var(--bg-cards);
+            border-color: var(--hover);
+            color: var(--hover);
+        }
+
+        &:focus-visible {
+            outline: $borde-medium solid var(--titulos);
+            outline-offset: 2px;
+            box-shadow: var(--sombra-md);
+        }
+
+        &:active:not([disabled]):not(.boton--deshabilitado) {
+            transform: scale(0.95);
+            background-color: var(--bg-secundario);
+            border-color: var(--titulos);
+            color: var(--titulos);
+        }
+
+        &:disabled, &.boton--deshabilitado {
+            @include mixins.desactivado();
+            border-color: var(--etiquetas-cards);
+            color: var(--etiquetas-cards);
+            background-color: var(--bg-primario);
+        }
+    }
+
+    @media (max-width: ($breakpoint-escritorio - 1)) {
+        &--carrusel {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
 
             svg, .boton-icono {
-                width: 24px;
-                height: 24px;
-                pointer-events: none;
-            }
-
-            &:hover:not([disabled]):not(.boton--deshabilitado) {
-                background-color: var(--bg-cards);
-                border-color: var(--hover);
-                color: var(--hover);
-            }
-
-            &:focus-visible {
-                outline: $borde-medium solid var(--titulos);
-                outline-offset: 2px;
-                box-shadow: var(--sombra-md);
-            }
-
-            &:active:not([disabled]):not(.boton--deshabilitado) {
-                transform: scale(0.95);
-                background-color: var(--bg-secundario);
-                border-color: var(--titulos);
-                color: var(--titulos);
-            }
-
-            &:disabled, &.boton--deshabilitado {
-                @include mixins.desactivado();
-                border-color: var(--etiquetas-cards);
-                color: var(--etiquetas-cards);
-                background-color: var(--bg-primario);
+                width: 20px;
+                height: 20px;
             }
         }
+    }
 
-        @media (max-width: ($breakpoint-escritorio - 1)) {
-            &--carrusel {
-                width: 40px;
-                height: 40px;
-                min-width: 40px;
-                min-height: 40px;
+    @media (max-width: ($breakpoint-tablet - 1)) {
+        &--carrusel {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            min-height: 36px;
 
-                svg, .boton-icono {
-                    width: 20px;
-                    height: 20px;
-                }
+            svg, .boton-icono {
+                width: 18px;
+                height: 18px;
             }
         }
-
-        @media (max-width: ($breakpoint-tablet - 1)) {
-            &--carrusel {
-                width: 36px;
-                height: 36px;
-                min-width: 36px;
-                min-height: 36px;
-
-                svg, .boton-icono {
-                    width: 18px;
-                    height: 18px;
-                }
-            }
-        }
+    }
 }

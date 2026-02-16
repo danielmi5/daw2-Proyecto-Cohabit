@@ -3,11 +3,16 @@
 
 .recurso-estado {
   padding: $espaciado-m;
+  height: 100%;
+  container-type: inline-size;
+
   border: $borde-thin solid var(--borde-cards);
   border-radius: $radio-card;
   background-color: var(--bg-cards);
   box-shadow: $shadow-sm;
+  
   transition: box-shadow $transicion-base $transicion-suave;
+  overflow-x: hidden;
 
   &:hover {
     box-shadow: $shadow-md;
@@ -25,6 +30,7 @@
     flex: 1;
     font-weight: $font-weight-bold;
     text-transform: uppercase;
+    word-wrap: break-word;
   }
 
   &__estado {
@@ -58,3 +64,14 @@
     }
   }
 }
+@container (max-width: 230px) {
+  .recurso-estado {
+    @include mixins.display-flex(column, $espaciado-s,stretch, space-between);
+    
+    &__header {
+      @include mixins.display-flex(column, $espaciado-s, flex-start);
+    }
+  }
+}
+
+

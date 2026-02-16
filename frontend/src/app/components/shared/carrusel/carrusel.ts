@@ -42,12 +42,19 @@ export class Carrusel implements OnChanges {
   /** Mensaje para la región aria-live (lectores de pantalla) */
   mensajeAccesible = '';
 
+  /** Página actual del carrusel */
+  paginaActual = 1;
+
+  /** Total de páginas del carrusel */
+  totalPaginas = 1;
+
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['recursos']) {
       this.currentIndex = 0;
       this.actualizarVisibles();
+      this.actualizarIndicadores();
       this.actualizarMensaje();
       this.cdr.markForCheck();
     }
@@ -57,13 +64,16 @@ export class Carrusel implements OnChanges {
   @HostListener('window:resize')
   onResize(): void {
     this.actualizarVisibles();
+    this.actualizarIndicadores();
     this.cdr.markForCheck();
   }
 
   /** Calcula cuántos items mostrar según el ancho de la ventana */
   private actualizarVisibles(): void {
     const ancho = window.innerWidth;
-    if (ancho < 768) {
+    if (ancho < 320) {
+      this.visibles = 1;
+    } else if (ancho < 768) {
       this.visibles = 2;
     } else if (ancho < 1024) {
       this.visibles = 3;
@@ -110,6 +120,7 @@ export class Carrusel implements OnChanges {
   navegarAnterior(): void {
     if (!this.puedeRetroceder) return;
     this.currentIndex = Math.max(0, this.currentIndex - this.visibles);
+    this.actualizarIndicadores();
     this.actualizarMensaje();
     this.cdr.markForCheck();
   }
@@ -121,6 +132,7 @@ export class Carrusel implements OnChanges {
       this.recursos.length - this.visibles,
       this.currentIndex + this.visibles
     );
+    this.actualizarIndicadores();
     this.actualizarMensaje();
     this.cdr.markForCheck();
   }
@@ -161,5 +173,16 @@ export class Carrusel implements OnChanges {
   get ariaLabelGrupo(): string {
     if (this.recursos.length === 0) return 'No hay recursos para mostrar';
     return `Mostrando recursos ${this.primerVisible} a ${this.ultimoVisible} de ${this.recursos.length}`;
+  }
+
+  /** Actualiza los indicadores de página */
+  private actualizarIndicadores(): void {
+    this.totalPaginas = Math.max(1, Math.ceil(this.recursos.length / this.visibles));
+
+    if (this.currentIndex + this.visibles >= this.recursos.length) {
+      this.paginaActual = this.totalPaginas;
+    } else {
+      this.paginaActual = Math.floor(this.currentIndex / this.visibles) + 1;
+    }
   }
 }

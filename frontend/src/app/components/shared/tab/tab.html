@@ -1,23 +1,27 @@
 <!-- Variante para la página de reservas -->
-<header role="tablist" class="tab__encabezado" [class.tab--reservas]="tipo === 'reservas'" [class.tab--mis-reservas]="tipo === 'mis-reservas'">
+<header role="tablist" class="tab__encabezado" [class.tab--reservas]="tipo === 'reservas'" [class.tab--mis-reservas]="tipo === 'mis-reservas'" aria-label="Navegación entre reservas">
   @if (tipo === 'reservas') {
     <h2
       class="tab__titulo"
       role="tab"
+      tabindex="0"
       #pestana
       (keydown)="manejarTecla($event)"
       aria-selected="true"
+      aria-label="Pestaña de reservas (activa)"
     >
       Reservas
     </h2>
-    <span class="tab__icono" [feather]="'chevron-right'" [tipo]="'header'"></span>
+    <span class="tab__icono" [feather]="'chevron-right'" [tipo]="'header'" aria-hidden="true"></span>
     <a
       routerLink="/dashboard/mis-reservas"
       class="tab__enlace"
       role="tab"
+      tabindex="0"
       #pestana
       (keydown)="manejarTecla($event)"
       aria-selected="false"
+      aria-label="Ir a mis reservas"
     >
       Mis Reservas
     </a>
@@ -28,19 +32,23 @@
       routerLink="/dashboard/reservas"
       class="tab__enlace"
       role="tab"
+      tabindex="0"
       #pestana
       (keydown)="manejarTecla($event)"
       aria-selected="false"
+      aria-label="Ir a reservas del grupo"
     >
       Reservas
     </a>
-    <span class="tab__icono" [feather]="'chevron-right'" [tipo]="'header'"></span>
+    <span class="tab__icono" [feather]="'chevron-right'" [tipo]="'header'" aria-hidden="true"></span>
     <h2
       class="tab__titulo"
       role="tab"
+      tabindex="0"
       #pestana
       (keydown)="manejarTecla($event)"
       aria-selected="true"
+      aria-label="Pestaña de mis reservas (activa)"
     >
       Mis Reservas
     </h2>

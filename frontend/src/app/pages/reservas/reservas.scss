@@ -27,6 +27,11 @@
     }
   }
 
+  &__titulo {
+    @include mixins.tipografia(h1, var(--titulos));
+    margin-bottom: $espaciado-m;
+    text-align: center;
+  }
   
 
   // Error

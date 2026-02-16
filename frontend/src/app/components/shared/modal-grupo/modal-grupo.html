@@ -1,5 +1,5 @@
 @if (visible) {
-  <section class="modal-grupo" (click)="onClickFondo($event)">
+  <section class="modal-grupo" role="dialog" aria-modal="true" aria-label="Crear grupo" (click)="onClickFondo($event)">
     <div class="modal-grupo__contenido">
       <form class="modal-grupo__formulario" [formGroup]="formulario" (ngSubmit)="onGuardar()">
         <h2 class="modal-grupo__titulo">Crear grupo</h2>

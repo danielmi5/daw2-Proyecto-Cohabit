@@ -116,11 +116,12 @@ La página que se ha usado para las capturas de los análisis ha sido la página
 
 | # | Error | Criterio WCAG | Herramienta | Solución aplicada |
 |---|-------|---------------|-------------|-------------------|
-| 1 | Falta del atributo lang en el elemento HTML | 3.1.1 - Idioma de la página | TAW | [Solución aplicada] |
-| 2 | Falta de encabezado H1 en algunas páginas | 2.4.6 - Encabezados y etiquetas | TAW | [Solución aplicada] |
-| 3 | Jerarquía de encabezados incorrecta (saltos de nivel) | 1.3.1 - Información y relaciones | TAW | [Solución aplicada] |
-| 4 | Contraste insuficiente en algunos elementos de texto | 1.4.3 - Contraste mínimo | Lighthouse/TAW | [Solución aplicada] |
-| 5 | Textos alternativos ausentes o poco descriptivos en imágenes | 1.1.1 - Contenido no textual | TAW/WAVE | [Solución aplicada] |
+| 1 | Falta del atributo lang en el elemento HTML | 3.1.1 - Idioma de la página | TAW | Cambié a `lang="es"` en el elemento `<html>` del `index.html` para indicar el idioma principal de la página. |
+| 2 | Falta de encabezado H1 en algunas páginas | 2.4.6 - Encabezados y etiquetas | TAW | Añadí un `<h1>` representativo en cada página para proporcionar un título principal claro. |
+| 3 | Jerarquía de encabezados incorrecta (saltos de nivel) | 1.3.1 - Información y relaciones | TAW | Corregí la jerarquía de encabezados añadiendo encabezados en las páginas que tienen saltos de nivel entre los encabezados |
+| 4 | Contraste insuficiente en algunos elementos de texto | 1.4.3 - Contraste mínimo | TAW | Ajusté las variables de color y estilos para cumplir WCAG AA. |
+| 5 | Textos alternativos ausentes o poco descriptivos en imágenes | 1.1.1 - Contenido no textual | TAW/WAVE | Cambié a `alt` descriptivos y contextuales |
+| 6 | Estructura de lista y accesibilidad del componente de 'característica' | 1.3.1 - Información y relaciones; 4.1.1 - Procesamiento (HTML válido -> li características) | Lighthouse | Modifiqué el HTML de la página de inicio, agrupando los componentes mediante `<li>` y cambie la etiqueta interna del componente de un li a un div (decorativo) |
 
 ### Detalle de los errores
 
@@ -150,35 +151,100 @@ La página que se ha usado para las capturas de los análisis ha sido la página
 
 **Código DESPUÉS:**
 ```html
-<!-- Código corregido -->
+<!doctype html>
+<html lang="es"> <!-- Idioma principal establecido a español -->
+<head>
+  <meta charset="utf-8">
+  <title>Frontend</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
 ```
 
 #### Error #2: Falta de encabezado H1 en algunas páginas
 
-**Problema:** Hay páginas que no tienen ningún `<h1>`, lo que significa que no hay un título principal claro. TAW me alertó con 13 advertencias sobre encabezados, siendo el problema más repetido. Por ejemplo, la página de login solo tiene el componente del formulario sin un encabezado principal.
+**Problema:** Hay páginas que no tienen ningún `<h1>`, lo que significa que no hay un título principal claro. TAW me alertó con 13 advertencias sobre encabezados, siendo el problema más repetido.
 
 **Impacto:** Los usuarios de lectores de pantalla suelen presionar la tecla "1" para ir directamente al título principal de la página y entender de qué va. Si no hay `<h1>`, no saben dónde están ni qué contenido verán. Es como entrar a una habitación sin letrero en la puerta.
 
 **Criterio WCAG:** 2.4.6 - Encabezados y etiquetas (Nivel AA)
 
 **Código ANTES:**
+
+Se añadió `<h1>` en varias páginas que no tenían encabezado principal:
+
+1. Página de recursos disponibles:
 ```html
-<!-- src/app/pages/login/login.html - Sin H1 -->
-<main class="page-login">
-  <section class="page-login__panel">
-    <app-login-form class="page-login__formulario"></app-login-form>
-  </section>
-</main>
+<!-- src/app/pages/recursos/recursos.html -->
+<section class="recursos">
+  <h2 class="recursos__titulo">RECURSOS DISPONIBLES</h2>
+  <!-- Contenido de la página -->
+</section>
+```
+
+2. Página de reservas del grupo:
+```html
+<!-- src/app/pages/reservas/reservas.html -->
+<section class="reservas">
+  <!-- Sin H1, comenzaba directamente con tab y contenido -->
+  <app-tab tipo="reservas"></app-tab>
+</section>
+```
+
+3. Página de mis reservas:
+```html
+<!-- src/app/pages/mis-reservas/mis-reservas.html -->
+<section class="mis-reservas">
+  <!-- Sin H1, empezaba directamente con estado de carga -->
+  @if (loading()) {
+    <section class="mis-reservas__estado">
+      <app-spinner></app-spinner>
+    </section>
+  }
+</section>
 ```
 
 **Código DESPUÉS:**
+
+1. Se cambió `<h2>` a `<h1>` en la página de recursos:
 ```html
-<!-- Código corregido -->
+<!-- src/app/pages/recursos/recursos.html -->
+<section class="recursos">
+  <h1 class="recursos__titulo">RECURSOS DISPONIBLES</h1>
+  <!-- Contenido de la página -->
+</section>
+```
+
+2. Se añadió `<h1>` al inicio de la página de reservas:
+```html
+<!-- src/app/pages/reservas/reservas.html -->
+<section class="reservas">
+  <h1 class="reservas__titulo">Reservas del grupo</h1>
+  <app-tab tipo="reservas"></app-tab>
+  <!-- Resto del contenido -->
+</section>
+```
+
+3. Se añadió `<h1>` al inicio de la página de mis reservas:
+```html
+<!-- src/app/pages/mis-reservas/mis-reservas.html -->
+<section class="mis-reservas">
+  <h1 class="mis-reservas__titulo">Reservas propias en el grupo</h1>
+  @if (loading()) {
+    <section class="mis-reservas__estado">
+      <app-spinner></app-spinner>
+    </section>
+  }
+</section>
 ```
 
 #### Error #3: Jerarquía de encabezados incorrecta (saltos de nivel)
 
-**Problema:** En la página de recursos salto directamente de un `<h2>` a un `<h3>`, sin ningún contexto intermedio. Es como en un índice de un libro pasar del capítulo 1 al 1.1.1 sin el 1.1. Además, empiezo con `<h2>` sin tener un `<h1>` en la página.
+**Problema:** En la página de recursos salto directamente de un `<h2>` a un `<h3>`, sin ningún contexto intermedio. Además, hay páginas donde empiezo con `<h2>` sin tener un `<h1>`.
 
 **Impacto:** Los lectores de pantalla permiten navegar por niveles de encabezados, y cuando hay saltos, los usuarios se pierden. Además, puede parecer que falta contenido o que algo está mal organizado. También perjudica al SEO de la página.
 
@@ -213,12 +279,28 @@ La página que se ha usado para las capturas de los análisis ha sido la página
 
 **Código DESPUÉS:**
 ```html
-<!-- Código corregido -->
+<section class="recursos">
+  <h1 class="recursos__titulo">RECURSOS DISPONIBLES</h1>
+
+  @if (recursos.length === 0) {
+    <aside class="recursos__vacio">
+      <h3 class="recursos__vacio__titulo">No hay recursos disponibles</h3>
+      <p class="recursos__vacio__texto">Comienza creando tu primer recurso</p>
+    </aside>
+  }
+
+  @if (recursos.length > 0 && recursosFiltrados.length === 0) {
+    <aside class="recursos__vacio">
+      <h3>No se encontraron resultados</h3>
+      <p>Intenta ajustar tus filtros de búsqueda</p>
+    </aside>
+  }
+</section>
 ```
 
 #### Error #4: Contraste insuficiente en algunos elementos de texto
 
-**Problema:** Algunos textos tienen colores demasiado claros sobre fondos claros, especialmente en las variables de grises que uso en el proyecto. TAW marcó 3 elementos y esto me quitó 7 puntos en Lighthouse. Los grises claros como `$gris2` (75% de luminosidad) y `$gris3` (64%) pueden no tener suficiente contraste sobre fondo blanco.
+**Problema:** Algunos textos tienen colores demasiado claros sobre fondos claros, especialmente en las variables de grises que uso en el proyecto. TAW marcó 3 elementos. Los grises claros como `$gris2` (75% de luminosidad) y `$gris3` (64%) no tienen suficiente contraste sobre fondo blanco.
 
 **Impacto:** Las personas con baja visión, daltonismo o incluso alguien mirando la pantalla bajo el sol no puede leer bien el texto. He notado esto especialmente en textos secundarios o placeholders que puse en gris claro pensando que se verían bien.
 
@@ -240,14 +322,15 @@ $negro: hsl(0, 0%, 13%);
 
 // Ejemplo de uso problemático
 .texto-secundario {
-  color: $gris2;  // 75% luminosidad = contraste ~3:1 (insuficiente)
+  color: $gris2;  // 75% luminosidad = contraste 3:1 (insuficiente)
   background-color: $blanco-puro;
 }
 ```
 
 **Código DESPUÉS:**
 ```scss
-/* Código corregido */
+$gris2: hsl(0, 0%, 60%);  // Ajustado para mejorar contraste (de 75% a 60%)
+$gris3: hsl(0, 0%, 52%);  // Ajustado para mejorar contraste (de 64% a 52%)
 ```
 
 #### Error #5: Textos alternativos ausentes o poco descriptivos en imágenes
@@ -286,7 +369,79 @@ $negro: hsl(0, 0%, 13%);
 
 **Código DESPUÉS:**
 ```html
-<!-- Código corregido -->
+<!-- Ejemplos de 'DESPUÉS' con `alt` mejorados -->
+<!-- src/app/components/shared/card-recurso/card-recurso.html -->
+<article class="card-recurso">
+  <div class="card-recurso__imagen-contenedor">
+    @if (recurso.fotoRecurso) {
+      <img class="card-recurso__imagen" [src]="recurso.fotoRecurso" [alt]="recurso?.nombre ? ('Imagen del recurso ' + recurso.nombre) : 'Imagen del recurso'" />
+    }
+  </div>
+  <h3 class="card-recurso__titulo">{{ recurso.nombre || 'Sin nombre' }}</h3>
+</article>
+
+<!-- src/app/components/pages/data-perfil/data-perfil.html -->
+<figure class="data-perfil__foto">
+  @if (usuario?.fotoPerfil) {
+    <img [src]="usuario?.fotoPerfil" [alt]="usuario?.nombre ? ('Foto de perfil de ' + usuario.nombre) : 'Foto de perfil de usuario'" />
+  }
+</figure>
+
+<!-- src/app/components/shared/form-archivo/form-archivo.html -->
+<figure class="subida-archivo__contenedor-previa">
+  <img [src]="previewUrl" alt="Vista previa del archivo" class="subida-archivo__imagen-previa">
+</figure>
+
+<!-- Otros ejemplos: card genérica, miembro y sidebar -->
+<!-- src/app/components/shared/card/card.html -->
+<img class="card__imagen" [src]="imagen" [alt]="imagenAlt || titulo || 'Imagen representativa'" />
+
+<!-- src/app/components/shared/card-miembro/card-miembro.html -->
+<img class="card-miembro__foto" [src]="usuario?.fotoPerfil" [alt]="'Foto de perfil de ' + (usuario?.nombre || 'miembro del grupo')">
+
+<!-- src/app/components/layout/sidebar/sidebar.html -->
+<img [src]="imagenPerfil()" [alt]="nombreUsuario() ? ('Foto de perfil de ' + nombreUsuario()) : 'Foto de perfil'" class="barra-lateral__perfil-imagen" />
+```
+
+#### Error #6: Estructura de lista y accesibilidad del componente de 'característica'
+
+**Problema:** Detectó que la lista de características debía tener una estructura semántica clara para que lectores de pantalla y herramientas automáticas la interpreten correctamente. Es necesario asegurarse de que los elementos visuales que representan elementos de una lista sean `<li>`. Yo usaba en el componente la etiqueta `<li>`, pero parece ser que al tener la etiqueta del selector del componente agrupando este los lectores no lo interpretan bien y no detectan que se use li.
+
+**Impacto:** Sin una estructura clara, la navegación por encabezados/listas puede ser confusa para usuarios de tecnologías de asistencia, y Lighthouse/WAVE pueden marcar advertencias sobre listas mal formadas o HTML no conforme.
+
+**Criterios WCAG relevantes:** 1.3.1 - Información y relaciones (Nivel A); 4.1.1 - Procesamiento (HTML válido)
+
+**Código ANTES (patrón problemático):**
+```html
+<!-- src/app/pages/inicio/inicio.html -->
+<!-- Ejemplo de característica: componente dentro de <ul> sin <li> -->
+<ul class="caracteristicas__lista">
+  <app-caracteristica>Gestión de reservas.</app-caracteristica>
+  <app-caracteristica>Vista general de recursos.</app-caracteristica>
+</ul>
+```
+
+**Código DESPUÉS:**
+
+Ahora lo que hago es agrupar el selector del componente con la etiqueta `<li>`.
+```html
+<!-- src/app/components/shared/caracteristica/caracteristica.html -->
+<ul class="caracteristicas__lista">
+  <li class="caracteristica"><app-caracteristica>Gestión de reservas.</app-caracteristica></li>
+  <li class="caracteristica"><app-caracteristica>Vista general de recursos.</app-caracteristica></li>
+</ul>
+```
+
+En el HTML usaba li para agrupar la característica, ahora utilizo un div "decorativo".
+
+```html
+<!-- src/app/components/shared/caracteristica/caracteristica.html -->
+<div class="caracteristica">
+  <span class="caracteristica__icono" aria-hidden="true">
+    <div [feather]="icon" class="caracteristica-icono"></span>
+  </span>
+  <p class="caracteristica__texto"><ng-content></ng-content></p>
+</div>
 ```
 
 ## Sección 5: Análisis de estructura semántica
@@ -335,5 +490,3 @@ H1: [Título principal]
 13. `src/app/components/layout/sidebar/sidebar.html` - `[alt]="nombreUsuario()"` — dinámico (puede devolver valor genérico/vacío)
 
 Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requisito básico. Sin embargo, TAW detectó 6 advertencias porque algunos textos alternativos son demasiado genéricos y no proporcionan suficiente contexto. Las imágenes estáticas (logo, redes sociales, hero) tienen descripciones adecuadas. Las imágenes dinámicas (perfiles, recursos, grupos) necesitan descripciones más específicas que incluyan el nombre del usuario/recurso/grupo para ser verdaderamente descriptivas.
-
-

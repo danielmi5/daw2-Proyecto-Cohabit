@@ -1,5 +1,5 @@
 <section class="data-perfil">
-    <h2 class="data-perfil__titulo">Datos del perfil</h2>
+    <h1 class="data-perfil__titulo">Datos del perfil</h1>
 
     <div class="data-perfil__secciones">
         <section class="data-perfil__seccion data-perfil__foto-seccion">
@@ -7,7 +7,7 @@
             <article class="data-perfil__foto-contenido">
                 <figure class="data-perfil__foto">
                     @if (usuario?.fotoPerfil) {
-                    <img [src]="usuario?.fotoPerfil" alt="Foto de perfil" />
+                    <img [src]="usuario?.fotoPerfil" [alt]="usuario?.nombre ? ('Foto de perfil de ' + usuario?.nombre) : 'Foto de perfil de usuario'" />
                     } @else {
                     <div class="data-perfil__foto-placeholder"></div>
                     }

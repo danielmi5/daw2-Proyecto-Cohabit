@@ -18,13 +18,16 @@
     }
 
     &--error {
-      color: var(--color-error);
+      color: var(--error);
     }
   }
 
-  
+  &__titulo {
+    @include mixins.tipografia(h1, var(--titulos));
+    margin-bottom: $espaciado-m;
+    text-align: center;
+  }
 
-  
 
   &__icono-error {
     font-size: $text-5xl;
@@ -42,9 +45,7 @@
 
   // Contenido principal
   &__contenido {
-    display: flex;
-    flex-direction: column;
-    gap: $espaciado-m;
+    @include mixins.display-flex(column, $espaciado-l);
   }
 
   &__vacio {

@@ -4,7 +4,7 @@
     <h2 class="barra-lateral__titulo">{{ nombreUsuario() }}</h2>
     <figure class="barra-lateral__perfil">
       <app-tooltip [texto]="'Imagen de perfil de ' + nombreUsuario()">
-        <img [src]="imagenPerfil()" [alt]="nombreUsuario()" class="barra-lateral__perfil-imagen" />
+        <img [src]="imagenPerfil()" [alt]="nombreUsuario() ? ('Foto de perfil de ' + nombreUsuario()) : 'Foto de perfil'" class="barra-lateral__perfil-imagen" />
       </app-tooltip>
     </figure>
   </header>

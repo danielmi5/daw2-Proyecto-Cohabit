@@ -1,4 +1,5 @@
 <main class="reservas">
+  <h1 class="reservas__titulo">Reservas del grupo</h1>
   <!-- Estado de carga -->
   @if (loading()) {
     <section class="reservas__estado reservas__estado--carga">
@@ -37,7 +38,7 @@
             @for (reserva of reservas; track reserva.id) {
               <article class="reservas__tarjeta">
                 <header class="reservas__tarjeta-encabezado">
-                  <h3 class="reservas__tarjeta-titulo">{{ getRecursoNombre(reserva.recursoId) }}</h3>
+                  <h2 class="reservas__tarjeta-titulo">{{ getRecursoNombre(reserva.recursoId) }}</h2>
                   <span class="reservas__tarjeta-estado reservas__tarjeta-estado--{{ reserva.estado?.toLowerCase() }}">{{ reserva.estado }}</span>
                 </header>
                 <ul class="reservas__tarjeta-cuerpo">

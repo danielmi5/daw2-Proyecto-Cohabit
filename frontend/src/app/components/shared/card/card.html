@@ -1,7 +1,7 @@
 <article class="card" [class.card--horizontal]="variante === 'horizontal'">
   @if (imagen && variante === 'horizontal') {
     <figure class="card__figure">
-      <img class="card__imagen" [src]="imagen" [alt]="imagenAlt || titulo" />
+      <img class="card__imagen" [src]="imagen" [alt]="imagenAlt || titulo || 'Imagen representativa'" />
     </figure>
   }
 

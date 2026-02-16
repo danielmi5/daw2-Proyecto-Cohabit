@@ -1,7 +1,7 @@
 <article class="card-recurso">
   <div class="card-recurso__imagen-contenedor">
     @if (recurso.fotoRecurso) {
-      <img class="card-recurso__imagen" [src]="recurso.fotoRecurso" [alt]="recurso.nombre || 'Recurso'" />
+      <img class="card-recurso__imagen" [src]="recurso.fotoRecurso" [alt]="recurso.nombre ? ('Imagen del recurso ' + recurso.nombre) : 'Imagen del recurso'" />
     }
   </div>
 

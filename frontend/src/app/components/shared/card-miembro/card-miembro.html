@@ -2,8 +2,8 @@
     <header class="card-miembro__encabezado">
         <ul class ="card-miembro__lista">
             <li>
-                @if (usuario?.fotoPerfil) {
-                    <img class="card-miembro__foto" [src]="usuario?.fotoPerfil" [alt]="'Foto de perfil de ' + (usuario?.nombre || 'usuario')">
+                    @if (usuario?.fotoPerfil) {
+                    <img class="card-miembro__foto" [src]="usuario?.fotoPerfil" [alt]="'Foto de perfil de ' + (usuario?.nombre || 'miembro del grupo')">
                 }
                 @else {
                     <div class="card-miembro__foto card-miembro__foto--placeholder">

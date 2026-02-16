@@ -1,5 +1,5 @@
 <section class="data-grupo">
-    <h2 class="data-grupo__titulo">Datos del grupo</h2>
+    <h1 class="data-grupo__titulo">Datos del grupo</h1>
     
     @if (!puedeEditar()) {
     <div class="data-grupo__aviso">
@@ -13,7 +13,7 @@
             <article class="data-grupo__foto-contenido">
                 <figure class="data-grupo__foto">
                     @if (grupo?.fotoGrupo) {
-                    <img [src]="grupo?.fotoGrupo" alt="Foto del grupo" />
+                    <img [src]="grupo?.fotoGrupo" [alt]="grupo?.nombre ? ('Foto del grupo ' + grupo?.nombre) : 'Foto del grupo'" />
                     } @else {
                     <div class="data-grupo__foto-placeholder"></div>
                     }

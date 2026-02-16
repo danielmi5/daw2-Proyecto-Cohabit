@@ -1,5 +1,5 @@
 @if (visible) {
-  <section class="modal-recurso" (click)="onClickFondo($event)">
+  <section class="modal-recurso" role="dialog" aria-modal="true" [attr.aria-label]="modoEdicion ? 'Editar recurso' : 'Crear recurso'" (click)="onClickFondo($event)">
     <div class="modal-recurso__contenido">
       <form class="modal-recurso__formulario" [formGroup]="formulario" (ngSubmit)="onGuardar()">
         <h2 class="modal-recurso__titulo">{{ modoEdicion ? 'Editar recurso' : 'Crear recurso' }}</h2>

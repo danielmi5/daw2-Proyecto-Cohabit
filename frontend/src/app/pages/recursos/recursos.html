@@ -1,5 +1,5 @@
 <section class="recursos">
-  <h2 class="recursos__titulo">RECURSOS DISPONIBLES</h2>
+  <h1 class="recursos__titulo">RECURSOS DISPONIBLES</h1>
 
   <!-- Estado de carga -->
   @if (loading()) {
@@ -32,7 +32,7 @@
       <!-- Estado vacío -->
       @if (recursos.length === 0) {
         <aside class="recursos__vacio">
-          <h3 class="recursos__vacio__titulo">No hay recursos disponibles</h3>
+          <h2 class="recursos__vacio__titulo">No hay recursos disponibles</h2>
           <p class="recursos__vacio__texto">Comienza creando tu primer recurso</p>
         </aside>
       }
@@ -40,7 +40,7 @@
       <!-- Sin resultados de búsqueda/filtros -->
       @if (recursos.length > 0 && recursosFiltrados.length === 0) {
         <aside class="recursos__vacio">
-          <h3>No se encontraron resultados</h3>
+          <h2>No se encontraron resultados</h2>
           <p>Intenta ajustar tus filtros de búsqueda</p>
         </aside>
       }

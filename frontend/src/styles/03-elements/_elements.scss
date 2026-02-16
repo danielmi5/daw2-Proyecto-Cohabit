@@ -6,7 +6,6 @@
 
 /* Body predeterminado */
 body {
-	width: 100%;
 	font-size: $text-md;
 	line-height: $line-normal;
 	font-family: $font-primary;
@@ -14,7 +13,8 @@ body {
 	color: $texto-oscuro;
 	background-color: $fondo;
 
-	overflow-y: hidden;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 /* Encabezados */

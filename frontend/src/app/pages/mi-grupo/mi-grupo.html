@@ -3,12 +3,12 @@
     <app-spinner [texto]="'Cargando...'" [tamanio]="'mediano'"></app-spinner>
   </section>
 } @else if (tieneGrupo()) {
-  <div class="mi-grupo">
+  <section class="mi-grupo">
     <app-sidebar [variante]="'grupo'" />
     <section class="mi-grupo__contenido">
       <router-outlet></router-outlet>
     </section>
-  </div>
+  </section>
 } @else {
   <section class="mi-grupo__vacio">
     <div class="mi-grupo__vacio-contenido">

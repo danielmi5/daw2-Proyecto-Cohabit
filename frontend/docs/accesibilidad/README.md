@@ -70,7 +70,7 @@ El 28 de junio de 2025 entró en vigor la European Accessibility Act en España 
 
 El componente multimedia implementado es un carrusel.
 
-Este componente se ha incluido en el dashboard (`/dashboard`) y muestra una lista de hasta 5 cards informativas de recursos (nombre, estado, próxima reserva). Tiene botones, en forma de icono de "flecha", en los extremos de la lista para poder moverse en el carrusel. Se elegió para el dashboard porque es un espacio destinado a mostrar información breve y directa sobre el estado del usuario. Por lo que la lista de recursos no debe exceder la altura establecida del componente, por ello se optó implementar un carrusel que mantiene ocultos los recursos adicionales.
+Este componente se ha incluido en el dashboard (`/dashboard`) y muestra una lista de hasta 5 cards informativas de recursos (nombre, estado, próxima reserva). Tiene botones, en forma de icono de "flecha" redondeada, en los extremos de la lista para poder moverse en el carrusel. Se elegió para el dashboard porque es un espacio destinado a mostrar información breve y directa sobre el estado del usuario. Por lo que la lista de recursos no debe exceder la altura establecida del componente, por ello se optó implementar un carrusel que mantiene ocultos los recursos adicionales. Tiene un elemento visual que indica la página en la que están y permite navegación por teclado.
 
 ### Características de accesibilidad implementadas
 

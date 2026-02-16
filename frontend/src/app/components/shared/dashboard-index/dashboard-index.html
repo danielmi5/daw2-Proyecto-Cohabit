@@ -1,4 +1,6 @@
 <main class="dashboard-inicio">
+  <h1 class="dashboard-inicio__titulo">Dashboard</h1>
+  
   @if (cargando()) {
     <section class="dashboard-inicio__estado dashboard-inicio__estado--carga">
       <app-spinner [texto]="'Cargando datos del dashboard...'" [tamanio]="'mediano'"></app-spinner>

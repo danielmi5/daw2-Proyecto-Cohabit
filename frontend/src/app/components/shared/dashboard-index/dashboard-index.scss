@@ -5,6 +5,13 @@
   padding: $espaciado-l;
   max-width: 1400px;
   margin: 0 auto;
+
+  &__titulo {
+    @include mixins.tipografia(h1, var(--titulos));
+    text-align: center;
+    margin-bottom: $espaciado-xl;
+  }
+
   &__estado {
     @include mixins.centrar-flex(column);
     min-height: 400px;

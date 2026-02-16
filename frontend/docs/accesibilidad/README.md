@@ -625,4 +625,37 @@ Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requ
 
 **Justificación:** El proyecto cumple todos los criterios de éxito del nivel AA de WCAG 2.1 evaluados. Se han corregido todos los errores detectados inicialmente y se han implementado mejoras significativas, garantizando una experiencia accesible para todos los usuarios, incluyendo aquellos que utilizan tecnologías asistivas.
 
+## Sección 8: Conclusiones y reflexión
+
+### ¿Es accesible mi proyecto?
+
+No del todo, hay páginas más accesibles que otras (en su medida). He solucionado muchos problemas detectados por las herramientas y mejorado la navegación por teclado y el etiquetado, pero eso no garantiza accesibilidad para todas las personas. Las herramientas muestran cambios (menos avisos), pero sigue habiendo advertencias menos críticas presentes, así como páginas con más fallos que otras. Lo más complicado fue implementar el focus trap en los modales porque tenía que controlar Tab y Shift+Tab sin romper la navegación. Lo que más me sorprendió con NVDA fue darme cuenta de cuánta información lee por cada elemento, entendí por qué es tan importante marcar iconos como `aria-hidden="true"` para evitar que el lector repita cosas innecesarias. 
+
+Aunque haya mejorado la accesibilidad mediante análisis de las herramientas, no es 100% real, faltaría pruebas con usuarios reales. Antes hacía que se viera bien (desde mi perspectiva), pero tras esta parte del proyecto, he aprendido a tener en cuenta que funcione bien y sea accesible para todos.
+
+### Principales mejoras aplicadas
+
+1. **Focus trap en modales**: Sin esto, los usuarios de teclado podían tabular fuera del modal y perderse por la página de fondo sin darse cuenta. Ahora el foco queda atrapado dentro del modal (pero con escape con Esc) y vuelve al elemento que lo abrió al cerrarse. Esto garantiza que quien usa solo teclado mantenga el contexto del diálogo y no pierda información o acciones pendientes.
+
+2. **HTML semántico con landmarks** - Estructuré toda la aplicación con elementos semánticos y roles ARIA donde hacía falta. Los landmarks permiten saltar rápidamente entre secciones, acelerando la navegación y evitando que el lector tenga que leer la página entera para encontrar lo relevante.
+
+3. **Jerarquía de encabezados correcta**: Revisé que todas las páginas tengan una estructura lógica de encabezados (h1 → h2 → h3) sin saltar niveles. Es importante porque una jerarquía coherente permite a usuarios de lectores de pantalla construir un mapa mental de la página y llegar al contenido deseado mucho más rápido.
+
+4. **Reducción de texto innecesario en lectores de pantalla**: Cambié `aria-label` completos por `aria-labelledby` + `aria-describedby` en componentes repetitivos como las cards del carrusel y marqué iconos decorativos con `aria-hidden="true"`. Reduce la sobrecarga auditiva y la fatiga, haciendo que la información importante se anuncie en el orden correcto y sea más fácil de procesar.
+
+5. **Textos alternativos descriptivos en imágenes dinámicas**: Las fotos de perfil, recursos y grupos tenían textos genéricos ("Foto de perfil", "Imagen"). Ahora usan bindings dinámicos que incluyen el nombre: `[alt]="'Foto de perfil de ' + usuario.nombre"`. Esto mejora la experiencia de los usuarios que usan lectores de pantalla ya que reciben información descriptiva de lo que representa esa imagen.
+
+### Mejoras futuras
+
+Si dispusiera de más tiempo, implementaría estas mejoras:
+
+1. **Temas personalizados para diferentes tipos de daltonismo**: Consistiría en añadir paletas específicas (protanopia, deuteranopia, tritanopia...) y opciones para mostrar patrones o iconos junto al color. Esto garantiza que la información sea distinguible para todo tipo de personas daltónicas.
+
+2. **Atajos de teclado personalizables**: Implementar atajos de teclado para acciones frecuentes (Ctrl+N para nueva reserva, Ctrl+B para buscar recursos, etc.) con un panel de configuración donde el usuario pueda ver y personalizar las combinaciones. Esto aceleraría el uso para personas que navegan solo con teclado y que actualmente tienen que tabular mucho para llegar a ciertas funciones.
+
+3. **Descripción de estado con audio para cambios críticos**: Cuando se confirma una reserva, se elimina un recurso o hay un error importante, además del toast visual, reproducir un sonido breve (para casos de éxito o error). Esto sería util para usuarios con discapacidad visual que no pueden ver el toast aparecer, el audio sería una señal inmediata de que algo pasó sin esperar que el lector lo anuncie.
+
+### Aprendizaje clave
+
+La lección más importante es que a la hora de plantear la aplicación hay tener en cuenta la accesibilidad que se va a seguir desde el inicio: detectarla y corregirla, produce aplicaciones con mucho valor que funcionan correctamente para todo tipo de público.
 

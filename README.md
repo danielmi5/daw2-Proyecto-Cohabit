@@ -12,6 +12,7 @@ Para poder ver la aplicación puedes acceder a este enlace [https://cohabit-fron
 - [Requisitos](#requisitos)
 - [Instalación y ejecución](#instalación-y-ejecución)
 - [Despliegue](#despliegue)
+- [Proyecto 4 - Accesibilidad y Multimedia](#proyecto-4---accesibilidad-y-multimedia)
 
 ## Estructura
 
@@ -167,6 +168,63 @@ Para eliminar también los volúmenes:
 ```bash
 docker-compose down -v
 ```
+
+---
+
+## Proyecto 4 - Accesibilidad y Multimedia
+
+### Descripción
+
+Implementación de mejoras de accesibilidad WCAG 2.1 AA en el proyecto Cohabit, con especial atención a la navegación por teclado, compatibilidad con lectores de pantalla y estructura semántica. Se añadió un carrusel accesible de recursos como componente multimedia para el dashboard.
+
+### Componente multimedia añadido
+
+Es un carrusel de recursos con navegación por teclado (flechas), indicador de posición visual (ej: "2/3") y anuncios aria-live para lectores de pantalla.
+
+### Resultados de auditoría de accesibilidad
+
+| Herramienta | Puntuación inicial | Puntuación final | Mejora |
+|-------------|-------------------|------------------|--------|
+| Lighthouse | 88/100 | 100/100 | +12 |
+| WAVE | 0 errores | 0 errores | Nada |
+| TAW | 1 problema | 0 problemas | -1 problema |
+
+**Nivel de conformidad alcanzado:** WCAG 2.1 AA
+
+### Documentación completa
+
+📄 **[Ver análisis completo de accesibilidad](./frontend/docs/accesibilidad/README.md)**
+
+### Verificación realizada
+
+- ✅ Auditoría con Lighthouse, WAVE y TAW
+- ✅ Test con lector de pantalla (NVDA)
+- ✅ Test de navegación por teclado
+- ✅ Verificación cross-browser (Chrome, Firefox, Edge)
+
+### Tecnologías utilizadas
+
+- HTML5 semántico (landmarks, roles ARIA)
+- Angular 20 (Standalone Components, Signals)
+- SCSS con arquitectura ITCSS
+- TypeScript con Change Detection OnPush
+- WCAG 2.1 (criterios AA)
+
+### Instalación y uso
+
+```bash
+git clone https://github.com/danielmi5/daw2-Proyecto-Cohabit.git
+cd daw2-Proyecto-Cohabit
+docker-compose up --build
+```
+
+El proyecto en local estará disponible en `http://localhost:4200`
+
+### Autor
+
+**Nombre:** Daniel  
+**Curso:** 2º DAW - Desarrollo de Aplicaciones Web  
+**Módulo:** Diseño de Interfaces Web (DIW)
 
 ---
 

@@ -1,6 +1,6 @@
-<article class="recurso-estado" [attr.aria-label]="ariaLabel">
+<article class="recurso-estado" [attr.aria-labelledby]="'nombre-' + recursoInfo.recurso.id" [attr.aria-describedby]="'info-' + recursoInfo.recurso.id">
   <header class="recurso-estado__header">
-    <h3 class="recurso-estado__nombre">{{ recursoInfo.recurso.nombre || 'Sin nombre' }}</h3>
+    <h3 class="recurso-estado__nombre" [id]="'nombre-' + recursoInfo.recurso.id">{{ recursoInfo.recurso.nombre || 'Sin nombre' }}</h3>
     <span 
       class="recurso-estado__estado"
       [class.recurso-estado__estado--ocupado]="getEstadoRecurso() === 'Ocupado'"
@@ -8,8 +8,8 @@
       {{ getEstadoRecurso() }}
     </span>
   </header>
-  <aside class="recurso-estado__info">
-    <i [feather]="'calendar'"></i>
-    <span>{{ getTextoProximaReserva() }}</span>
+  <aside class="recurso-estado__info" [id]="'info-' + recursoInfo.recurso.id">
+    <i [feather]="'calendar'" aria-hidden="true"></i>
+    <span>{{ getEstadoRecurso() }}. {{ getTextoProximaReserva() }}</span>
   </aside>
 </article>

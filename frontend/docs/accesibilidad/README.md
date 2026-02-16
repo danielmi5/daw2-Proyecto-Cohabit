@@ -512,15 +512,33 @@ Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requ
 
 2. **Falta de indicador visual de posición**: No existía un indicador que mostrara al usuario en qué página del carrusel se encontraba (ej: "1/2", "2/2").
 
+3. **Modales sin focus trap**: Los modales no implementaban un sistema de "trampa de foco" (focus trap). Esto significa que al presionar Tab repetidamente, el foco podía salir del modal y navegar por el contenido de la página de fondo, lo que confunde a usuarios de teclado que pierden el contexto de estar en un diálogo modal.
+
+4. **Menú móvil sin gestión de foco**: El menú hamburguesa en dispositivos móviles no gestionaba correctamente el foco cuando se abría o cerraba. Al abrirse, el foco permanecía en el botón hamburguesa en lugar de moverse al primer enlace del menú. Al cerrarse con Escape, el foco no volvía al botón hamburguesa, quedando en un elemento indefinido.
+
 **Soluciones aplicadas:**
 
 1. **Navegación con flechas de teclado**: Implementé un `@HostListener('keydown')` en el componente del carrusel que captura las teclas `ArrowLeft` y `ArrowRight`, ejecutando `navegarAnterior()` y `navegarSiguiente()` respectivamente. Esto permite navegar por el carrusel usando las flechas del teclado de forma sencilla.
 
 2. **Indicador visual de posición implementado**: Añadí un elemento `<div class="carrusel__indicador">` que muestra dinámicamente "X/Y" (página actual / total páginas) fuera de la sección principal del carrusel para que aparezca debajo de las cards sin superponerse. Con estilos que usan `var(--texto-primario)` para garantizar contraste en modo claro y oscuro.
 
+3. **Focus trap en modales**: Implementé un sistema completo de trampa de foco en el componente Modal usando `@ViewChild` para acceder al panel del modal y `@HostListener('keydown')` para interceptar Tab. El sistema:
+   - Guarda el elemento que tenía foco antes de abrir el modal (`elementoAnterior`)
+   - Al abrir, enfoca automáticamente el primer elemento interactivo del modal
+   - Intercepta Tab y Shift+Tab para mantener el foco circulando dentro del modal (del último al primero y viceversa)
+   - Al cerrar, restaura el foco al elemento que lo tenía originalmente
+   - Identifica elementos enfocables con el selector: `button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])`
+
+4. **Gestión de foco en menú móvil**: Mejoré la gestión del foco en el menú hamburguesa:
+   - Al abrir el menú (`toggleMenu()`), el foco se mueve automáticamente al primer enlace del menú usando `setTimeout()` de 100ms para dar tiempo a la animación
+   - Al cerrar con Escape (`onEscape()`), el foco vuelve automáticamente al botón hamburguesa
+   - Al hacer clic en cualquier enlace del menú (`cerrarMenu()`), el menú se cierra correctamente
+   - Se agregó `aria-hidden` que cambia dinámicamente según el estado del menú (`[attr.aria-hidden]="!menuAbierto"`)
+   - Se añadió outline de 2px en color primario con offset negativo para enlaces del menú en estado focus
+
 ### 6.2 Test con lector de pantalla
 
-**Herramienta utilizada:** [NVDA (Windows) / VoiceOver (Mac) / ChromeVox]
+**Herramienta utilizada:** NVDA (Windows)
 
 **Evaluación de accesibilidad:**
 
@@ -533,14 +551,20 @@ Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requ
 | ¿El componente multimedia es accesible? | ✅ | El carrusel es accesible, sus colores cumplen los contrastes y la navegación por teclado funciona con Tab, Enter y flechas. Los botones tienen labels claros y los cambios se anuncian automáticamente. |
 
 **Principales problemas detectados:**
-1. [Problema 1]
-2. [Problema 2]
-3. [Problema 3]
+
+1. **Demasiado información cuando se enfoca el carrusel**: Al mostrar 5 cards de recursos, NVDA lee toda la información de cada uno seguida, es demasiada información de golpe.
+
+2. **Tabla sin contexto**: La tabla de reservas no indica qué columna es cada dato cuando se navega celda por celda. NVDA solo lee "Juan Pérez" sin decir que es el usuario.
+
+3. **Label suelto en foto**: El texto "Foto del recurso" no está conectado con el selector de archivo, así que el lector no lo anuncia al enfocarlo.
 
 **Mejoras aplicadas:**
-1. [Mejora 1]
-2. [Mejora 2]
-3. [Mejora 3]
+
+1. **Reducida la información recibida por el lector en el carrusel**: Cambié `aria-label` por `aria-labelledby` que solo anuncia el nombre del recurso, y `aria-describedby` agrupa estado + próxima reserva. Ahora dice "Sala A" y luego "Disponible. Próxima reserva mañana a las 10:00".
+
+2. **Tabla con contexto**: Añadí `scope="col"` a todos los encabezados. Ahora al navegar NVDA dice "Usuario: Juan Pérez", "Recurso: Sala A", etc.
+
+3. **Label conectado y aria añadido**: Añadí id y for para asociar el label con el selector de archivo, con un `aria-label` descriptivo.
 
 ### 6.3 Verificación cross-browser
 
@@ -583,8 +607,7 @@ Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requ
 
 **Operable:**
 - [x] 2.1.1 - Teclado (toda la funcionalidad accesible)
-- [x] 2.1.1 - Teclado (toda la funcionalidad accesible)
-- [ ] 2.1.2 - Sin trampas de teclado
+- [x] 2.1.2 - Sin trampas de teclado
 - [x] 2.4.3 - Orden del foco (lógico y predecible)
 - [x] 2.4.7 - Foco visible (se ve claramente)
 
@@ -598,8 +621,8 @@ Todas las imágenes tienen el atributo alt, cumpliendo técnicamente con el requ
 
 ### Nivel de conformidad alcanzado
 
-**Nivel alcanzado:** AA (parcial)
+**Nivel alcanzado:** AA
 
-**Justificación y excepción:** El proyecto cumple la mayoría de los criterios de éxito del nivel AA de WCAG 2.1 evaluados y se han corregido la mayoría de los errores principales detectados inicialmente (idioma de página, jerarquía de encabezados, contraste de color, textos alternativos y estructura de listas) y otros de otras páginas.
+**Justificación:** El proyecto cumple todos los criterios de éxito del nivel AA de WCAG 2.1 evaluados. Se han corregido todos los errores detectados inicialmente y se han implementado mejoras significativas, garantizando una experiencia accesible para todos los usuarios, incluyendo aquellos que utilizan tecnologías asistivas.
 
 

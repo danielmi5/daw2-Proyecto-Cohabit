@@ -69,10 +69,12 @@
           </div>
 
           <div class="modal-recurso__grupo-archivo">
-            <label class="modal-recurso__etiqueta">Foto del recurso</label>
+            <label class="modal-recurso__etiqueta" for="foto-recurso">Foto del recurso</label>
             <app-form-archivo
+              id="foto-recurso"
               accept="image/*"
-              (archivoSeleccionado)="onArchivoSeleccionado($event)">
+              (archivoSeleccionado)="onArchivoSeleccionado($event)"
+              aria-label="Selector de foto del recurso">
             </app-form-archivo>
           </div>
         </fieldset>

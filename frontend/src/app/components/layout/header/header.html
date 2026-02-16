@@ -7,19 +7,19 @@
     </a>
   </app-tooltip>
 
-  <nav class="cabecera__nav" role="navigation" aria-label="Menú principal" [class.cabecera__nav--open]="menuAbierto" [class.cabecera__nav--hidden]="!menuAbierto">
-    <ul class="cabecera__menu">
+  <nav class="cabecera__nav" role="navigation" aria-label="Menú principal" [class.cabecera__nav--open]="menuAbierto" [attr.aria-hidden]="!menuAbierto">
+    <ul class="cabecera__menu" id="main-navigation">
       <li class="cabecera__menu-opcion">
-        <a routerLink="/inicio" class="cabecera__menu-enlace" (click)="menuAbierto = false">INICIO</a>
+        <a routerLink="/inicio" class="cabecera__menu-enlace" (click)="cerrarMenu()">INICIO</a>
       </li>
       <li class="cabecera__menu-opcion">
-        <a routerLink="/dashboard" class="cabecera__menu-enlace" (click)="menuAbierto = false">DASHBOARD</a>
+        <a routerLink="/dashboard" class="cabecera__menu-enlace" (click)="cerrarMenu()">DASHBOARD</a>
       </li>
       <li class="cabecera__menu-opcion">
-        <a routerLink="/style-guide" class="cabecera__menu-enlace" (click)="menuAbierto = false">STYLE GUIDE</a>
+        <a routerLink="/style-guide" class="cabecera__menu-enlace" (click)="cerrarMenu()">STYLE GUIDE</a>
       </li>
       <li class="cabecera__menu-opcion">
-        <a routerLink="/grupo" class="cabecera__menu-enlace" (click)="menuAbierto = false">MI GRUPO</a>
+        <a routerLink="/grupo" class="cabecera__menu-enlace" (click)="cerrarMenu()">MI GRUPO</a>
       </li>
     </ul>
   </nav>

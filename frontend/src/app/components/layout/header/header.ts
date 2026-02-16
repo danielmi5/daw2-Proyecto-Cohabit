@@ -41,12 +41,33 @@ export class Header implements OnInit, OnDestroy {
 
   toggleMenu(): void {
     this.menuAbierto = !this.menuAbierto;
+    
+    // Si el menú se abre, enfocar el primer enlace
+    if (this.menuAbierto) {
+      setTimeout(() => {
+        const primerEnlace = document.querySelector('.cabecera__menu-enlace') as HTMLElement;
+        if (primerEnlace) {
+          primerEnlace.focus();
+        }
+      }, 100);
+    }
+  }
+
+  cerrarMenu(): void {
+    this.menuAbierto = false;
   }
 
   @HostListener('document:keydown.escape', ['$event'])
   onEscape(_event: unknown): void {
     if (this.menuAbierto) {
-      this.menuAbierto = false;
+      this.cerrarMenu();
+      // Devolver el foco al botón hamburguesa
+      setTimeout(() => {
+        const botonHamburguesa = document.querySelector('.cabecera__hamburguesa') as HTMLElement;
+        if (botonHamburguesa) {
+          botonHamburguesa.focus();
+        }
+      });
     }
   }
 

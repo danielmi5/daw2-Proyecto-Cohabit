@@ -1,5 +1,5 @@
 <section class="modal" role="dialog" aria-modal="true" [attr.aria-label]="variante === 'pedirAuth' ? 'Debes iniciar sesión' : (variante === 'salirAuth' ? '¿Quieres salir del proceso de autenticación?' : '')">
-  <div class="modal__panel">
+  <div class="modal__panel" #modalPanel>
 
     @if (variante === "pedirAuth"){
         <h2 class="modal__titulo">DEBES INICIAR SESIÓN</h2>
